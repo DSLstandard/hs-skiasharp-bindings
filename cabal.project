@@ -1,0 +1,3 @@
+packages: ./skiasharp-bindings.cabal
+
+allow-newer: all
