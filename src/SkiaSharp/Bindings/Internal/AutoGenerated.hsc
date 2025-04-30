@@ -9,193 +9,193 @@ import Foreign.Storable.Offset
 #include "c/sk_types.h"
 
 -- | `sk_refcnt_t`
-data SkRefCnt = SkRefCnt
+data Sk_refcnt = Sk_refcnt
   deriving (Show, Eq, Ord)
 -- | `sk_nvrefcnt_t`
-data SkNvRefCnt = SkNvRefCnt
+data Sk_nvrefcnt = Sk_nvrefcnt
   deriving (Show, Eq, Ord)
 -- | `sk_flattenable_t`
-data SkFlattenAble = SkFlattenAble
+data Sk_flattenable = Sk_flattenable
   deriving (Show, Eq, Ord)
 -- | `sk_color_t`
-type SkColor = Word32
+type Sk_color = Word32
 -- | `sk_pmcolor_t`
-type SkPmColor = Word32
+type Sk_pmcolor = Word32
 -- | `sk_color4f_t`
-data SkColor4F = SkColor4F
-  { r :: CFloat
+data Sk_color4f = Sk_color4f
+  { fR :: CFloat
   -- ^ `fR`
-  , g :: CFloat
+  , fG :: CFloat
   -- ^ `fG`
-  , b :: CFloat
+  , fB :: CFloat
   -- ^ `fB`
-  , a :: CFloat
+  , fA :: CFloat
   -- ^ `fA`
   } deriving (Show, Eq, Ord)
-instance Offset "r" SkColor4F where rawOffset = (#offset sk_color4f_t, fR)
-instance Offset "g" SkColor4F where rawOffset = (#offset sk_color4f_t, fG)
-instance Offset "b" SkColor4F where rawOffset = (#offset sk_color4f_t, fB)
-instance Offset "a" SkColor4F where rawOffset = (#offset sk_color4f_t, fA)
-instance Storable SkColor4F where
+instance Offset "fR" Sk_color4f where rawOffset = (#offset sk_color4f_t, fR)
+instance Offset "fG" Sk_color4f where rawOffset = (#offset sk_color4f_t, fG)
+instance Offset "fB" Sk_color4f where rawOffset = (#offset sk_color4f_t, fB)
+instance Offset "fA" Sk_color4f where rawOffset = (#offset sk_color4f_t, fA)
+instance Storable Sk_color4f where
   sizeOf _ = (#size sk_color4f_t)
   alignment _ = (#alignment sk_color4f_t)
   peek in'ptr = do
-    r <- (#peek sk_color4f_t, fR) in'ptr
-    g <- (#peek sk_color4f_t, fG) in'ptr
-    b <- (#peek sk_color4f_t, fB) in'ptr
-    a <- (#peek sk_color4f_t, fA) in'ptr
-    pure SkColor4F{..}
+    fR <- (#peek sk_color4f_t, fR) in'ptr
+    fG <- (#peek sk_color4f_t, fG) in'ptr
+    fB <- (#peek sk_color4f_t, fB) in'ptr
+    fA <- (#peek sk_color4f_t, fA) in'ptr
+    pure Sk_color4f{..}
   poke in'ptr in'value = do
-    (#poke sk_color4f_t, fR) in'ptr in'value.r
-    (#poke sk_color4f_t, fG) in'ptr in'value.g
-    (#poke sk_color4f_t, fB) in'ptr in'value.b
-    (#poke sk_color4f_t, fA) in'ptr in'value.a
+    (#poke sk_color4f_t, fR) in'ptr in'value.fR
+    (#poke sk_color4f_t, fG) in'ptr in'value.fG
+    (#poke sk_color4f_t, fB) in'ptr in'value.fB
+    (#poke sk_color4f_t, fA) in'ptr in'value.fA
 -- | `sk_colortype_t`
-newtype SkColorType = SkColorType (#type sk_colortype_t)
+newtype Sk_colortype = Sk_colortype (#type sk_colortype_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `UNKNOWN_SK_COLORTYPE`
-skColorType'Unknown :: SkColorType
-skColorType'Unknown = #const UNKNOWN_SK_COLORTYPE
+sk_colortype'UNKNOWN_SK_COLORTYPE :: Sk_colortype
+sk_colortype'UNKNOWN_SK_COLORTYPE = #const UNKNOWN_SK_COLORTYPE
 -- | `ALPHA_8_SK_COLORTYPE`
-skColorType'Alpha8 :: SkColorType
-skColorType'Alpha8 = #const ALPHA_8_SK_COLORTYPE
+sk_colortype'ALPHA_8_SK_COLORTYPE :: Sk_colortype
+sk_colortype'ALPHA_8_SK_COLORTYPE = #const ALPHA_8_SK_COLORTYPE
 -- | `RGB_565_SK_COLORTYPE`
-skColorType'Rgb565 :: SkColorType
-skColorType'Rgb565 = #const RGB_565_SK_COLORTYPE
+sk_colortype'RGB_565_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGB_565_SK_COLORTYPE = #const RGB_565_SK_COLORTYPE
 -- | `ARGB_4444_SK_COLORTYPE`
-skColorType'Argb4444 :: SkColorType
-skColorType'Argb4444 = #const ARGB_4444_SK_COLORTYPE
+sk_colortype'ARGB_4444_SK_COLORTYPE :: Sk_colortype
+sk_colortype'ARGB_4444_SK_COLORTYPE = #const ARGB_4444_SK_COLORTYPE
 -- | `RGBA_8888_SK_COLORTYPE`
-skColorType'Rgba8888 :: SkColorType
-skColorType'Rgba8888 = #const RGBA_8888_SK_COLORTYPE
+sk_colortype'RGBA_8888_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGBA_8888_SK_COLORTYPE = #const RGBA_8888_SK_COLORTYPE
 -- | `RGB_888X_SK_COLORTYPE`
-skColorType'Rgb888X :: SkColorType
-skColorType'Rgb888X = #const RGB_888X_SK_COLORTYPE
+sk_colortype'RGB_888X_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGB_888X_SK_COLORTYPE = #const RGB_888X_SK_COLORTYPE
 -- | `BGRA_8888_SK_COLORTYPE`
-skColorType'Bgra8888 :: SkColorType
-skColorType'Bgra8888 = #const BGRA_8888_SK_COLORTYPE
+sk_colortype'BGRA_8888_SK_COLORTYPE :: Sk_colortype
+sk_colortype'BGRA_8888_SK_COLORTYPE = #const BGRA_8888_SK_COLORTYPE
 -- | `RGBA_1010102_SK_COLORTYPE`
-skColorType'Rgba1010102 :: SkColorType
-skColorType'Rgba1010102 = #const RGBA_1010102_SK_COLORTYPE
+sk_colortype'RGBA_1010102_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGBA_1010102_SK_COLORTYPE = #const RGBA_1010102_SK_COLORTYPE
 -- | `BGRA_1010102_SK_COLORTYPE`
-skColorType'Bgra1010102 :: SkColorType
-skColorType'Bgra1010102 = #const BGRA_1010102_SK_COLORTYPE
+sk_colortype'BGRA_1010102_SK_COLORTYPE :: Sk_colortype
+sk_colortype'BGRA_1010102_SK_COLORTYPE = #const BGRA_1010102_SK_COLORTYPE
 -- | `RGB_101010X_SK_COLORTYPE`
-skColorType'Rgb101010X :: SkColorType
-skColorType'Rgb101010X = #const RGB_101010X_SK_COLORTYPE
+sk_colortype'RGB_101010X_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGB_101010X_SK_COLORTYPE = #const RGB_101010X_SK_COLORTYPE
 -- | `BGR_101010X_SK_COLORTYPE`
-skColorType'Bgr101010X :: SkColorType
-skColorType'Bgr101010X = #const BGR_101010X_SK_COLORTYPE
+sk_colortype'BGR_101010X_SK_COLORTYPE :: Sk_colortype
+sk_colortype'BGR_101010X_SK_COLORTYPE = #const BGR_101010X_SK_COLORTYPE
 -- | `BGR_101010X_XR_SK_COLORTYPE`
-skColorType'Bgr101010XXr :: SkColorType
-skColorType'Bgr101010XXr = #const BGR_101010X_XR_SK_COLORTYPE
+sk_colortype'BGR_101010X_XR_SK_COLORTYPE :: Sk_colortype
+sk_colortype'BGR_101010X_XR_SK_COLORTYPE = #const BGR_101010X_XR_SK_COLORTYPE
 -- | `RGBA_10X6_SK_COLORTYPE`
-skColorType'Rgba10X6 :: SkColorType
-skColorType'Rgba10X6 = #const RGBA_10X6_SK_COLORTYPE
+sk_colortype'RGBA_10X6_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGBA_10X6_SK_COLORTYPE = #const RGBA_10X6_SK_COLORTYPE
 -- | `GRAY_8_SK_COLORTYPE`
-skColorType'Gray8 :: SkColorType
-skColorType'Gray8 = #const GRAY_8_SK_COLORTYPE
+sk_colortype'GRAY_8_SK_COLORTYPE :: Sk_colortype
+sk_colortype'GRAY_8_SK_COLORTYPE = #const GRAY_8_SK_COLORTYPE
 -- | `RGBA_F16_NORM_SK_COLORTYPE`
-skColorType'RgbaF16Norm :: SkColorType
-skColorType'RgbaF16Norm = #const RGBA_F16_NORM_SK_COLORTYPE
+sk_colortype'RGBA_F16_NORM_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGBA_F16_NORM_SK_COLORTYPE = #const RGBA_F16_NORM_SK_COLORTYPE
 -- | `RGBA_F16_SK_COLORTYPE`
-skColorType'RgbaF16 :: SkColorType
-skColorType'RgbaF16 = #const RGBA_F16_SK_COLORTYPE
+sk_colortype'RGBA_F16_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGBA_F16_SK_COLORTYPE = #const RGBA_F16_SK_COLORTYPE
 -- | `RGBA_F32_SK_COLORTYPE`
-skColorType'RgbaF32 :: SkColorType
-skColorType'RgbaF32 = #const RGBA_F32_SK_COLORTYPE
+sk_colortype'RGBA_F32_SK_COLORTYPE :: Sk_colortype
+sk_colortype'RGBA_F32_SK_COLORTYPE = #const RGBA_F32_SK_COLORTYPE
 -- | `R8G8_UNORM_SK_COLORTYPE`
-skColorType'R8G8UNorm :: SkColorType
-skColorType'R8G8UNorm = #const R8G8_UNORM_SK_COLORTYPE
+sk_colortype'R8G8_UNORM_SK_COLORTYPE :: Sk_colortype
+sk_colortype'R8G8_UNORM_SK_COLORTYPE = #const R8G8_UNORM_SK_COLORTYPE
 -- | `A16_FLOAT_SK_COLORTYPE`
-skColorType'A16Float :: SkColorType
-skColorType'A16Float = #const A16_FLOAT_SK_COLORTYPE
+sk_colortype'A16_FLOAT_SK_COLORTYPE :: Sk_colortype
+sk_colortype'A16_FLOAT_SK_COLORTYPE = #const A16_FLOAT_SK_COLORTYPE
 -- | `R16G16_FLOAT_SK_COLORTYPE`
-skColorType'R16G16Float :: SkColorType
-skColorType'R16G16Float = #const R16G16_FLOAT_SK_COLORTYPE
+sk_colortype'R16G16_FLOAT_SK_COLORTYPE :: Sk_colortype
+sk_colortype'R16G16_FLOAT_SK_COLORTYPE = #const R16G16_FLOAT_SK_COLORTYPE
 -- | `A16_UNORM_SK_COLORTYPE`
-skColorType'A16UNorm :: SkColorType
-skColorType'A16UNorm = #const A16_UNORM_SK_COLORTYPE
+sk_colortype'A16_UNORM_SK_COLORTYPE :: Sk_colortype
+sk_colortype'A16_UNORM_SK_COLORTYPE = #const A16_UNORM_SK_COLORTYPE
 -- | `R16G16_UNORM_SK_COLORTYPE`
-skColorType'R16G16UNorm :: SkColorType
-skColorType'R16G16UNorm = #const R16G16_UNORM_SK_COLORTYPE
+sk_colortype'R16G16_UNORM_SK_COLORTYPE :: Sk_colortype
+sk_colortype'R16G16_UNORM_SK_COLORTYPE = #const R16G16_UNORM_SK_COLORTYPE
 -- | `R16G16B16A16_UNORM_SK_COLORTYPE`
-skColorType'R16G16B16A16UNorm :: SkColorType
-skColorType'R16G16B16A16UNorm = #const R16G16B16A16_UNORM_SK_COLORTYPE
+sk_colortype'R16G16B16A16_UNORM_SK_COLORTYPE :: Sk_colortype
+sk_colortype'R16G16B16A16_UNORM_SK_COLORTYPE = #const R16G16B16A16_UNORM_SK_COLORTYPE
 -- | `SRGBA_8888_SK_COLORTYPE`
-skColorType'Srgba8888 :: SkColorType
-skColorType'Srgba8888 = #const SRGBA_8888_SK_COLORTYPE
+sk_colortype'SRGBA_8888_SK_COLORTYPE :: Sk_colortype
+sk_colortype'SRGBA_8888_SK_COLORTYPE = #const SRGBA_8888_SK_COLORTYPE
 -- | `R8_UNORM_SK_COLORTYPE`
-skColorType'R8UNorm :: SkColorType
-skColorType'R8UNorm = #const R8_UNORM_SK_COLORTYPE
+sk_colortype'R8_UNORM_SK_COLORTYPE :: Sk_colortype
+sk_colortype'R8_UNORM_SK_COLORTYPE = #const R8_UNORM_SK_COLORTYPE
 -- | `sk_alphatype_t`
-newtype SkAlphaType = SkAlphaType (#type sk_alphatype_t)
+newtype Sk_alphatype = Sk_alphatype (#type sk_alphatype_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `UNKNOWN_SK_ALPHATYPE`
-skAlphaType'Unknown :: SkAlphaType
-skAlphaType'Unknown = #const UNKNOWN_SK_ALPHATYPE
+sk_alphatype'UNKNOWN_SK_ALPHATYPE :: Sk_alphatype
+sk_alphatype'UNKNOWN_SK_ALPHATYPE = #const UNKNOWN_SK_ALPHATYPE
 -- | `OPAQUE_SK_ALPHATYPE`
-skAlphaType'Opaque :: SkAlphaType
-skAlphaType'Opaque = #const OPAQUE_SK_ALPHATYPE
+sk_alphatype'OPAQUE_SK_ALPHATYPE :: Sk_alphatype
+sk_alphatype'OPAQUE_SK_ALPHATYPE = #const OPAQUE_SK_ALPHATYPE
 -- | `PREMUL_SK_ALPHATYPE`
-skAlphaType'Premul :: SkAlphaType
-skAlphaType'Premul = #const PREMUL_SK_ALPHATYPE
+sk_alphatype'PREMUL_SK_ALPHATYPE :: Sk_alphatype
+sk_alphatype'PREMUL_SK_ALPHATYPE = #const PREMUL_SK_ALPHATYPE
 -- | `UNPREMUL_SK_ALPHATYPE`
-skAlphaType'Unpremul :: SkAlphaType
-skAlphaType'Unpremul = #const UNPREMUL_SK_ALPHATYPE
+sk_alphatype'UNPREMUL_SK_ALPHATYPE :: Sk_alphatype
+sk_alphatype'UNPREMUL_SK_ALPHATYPE = #const UNPREMUL_SK_ALPHATYPE
 -- | `sk_pixelgeometry_t`
-newtype SkPixelGeometry = SkPixelGeometry (#type sk_pixelgeometry_t)
+newtype Sk_pixelgeometry = Sk_pixelgeometry (#type sk_pixelgeometry_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `UNKNOWN_SK_PIXELGEOMETRY`
-skPixelGeometry'Unknown :: SkPixelGeometry
-skPixelGeometry'Unknown = #const UNKNOWN_SK_PIXELGEOMETRY
+sk_pixelgeometry'UNKNOWN_SK_PIXELGEOMETRY :: Sk_pixelgeometry
+sk_pixelgeometry'UNKNOWN_SK_PIXELGEOMETRY = #const UNKNOWN_SK_PIXELGEOMETRY
 -- | `RGB_H_SK_PIXELGEOMETRY`
-skPixelGeometry'RgbH :: SkPixelGeometry
-skPixelGeometry'RgbH = #const RGB_H_SK_PIXELGEOMETRY
+sk_pixelgeometry'RGB_H_SK_PIXELGEOMETRY :: Sk_pixelgeometry
+sk_pixelgeometry'RGB_H_SK_PIXELGEOMETRY = #const RGB_H_SK_PIXELGEOMETRY
 -- | `BGR_H_SK_PIXELGEOMETRY`
-skPixelGeometry'BgrH :: SkPixelGeometry
-skPixelGeometry'BgrH = #const BGR_H_SK_PIXELGEOMETRY
+sk_pixelgeometry'BGR_H_SK_PIXELGEOMETRY :: Sk_pixelgeometry
+sk_pixelgeometry'BGR_H_SK_PIXELGEOMETRY = #const BGR_H_SK_PIXELGEOMETRY
 -- | `RGB_V_SK_PIXELGEOMETRY`
-skPixelGeometry'RgbV :: SkPixelGeometry
-skPixelGeometry'RgbV = #const RGB_V_SK_PIXELGEOMETRY
+sk_pixelgeometry'RGB_V_SK_PIXELGEOMETRY :: Sk_pixelgeometry
+sk_pixelgeometry'RGB_V_SK_PIXELGEOMETRY = #const RGB_V_SK_PIXELGEOMETRY
 -- | `BGR_V_SK_PIXELGEOMETRY`
-skPixelGeometry'BgrV :: SkPixelGeometry
-skPixelGeometry'BgrV = #const BGR_V_SK_PIXELGEOMETRY
+sk_pixelgeometry'BGR_V_SK_PIXELGEOMETRY :: Sk_pixelgeometry
+sk_pixelgeometry'BGR_V_SK_PIXELGEOMETRY = #const BGR_V_SK_PIXELGEOMETRY
 -- | `sk_surfaceprops_flags_t`
-newtype SkSurfacePropsFlags = SkSurfacePropsFlags (#type sk_surfaceprops_flags_t)
+newtype Sk_surfaceprops_flags = Sk_surfaceprops_flags (#type sk_surfaceprops_flags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NONE_SK_SURFACE_PROPS_FLAGS`
-skSurfacePropsFlags'None :: SkSurfacePropsFlags
-skSurfacePropsFlags'None = #const NONE_SK_SURFACE_PROPS_FLAGS
+sk_surfaceprops_flags'NONE_SK_SURFACE_PROPS_FLAGS :: Sk_surfaceprops_flags
+sk_surfaceprops_flags'NONE_SK_SURFACE_PROPS_FLAGS = #const NONE_SK_SURFACE_PROPS_FLAGS
 -- | `USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS`
-skSurfacePropsFlags'UseDeviceIndependentFonts :: SkSurfacePropsFlags
-skSurfacePropsFlags'UseDeviceIndependentFonts = #const USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS
+sk_surfaceprops_flags'USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS :: Sk_surfaceprops_flags
+sk_surfaceprops_flags'USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS = #const USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS
 -- | `sk_surfaceprops_t`
-data SkSurfaceProps = SkSurfaceProps
+data Sk_surfaceprops = Sk_surfaceprops
   deriving (Show, Eq, Ord)
 -- | `sk_point_t`
-data SkPoint = SkPoint
+data Sk_point = Sk_point
   { x :: CFloat
   -- ^ `x`
   , y :: CFloat
   -- ^ `y`
   } deriving (Show, Eq, Ord)
-instance Offset "x" SkPoint where rawOffset = (#offset sk_point_t, x)
-instance Offset "y" SkPoint where rawOffset = (#offset sk_point_t, y)
-instance Storable SkPoint where
+instance Offset "x" Sk_point where rawOffset = (#offset sk_point_t, x)
+instance Offset "y" Sk_point where rawOffset = (#offset sk_point_t, y)
+instance Storable Sk_point where
   sizeOf _ = (#size sk_point_t)
   alignment _ = (#alignment sk_point_t)
   peek in'ptr = do
     x <- (#peek sk_point_t, x) in'ptr
     y <- (#peek sk_point_t, y) in'ptr
-    pure SkPoint{..}
+    pure Sk_point{..}
   poke in'ptr in'value = do
     (#poke sk_point_t, x) in'ptr in'value.x
     (#poke sk_point_t, y) in'ptr in'value.y
 -- | `sk_vector_t`
-type SkVector = SkPoint
+type Sk_vector = Sk_point
 -- | `sk_irect_t`
-data SkIRect = SkIRect
+data Sk_irect = Sk_irect
   { left :: Int32
   -- ^ `left`
   , top :: Int32
@@ -205,11 +205,11 @@ data SkIRect = SkIRect
   , bottom :: Int32
   -- ^ `bottom`
   } deriving (Show, Eq, Ord)
-instance Offset "left" SkIRect where rawOffset = (#offset sk_irect_t, left)
-instance Offset "top" SkIRect where rawOffset = (#offset sk_irect_t, top)
-instance Offset "right" SkIRect where rawOffset = (#offset sk_irect_t, right)
-instance Offset "bottom" SkIRect where rawOffset = (#offset sk_irect_t, bottom)
-instance Storable SkIRect where
+instance Offset "left" Sk_irect where rawOffset = (#offset sk_irect_t, left)
+instance Offset "top" Sk_irect where rawOffset = (#offset sk_irect_t, top)
+instance Offset "right" Sk_irect where rawOffset = (#offset sk_irect_t, right)
+instance Offset "bottom" Sk_irect where rawOffset = (#offset sk_irect_t, bottom)
+instance Storable Sk_irect where
   sizeOf _ = (#size sk_irect_t)
   alignment _ = (#alignment sk_irect_t)
   peek in'ptr = do
@@ -217,14 +217,14 @@ instance Storable SkIRect where
     top <- (#peek sk_irect_t, top) in'ptr
     right <- (#peek sk_irect_t, right) in'ptr
     bottom <- (#peek sk_irect_t, bottom) in'ptr
-    pure SkIRect{..}
+    pure Sk_irect{..}
   poke in'ptr in'value = do
     (#poke sk_irect_t, left) in'ptr in'value.left
     (#poke sk_irect_t, top) in'ptr in'value.top
     (#poke sk_irect_t, right) in'ptr in'value.right
     (#poke sk_irect_t, bottom) in'ptr in'value.bottom
 -- | `sk_rect_t`
-data SkRect = SkRect
+data Sk_rect = Sk_rect
   { left :: CFloat
   -- ^ `left`
   , top :: CFloat
@@ -234,11 +234,11 @@ data SkRect = SkRect
   , bottom :: CFloat
   -- ^ `bottom`
   } deriving (Show, Eq, Ord)
-instance Offset "left" SkRect where rawOffset = (#offset sk_rect_t, left)
-instance Offset "top" SkRect where rawOffset = (#offset sk_rect_t, top)
-instance Offset "right" SkRect where rawOffset = (#offset sk_rect_t, right)
-instance Offset "bottom" SkRect where rawOffset = (#offset sk_rect_t, bottom)
-instance Storable SkRect where
+instance Offset "left" Sk_rect where rawOffset = (#offset sk_rect_t, left)
+instance Offset "top" Sk_rect where rawOffset = (#offset sk_rect_t, top)
+instance Offset "right" Sk_rect where rawOffset = (#offset sk_rect_t, right)
+instance Offset "bottom" Sk_rect where rawOffset = (#offset sk_rect_t, bottom)
+instance Storable Sk_rect where
   sizeOf _ = (#size sk_rect_t)
   alignment _ = (#alignment sk_rect_t)
   peek in'ptr = do
@@ -246,14 +246,14 @@ instance Storable SkRect where
     top <- (#peek sk_rect_t, top) in'ptr
     right <- (#peek sk_rect_t, right) in'ptr
     bottom <- (#peek sk_rect_t, bottom) in'ptr
-    pure SkRect{..}
+    pure Sk_rect{..}
   poke in'ptr in'value = do
     (#poke sk_rect_t, left) in'ptr in'value.left
     (#poke sk_rect_t, top) in'ptr in'value.top
     (#poke sk_rect_t, right) in'ptr in'value.right
     (#poke sk_rect_t, bottom) in'ptr in'value.bottom
 -- | `sk_matrix_t`
-data SkMatrix = SkMatrix
+data Sk_matrix = Sk_matrix
   { scaleX :: CFloat
   -- ^ `scaleX`
   , skewX :: CFloat
@@ -273,16 +273,16 @@ data SkMatrix = SkMatrix
   , persp2 :: CFloat
   -- ^ `persp2`
   } deriving (Show, Eq, Ord)
-instance Offset "scaleX" SkMatrix where rawOffset = (#offset sk_matrix_t, scaleX)
-instance Offset "skewX" SkMatrix where rawOffset = (#offset sk_matrix_t, skewX)
-instance Offset "transX" SkMatrix where rawOffset = (#offset sk_matrix_t, transX)
-instance Offset "skewY" SkMatrix where rawOffset = (#offset sk_matrix_t, skewY)
-instance Offset "scaleY" SkMatrix where rawOffset = (#offset sk_matrix_t, scaleY)
-instance Offset "transY" SkMatrix where rawOffset = (#offset sk_matrix_t, transY)
-instance Offset "persp0" SkMatrix where rawOffset = (#offset sk_matrix_t, persp0)
-instance Offset "persp1" SkMatrix where rawOffset = (#offset sk_matrix_t, persp1)
-instance Offset "persp2" SkMatrix where rawOffset = (#offset sk_matrix_t, persp2)
-instance Storable SkMatrix where
+instance Offset "scaleX" Sk_matrix where rawOffset = (#offset sk_matrix_t, scaleX)
+instance Offset "skewX" Sk_matrix where rawOffset = (#offset sk_matrix_t, skewX)
+instance Offset "transX" Sk_matrix where rawOffset = (#offset sk_matrix_t, transX)
+instance Offset "skewY" Sk_matrix where rawOffset = (#offset sk_matrix_t, skewY)
+instance Offset "scaleY" Sk_matrix where rawOffset = (#offset sk_matrix_t, scaleY)
+instance Offset "transY" Sk_matrix where rawOffset = (#offset sk_matrix_t, transY)
+instance Offset "persp0" Sk_matrix where rawOffset = (#offset sk_matrix_t, persp0)
+instance Offset "persp1" Sk_matrix where rawOffset = (#offset sk_matrix_t, persp1)
+instance Offset "persp2" Sk_matrix where rawOffset = (#offset sk_matrix_t, persp2)
+instance Storable Sk_matrix where
   sizeOf _ = (#size sk_matrix_t)
   alignment _ = (#alignment sk_matrix_t)
   peek in'ptr = do
@@ -295,7 +295,7 @@ instance Storable SkMatrix where
     persp0 <- (#peek sk_matrix_t, persp0) in'ptr
     persp1 <- (#peek sk_matrix_t, persp1) in'ptr
     persp2 <- (#peek sk_matrix_t, persp2) in'ptr
-    pure SkMatrix{..}
+    pure Sk_matrix{..}
   poke in'ptr in'value = do
     (#poke sk_matrix_t, scaleX) in'ptr in'value.scaleX
     (#poke sk_matrix_t, skewX) in'ptr in'value.skewX
@@ -307,7 +307,7 @@ instance Storable SkMatrix where
     (#poke sk_matrix_t, persp1) in'ptr in'value.persp1
     (#poke sk_matrix_t, persp2) in'ptr in'value.persp2
 -- | `sk_matrix44_t`
-data SkMatrix44 = SkMatrix44
+data Sk_matrix44 = Sk_matrix44
   { m00 :: CFloat
   -- ^ `m00`
   , m01 :: CFloat
@@ -341,23 +341,23 @@ data SkMatrix44 = SkMatrix44
   , m33 :: CFloat
   -- ^ `m33`
   } deriving (Show, Eq, Ord)
-instance Offset "m00" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m00)
-instance Offset "m01" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m01)
-instance Offset "m02" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m02)
-instance Offset "m03" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m03)
-instance Offset "m10" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m10)
-instance Offset "m11" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m11)
-instance Offset "m12" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m12)
-instance Offset "m13" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m13)
-instance Offset "m20" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m20)
-instance Offset "m21" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m21)
-instance Offset "m22" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m22)
-instance Offset "m23" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m23)
-instance Offset "m30" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m30)
-instance Offset "m31" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m31)
-instance Offset "m32" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m32)
-instance Offset "m33" SkMatrix44 where rawOffset = (#offset sk_matrix44_t, m33)
-instance Storable SkMatrix44 where
+instance Offset "m00" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m00)
+instance Offset "m01" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m01)
+instance Offset "m02" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m02)
+instance Offset "m03" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m03)
+instance Offset "m10" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m10)
+instance Offset "m11" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m11)
+instance Offset "m12" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m12)
+instance Offset "m13" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m13)
+instance Offset "m20" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m20)
+instance Offset "m21" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m21)
+instance Offset "m22" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m22)
+instance Offset "m23" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m23)
+instance Offset "m30" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m30)
+instance Offset "m31" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m31)
+instance Offset "m32" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m32)
+instance Offset "m33" Sk_matrix44 where rawOffset = (#offset sk_matrix44_t, m33)
+instance Storable Sk_matrix44 where
   sizeOf _ = (#size sk_matrix44_t)
   alignment _ = (#alignment sk_matrix44_t)
   peek in'ptr = do
@@ -377,7 +377,7 @@ instance Storable SkMatrix44 where
     m31 <- (#peek sk_matrix44_t, m31) in'ptr
     m32 <- (#peek sk_matrix44_t, m32) in'ptr
     m33 <- (#peek sk_matrix44_t, m33) in'ptr
-    pure SkMatrix44{..}
+    pure Sk_matrix44{..}
   poke in'ptr in'value = do
     (#poke sk_matrix44_t, m00) in'ptr in'value.m00
     (#poke sk_matrix44_t, m01) in'ptr in'value.m01
@@ -396,160 +396,160 @@ instance Storable SkMatrix44 where
     (#poke sk_matrix44_t, m32) in'ptr in'value.m32
     (#poke sk_matrix44_t, m33) in'ptr in'value.m33
 -- | `sk_canvas_t`
-data SkCanvas = SkCanvas
+data Sk_canvas = Sk_canvas
   deriving (Show, Eq, Ord)
 -- | `sk_nodraw_canvas_t`
-data SkNoDrawCanvas = SkNoDrawCanvas
+data Sk_nodraw_canvas = Sk_nodraw_canvas
   deriving (Show, Eq, Ord)
 -- | `sk_nway_canvas_t`
-data SkNWayCanvas = SkNWayCanvas
+data Sk_nway_canvas = Sk_nway_canvas
   deriving (Show, Eq, Ord)
 -- | `sk_overdraw_canvas_t`
-data SkOverdrawCanvas = SkOverdrawCanvas
+data Sk_overdraw_canvas = Sk_overdraw_canvas
   deriving (Show, Eq, Ord)
 -- | `sk_data_t`
-data SkData = SkData
+data Sk_data = Sk_data
   deriving (Show, Eq, Ord)
 -- | `sk_drawable_t`
-data SkDrawAble = SkDrawAble
+data Sk_drawable = Sk_drawable
   deriving (Show, Eq, Ord)
 -- | `sk_image_t`
-data SkImage = SkImage
+data Sk_image = Sk_image
   deriving (Show, Eq, Ord)
 -- | `sk_maskfilter_t`
-data SkMaskFilter = SkMaskFilter
+data Sk_maskfilter = Sk_maskfilter
   deriving (Show, Eq, Ord)
 -- | `sk_paint_t`
-data SkPaint = SkPaint
+data Sk_paint = Sk_paint
   deriving (Show, Eq, Ord)
 -- | `sk_font_t`
-data SkFont = SkFont
+data Sk_font = Sk_font
   deriving (Show, Eq, Ord)
 -- | `sk_path_t`
-data SkPath = SkPath
+data Sk_path = Sk_path
   deriving (Show, Eq, Ord)
 -- | `sk_picture_t`
-data SkPicture = SkPicture
+data Sk_picture = Sk_picture
   deriving (Show, Eq, Ord)
 -- | `sk_picture_recorder_t`
-data SkPictureRecorder = SkPictureRecorder
+data Sk_picture_recorder = Sk_picture_recorder
   deriving (Show, Eq, Ord)
 -- | `sk_bbh_factory_t`
-data SkBbhFactory = SkBbhFactory
+data Sk_bbh_factory = Sk_bbh_factory
   deriving (Show, Eq, Ord)
 -- | `sk_rtree_factory_t`
-data SkRTreeFactory = SkRTreeFactory
+data Sk_rtree_factory = Sk_rtree_factory
   deriving (Show, Eq, Ord)
 -- | `sk_shader_t`
-data SkShader = SkShader
+data Sk_shader = Sk_shader
   deriving (Show, Eq, Ord)
 -- | `sk_surface_t`
-data SkSurface = SkSurface
+data Sk_surface = Sk_surface
   deriving (Show, Eq, Ord)
 -- | `sk_region_t`
-data SkRegion = SkRegion
+data Sk_region = Sk_region
   deriving (Show, Eq, Ord)
 -- | `sk_region_iterator_t`
-data SkRegionIterator = SkRegionIterator
+data Sk_region_iterator = Sk_region_iterator
   deriving (Show, Eq, Ord)
 -- | `sk_region_cliperator_t`
-data SkRegionCliperator = SkRegionCliperator
+data Sk_region_cliperator = Sk_region_cliperator
   deriving (Show, Eq, Ord)
 -- | `sk_region_spanerator_t`
-data SkRegionSpanerator = SkRegionSpanerator
+data Sk_region_spanerator = Sk_region_spanerator
   deriving (Show, Eq, Ord)
 -- | `sk_blendmode_t`
-newtype SkBlendMode = SkBlendMode (#type sk_blendmode_t)
+newtype Sk_blendmode = Sk_blendmode (#type sk_blendmode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `CLEAR_SK_BLENDMODE`
-skBlendMode'Clear :: SkBlendMode
-skBlendMode'Clear = #const CLEAR_SK_BLENDMODE
+sk_blendmode'CLEAR_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'CLEAR_SK_BLENDMODE = #const CLEAR_SK_BLENDMODE
 -- | `SRC_SK_BLENDMODE`
-skBlendMode'Src :: SkBlendMode
-skBlendMode'Src = #const SRC_SK_BLENDMODE
+sk_blendmode'SRC_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SRC_SK_BLENDMODE = #const SRC_SK_BLENDMODE
 -- | `DST_SK_BLENDMODE`
-skBlendMode'Dst :: SkBlendMode
-skBlendMode'Dst = #const DST_SK_BLENDMODE
+sk_blendmode'DST_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'DST_SK_BLENDMODE = #const DST_SK_BLENDMODE
 -- | `SRCOVER_SK_BLENDMODE`
-skBlendMode'SrcOver :: SkBlendMode
-skBlendMode'SrcOver = #const SRCOVER_SK_BLENDMODE
+sk_blendmode'SRCOVER_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SRCOVER_SK_BLENDMODE = #const SRCOVER_SK_BLENDMODE
 -- | `DSTOVER_SK_BLENDMODE`
-skBlendMode'DstOver :: SkBlendMode
-skBlendMode'DstOver = #const DSTOVER_SK_BLENDMODE
+sk_blendmode'DSTOVER_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'DSTOVER_SK_BLENDMODE = #const DSTOVER_SK_BLENDMODE
 -- | `SRCIN_SK_BLENDMODE`
-skBlendMode'SrcIn :: SkBlendMode
-skBlendMode'SrcIn = #const SRCIN_SK_BLENDMODE
+sk_blendmode'SRCIN_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SRCIN_SK_BLENDMODE = #const SRCIN_SK_BLENDMODE
 -- | `DSTIN_SK_BLENDMODE`
-skBlendMode'DstIn :: SkBlendMode
-skBlendMode'DstIn = #const DSTIN_SK_BLENDMODE
+sk_blendmode'DSTIN_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'DSTIN_SK_BLENDMODE = #const DSTIN_SK_BLENDMODE
 -- | `SRCOUT_SK_BLENDMODE`
-skBlendMode'SrcOut :: SkBlendMode
-skBlendMode'SrcOut = #const SRCOUT_SK_BLENDMODE
+sk_blendmode'SRCOUT_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SRCOUT_SK_BLENDMODE = #const SRCOUT_SK_BLENDMODE
 -- | `DSTOUT_SK_BLENDMODE`
-skBlendMode'DstOut :: SkBlendMode
-skBlendMode'DstOut = #const DSTOUT_SK_BLENDMODE
+sk_blendmode'DSTOUT_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'DSTOUT_SK_BLENDMODE = #const DSTOUT_SK_BLENDMODE
 -- | `SRCATOP_SK_BLENDMODE`
-skBlendMode'SrcAtop :: SkBlendMode
-skBlendMode'SrcAtop = #const SRCATOP_SK_BLENDMODE
+sk_blendmode'SRCATOP_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SRCATOP_SK_BLENDMODE = #const SRCATOP_SK_BLENDMODE
 -- | `DSTATOP_SK_BLENDMODE`
-skBlendMode'DstAtop :: SkBlendMode
-skBlendMode'DstAtop = #const DSTATOP_SK_BLENDMODE
+sk_blendmode'DSTATOP_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'DSTATOP_SK_BLENDMODE = #const DSTATOP_SK_BLENDMODE
 -- | `XOR_SK_BLENDMODE`
-skBlendMode'Xor :: SkBlendMode
-skBlendMode'Xor = #const XOR_SK_BLENDMODE
+sk_blendmode'XOR_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'XOR_SK_BLENDMODE = #const XOR_SK_BLENDMODE
 -- | `PLUS_SK_BLENDMODE`
-skBlendMode'Plus :: SkBlendMode
-skBlendMode'Plus = #const PLUS_SK_BLENDMODE
+sk_blendmode'PLUS_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'PLUS_SK_BLENDMODE = #const PLUS_SK_BLENDMODE
 -- | `MODULATE_SK_BLENDMODE`
-skBlendMode'Modulate :: SkBlendMode
-skBlendMode'Modulate = #const MODULATE_SK_BLENDMODE
+sk_blendmode'MODULATE_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'MODULATE_SK_BLENDMODE = #const MODULATE_SK_BLENDMODE
 -- | `SCREEN_SK_BLENDMODE`
-skBlendMode'Screen :: SkBlendMode
-skBlendMode'Screen = #const SCREEN_SK_BLENDMODE
+sk_blendmode'SCREEN_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SCREEN_SK_BLENDMODE = #const SCREEN_SK_BLENDMODE
 -- | `OVERLAY_SK_BLENDMODE`
-skBlendMode'Overlay :: SkBlendMode
-skBlendMode'Overlay = #const OVERLAY_SK_BLENDMODE
+sk_blendmode'OVERLAY_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'OVERLAY_SK_BLENDMODE = #const OVERLAY_SK_BLENDMODE
 -- | `DARKEN_SK_BLENDMODE`
-skBlendMode'Darken :: SkBlendMode
-skBlendMode'Darken = #const DARKEN_SK_BLENDMODE
+sk_blendmode'DARKEN_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'DARKEN_SK_BLENDMODE = #const DARKEN_SK_BLENDMODE
 -- | `LIGHTEN_SK_BLENDMODE`
-skBlendMode'Lighten :: SkBlendMode
-skBlendMode'Lighten = #const LIGHTEN_SK_BLENDMODE
+sk_blendmode'LIGHTEN_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'LIGHTEN_SK_BLENDMODE = #const LIGHTEN_SK_BLENDMODE
 -- | `COLORDODGE_SK_BLENDMODE`
-skBlendMode'ColorDodge :: SkBlendMode
-skBlendMode'ColorDodge = #const COLORDODGE_SK_BLENDMODE
+sk_blendmode'COLORDODGE_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'COLORDODGE_SK_BLENDMODE = #const COLORDODGE_SK_BLENDMODE
 -- | `COLORBURN_SK_BLENDMODE`
-skBlendMode'ColorBurn :: SkBlendMode
-skBlendMode'ColorBurn = #const COLORBURN_SK_BLENDMODE
+sk_blendmode'COLORBURN_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'COLORBURN_SK_BLENDMODE = #const COLORBURN_SK_BLENDMODE
 -- | `HARDLIGHT_SK_BLENDMODE`
-skBlendMode'HardLight :: SkBlendMode
-skBlendMode'HardLight = #const HARDLIGHT_SK_BLENDMODE
+sk_blendmode'HARDLIGHT_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'HARDLIGHT_SK_BLENDMODE = #const HARDLIGHT_SK_BLENDMODE
 -- | `SOFTLIGHT_SK_BLENDMODE`
-skBlendMode'SoftLight :: SkBlendMode
-skBlendMode'SoftLight = #const SOFTLIGHT_SK_BLENDMODE
+sk_blendmode'SOFTLIGHT_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SOFTLIGHT_SK_BLENDMODE = #const SOFTLIGHT_SK_BLENDMODE
 -- | `DIFFERENCE_SK_BLENDMODE`
-skBlendMode'Difference :: SkBlendMode
-skBlendMode'Difference = #const DIFFERENCE_SK_BLENDMODE
+sk_blendmode'DIFFERENCE_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'DIFFERENCE_SK_BLENDMODE = #const DIFFERENCE_SK_BLENDMODE
 -- | `EXCLUSION_SK_BLENDMODE`
-skBlendMode'Exclusion :: SkBlendMode
-skBlendMode'Exclusion = #const EXCLUSION_SK_BLENDMODE
+sk_blendmode'EXCLUSION_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'EXCLUSION_SK_BLENDMODE = #const EXCLUSION_SK_BLENDMODE
 -- | `MULTIPLY_SK_BLENDMODE`
-skBlendMode'Multiply :: SkBlendMode
-skBlendMode'Multiply = #const MULTIPLY_SK_BLENDMODE
+sk_blendmode'MULTIPLY_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'MULTIPLY_SK_BLENDMODE = #const MULTIPLY_SK_BLENDMODE
 -- | `HUE_SK_BLENDMODE`
-skBlendMode'Hue :: SkBlendMode
-skBlendMode'Hue = #const HUE_SK_BLENDMODE
+sk_blendmode'HUE_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'HUE_SK_BLENDMODE = #const HUE_SK_BLENDMODE
 -- | `SATURATION_SK_BLENDMODE`
-skBlendMode'Saturation :: SkBlendMode
-skBlendMode'Saturation = #const SATURATION_SK_BLENDMODE
+sk_blendmode'SATURATION_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'SATURATION_SK_BLENDMODE = #const SATURATION_SK_BLENDMODE
 -- | `COLOR_SK_BLENDMODE`
-skBlendMode'Color :: SkBlendMode
-skBlendMode'Color = #const COLOR_SK_BLENDMODE
+sk_blendmode'COLOR_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'COLOR_SK_BLENDMODE = #const COLOR_SK_BLENDMODE
 -- | `LUMINOSITY_SK_BLENDMODE`
-skBlendMode'Luminosity :: SkBlendMode
-skBlendMode'Luminosity = #const LUMINOSITY_SK_BLENDMODE
+sk_blendmode'LUMINOSITY_SK_BLENDMODE :: Sk_blendmode
+sk_blendmode'LUMINOSITY_SK_BLENDMODE = #const LUMINOSITY_SK_BLENDMODE
 -- | `sk_point3_t`
-data SkPoint3 = SkPoint3
+data Sk_point3 = Sk_point3
   { x :: CFloat
   -- ^ `x`
   , y :: CFloat
@@ -557,1394 +557,1394 @@ data SkPoint3 = SkPoint3
   , z :: CFloat
   -- ^ `z`
   } deriving (Show, Eq, Ord)
-instance Offset "x" SkPoint3 where rawOffset = (#offset sk_point3_t, x)
-instance Offset "y" SkPoint3 where rawOffset = (#offset sk_point3_t, y)
-instance Offset "z" SkPoint3 where rawOffset = (#offset sk_point3_t, z)
-instance Storable SkPoint3 where
+instance Offset "x" Sk_point3 where rawOffset = (#offset sk_point3_t, x)
+instance Offset "y" Sk_point3 where rawOffset = (#offset sk_point3_t, y)
+instance Offset "z" Sk_point3 where rawOffset = (#offset sk_point3_t, z)
+instance Storable Sk_point3 where
   sizeOf _ = (#size sk_point3_t)
   alignment _ = (#alignment sk_point3_t)
   peek in'ptr = do
     x <- (#peek sk_point3_t, x) in'ptr
     y <- (#peek sk_point3_t, y) in'ptr
     z <- (#peek sk_point3_t, z) in'ptr
-    pure SkPoint3{..}
+    pure Sk_point3{..}
   poke in'ptr in'value = do
     (#poke sk_point3_t, x) in'ptr in'value.x
     (#poke sk_point3_t, y) in'ptr in'value.y
     (#poke sk_point3_t, z) in'ptr in'value.z
 -- | `sk_ipoint_t`
-data SkIPoint = SkIPoint
+data Sk_ipoint = Sk_ipoint
   { x :: Int32
   -- ^ `x`
   , y :: Int32
   -- ^ `y`
   } deriving (Show, Eq, Ord)
-instance Offset "x" SkIPoint where rawOffset = (#offset sk_ipoint_t, x)
-instance Offset "y" SkIPoint where rawOffset = (#offset sk_ipoint_t, y)
-instance Storable SkIPoint where
+instance Offset "x" Sk_ipoint where rawOffset = (#offset sk_ipoint_t, x)
+instance Offset "y" Sk_ipoint where rawOffset = (#offset sk_ipoint_t, y)
+instance Storable Sk_ipoint where
   sizeOf _ = (#size sk_ipoint_t)
   alignment _ = (#alignment sk_ipoint_t)
   peek in'ptr = do
     x <- (#peek sk_ipoint_t, x) in'ptr
     y <- (#peek sk_ipoint_t, y) in'ptr
-    pure SkIPoint{..}
+    pure Sk_ipoint{..}
   poke in'ptr in'value = do
     (#poke sk_ipoint_t, x) in'ptr in'value.x
     (#poke sk_ipoint_t, y) in'ptr in'value.y
 -- | `sk_size_t`
-data SkSize = SkSize
+data Sk_size = Sk_size
   { w :: CFloat
   -- ^ `w`
   , h :: CFloat
   -- ^ `h`
   } deriving (Show, Eq, Ord)
-instance Offset "w" SkSize where rawOffset = (#offset sk_size_t, w)
-instance Offset "h" SkSize where rawOffset = (#offset sk_size_t, h)
-instance Storable SkSize where
+instance Offset "w" Sk_size where rawOffset = (#offset sk_size_t, w)
+instance Offset "h" Sk_size where rawOffset = (#offset sk_size_t, h)
+instance Storable Sk_size where
   sizeOf _ = (#size sk_size_t)
   alignment _ = (#alignment sk_size_t)
   peek in'ptr = do
     w <- (#peek sk_size_t, w) in'ptr
     h <- (#peek sk_size_t, h) in'ptr
-    pure SkSize{..}
+    pure Sk_size{..}
   poke in'ptr in'value = do
     (#poke sk_size_t, w) in'ptr in'value.w
     (#poke sk_size_t, h) in'ptr in'value.h
 -- | `sk_isize_t`
-data SkISize = SkISize
+data Sk_isize = Sk_isize
   { w :: Int32
   -- ^ `w`
   , h :: Int32
   -- ^ `h`
   } deriving (Show, Eq, Ord)
-instance Offset "w" SkISize where rawOffset = (#offset sk_isize_t, w)
-instance Offset "h" SkISize where rawOffset = (#offset sk_isize_t, h)
-instance Storable SkISize where
+instance Offset "w" Sk_isize where rawOffset = (#offset sk_isize_t, w)
+instance Offset "h" Sk_isize where rawOffset = (#offset sk_isize_t, h)
+instance Storable Sk_isize where
   sizeOf _ = (#size sk_isize_t)
   alignment _ = (#alignment sk_isize_t)
   peek in'ptr = do
     w <- (#peek sk_isize_t, w) in'ptr
     h <- (#peek sk_isize_t, h) in'ptr
-    pure SkISize{..}
+    pure Sk_isize{..}
   poke in'ptr in'value = do
     (#poke sk_isize_t, w) in'ptr in'value.w
     (#poke sk_isize_t, h) in'ptr in'value.h
 -- | `sk_fontmetrics_t`
-data SkFontMetrics = SkFontMetrics
-  { flags :: Word32
+data Sk_fontmetrics = Sk_fontmetrics
+  { fFlags :: Word32
   -- ^ `fFlags`
-  , top :: CFloat
+  , fTop :: CFloat
   -- ^ `fTop`
-  , ascent :: CFloat
+  , fAscent :: CFloat
   -- ^ `fAscent`
-  , descent :: CFloat
+  , fDescent :: CFloat
   -- ^ `fDescent`
-  , bottom :: CFloat
+  , fBottom :: CFloat
   -- ^ `fBottom`
-  , leading :: CFloat
+  , fLeading :: CFloat
   -- ^ `fLeading`
-  , avgCharWidth :: CFloat
+  , fAvgCharWidth :: CFloat
   -- ^ `fAvgCharWidth`
-  , maxCharWidth :: CFloat
+  , fMaxCharWidth :: CFloat
   -- ^ `fMaxCharWidth`
-  , xMin :: CFloat
+  , fXMin :: CFloat
   -- ^ `fXMin`
-  , xMax :: CFloat
+  , fXMax :: CFloat
   -- ^ `fXMax`
-  , xHeight :: CFloat
+  , fXHeight :: CFloat
   -- ^ `fXHeight`
-  , capHeight :: CFloat
+  , fCapHeight :: CFloat
   -- ^ `fCapHeight`
-  , underlineThickness :: CFloat
+  , fUnderlineThickness :: CFloat
   -- ^ `fUnderlineThickness`
-  , underlinePosition :: CFloat
+  , fUnderlinePosition :: CFloat
   -- ^ `fUnderlinePosition`
-  , strikeoutThickness :: CFloat
+  , fStrikeoutThickness :: CFloat
   -- ^ `fStrikeoutThickness`
-  , strikeoutPosition :: CFloat
+  , fStrikeoutPosition :: CFloat
   -- ^ `fStrikeoutPosition`
   } deriving (Show, Eq, Ord)
-instance Offset "flags" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fFlags)
-instance Offset "top" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fTop)
-instance Offset "ascent" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fAscent)
-instance Offset "descent" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fDescent)
-instance Offset "bottom" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fBottom)
-instance Offset "leading" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fLeading)
-instance Offset "avgCharWidth" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fAvgCharWidth)
-instance Offset "maxCharWidth" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fMaxCharWidth)
-instance Offset "xMin" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fXMin)
-instance Offset "xMax" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fXMax)
-instance Offset "xHeight" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fXHeight)
-instance Offset "capHeight" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fCapHeight)
-instance Offset "underlineThickness" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fUnderlineThickness)
-instance Offset "underlinePosition" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fUnderlinePosition)
-instance Offset "strikeoutThickness" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fStrikeoutThickness)
-instance Offset "strikeoutPosition" SkFontMetrics where rawOffset = (#offset sk_fontmetrics_t, fStrikeoutPosition)
-instance Storable SkFontMetrics where
+instance Offset "fFlags" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fFlags)
+instance Offset "fTop" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fTop)
+instance Offset "fAscent" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fAscent)
+instance Offset "fDescent" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fDescent)
+instance Offset "fBottom" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fBottom)
+instance Offset "fLeading" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fLeading)
+instance Offset "fAvgCharWidth" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fAvgCharWidth)
+instance Offset "fMaxCharWidth" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fMaxCharWidth)
+instance Offset "fXMin" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fXMin)
+instance Offset "fXMax" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fXMax)
+instance Offset "fXHeight" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fXHeight)
+instance Offset "fCapHeight" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fCapHeight)
+instance Offset "fUnderlineThickness" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fUnderlineThickness)
+instance Offset "fUnderlinePosition" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fUnderlinePosition)
+instance Offset "fStrikeoutThickness" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fStrikeoutThickness)
+instance Offset "fStrikeoutPosition" Sk_fontmetrics where rawOffset = (#offset sk_fontmetrics_t, fStrikeoutPosition)
+instance Storable Sk_fontmetrics where
   sizeOf _ = (#size sk_fontmetrics_t)
   alignment _ = (#alignment sk_fontmetrics_t)
   peek in'ptr = do
-    flags <- (#peek sk_fontmetrics_t, fFlags) in'ptr
-    top <- (#peek sk_fontmetrics_t, fTop) in'ptr
-    ascent <- (#peek sk_fontmetrics_t, fAscent) in'ptr
-    descent <- (#peek sk_fontmetrics_t, fDescent) in'ptr
-    bottom <- (#peek sk_fontmetrics_t, fBottom) in'ptr
-    leading <- (#peek sk_fontmetrics_t, fLeading) in'ptr
-    avgCharWidth <- (#peek sk_fontmetrics_t, fAvgCharWidth) in'ptr
-    maxCharWidth <- (#peek sk_fontmetrics_t, fMaxCharWidth) in'ptr
-    xMin <- (#peek sk_fontmetrics_t, fXMin) in'ptr
-    xMax <- (#peek sk_fontmetrics_t, fXMax) in'ptr
-    xHeight <- (#peek sk_fontmetrics_t, fXHeight) in'ptr
-    capHeight <- (#peek sk_fontmetrics_t, fCapHeight) in'ptr
-    underlineThickness <- (#peek sk_fontmetrics_t, fUnderlineThickness) in'ptr
-    underlinePosition <- (#peek sk_fontmetrics_t, fUnderlinePosition) in'ptr
-    strikeoutThickness <- (#peek sk_fontmetrics_t, fStrikeoutThickness) in'ptr
-    strikeoutPosition <- (#peek sk_fontmetrics_t, fStrikeoutPosition) in'ptr
-    pure SkFontMetrics{..}
+    fFlags <- (#peek sk_fontmetrics_t, fFlags) in'ptr
+    fTop <- (#peek sk_fontmetrics_t, fTop) in'ptr
+    fAscent <- (#peek sk_fontmetrics_t, fAscent) in'ptr
+    fDescent <- (#peek sk_fontmetrics_t, fDescent) in'ptr
+    fBottom <- (#peek sk_fontmetrics_t, fBottom) in'ptr
+    fLeading <- (#peek sk_fontmetrics_t, fLeading) in'ptr
+    fAvgCharWidth <- (#peek sk_fontmetrics_t, fAvgCharWidth) in'ptr
+    fMaxCharWidth <- (#peek sk_fontmetrics_t, fMaxCharWidth) in'ptr
+    fXMin <- (#peek sk_fontmetrics_t, fXMin) in'ptr
+    fXMax <- (#peek sk_fontmetrics_t, fXMax) in'ptr
+    fXHeight <- (#peek sk_fontmetrics_t, fXHeight) in'ptr
+    fCapHeight <- (#peek sk_fontmetrics_t, fCapHeight) in'ptr
+    fUnderlineThickness <- (#peek sk_fontmetrics_t, fUnderlineThickness) in'ptr
+    fUnderlinePosition <- (#peek sk_fontmetrics_t, fUnderlinePosition) in'ptr
+    fStrikeoutThickness <- (#peek sk_fontmetrics_t, fStrikeoutThickness) in'ptr
+    fStrikeoutPosition <- (#peek sk_fontmetrics_t, fStrikeoutPosition) in'ptr
+    pure Sk_fontmetrics{..}
   poke in'ptr in'value = do
-    (#poke sk_fontmetrics_t, fFlags) in'ptr in'value.flags
-    (#poke sk_fontmetrics_t, fTop) in'ptr in'value.top
-    (#poke sk_fontmetrics_t, fAscent) in'ptr in'value.ascent
-    (#poke sk_fontmetrics_t, fDescent) in'ptr in'value.descent
-    (#poke sk_fontmetrics_t, fBottom) in'ptr in'value.bottom
-    (#poke sk_fontmetrics_t, fLeading) in'ptr in'value.leading
-    (#poke sk_fontmetrics_t, fAvgCharWidth) in'ptr in'value.avgCharWidth
-    (#poke sk_fontmetrics_t, fMaxCharWidth) in'ptr in'value.maxCharWidth
-    (#poke sk_fontmetrics_t, fXMin) in'ptr in'value.xMin
-    (#poke sk_fontmetrics_t, fXMax) in'ptr in'value.xMax
-    (#poke sk_fontmetrics_t, fXHeight) in'ptr in'value.xHeight
-    (#poke sk_fontmetrics_t, fCapHeight) in'ptr in'value.capHeight
-    (#poke sk_fontmetrics_t, fUnderlineThickness) in'ptr in'value.underlineThickness
-    (#poke sk_fontmetrics_t, fUnderlinePosition) in'ptr in'value.underlinePosition
-    (#poke sk_fontmetrics_t, fStrikeoutThickness) in'ptr in'value.strikeoutThickness
-    (#poke sk_fontmetrics_t, fStrikeoutPosition) in'ptr in'value.strikeoutPosition
+    (#poke sk_fontmetrics_t, fFlags) in'ptr in'value.fFlags
+    (#poke sk_fontmetrics_t, fTop) in'ptr in'value.fTop
+    (#poke sk_fontmetrics_t, fAscent) in'ptr in'value.fAscent
+    (#poke sk_fontmetrics_t, fDescent) in'ptr in'value.fDescent
+    (#poke sk_fontmetrics_t, fBottom) in'ptr in'value.fBottom
+    (#poke sk_fontmetrics_t, fLeading) in'ptr in'value.fLeading
+    (#poke sk_fontmetrics_t, fAvgCharWidth) in'ptr in'value.fAvgCharWidth
+    (#poke sk_fontmetrics_t, fMaxCharWidth) in'ptr in'value.fMaxCharWidth
+    (#poke sk_fontmetrics_t, fXMin) in'ptr in'value.fXMin
+    (#poke sk_fontmetrics_t, fXMax) in'ptr in'value.fXMax
+    (#poke sk_fontmetrics_t, fXHeight) in'ptr in'value.fXHeight
+    (#poke sk_fontmetrics_t, fCapHeight) in'ptr in'value.fCapHeight
+    (#poke sk_fontmetrics_t, fUnderlineThickness) in'ptr in'value.fUnderlineThickness
+    (#poke sk_fontmetrics_t, fUnderlinePosition) in'ptr in'value.fUnderlinePosition
+    (#poke sk_fontmetrics_t, fStrikeoutThickness) in'ptr in'value.fStrikeoutThickness
+    (#poke sk_fontmetrics_t, fStrikeoutPosition) in'ptr in'value.fStrikeoutPosition
 -- | `sk_string_t`
-data SkString = SkString
+data Sk_string = Sk_string
   deriving (Show, Eq, Ord)
 -- | `sk_bitmap_t`
-data SkBitmap = SkBitmap
+data Sk_bitmap = Sk_bitmap
   deriving (Show, Eq, Ord)
 -- | `sk_pixmap_t`
-data SkPixmap = SkPixmap
+data Sk_pixmap = Sk_pixmap
   deriving (Show, Eq, Ord)
 -- | `sk_colorfilter_t`
-data SkColorFilter = SkColorFilter
+data Sk_colorfilter = Sk_colorfilter
   deriving (Show, Eq, Ord)
 -- | `sk_imagefilter_t`
-data SkImageFilter = SkImageFilter
+data Sk_imagefilter = Sk_imagefilter
   deriving (Show, Eq, Ord)
 -- | `sk_blender_t`
-data SkBlender = SkBlender
+data Sk_blender = Sk_blender
   deriving (Show, Eq, Ord)
 -- | `sk_typeface_t`
-data SkTypeface = SkTypeface
+data Sk_typeface = Sk_typeface
   deriving (Show, Eq, Ord)
 -- | `sk_font_table_tag_t`
-type SkFontTableTag = Word32
+type Sk_font_table_tag = Word32
 -- | `sk_fontmgr_t`
-data SkFontMGr = SkFontMGr
+data Sk_fontmgr = Sk_fontmgr
   deriving (Show, Eq, Ord)
 -- | `sk_fontstyle_t`
-data SkFontStyle = SkFontStyle
+data Sk_fontstyle = Sk_fontstyle
   deriving (Show, Eq, Ord)
 -- | `sk_fontstyleset_t`
-data SkFontStyleSet = SkFontStyleSet
+data Sk_fontstyleset = Sk_fontstyleset
   deriving (Show, Eq, Ord)
 -- | `sk_codec_t`
-data SkCodec = SkCodec
+data Sk_codec = Sk_codec
   deriving (Show, Eq, Ord)
 -- | `sk_colorspace_t`
-data SkColorSpace = SkColorSpace
+data Sk_colorspace = Sk_colorspace
   deriving (Show, Eq, Ord)
 -- | `sk_stream_t`
-data SkStream = SkStream
+data Sk_stream = Sk_stream
   deriving (Show, Eq, Ord)
 -- | `sk_stream_filestream_t`
-data SkStreamFileStream = SkStreamFileStream
+data Sk_stream_filestream = Sk_stream_filestream
   deriving (Show, Eq, Ord)
 -- | `sk_stream_asset_t`
-data SkStreamAsset = SkStreamAsset
+data Sk_stream_asset = Sk_stream_asset
   deriving (Show, Eq, Ord)
 -- | `sk_stream_memorystream_t`
-data SkStreamMemoryStream = SkStreamMemoryStream
+data Sk_stream_memorystream = Sk_stream_memorystream
   deriving (Show, Eq, Ord)
 -- | `sk_stream_streamrewindable_t`
-data SkStreamStreamRewindable = SkStreamStreamRewindable
+data Sk_stream_streamrewindable = Sk_stream_streamrewindable
   deriving (Show, Eq, Ord)
 -- | `sk_wstream_t`
-data SkWStream = SkWStream
+data Sk_wstream = Sk_wstream
   deriving (Show, Eq, Ord)
 -- | `sk_wstream_filestream_t`
-data SkWStreamFileStream = SkWStreamFileStream
+data Sk_wstream_filestream = Sk_wstream_filestream
   deriving (Show, Eq, Ord)
 -- | `sk_wstream_dynamicmemorystream_t`
-data SkWStreamDynamicMemoryStream = SkWStreamDynamicMemoryStream
+data Sk_wstream_dynamicmemorystream = Sk_wstream_dynamicmemorystream
   deriving (Show, Eq, Ord)
 -- | `sk_document_t`
-data SkDocument = SkDocument
+data Sk_document = Sk_document
   deriving (Show, Eq, Ord)
 -- | `sk_point_mode_t`
-newtype SkPointMode = SkPointMode (#type sk_point_mode_t)
+newtype Sk_point_mode = Sk_point_mode (#type sk_point_mode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `POINTS_SK_POINT_MODE`
-skPointMode'Points :: SkPointMode
-skPointMode'Points = #const POINTS_SK_POINT_MODE
+sk_point_mode'POINTS_SK_POINT_MODE :: Sk_point_mode
+sk_point_mode'POINTS_SK_POINT_MODE = #const POINTS_SK_POINT_MODE
 -- | `LINES_SK_POINT_MODE`
-skPointMode'Lines :: SkPointMode
-skPointMode'Lines = #const LINES_SK_POINT_MODE
+sk_point_mode'LINES_SK_POINT_MODE :: Sk_point_mode
+sk_point_mode'LINES_SK_POINT_MODE = #const LINES_SK_POINT_MODE
 -- | `POLYGON_SK_POINT_MODE`
-skPointMode'Polygon :: SkPointMode
-skPointMode'Polygon = #const POLYGON_SK_POINT_MODE
+sk_point_mode'POLYGON_SK_POINT_MODE :: Sk_point_mode
+sk_point_mode'POLYGON_SK_POINT_MODE = #const POLYGON_SK_POINT_MODE
 -- | `sk_text_align_t`
-newtype SkTextAlign = SkTextAlign (#type sk_text_align_t)
+newtype Sk_text_align = Sk_text_align (#type sk_text_align_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `LEFT_SK_TEXT_ALIGN`
-skTextAlign'Left :: SkTextAlign
-skTextAlign'Left = #const LEFT_SK_TEXT_ALIGN
+sk_text_align'LEFT_SK_TEXT_ALIGN :: Sk_text_align
+sk_text_align'LEFT_SK_TEXT_ALIGN = #const LEFT_SK_TEXT_ALIGN
 -- | `CENTER_SK_TEXT_ALIGN`
-skTextAlign'Center :: SkTextAlign
-skTextAlign'Center = #const CENTER_SK_TEXT_ALIGN
+sk_text_align'CENTER_SK_TEXT_ALIGN :: Sk_text_align
+sk_text_align'CENTER_SK_TEXT_ALIGN = #const CENTER_SK_TEXT_ALIGN
 -- | `RIGHT_SK_TEXT_ALIGN`
-skTextAlign'Right :: SkTextAlign
-skTextAlign'Right = #const RIGHT_SK_TEXT_ALIGN
+sk_text_align'RIGHT_SK_TEXT_ALIGN :: Sk_text_align
+sk_text_align'RIGHT_SK_TEXT_ALIGN = #const RIGHT_SK_TEXT_ALIGN
 -- | `sk_text_encoding_t`
-newtype SkTextEncoding = SkTextEncoding (#type sk_text_encoding_t)
+newtype Sk_text_encoding = Sk_text_encoding (#type sk_text_encoding_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `UTF8_SK_TEXT_ENCODING`
-skTextEncoding'Utf8 :: SkTextEncoding
-skTextEncoding'Utf8 = #const UTF8_SK_TEXT_ENCODING
+sk_text_encoding'UTF8_SK_TEXT_ENCODING :: Sk_text_encoding
+sk_text_encoding'UTF8_SK_TEXT_ENCODING = #const UTF8_SK_TEXT_ENCODING
 -- | `UTF16_SK_TEXT_ENCODING`
-skTextEncoding'Utf16 :: SkTextEncoding
-skTextEncoding'Utf16 = #const UTF16_SK_TEXT_ENCODING
+sk_text_encoding'UTF16_SK_TEXT_ENCODING :: Sk_text_encoding
+sk_text_encoding'UTF16_SK_TEXT_ENCODING = #const UTF16_SK_TEXT_ENCODING
 -- | `UTF32_SK_TEXT_ENCODING`
-skTextEncoding'Utf32 :: SkTextEncoding
-skTextEncoding'Utf32 = #const UTF32_SK_TEXT_ENCODING
+sk_text_encoding'UTF32_SK_TEXT_ENCODING :: Sk_text_encoding
+sk_text_encoding'UTF32_SK_TEXT_ENCODING = #const UTF32_SK_TEXT_ENCODING
 -- | `GLYPH_ID_SK_TEXT_ENCODING`
-skTextEncoding'GlyphId :: SkTextEncoding
-skTextEncoding'GlyphId = #const GLYPH_ID_SK_TEXT_ENCODING
+sk_text_encoding'GLYPH_ID_SK_TEXT_ENCODING :: Sk_text_encoding
+sk_text_encoding'GLYPH_ID_SK_TEXT_ENCODING = #const GLYPH_ID_SK_TEXT_ENCODING
 -- | `sk_path_filltype_t`
-newtype SkPathFillType = SkPathFillType (#type sk_path_filltype_t)
+newtype Sk_path_filltype = Sk_path_filltype (#type sk_path_filltype_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `WINDING_SK_PATH_FILLTYPE`
-skPathFillType'Winding :: SkPathFillType
-skPathFillType'Winding = #const WINDING_SK_PATH_FILLTYPE
+sk_path_filltype'WINDING_SK_PATH_FILLTYPE :: Sk_path_filltype
+sk_path_filltype'WINDING_SK_PATH_FILLTYPE = #const WINDING_SK_PATH_FILLTYPE
 -- | `EVENODD_SK_PATH_FILLTYPE`
-skPathFillType'EvenOdd :: SkPathFillType
-skPathFillType'EvenOdd = #const EVENODD_SK_PATH_FILLTYPE
+sk_path_filltype'EVENODD_SK_PATH_FILLTYPE :: Sk_path_filltype
+sk_path_filltype'EVENODD_SK_PATH_FILLTYPE = #const EVENODD_SK_PATH_FILLTYPE
 -- | `INVERSE_WINDING_SK_PATH_FILLTYPE`
-skPathFillType'InverseWinding :: SkPathFillType
-skPathFillType'InverseWinding = #const INVERSE_WINDING_SK_PATH_FILLTYPE
+sk_path_filltype'INVERSE_WINDING_SK_PATH_FILLTYPE :: Sk_path_filltype
+sk_path_filltype'INVERSE_WINDING_SK_PATH_FILLTYPE = #const INVERSE_WINDING_SK_PATH_FILLTYPE
 -- | `INVERSE_EVENODD_SK_PATH_FILLTYPE`
-skPathFillType'InverseEvenOdd :: SkPathFillType
-skPathFillType'InverseEvenOdd = #const INVERSE_EVENODD_SK_PATH_FILLTYPE
+sk_path_filltype'INVERSE_EVENODD_SK_PATH_FILLTYPE :: Sk_path_filltype
+sk_path_filltype'INVERSE_EVENODD_SK_PATH_FILLTYPE = #const INVERSE_EVENODD_SK_PATH_FILLTYPE
 -- | `sk_font_style_slant_t`
-newtype SkFontStyleSlant = SkFontStyleSlant (#type sk_font_style_slant_t)
+newtype Sk_font_style_slant = Sk_font_style_slant (#type sk_font_style_slant_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `UPRIGHT_SK_FONT_STYLE_SLANT`
-skFontStyleSlant'Upright :: SkFontStyleSlant
-skFontStyleSlant'Upright = #const UPRIGHT_SK_FONT_STYLE_SLANT
+sk_font_style_slant'UPRIGHT_SK_FONT_STYLE_SLANT :: Sk_font_style_slant
+sk_font_style_slant'UPRIGHT_SK_FONT_STYLE_SLANT = #const UPRIGHT_SK_FONT_STYLE_SLANT
 -- | `ITALIC_SK_FONT_STYLE_SLANT`
-skFontStyleSlant'Italic :: SkFontStyleSlant
-skFontStyleSlant'Italic = #const ITALIC_SK_FONT_STYLE_SLANT
+sk_font_style_slant'ITALIC_SK_FONT_STYLE_SLANT :: Sk_font_style_slant
+sk_font_style_slant'ITALIC_SK_FONT_STYLE_SLANT = #const ITALIC_SK_FONT_STYLE_SLANT
 -- | `OBLIQUE_SK_FONT_STYLE_SLANT`
-skFontStyleSlant'Oblique :: SkFontStyleSlant
-skFontStyleSlant'Oblique = #const OBLIQUE_SK_FONT_STYLE_SLANT
+sk_font_style_slant'OBLIQUE_SK_FONT_STYLE_SLANT :: Sk_font_style_slant
+sk_font_style_slant'OBLIQUE_SK_FONT_STYLE_SLANT = #const OBLIQUE_SK_FONT_STYLE_SLANT
 -- | `sk_color_channel_t`
-newtype SkColorChannel = SkColorChannel (#type sk_color_channel_t)
+newtype Sk_color_channel = Sk_color_channel (#type sk_color_channel_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `R_SK_COLOR_CHANNEL`
-skColorChannel'R :: SkColorChannel
-skColorChannel'R = #const R_SK_COLOR_CHANNEL
+sk_color_channel'R_SK_COLOR_CHANNEL :: Sk_color_channel
+sk_color_channel'R_SK_COLOR_CHANNEL = #const R_SK_COLOR_CHANNEL
 -- | `G_SK_COLOR_CHANNEL`
-skColorChannel'G :: SkColorChannel
-skColorChannel'G = #const G_SK_COLOR_CHANNEL
+sk_color_channel'G_SK_COLOR_CHANNEL :: Sk_color_channel
+sk_color_channel'G_SK_COLOR_CHANNEL = #const G_SK_COLOR_CHANNEL
 -- | `B_SK_COLOR_CHANNEL`
-skColorChannel'B :: SkColorChannel
-skColorChannel'B = #const B_SK_COLOR_CHANNEL
+sk_color_channel'B_SK_COLOR_CHANNEL :: Sk_color_channel
+sk_color_channel'B_SK_COLOR_CHANNEL = #const B_SK_COLOR_CHANNEL
 -- | `A_SK_COLOR_CHANNEL`
-skColorChannel'A :: SkColorChannel
-skColorChannel'A = #const A_SK_COLOR_CHANNEL
+sk_color_channel'A_SK_COLOR_CHANNEL :: Sk_color_channel
+sk_color_channel'A_SK_COLOR_CHANNEL = #const A_SK_COLOR_CHANNEL
 -- | `sk_region_op_t`
-newtype SkRegionOp = SkRegionOp (#type sk_region_op_t)
+newtype Sk_region_op = Sk_region_op (#type sk_region_op_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `DIFFERENCE_SK_REGION_OP`
-skRegionOp'Difference :: SkRegionOp
-skRegionOp'Difference = #const DIFFERENCE_SK_REGION_OP
+sk_region_op'DIFFERENCE_SK_REGION_OP :: Sk_region_op
+sk_region_op'DIFFERENCE_SK_REGION_OP = #const DIFFERENCE_SK_REGION_OP
 -- | `INTERSECT_SK_REGION_OP`
-skRegionOp'Intersect :: SkRegionOp
-skRegionOp'Intersect = #const INTERSECT_SK_REGION_OP
+sk_region_op'INTERSECT_SK_REGION_OP :: Sk_region_op
+sk_region_op'INTERSECT_SK_REGION_OP = #const INTERSECT_SK_REGION_OP
 -- | `UNION_SK_REGION_OP`
-skRegionOp'Union :: SkRegionOp
-skRegionOp'Union = #const UNION_SK_REGION_OP
+sk_region_op'UNION_SK_REGION_OP :: Sk_region_op
+sk_region_op'UNION_SK_REGION_OP = #const UNION_SK_REGION_OP
 -- | `XOR_SK_REGION_OP`
-skRegionOp'Xor :: SkRegionOp
-skRegionOp'Xor = #const XOR_SK_REGION_OP
+sk_region_op'XOR_SK_REGION_OP :: Sk_region_op
+sk_region_op'XOR_SK_REGION_OP = #const XOR_SK_REGION_OP
 -- | `REVERSE_DIFFERENCE_SK_REGION_OP`
-skRegionOp'ReverseDifference :: SkRegionOp
-skRegionOp'ReverseDifference = #const REVERSE_DIFFERENCE_SK_REGION_OP
+sk_region_op'REVERSE_DIFFERENCE_SK_REGION_OP :: Sk_region_op
+sk_region_op'REVERSE_DIFFERENCE_SK_REGION_OP = #const REVERSE_DIFFERENCE_SK_REGION_OP
 -- | `REPLACE_SK_REGION_OP`
-skRegionOp'Replace :: SkRegionOp
-skRegionOp'Replace = #const REPLACE_SK_REGION_OP
+sk_region_op'REPLACE_SK_REGION_OP :: Sk_region_op
+sk_region_op'REPLACE_SK_REGION_OP = #const REPLACE_SK_REGION_OP
 -- | `sk_clipop_t`
-newtype SkClipOp = SkClipOp (#type sk_clipop_t)
+newtype Sk_clipop = Sk_clipop (#type sk_clipop_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `DIFFERENCE_SK_CLIPOP`
-skClipOp'Difference :: SkClipOp
-skClipOp'Difference = #const DIFFERENCE_SK_CLIPOP
+sk_clipop'DIFFERENCE_SK_CLIPOP :: Sk_clipop
+sk_clipop'DIFFERENCE_SK_CLIPOP = #const DIFFERENCE_SK_CLIPOP
 -- | `INTERSECT_SK_CLIPOP`
-skClipOp'Intersect :: SkClipOp
-skClipOp'Intersect = #const INTERSECT_SK_CLIPOP
+sk_clipop'INTERSECT_SK_CLIPOP :: Sk_clipop
+sk_clipop'INTERSECT_SK_CLIPOP = #const INTERSECT_SK_CLIPOP
 -- | `sk_encoded_image_format_t`
-newtype SkEncodedImageFormat = SkEncodedImageFormat (#type sk_encoded_image_format_t)
+newtype Sk_encoded_image_format = Sk_encoded_image_format (#type sk_encoded_image_format_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `BMP_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Bmp :: SkEncodedImageFormat
-skEncodedImageFormat'Bmp = #const BMP_SK_ENCODED_FORMAT
+sk_encoded_image_format'BMP_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'BMP_SK_ENCODED_FORMAT = #const BMP_SK_ENCODED_FORMAT
 -- | `GIF_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Gif :: SkEncodedImageFormat
-skEncodedImageFormat'Gif = #const GIF_SK_ENCODED_FORMAT
+sk_encoded_image_format'GIF_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'GIF_SK_ENCODED_FORMAT = #const GIF_SK_ENCODED_FORMAT
 -- | `ICO_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Ico :: SkEncodedImageFormat
-skEncodedImageFormat'Ico = #const ICO_SK_ENCODED_FORMAT
+sk_encoded_image_format'ICO_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'ICO_SK_ENCODED_FORMAT = #const ICO_SK_ENCODED_FORMAT
 -- | `JPEG_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Jpeg :: SkEncodedImageFormat
-skEncodedImageFormat'Jpeg = #const JPEG_SK_ENCODED_FORMAT
+sk_encoded_image_format'JPEG_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'JPEG_SK_ENCODED_FORMAT = #const JPEG_SK_ENCODED_FORMAT
 -- | `PNG_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Png :: SkEncodedImageFormat
-skEncodedImageFormat'Png = #const PNG_SK_ENCODED_FORMAT
+sk_encoded_image_format'PNG_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'PNG_SK_ENCODED_FORMAT = #const PNG_SK_ENCODED_FORMAT
 -- | `WBMP_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Wbmp :: SkEncodedImageFormat
-skEncodedImageFormat'Wbmp = #const WBMP_SK_ENCODED_FORMAT
+sk_encoded_image_format'WBMP_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'WBMP_SK_ENCODED_FORMAT = #const WBMP_SK_ENCODED_FORMAT
 -- | `WEBP_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Webp :: SkEncodedImageFormat
-skEncodedImageFormat'Webp = #const WEBP_SK_ENCODED_FORMAT
+sk_encoded_image_format'WEBP_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'WEBP_SK_ENCODED_FORMAT = #const WEBP_SK_ENCODED_FORMAT
 -- | `PKM_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Pkm :: SkEncodedImageFormat
-skEncodedImageFormat'Pkm = #const PKM_SK_ENCODED_FORMAT
+sk_encoded_image_format'PKM_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'PKM_SK_ENCODED_FORMAT = #const PKM_SK_ENCODED_FORMAT
 -- | `KTX_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Ktx :: SkEncodedImageFormat
-skEncodedImageFormat'Ktx = #const KTX_SK_ENCODED_FORMAT
+sk_encoded_image_format'KTX_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'KTX_SK_ENCODED_FORMAT = #const KTX_SK_ENCODED_FORMAT
 -- | `ASTC_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Astc :: SkEncodedImageFormat
-skEncodedImageFormat'Astc = #const ASTC_SK_ENCODED_FORMAT
+sk_encoded_image_format'ASTC_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'ASTC_SK_ENCODED_FORMAT = #const ASTC_SK_ENCODED_FORMAT
 -- | `DNG_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Dng :: SkEncodedImageFormat
-skEncodedImageFormat'Dng = #const DNG_SK_ENCODED_FORMAT
+sk_encoded_image_format'DNG_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'DNG_SK_ENCODED_FORMAT = #const DNG_SK_ENCODED_FORMAT
 -- | `HEIF_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Heif :: SkEncodedImageFormat
-skEncodedImageFormat'Heif = #const HEIF_SK_ENCODED_FORMAT
+sk_encoded_image_format'HEIF_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'HEIF_SK_ENCODED_FORMAT = #const HEIF_SK_ENCODED_FORMAT
 -- | `AVIF_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Avif :: SkEncodedImageFormat
-skEncodedImageFormat'Avif = #const AVIF_SK_ENCODED_FORMAT
+sk_encoded_image_format'AVIF_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'AVIF_SK_ENCODED_FORMAT = #const AVIF_SK_ENCODED_FORMAT
 -- | `JPEGXL_SK_ENCODED_FORMAT`
-skEncodedImageFormat'Jpegxl :: SkEncodedImageFormat
-skEncodedImageFormat'Jpegxl = #const JPEGXL_SK_ENCODED_FORMAT
+sk_encoded_image_format'JPEGXL_SK_ENCODED_FORMAT :: Sk_encoded_image_format
+sk_encoded_image_format'JPEGXL_SK_ENCODED_FORMAT = #const JPEGXL_SK_ENCODED_FORMAT
 -- | `sk_encodedorigin_t`
-newtype SkEncodedOrigin = SkEncodedOrigin (#type sk_encodedorigin_t)
+newtype Sk_encodedorigin = Sk_encodedorigin (#type sk_encodedorigin_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `TOP_LEFT_SK_ENCODED_ORIGIN`
-skEncodedOrigin'TopLeft :: SkEncodedOrigin
-skEncodedOrigin'TopLeft = #const TOP_LEFT_SK_ENCODED_ORIGIN
+sk_encodedorigin'TOP_LEFT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'TOP_LEFT_SK_ENCODED_ORIGIN = #const TOP_LEFT_SK_ENCODED_ORIGIN
 -- | `TOP_RIGHT_SK_ENCODED_ORIGIN`
-skEncodedOrigin'TopRight :: SkEncodedOrigin
-skEncodedOrigin'TopRight = #const TOP_RIGHT_SK_ENCODED_ORIGIN
+sk_encodedorigin'TOP_RIGHT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'TOP_RIGHT_SK_ENCODED_ORIGIN = #const TOP_RIGHT_SK_ENCODED_ORIGIN
 -- | `BOTTOM_RIGHT_SK_ENCODED_ORIGIN`
-skEncodedOrigin'BottomRight :: SkEncodedOrigin
-skEncodedOrigin'BottomRight = #const BOTTOM_RIGHT_SK_ENCODED_ORIGIN
+sk_encodedorigin'BOTTOM_RIGHT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'BOTTOM_RIGHT_SK_ENCODED_ORIGIN = #const BOTTOM_RIGHT_SK_ENCODED_ORIGIN
 -- | `BOTTOM_LEFT_SK_ENCODED_ORIGIN`
-skEncodedOrigin'BottomLeft :: SkEncodedOrigin
-skEncodedOrigin'BottomLeft = #const BOTTOM_LEFT_SK_ENCODED_ORIGIN
+sk_encodedorigin'BOTTOM_LEFT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'BOTTOM_LEFT_SK_ENCODED_ORIGIN = #const BOTTOM_LEFT_SK_ENCODED_ORIGIN
 -- | `LEFT_TOP_SK_ENCODED_ORIGIN`
-skEncodedOrigin'LeftTop :: SkEncodedOrigin
-skEncodedOrigin'LeftTop = #const LEFT_TOP_SK_ENCODED_ORIGIN
+sk_encodedorigin'LEFT_TOP_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'LEFT_TOP_SK_ENCODED_ORIGIN = #const LEFT_TOP_SK_ENCODED_ORIGIN
 -- | `RIGHT_TOP_SK_ENCODED_ORIGIN`
-skEncodedOrigin'RightTop :: SkEncodedOrigin
-skEncodedOrigin'RightTop = #const RIGHT_TOP_SK_ENCODED_ORIGIN
+sk_encodedorigin'RIGHT_TOP_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'RIGHT_TOP_SK_ENCODED_ORIGIN = #const RIGHT_TOP_SK_ENCODED_ORIGIN
 -- | `RIGHT_BOTTOM_SK_ENCODED_ORIGIN`
-skEncodedOrigin'RightBottom :: SkEncodedOrigin
-skEncodedOrigin'RightBottom = #const RIGHT_BOTTOM_SK_ENCODED_ORIGIN
+sk_encodedorigin'RIGHT_BOTTOM_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'RIGHT_BOTTOM_SK_ENCODED_ORIGIN = #const RIGHT_BOTTOM_SK_ENCODED_ORIGIN
 -- | `LEFT_BOTTOM_SK_ENCODED_ORIGIN`
-skEncodedOrigin'LeftBottom :: SkEncodedOrigin
-skEncodedOrigin'LeftBottom = #const LEFT_BOTTOM_SK_ENCODED_ORIGIN
+sk_encodedorigin'LEFT_BOTTOM_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'LEFT_BOTTOM_SK_ENCODED_ORIGIN = #const LEFT_BOTTOM_SK_ENCODED_ORIGIN
 -- | `DEFAULT_SK_ENCODED_ORIGIN`
-skEncodedOrigin'Default :: SkEncodedOrigin
-skEncodedOrigin'Default = #const DEFAULT_SK_ENCODED_ORIGIN
+sk_encodedorigin'DEFAULT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
+sk_encodedorigin'DEFAULT_SK_ENCODED_ORIGIN = #const DEFAULT_SK_ENCODED_ORIGIN
 -- | `sk_codec_result_t`
-newtype SkCodecResult = SkCodecResult (#type sk_codec_result_t)
+newtype Sk_codec_result = Sk_codec_result (#type sk_codec_result_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `SUCCESS_SK_CODEC_RESULT`
-skCodecResult'Success :: SkCodecResult
-skCodecResult'Success = #const SUCCESS_SK_CODEC_RESULT
+sk_codec_result'SUCCESS_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'SUCCESS_SK_CODEC_RESULT = #const SUCCESS_SK_CODEC_RESULT
 -- | `INCOMPLETE_INPUT_SK_CODEC_RESULT`
-skCodecResult'IncompleteInput :: SkCodecResult
-skCodecResult'IncompleteInput = #const INCOMPLETE_INPUT_SK_CODEC_RESULT
+sk_codec_result'INCOMPLETE_INPUT_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'INCOMPLETE_INPUT_SK_CODEC_RESULT = #const INCOMPLETE_INPUT_SK_CODEC_RESULT
 -- | `ERROR_IN_INPUT_SK_CODEC_RESULT`
-skCodecResult'ErrorInInput :: SkCodecResult
-skCodecResult'ErrorInInput = #const ERROR_IN_INPUT_SK_CODEC_RESULT
+sk_codec_result'ERROR_IN_INPUT_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'ERROR_IN_INPUT_SK_CODEC_RESULT = #const ERROR_IN_INPUT_SK_CODEC_RESULT
 -- | `INVALID_CONVERSION_SK_CODEC_RESULT`
-skCodecResult'InvalidConversion :: SkCodecResult
-skCodecResult'InvalidConversion = #const INVALID_CONVERSION_SK_CODEC_RESULT
+sk_codec_result'INVALID_CONVERSION_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'INVALID_CONVERSION_SK_CODEC_RESULT = #const INVALID_CONVERSION_SK_CODEC_RESULT
 -- | `INVALID_SCALE_SK_CODEC_RESULT`
-skCodecResult'InvalidScale :: SkCodecResult
-skCodecResult'InvalidScale = #const INVALID_SCALE_SK_CODEC_RESULT
+sk_codec_result'INVALID_SCALE_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'INVALID_SCALE_SK_CODEC_RESULT = #const INVALID_SCALE_SK_CODEC_RESULT
 -- | `INVALID_PARAMETERS_SK_CODEC_RESULT`
-skCodecResult'InvalidParameters :: SkCodecResult
-skCodecResult'InvalidParameters = #const INVALID_PARAMETERS_SK_CODEC_RESULT
+sk_codec_result'INVALID_PARAMETERS_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'INVALID_PARAMETERS_SK_CODEC_RESULT = #const INVALID_PARAMETERS_SK_CODEC_RESULT
 -- | `INVALID_INPUT_SK_CODEC_RESULT`
-skCodecResult'InvalidInput :: SkCodecResult
-skCodecResult'InvalidInput = #const INVALID_INPUT_SK_CODEC_RESULT
+sk_codec_result'INVALID_INPUT_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'INVALID_INPUT_SK_CODEC_RESULT = #const INVALID_INPUT_SK_CODEC_RESULT
 -- | `COULD_NOT_REWIND_SK_CODEC_RESULT`
-skCodecResult'CouldNotRewind :: SkCodecResult
-skCodecResult'CouldNotRewind = #const COULD_NOT_REWIND_SK_CODEC_RESULT
+sk_codec_result'COULD_NOT_REWIND_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'COULD_NOT_REWIND_SK_CODEC_RESULT = #const COULD_NOT_REWIND_SK_CODEC_RESULT
 -- | `INTERNAL_ERROR_SK_CODEC_RESULT`
-skCodecResult'InternalError :: SkCodecResult
-skCodecResult'InternalError = #const INTERNAL_ERROR_SK_CODEC_RESULT
+sk_codec_result'INTERNAL_ERROR_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'INTERNAL_ERROR_SK_CODEC_RESULT = #const INTERNAL_ERROR_SK_CODEC_RESULT
 -- | `UNIMPLEMENTED_SK_CODEC_RESULT`
-skCodecResult'Unimplemented :: SkCodecResult
-skCodecResult'Unimplemented = #const UNIMPLEMENTED_SK_CODEC_RESULT
+sk_codec_result'UNIMPLEMENTED_SK_CODEC_RESULT :: Sk_codec_result
+sk_codec_result'UNIMPLEMENTED_SK_CODEC_RESULT = #const UNIMPLEMENTED_SK_CODEC_RESULT
 -- | `sk_codec_zero_initialized_t`
-newtype SkCodecZeroInitialized = SkCodecZeroInitialized (#type sk_codec_zero_initialized_t)
+newtype Sk_codec_zero_initialized = Sk_codec_zero_initialized (#type sk_codec_zero_initialized_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `YES_SK_CODEC_ZERO_INITIALIZED`
-skCodecZeroInitialized'Yes :: SkCodecZeroInitialized
-skCodecZeroInitialized'Yes = #const YES_SK_CODEC_ZERO_INITIALIZED
+sk_codec_zero_initialized'YES_SK_CODEC_ZERO_INITIALIZED :: Sk_codec_zero_initialized
+sk_codec_zero_initialized'YES_SK_CODEC_ZERO_INITIALIZED = #const YES_SK_CODEC_ZERO_INITIALIZED
 -- | `NO_SK_CODEC_ZERO_INITIALIZED`
-skCodecZeroInitialized'No :: SkCodecZeroInitialized
-skCodecZeroInitialized'No = #const NO_SK_CODEC_ZERO_INITIALIZED
+sk_codec_zero_initialized'NO_SK_CODEC_ZERO_INITIALIZED :: Sk_codec_zero_initialized
+sk_codec_zero_initialized'NO_SK_CODEC_ZERO_INITIALIZED = #const NO_SK_CODEC_ZERO_INITIALIZED
 -- | `sk_codec_options_t`
-data SkCodecOptions = SkCodecOptions
-  { zeroInitialized :: SkCodecZeroInitialized
+data Sk_codec_options = Sk_codec_options
+  { fZeroInitialized :: Sk_codec_zero_initialized
   -- ^ `fZeroInitialized`
-  , subset :: Ptr (SkIRect)
+  , fSubset :: Ptr (Sk_irect)
   -- ^ `fSubset`
-  , frameIndex :: CInt
+  , fFrameIndex :: CInt
   -- ^ `fFrameIndex`
-  , priorFrame :: CInt
+  , fPriorFrame :: CInt
   -- ^ `fPriorFrame`
   } deriving (Show, Eq, Ord)
-instance Offset "zeroInitialized" SkCodecOptions where rawOffset = (#offset sk_codec_options_t, fZeroInitialized)
-instance Offset "subset" SkCodecOptions where rawOffset = (#offset sk_codec_options_t, fSubset)
-instance Offset "frameIndex" SkCodecOptions where rawOffset = (#offset sk_codec_options_t, fFrameIndex)
-instance Offset "priorFrame" SkCodecOptions where rawOffset = (#offset sk_codec_options_t, fPriorFrame)
-instance Storable SkCodecOptions where
+instance Offset "fZeroInitialized" Sk_codec_options where rawOffset = (#offset sk_codec_options_t, fZeroInitialized)
+instance Offset "fSubset" Sk_codec_options where rawOffset = (#offset sk_codec_options_t, fSubset)
+instance Offset "fFrameIndex" Sk_codec_options where rawOffset = (#offset sk_codec_options_t, fFrameIndex)
+instance Offset "fPriorFrame" Sk_codec_options where rawOffset = (#offset sk_codec_options_t, fPriorFrame)
+instance Storable Sk_codec_options where
   sizeOf _ = (#size sk_codec_options_t)
   alignment _ = (#alignment sk_codec_options_t)
   peek in'ptr = do
-    zeroInitialized <- (#peek sk_codec_options_t, fZeroInitialized) in'ptr
-    subset <- (#peek sk_codec_options_t, fSubset) in'ptr
-    frameIndex <- (#peek sk_codec_options_t, fFrameIndex) in'ptr
-    priorFrame <- (#peek sk_codec_options_t, fPriorFrame) in'ptr
-    pure SkCodecOptions{..}
+    fZeroInitialized <- (#peek sk_codec_options_t, fZeroInitialized) in'ptr
+    fSubset <- (#peek sk_codec_options_t, fSubset) in'ptr
+    fFrameIndex <- (#peek sk_codec_options_t, fFrameIndex) in'ptr
+    fPriorFrame <- (#peek sk_codec_options_t, fPriorFrame) in'ptr
+    pure Sk_codec_options{..}
   poke in'ptr in'value = do
-    (#poke sk_codec_options_t, fZeroInitialized) in'ptr in'value.zeroInitialized
-    (#poke sk_codec_options_t, fSubset) in'ptr in'value.subset
-    (#poke sk_codec_options_t, fFrameIndex) in'ptr in'value.frameIndex
-    (#poke sk_codec_options_t, fPriorFrame) in'ptr in'value.priorFrame
+    (#poke sk_codec_options_t, fZeroInitialized) in'ptr in'value.fZeroInitialized
+    (#poke sk_codec_options_t, fSubset) in'ptr in'value.fSubset
+    (#poke sk_codec_options_t, fFrameIndex) in'ptr in'value.fFrameIndex
+    (#poke sk_codec_options_t, fPriorFrame) in'ptr in'value.fPriorFrame
 -- | `sk_codec_scanline_order_t`
-newtype SkCodecScanLineOrder = SkCodecScanLineOrder (#type sk_codec_scanline_order_t)
+newtype Sk_codec_scanline_order = Sk_codec_scanline_order (#type sk_codec_scanline_order_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `TOP_DOWN_SK_CODEC_SCANLINE_ORDER`
-skCodecScanLineOrder'TopDown :: SkCodecScanLineOrder
-skCodecScanLineOrder'TopDown = #const TOP_DOWN_SK_CODEC_SCANLINE_ORDER
+sk_codec_scanline_order'TOP_DOWN_SK_CODEC_SCANLINE_ORDER :: Sk_codec_scanline_order
+sk_codec_scanline_order'TOP_DOWN_SK_CODEC_SCANLINE_ORDER = #const TOP_DOWN_SK_CODEC_SCANLINE_ORDER
 -- | `BOTTOM_UP_SK_CODEC_SCANLINE_ORDER`
-skCodecScanLineOrder'BottomUp :: SkCodecScanLineOrder
-skCodecScanLineOrder'BottomUp = #const BOTTOM_UP_SK_CODEC_SCANLINE_ORDER
+sk_codec_scanline_order'BOTTOM_UP_SK_CODEC_SCANLINE_ORDER :: Sk_codec_scanline_order
+sk_codec_scanline_order'BOTTOM_UP_SK_CODEC_SCANLINE_ORDER = #const BOTTOM_UP_SK_CODEC_SCANLINE_ORDER
 -- | `sk_path_verb_t`
-newtype SkPathVerb = SkPathVerb (#type sk_path_verb_t)
+newtype Sk_path_verb = Sk_path_verb (#type sk_path_verb_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `MOVE_SK_PATH_VERB`
-skPathVerb'Move :: SkPathVerb
-skPathVerb'Move = #const MOVE_SK_PATH_VERB
+sk_path_verb'MOVE_SK_PATH_VERB :: Sk_path_verb
+sk_path_verb'MOVE_SK_PATH_VERB = #const MOVE_SK_PATH_VERB
 -- | `LINE_SK_PATH_VERB`
-skPathVerb'Line :: SkPathVerb
-skPathVerb'Line = #const LINE_SK_PATH_VERB
+sk_path_verb'LINE_SK_PATH_VERB :: Sk_path_verb
+sk_path_verb'LINE_SK_PATH_VERB = #const LINE_SK_PATH_VERB
 -- | `QUAD_SK_PATH_VERB`
-skPathVerb'Quad :: SkPathVerb
-skPathVerb'Quad = #const QUAD_SK_PATH_VERB
+sk_path_verb'QUAD_SK_PATH_VERB :: Sk_path_verb
+sk_path_verb'QUAD_SK_PATH_VERB = #const QUAD_SK_PATH_VERB
 -- | `CONIC_SK_PATH_VERB`
-skPathVerb'Conic :: SkPathVerb
-skPathVerb'Conic = #const CONIC_SK_PATH_VERB
+sk_path_verb'CONIC_SK_PATH_VERB :: Sk_path_verb
+sk_path_verb'CONIC_SK_PATH_VERB = #const CONIC_SK_PATH_VERB
 -- | `CUBIC_SK_PATH_VERB`
-skPathVerb'Cubic :: SkPathVerb
-skPathVerb'Cubic = #const CUBIC_SK_PATH_VERB
+sk_path_verb'CUBIC_SK_PATH_VERB :: Sk_path_verb
+sk_path_verb'CUBIC_SK_PATH_VERB = #const CUBIC_SK_PATH_VERB
 -- | `CLOSE_SK_PATH_VERB`
-skPathVerb'Close :: SkPathVerb
-skPathVerb'Close = #const CLOSE_SK_PATH_VERB
+sk_path_verb'CLOSE_SK_PATH_VERB :: Sk_path_verb
+sk_path_verb'CLOSE_SK_PATH_VERB = #const CLOSE_SK_PATH_VERB
 -- | `DONE_SK_PATH_VERB`
-skPathVerb'Done :: SkPathVerb
-skPathVerb'Done = #const DONE_SK_PATH_VERB
+sk_path_verb'DONE_SK_PATH_VERB :: Sk_path_verb
+sk_path_verb'DONE_SK_PATH_VERB = #const DONE_SK_PATH_VERB
 -- | `sk_path_iterator_t`
-data SkPathIterator = SkPathIterator
+data Sk_path_iterator = Sk_path_iterator
   deriving (Show, Eq, Ord)
 -- | `sk_path_rawiterator_t`
-data SkPathRawIterator = SkPathRawIterator
+data Sk_path_rawiterator = Sk_path_rawiterator
   deriving (Show, Eq, Ord)
 -- | `sk_path_add_mode_t`
-newtype SkPathAddMode = SkPathAddMode (#type sk_path_add_mode_t)
+newtype Sk_path_add_mode = Sk_path_add_mode (#type sk_path_add_mode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `APPEND_SK_PATH_ADD_MODE`
-skPathAddMode'Append :: SkPathAddMode
-skPathAddMode'Append = #const APPEND_SK_PATH_ADD_MODE
+sk_path_add_mode'APPEND_SK_PATH_ADD_MODE :: Sk_path_add_mode
+sk_path_add_mode'APPEND_SK_PATH_ADD_MODE = #const APPEND_SK_PATH_ADD_MODE
 -- | `EXTEND_SK_PATH_ADD_MODE`
-skPathAddMode'Extend :: SkPathAddMode
-skPathAddMode'Extend = #const EXTEND_SK_PATH_ADD_MODE
+sk_path_add_mode'EXTEND_SK_PATH_ADD_MODE :: Sk_path_add_mode
+sk_path_add_mode'EXTEND_SK_PATH_ADD_MODE = #const EXTEND_SK_PATH_ADD_MODE
 -- | `sk_path_segment_mask_t`
-newtype SkPathSegmentMask = SkPathSegmentMask (#type sk_path_segment_mask_t)
+newtype Sk_path_segment_mask = Sk_path_segment_mask (#type sk_path_segment_mask_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `LINE_SK_PATH_SEGMENT_MASK`
-skPathSegmentMask'Line :: SkPathSegmentMask
-skPathSegmentMask'Line = #const LINE_SK_PATH_SEGMENT_MASK
+sk_path_segment_mask'LINE_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
+sk_path_segment_mask'LINE_SK_PATH_SEGMENT_MASK = #const LINE_SK_PATH_SEGMENT_MASK
 -- | `QUAD_SK_PATH_SEGMENT_MASK`
-skPathSegmentMask'Quad :: SkPathSegmentMask
-skPathSegmentMask'Quad = #const QUAD_SK_PATH_SEGMENT_MASK
+sk_path_segment_mask'QUAD_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
+sk_path_segment_mask'QUAD_SK_PATH_SEGMENT_MASK = #const QUAD_SK_PATH_SEGMENT_MASK
 -- | `CONIC_SK_PATH_SEGMENT_MASK`
-skPathSegmentMask'Conic :: SkPathSegmentMask
-skPathSegmentMask'Conic = #const CONIC_SK_PATH_SEGMENT_MASK
+sk_path_segment_mask'CONIC_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
+sk_path_segment_mask'CONIC_SK_PATH_SEGMENT_MASK = #const CONIC_SK_PATH_SEGMENT_MASK
 -- | `CUBIC_SK_PATH_SEGMENT_MASK`
-skPathSegmentMask'Cubic :: SkPathSegmentMask
-skPathSegmentMask'Cubic = #const CUBIC_SK_PATH_SEGMENT_MASK
+sk_path_segment_mask'CUBIC_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
+sk_path_segment_mask'CUBIC_SK_PATH_SEGMENT_MASK = #const CUBIC_SK_PATH_SEGMENT_MASK
 -- | `sk_path_effect_1d_style_t`
-newtype SkPathEffect1dStyle = SkPathEffect1dStyle (#type sk_path_effect_1d_style_t)
+newtype Sk_path_effect_1d_style = Sk_path_effect_1d_style (#type sk_path_effect_1d_style_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `TRANSLATE_SK_PATH_EFFECT_1D_STYLE`
-skPathEffect1dStyle'Translate :: SkPathEffect1dStyle
-skPathEffect1dStyle'Translate = #const TRANSLATE_SK_PATH_EFFECT_1D_STYLE
+sk_path_effect_1d_style'TRANSLATE_SK_PATH_EFFECT_1D_STYLE :: Sk_path_effect_1d_style
+sk_path_effect_1d_style'TRANSLATE_SK_PATH_EFFECT_1D_STYLE = #const TRANSLATE_SK_PATH_EFFECT_1D_STYLE
 -- | `ROTATE_SK_PATH_EFFECT_1D_STYLE`
-skPathEffect1dStyle'Rotate :: SkPathEffect1dStyle
-skPathEffect1dStyle'Rotate = #const ROTATE_SK_PATH_EFFECT_1D_STYLE
+sk_path_effect_1d_style'ROTATE_SK_PATH_EFFECT_1D_STYLE :: Sk_path_effect_1d_style
+sk_path_effect_1d_style'ROTATE_SK_PATH_EFFECT_1D_STYLE = #const ROTATE_SK_PATH_EFFECT_1D_STYLE
 -- | `MORPH_SK_PATH_EFFECT_1D_STYLE`
-skPathEffect1dStyle'Morph :: SkPathEffect1dStyle
-skPathEffect1dStyle'Morph = #const MORPH_SK_PATH_EFFECT_1D_STYLE
+sk_path_effect_1d_style'MORPH_SK_PATH_EFFECT_1D_STYLE :: Sk_path_effect_1d_style
+sk_path_effect_1d_style'MORPH_SK_PATH_EFFECT_1D_STYLE = #const MORPH_SK_PATH_EFFECT_1D_STYLE
 -- | `sk_path_effect_trim_mode_t`
-newtype SkPathEffectTrimMode = SkPathEffectTrimMode (#type sk_path_effect_trim_mode_t)
+newtype Sk_path_effect_trim_mode = Sk_path_effect_trim_mode (#type sk_path_effect_trim_mode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NORMAL_SK_PATH_EFFECT_TRIM_MODE`
-skPathEffectTrimMode'Normal :: SkPathEffectTrimMode
-skPathEffectTrimMode'Normal = #const NORMAL_SK_PATH_EFFECT_TRIM_MODE
+sk_path_effect_trim_mode'NORMAL_SK_PATH_EFFECT_TRIM_MODE :: Sk_path_effect_trim_mode
+sk_path_effect_trim_mode'NORMAL_SK_PATH_EFFECT_TRIM_MODE = #const NORMAL_SK_PATH_EFFECT_TRIM_MODE
 -- | `INVERTED_SK_PATH_EFFECT_TRIM_MODE`
-skPathEffectTrimMode'Inverted :: SkPathEffectTrimMode
-skPathEffectTrimMode'Inverted = #const INVERTED_SK_PATH_EFFECT_TRIM_MODE
+sk_path_effect_trim_mode'INVERTED_SK_PATH_EFFECT_TRIM_MODE :: Sk_path_effect_trim_mode
+sk_path_effect_trim_mode'INVERTED_SK_PATH_EFFECT_TRIM_MODE = #const INVERTED_SK_PATH_EFFECT_TRIM_MODE
 -- | `sk_path_effect_t`
-data SkPathEffect = SkPathEffect
+data Sk_path_effect = Sk_path_effect
   deriving (Show, Eq, Ord)
 -- | `sk_stroke_cap_t`
-newtype SkStrokeCap = SkStrokeCap (#type sk_stroke_cap_t)
+newtype Sk_stroke_cap = Sk_stroke_cap (#type sk_stroke_cap_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `BUTT_SK_STROKE_CAP`
-skStrokeCap'Butt :: SkStrokeCap
-skStrokeCap'Butt = #const BUTT_SK_STROKE_CAP
+sk_stroke_cap'BUTT_SK_STROKE_CAP :: Sk_stroke_cap
+sk_stroke_cap'BUTT_SK_STROKE_CAP = #const BUTT_SK_STROKE_CAP
 -- | `ROUND_SK_STROKE_CAP`
-skStrokeCap'Round :: SkStrokeCap
-skStrokeCap'Round = #const ROUND_SK_STROKE_CAP
+sk_stroke_cap'ROUND_SK_STROKE_CAP :: Sk_stroke_cap
+sk_stroke_cap'ROUND_SK_STROKE_CAP = #const ROUND_SK_STROKE_CAP
 -- | `SQUARE_SK_STROKE_CAP`
-skStrokeCap'Square :: SkStrokeCap
-skStrokeCap'Square = #const SQUARE_SK_STROKE_CAP
+sk_stroke_cap'SQUARE_SK_STROKE_CAP :: Sk_stroke_cap
+sk_stroke_cap'SQUARE_SK_STROKE_CAP = #const SQUARE_SK_STROKE_CAP
 -- | `sk_stroke_join_t`
-newtype SkStrokeJoin = SkStrokeJoin (#type sk_stroke_join_t)
+newtype Sk_stroke_join = Sk_stroke_join (#type sk_stroke_join_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `MITER_SK_STROKE_JOIN`
-skStrokeJoin'Miter :: SkStrokeJoin
-skStrokeJoin'Miter = #const MITER_SK_STROKE_JOIN
+sk_stroke_join'MITER_SK_STROKE_JOIN :: Sk_stroke_join
+sk_stroke_join'MITER_SK_STROKE_JOIN = #const MITER_SK_STROKE_JOIN
 -- | `ROUND_SK_STROKE_JOIN`
-skStrokeJoin'Round :: SkStrokeJoin
-skStrokeJoin'Round = #const ROUND_SK_STROKE_JOIN
+sk_stroke_join'ROUND_SK_STROKE_JOIN :: Sk_stroke_join
+sk_stroke_join'ROUND_SK_STROKE_JOIN = #const ROUND_SK_STROKE_JOIN
 -- | `BEVEL_SK_STROKE_JOIN`
-skStrokeJoin'Bevel :: SkStrokeJoin
-skStrokeJoin'Bevel = #const BEVEL_SK_STROKE_JOIN
+sk_stroke_join'BEVEL_SK_STROKE_JOIN :: Sk_stroke_join
+sk_stroke_join'BEVEL_SK_STROKE_JOIN = #const BEVEL_SK_STROKE_JOIN
 -- | `sk_shader_tilemode_t`
-newtype SkShaderTileMode = SkShaderTileMode (#type sk_shader_tilemode_t)
+newtype Sk_shader_tilemode = Sk_shader_tilemode (#type sk_shader_tilemode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `CLAMP_SK_SHADER_TILEMODE`
-skShaderTileMode'Clamp :: SkShaderTileMode
-skShaderTileMode'Clamp = #const CLAMP_SK_SHADER_TILEMODE
+sk_shader_tilemode'CLAMP_SK_SHADER_TILEMODE :: Sk_shader_tilemode
+sk_shader_tilemode'CLAMP_SK_SHADER_TILEMODE = #const CLAMP_SK_SHADER_TILEMODE
 -- | `REPEAT_SK_SHADER_TILEMODE`
-skShaderTileMode'Repeat :: SkShaderTileMode
-skShaderTileMode'Repeat = #const REPEAT_SK_SHADER_TILEMODE
+sk_shader_tilemode'REPEAT_SK_SHADER_TILEMODE :: Sk_shader_tilemode
+sk_shader_tilemode'REPEAT_SK_SHADER_TILEMODE = #const REPEAT_SK_SHADER_TILEMODE
 -- | `MIRROR_SK_SHADER_TILEMODE`
-skShaderTileMode'Mirror :: SkShaderTileMode
-skShaderTileMode'Mirror = #const MIRROR_SK_SHADER_TILEMODE
+sk_shader_tilemode'MIRROR_SK_SHADER_TILEMODE :: Sk_shader_tilemode
+sk_shader_tilemode'MIRROR_SK_SHADER_TILEMODE = #const MIRROR_SK_SHADER_TILEMODE
 -- | `DECAL_SK_SHADER_TILEMODE`
-skShaderTileMode'Decal :: SkShaderTileMode
-skShaderTileMode'Decal = #const DECAL_SK_SHADER_TILEMODE
+sk_shader_tilemode'DECAL_SK_SHADER_TILEMODE :: Sk_shader_tilemode
+sk_shader_tilemode'DECAL_SK_SHADER_TILEMODE = #const DECAL_SK_SHADER_TILEMODE
 -- | `sk_blurstyle_t`
-newtype SkBlurStyle = SkBlurStyle (#type sk_blurstyle_t)
+newtype Sk_blurstyle = Sk_blurstyle (#type sk_blurstyle_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NORMAL_SK_BLUR_STYLE`
-skBlurStyle'Normal :: SkBlurStyle
-skBlurStyle'Normal = #const NORMAL_SK_BLUR_STYLE
+sk_blurstyle'NORMAL_SK_BLUR_STYLE :: Sk_blurstyle
+sk_blurstyle'NORMAL_SK_BLUR_STYLE = #const NORMAL_SK_BLUR_STYLE
 -- | `SOLID_SK_BLUR_STYLE`
-skBlurStyle'Solid :: SkBlurStyle
-skBlurStyle'Solid = #const SOLID_SK_BLUR_STYLE
+sk_blurstyle'SOLID_SK_BLUR_STYLE :: Sk_blurstyle
+sk_blurstyle'SOLID_SK_BLUR_STYLE = #const SOLID_SK_BLUR_STYLE
 -- | `OUTER_SK_BLUR_STYLE`
-skBlurStyle'Outer :: SkBlurStyle
-skBlurStyle'Outer = #const OUTER_SK_BLUR_STYLE
+sk_blurstyle'OUTER_SK_BLUR_STYLE :: Sk_blurstyle
+sk_blurstyle'OUTER_SK_BLUR_STYLE = #const OUTER_SK_BLUR_STYLE
 -- | `INNER_SK_BLUR_STYLE`
-skBlurStyle'Inner :: SkBlurStyle
-skBlurStyle'Inner = #const INNER_SK_BLUR_STYLE
+sk_blurstyle'INNER_SK_BLUR_STYLE :: Sk_blurstyle
+sk_blurstyle'INNER_SK_BLUR_STYLE = #const INNER_SK_BLUR_STYLE
 -- | `sk_path_direction_t`
-newtype SkPathDirection = SkPathDirection (#type sk_path_direction_t)
+newtype Sk_path_direction = Sk_path_direction (#type sk_path_direction_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `CW_SK_PATH_DIRECTION`
-skPathDirection'Cw :: SkPathDirection
-skPathDirection'Cw = #const CW_SK_PATH_DIRECTION
+sk_path_direction'CW_SK_PATH_DIRECTION :: Sk_path_direction
+sk_path_direction'CW_SK_PATH_DIRECTION = #const CW_SK_PATH_DIRECTION
 -- | `CCW_SK_PATH_DIRECTION`
-skPathDirection'Ccw :: SkPathDirection
-skPathDirection'Ccw = #const CCW_SK_PATH_DIRECTION
+sk_path_direction'CCW_SK_PATH_DIRECTION :: Sk_path_direction
+sk_path_direction'CCW_SK_PATH_DIRECTION = #const CCW_SK_PATH_DIRECTION
 -- | `sk_path_arc_size_t`
-newtype SkPathArcSize = SkPathArcSize (#type sk_path_arc_size_t)
+newtype Sk_path_arc_size = Sk_path_arc_size (#type sk_path_arc_size_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `SMALL_SK_PATH_ARC_SIZE`
-skPathArcSize'Small :: SkPathArcSize
-skPathArcSize'Small = #const SMALL_SK_PATH_ARC_SIZE
+sk_path_arc_size'SMALL_SK_PATH_ARC_SIZE :: Sk_path_arc_size
+sk_path_arc_size'SMALL_SK_PATH_ARC_SIZE = #const SMALL_SK_PATH_ARC_SIZE
 -- | `LARGE_SK_PATH_ARC_SIZE`
-skPathArcSize'Large :: SkPathArcSize
-skPathArcSize'Large = #const LARGE_SK_PATH_ARC_SIZE
+sk_path_arc_size'LARGE_SK_PATH_ARC_SIZE :: Sk_path_arc_size
+sk_path_arc_size'LARGE_SK_PATH_ARC_SIZE = #const LARGE_SK_PATH_ARC_SIZE
 -- | `sk_paint_style_t`
-newtype SkPaintStyle = SkPaintStyle (#type sk_paint_style_t)
+newtype Sk_paint_style = Sk_paint_style (#type sk_paint_style_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `FILL_SK_PAINT_STYLE`
-skPaintStyle'Fill :: SkPaintStyle
-skPaintStyle'Fill = #const FILL_SK_PAINT_STYLE
+sk_paint_style'FILL_SK_PAINT_STYLE :: Sk_paint_style
+sk_paint_style'FILL_SK_PAINT_STYLE = #const FILL_SK_PAINT_STYLE
 -- | `STROKE_SK_PAINT_STYLE`
-skPaintStyle'Stroke :: SkPaintStyle
-skPaintStyle'Stroke = #const STROKE_SK_PAINT_STYLE
+sk_paint_style'STROKE_SK_PAINT_STYLE :: Sk_paint_style
+sk_paint_style'STROKE_SK_PAINT_STYLE = #const STROKE_SK_PAINT_STYLE
 -- | `STROKE_AND_FILL_SK_PAINT_STYLE`
-skPaintStyle'StrokeAndFill :: SkPaintStyle
-skPaintStyle'StrokeAndFill = #const STROKE_AND_FILL_SK_PAINT_STYLE
+sk_paint_style'STROKE_AND_FILL_SK_PAINT_STYLE :: Sk_paint_style
+sk_paint_style'STROKE_AND_FILL_SK_PAINT_STYLE = #const STROKE_AND_FILL_SK_PAINT_STYLE
 -- | `sk_font_hinting_t`
-newtype SkFontHinting = SkFontHinting (#type sk_font_hinting_t)
+newtype Sk_font_hinting = Sk_font_hinting (#type sk_font_hinting_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NONE_SK_FONT_HINTING`
-skFontHinting'None :: SkFontHinting
-skFontHinting'None = #const NONE_SK_FONT_HINTING
+sk_font_hinting'NONE_SK_FONT_HINTING :: Sk_font_hinting
+sk_font_hinting'NONE_SK_FONT_HINTING = #const NONE_SK_FONT_HINTING
 -- | `SLIGHT_SK_FONT_HINTING`
-skFontHinting'Slight :: SkFontHinting
-skFontHinting'Slight = #const SLIGHT_SK_FONT_HINTING
+sk_font_hinting'SLIGHT_SK_FONT_HINTING :: Sk_font_hinting
+sk_font_hinting'SLIGHT_SK_FONT_HINTING = #const SLIGHT_SK_FONT_HINTING
 -- | `NORMAL_SK_FONT_HINTING`
-skFontHinting'Normal :: SkFontHinting
-skFontHinting'Normal = #const NORMAL_SK_FONT_HINTING
+sk_font_hinting'NORMAL_SK_FONT_HINTING :: Sk_font_hinting
+sk_font_hinting'NORMAL_SK_FONT_HINTING = #const NORMAL_SK_FONT_HINTING
 -- | `FULL_SK_FONT_HINTING`
-skFontHinting'Full :: SkFontHinting
-skFontHinting'Full = #const FULL_SK_FONT_HINTING
+sk_font_hinting'FULL_SK_FONT_HINTING :: Sk_font_hinting
+sk_font_hinting'FULL_SK_FONT_HINTING = #const FULL_SK_FONT_HINTING
 -- | `sk_font_edging_t`
-newtype SkFontEdging = SkFontEdging (#type sk_font_edging_t)
+newtype Sk_font_edging = Sk_font_edging (#type sk_font_edging_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `ALIAS_SK_FONT_EDGING`
-skFontEdging'Alias :: SkFontEdging
-skFontEdging'Alias = #const ALIAS_SK_FONT_EDGING
+sk_font_edging'ALIAS_SK_FONT_EDGING :: Sk_font_edging
+sk_font_edging'ALIAS_SK_FONT_EDGING = #const ALIAS_SK_FONT_EDGING
 -- | `ANTIALIAS_SK_FONT_EDGING`
-skFontEdging'AntiAlias :: SkFontEdging
-skFontEdging'AntiAlias = #const ANTIALIAS_SK_FONT_EDGING
+sk_font_edging'ANTIALIAS_SK_FONT_EDGING :: Sk_font_edging
+sk_font_edging'ANTIALIAS_SK_FONT_EDGING = #const ANTIALIAS_SK_FONT_EDGING
 -- | `SUBPIXEL_ANTIALIAS_SK_FONT_EDGING`
-skFontEdging'SubPixelAntiAlias :: SkFontEdging
-skFontEdging'SubPixelAntiAlias = #const SUBPIXEL_ANTIALIAS_SK_FONT_EDGING
+sk_font_edging'SUBPIXEL_ANTIALIAS_SK_FONT_EDGING :: Sk_font_edging
+sk_font_edging'SUBPIXEL_ANTIALIAS_SK_FONT_EDGING = #const SUBPIXEL_ANTIALIAS_SK_FONT_EDGING
 -- | `sk_pixelref_factory_t`
-data SkPixelRefFactory = SkPixelRefFactory
+data Sk_pixelref_factory = Sk_pixelref_factory
   deriving (Show, Eq, Ord)
 -- | `gr_surfaceorigin_t`
-newtype GrSurfaceOrigin = GrSurfaceOrigin (#type gr_surfaceorigin_t)
+newtype Gr_surfaceorigin = Gr_surfaceorigin (#type gr_surfaceorigin_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `TOP_LEFT_GR_SURFACE_ORIGIN`
-grSurfaceOrigin'TopLeft :: GrSurfaceOrigin
-grSurfaceOrigin'TopLeft = #const TOP_LEFT_GR_SURFACE_ORIGIN
+gr_surfaceorigin'TOP_LEFT_GR_SURFACE_ORIGIN :: Gr_surfaceorigin
+gr_surfaceorigin'TOP_LEFT_GR_SURFACE_ORIGIN = #const TOP_LEFT_GR_SURFACE_ORIGIN
 -- | `BOTTOM_LEFT_GR_SURFACE_ORIGIN`
-grSurfaceOrigin'BottomLeft :: GrSurfaceOrigin
-grSurfaceOrigin'BottomLeft = #const BOTTOM_LEFT_GR_SURFACE_ORIGIN
+gr_surfaceorigin'BOTTOM_LEFT_GR_SURFACE_ORIGIN :: Gr_surfaceorigin
+gr_surfaceorigin'BOTTOM_LEFT_GR_SURFACE_ORIGIN = #const BOTTOM_LEFT_GR_SURFACE_ORIGIN
 -- | `gr_context_options_t`
-data GrContextOptions = GrContextOptions
-  { avoidStencilBuffers :: CBool
+data Gr_context_options = Gr_context_options
+  { fAvoidStencilBuffers :: CBool
   -- ^ `fAvoidStencilBuffers`
-  , runtimeProgramCacheSize :: CInt
+  , fRuntimeProgramCacheSize :: CInt
   -- ^ `fRuntimeProgramCacheSize`
-  , glyphCacheTextureMaximumBytes :: CSize
+  , fGlyphCacheTextureMaximumBytes :: CSize
   -- ^ `fGlyphCacheTextureMaximumBytes`
-  , allowPathMaskCaching :: CBool
+  , fAllowPathMaskCaching :: CBool
   -- ^ `fAllowPathMaskCaching`
-  , doManualMipmapping :: CBool
+  , fDoManualMipmapping :: CBool
   -- ^ `fDoManualMipmapping`
-  , bufferMapThreshold :: CInt
+  , fBufferMapThreshold :: CInt
   -- ^ `fBufferMapThreshold`
   } deriving (Show, Eq, Ord)
-instance Offset "avoidStencilBuffers" GrContextOptions where rawOffset = (#offset gr_context_options_t, fAvoidStencilBuffers)
-instance Offset "runtimeProgramCacheSize" GrContextOptions where rawOffset = (#offset gr_context_options_t, fRuntimeProgramCacheSize)
-instance Offset "glyphCacheTextureMaximumBytes" GrContextOptions where rawOffset = (#offset gr_context_options_t, fGlyphCacheTextureMaximumBytes)
-instance Offset "allowPathMaskCaching" GrContextOptions where rawOffset = (#offset gr_context_options_t, fAllowPathMaskCaching)
-instance Offset "doManualMipmapping" GrContextOptions where rawOffset = (#offset gr_context_options_t, fDoManualMipmapping)
-instance Offset "bufferMapThreshold" GrContextOptions where rawOffset = (#offset gr_context_options_t, fBufferMapThreshold)
-instance Storable GrContextOptions where
+instance Offset "fAvoidStencilBuffers" Gr_context_options where rawOffset = (#offset gr_context_options_t, fAvoidStencilBuffers)
+instance Offset "fRuntimeProgramCacheSize" Gr_context_options where rawOffset = (#offset gr_context_options_t, fRuntimeProgramCacheSize)
+instance Offset "fGlyphCacheTextureMaximumBytes" Gr_context_options where rawOffset = (#offset gr_context_options_t, fGlyphCacheTextureMaximumBytes)
+instance Offset "fAllowPathMaskCaching" Gr_context_options where rawOffset = (#offset gr_context_options_t, fAllowPathMaskCaching)
+instance Offset "fDoManualMipmapping" Gr_context_options where rawOffset = (#offset gr_context_options_t, fDoManualMipmapping)
+instance Offset "fBufferMapThreshold" Gr_context_options where rawOffset = (#offset gr_context_options_t, fBufferMapThreshold)
+instance Storable Gr_context_options where
   sizeOf _ = (#size gr_context_options_t)
   alignment _ = (#alignment gr_context_options_t)
   peek in'ptr = do
-    avoidStencilBuffers <- (#peek gr_context_options_t, fAvoidStencilBuffers) in'ptr
-    runtimeProgramCacheSize <- (#peek gr_context_options_t, fRuntimeProgramCacheSize) in'ptr
-    glyphCacheTextureMaximumBytes <- (#peek gr_context_options_t, fGlyphCacheTextureMaximumBytes) in'ptr
-    allowPathMaskCaching <- (#peek gr_context_options_t, fAllowPathMaskCaching) in'ptr
-    doManualMipmapping <- (#peek gr_context_options_t, fDoManualMipmapping) in'ptr
-    bufferMapThreshold <- (#peek gr_context_options_t, fBufferMapThreshold) in'ptr
-    pure GrContextOptions{..}
+    fAvoidStencilBuffers <- (#peek gr_context_options_t, fAvoidStencilBuffers) in'ptr
+    fRuntimeProgramCacheSize <- (#peek gr_context_options_t, fRuntimeProgramCacheSize) in'ptr
+    fGlyphCacheTextureMaximumBytes <- (#peek gr_context_options_t, fGlyphCacheTextureMaximumBytes) in'ptr
+    fAllowPathMaskCaching <- (#peek gr_context_options_t, fAllowPathMaskCaching) in'ptr
+    fDoManualMipmapping <- (#peek gr_context_options_t, fDoManualMipmapping) in'ptr
+    fBufferMapThreshold <- (#peek gr_context_options_t, fBufferMapThreshold) in'ptr
+    pure Gr_context_options{..}
   poke in'ptr in'value = do
-    (#poke gr_context_options_t, fAvoidStencilBuffers) in'ptr in'value.avoidStencilBuffers
-    (#poke gr_context_options_t, fRuntimeProgramCacheSize) in'ptr in'value.runtimeProgramCacheSize
-    (#poke gr_context_options_t, fGlyphCacheTextureMaximumBytes) in'ptr in'value.glyphCacheTextureMaximumBytes
-    (#poke gr_context_options_t, fAllowPathMaskCaching) in'ptr in'value.allowPathMaskCaching
-    (#poke gr_context_options_t, fDoManualMipmapping) in'ptr in'value.doManualMipmapping
-    (#poke gr_context_options_t, fBufferMapThreshold) in'ptr in'value.bufferMapThreshold
+    (#poke gr_context_options_t, fAvoidStencilBuffers) in'ptr in'value.fAvoidStencilBuffers
+    (#poke gr_context_options_t, fRuntimeProgramCacheSize) in'ptr in'value.fRuntimeProgramCacheSize
+    (#poke gr_context_options_t, fGlyphCacheTextureMaximumBytes) in'ptr in'value.fGlyphCacheTextureMaximumBytes
+    (#poke gr_context_options_t, fAllowPathMaskCaching) in'ptr in'value.fAllowPathMaskCaching
+    (#poke gr_context_options_t, fDoManualMipmapping) in'ptr in'value.fDoManualMipmapping
+    (#poke gr_context_options_t, fBufferMapThreshold) in'ptr in'value.fBufferMapThreshold
 -- | `gr_backendobject_t`
-type GrBackendObject = CIntPtr
+type Gr_backendobject = CIntPtr
 -- | `gr_backendrendertarget_t`
-data GrBackendRenderTarget = GrBackendRenderTarget
+data Gr_backendrendertarget = Gr_backendrendertarget
   deriving (Show, Eq, Ord)
 -- | `gr_backendtexture_t`
-data GrBackendTexture = GrBackendTexture
+data Gr_backendtexture = Gr_backendtexture
   deriving (Show, Eq, Ord)
 -- | `gr_direct_context_t`
-data GrDirectContext = GrDirectContext
+data Gr_direct_context = Gr_direct_context
   deriving (Show, Eq, Ord)
 -- | `gr_recording_context_t`
-data GrRecordingContext = GrRecordingContext
+data Gr_recording_context = Gr_recording_context
   deriving (Show, Eq, Ord)
 -- | `gr_backend_t`
-newtype GrBackend = GrBackend (#type gr_backend_t)
+newtype Gr_backend = Gr_backend (#type gr_backend_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `OPENGL_GR_BACKEND`
-grBackend'Opengl :: GrBackend
-grBackend'Opengl = #const OPENGL_GR_BACKEND
+gr_backend'OPENGL_GR_BACKEND :: Gr_backend
+gr_backend'OPENGL_GR_BACKEND = #const OPENGL_GR_BACKEND
 -- | `VULKAN_GR_BACKEND`
-grBackend'VuLkAn :: GrBackend
-grBackend'VuLkAn = #const VULKAN_GR_BACKEND
+gr_backend'VULKAN_GR_BACKEND :: Gr_backend
+gr_backend'VULKAN_GR_BACKEND = #const VULKAN_GR_BACKEND
 -- | `METAL_GR_BACKEND`
-grBackend'Metal :: GrBackend
-grBackend'Metal = #const METAL_GR_BACKEND
+gr_backend'METAL_GR_BACKEND :: Gr_backend
+gr_backend'METAL_GR_BACKEND = #const METAL_GR_BACKEND
 -- | `DIRECT3D_GR_BACKEND`
-grBackend'Direct3D :: GrBackend
-grBackend'Direct3D = #const DIRECT3D_GR_BACKEND
+gr_backend'DIRECT3D_GR_BACKEND :: Gr_backend
+gr_backend'DIRECT3D_GR_BACKEND = #const DIRECT3D_GR_BACKEND
 -- | `UNSUPPORTED_GR_BACKEND`
-grBackend'Unsupported :: GrBackend
-grBackend'Unsupported = #const UNSUPPORTED_GR_BACKEND
+gr_backend'UNSUPPORTED_GR_BACKEND :: Gr_backend
+gr_backend'UNSUPPORTED_GR_BACKEND = #const UNSUPPORTED_GR_BACKEND
 -- | `gr_backendcontext_t`
-type GrBackendContext = CIntPtr
+type Gr_backendcontext = CIntPtr
 -- | `gr_glinterface_t`
-data GrGlInterface = GrGlInterface
+data Gr_glinterface = Gr_glinterface
   deriving (Show, Eq, Ord)
 -- | `gr_gl_func_ptr`
-type GrGlFunCPtr = IO (())
+type Gr_gl_func_ptr = IO (())
 -- | `gr_gl_get_proc`
-type GrGlGetProc = (Ptr (())) -> (Ptr (CChar)) -> IO (FunPtr (GrGlFunCPtr))
+type Gr_gl_get_proc = (Ptr (())) -> (Ptr (CChar)) -> IO (FunPtr (Gr_gl_func_ptr))
 -- | `gr_gl_textureinfo_t`
-data GrGlTextureInfo = GrGlTextureInfo
-  { target :: CUInt
+data Gr_gl_textureinfo = Gr_gl_textureinfo
+  { fTarget :: CUInt
   -- ^ `fTarget`
-  , id :: CUInt
+  , fID :: CUInt
   -- ^ `fID`
-  , format :: CUInt
+  , fFormat :: CUInt
   -- ^ `fFormat`
-  , protected :: CBool
+  , fProtected :: CBool
   -- ^ `fProtected`
   } deriving (Show, Eq, Ord)
-instance Offset "target" GrGlTextureInfo where rawOffset = (#offset gr_gl_textureinfo_t, fTarget)
-instance Offset "id" GrGlTextureInfo where rawOffset = (#offset gr_gl_textureinfo_t, fID)
-instance Offset "format" GrGlTextureInfo where rawOffset = (#offset gr_gl_textureinfo_t, fFormat)
-instance Offset "protected" GrGlTextureInfo where rawOffset = (#offset gr_gl_textureinfo_t, fProtected)
-instance Storable GrGlTextureInfo where
+instance Offset "fTarget" Gr_gl_textureinfo where rawOffset = (#offset gr_gl_textureinfo_t, fTarget)
+instance Offset "fID" Gr_gl_textureinfo where rawOffset = (#offset gr_gl_textureinfo_t, fID)
+instance Offset "fFormat" Gr_gl_textureinfo where rawOffset = (#offset gr_gl_textureinfo_t, fFormat)
+instance Offset "fProtected" Gr_gl_textureinfo where rawOffset = (#offset gr_gl_textureinfo_t, fProtected)
+instance Storable Gr_gl_textureinfo where
   sizeOf _ = (#size gr_gl_textureinfo_t)
   alignment _ = (#alignment gr_gl_textureinfo_t)
   peek in'ptr = do
-    target <- (#peek gr_gl_textureinfo_t, fTarget) in'ptr
-    id <- (#peek gr_gl_textureinfo_t, fID) in'ptr
-    format <- (#peek gr_gl_textureinfo_t, fFormat) in'ptr
-    protected <- (#peek gr_gl_textureinfo_t, fProtected) in'ptr
-    pure GrGlTextureInfo{..}
+    fTarget <- (#peek gr_gl_textureinfo_t, fTarget) in'ptr
+    fID <- (#peek gr_gl_textureinfo_t, fID) in'ptr
+    fFormat <- (#peek gr_gl_textureinfo_t, fFormat) in'ptr
+    fProtected <- (#peek gr_gl_textureinfo_t, fProtected) in'ptr
+    pure Gr_gl_textureinfo{..}
   poke in'ptr in'value = do
-    (#poke gr_gl_textureinfo_t, fTarget) in'ptr in'value.target
-    (#poke gr_gl_textureinfo_t, fID) in'ptr in'value.id
-    (#poke gr_gl_textureinfo_t, fFormat) in'ptr in'value.format
-    (#poke gr_gl_textureinfo_t, fProtected) in'ptr in'value.protected
+    (#poke gr_gl_textureinfo_t, fTarget) in'ptr in'value.fTarget
+    (#poke gr_gl_textureinfo_t, fID) in'ptr in'value.fID
+    (#poke gr_gl_textureinfo_t, fFormat) in'ptr in'value.fFormat
+    (#poke gr_gl_textureinfo_t, fProtected) in'ptr in'value.fProtected
 -- | `gr_gl_framebufferinfo_t`
-data GrGlFrameBufferInfo = GrGlFrameBufferInfo
-  { fboid :: CUInt
+data Gr_gl_framebufferinfo = Gr_gl_framebufferinfo
+  { fFBOID :: CUInt
   -- ^ `fFBOID`
-  , format :: CUInt
+  , fFormat :: CUInt
   -- ^ `fFormat`
-  , protected :: CBool
+  , fProtected :: CBool
   -- ^ `fProtected`
   } deriving (Show, Eq, Ord)
-instance Offset "fboid" GrGlFrameBufferInfo where rawOffset = (#offset gr_gl_framebufferinfo_t, fFBOID)
-instance Offset "format" GrGlFrameBufferInfo where rawOffset = (#offset gr_gl_framebufferinfo_t, fFormat)
-instance Offset "protected" GrGlFrameBufferInfo where rawOffset = (#offset gr_gl_framebufferinfo_t, fProtected)
-instance Storable GrGlFrameBufferInfo where
+instance Offset "fFBOID" Gr_gl_framebufferinfo where rawOffset = (#offset gr_gl_framebufferinfo_t, fFBOID)
+instance Offset "fFormat" Gr_gl_framebufferinfo where rawOffset = (#offset gr_gl_framebufferinfo_t, fFormat)
+instance Offset "fProtected" Gr_gl_framebufferinfo where rawOffset = (#offset gr_gl_framebufferinfo_t, fProtected)
+instance Storable Gr_gl_framebufferinfo where
   sizeOf _ = (#size gr_gl_framebufferinfo_t)
   alignment _ = (#alignment gr_gl_framebufferinfo_t)
   peek in'ptr = do
-    fboid <- (#peek gr_gl_framebufferinfo_t, fFBOID) in'ptr
-    format <- (#peek gr_gl_framebufferinfo_t, fFormat) in'ptr
-    protected <- (#peek gr_gl_framebufferinfo_t, fProtected) in'ptr
-    pure GrGlFrameBufferInfo{..}
+    fFBOID <- (#peek gr_gl_framebufferinfo_t, fFBOID) in'ptr
+    fFormat <- (#peek gr_gl_framebufferinfo_t, fFormat) in'ptr
+    fProtected <- (#peek gr_gl_framebufferinfo_t, fProtected) in'ptr
+    pure Gr_gl_framebufferinfo{..}
   poke in'ptr in'value = do
-    (#poke gr_gl_framebufferinfo_t, fFBOID) in'ptr in'value.fboid
-    (#poke gr_gl_framebufferinfo_t, fFormat) in'ptr in'value.format
-    (#poke gr_gl_framebufferinfo_t, fProtected) in'ptr in'value.protected
+    (#poke gr_gl_framebufferinfo_t, fFBOID) in'ptr in'value.fFBOID
+    (#poke gr_gl_framebufferinfo_t, fFormat) in'ptr in'value.fFormat
+    (#poke gr_gl_framebufferinfo_t, fProtected) in'ptr in'value.fProtected
 -- | `vk_instance_t`
-data VkInstance = VkInstance
+data Vk_instance = Vk_instance
   deriving (Show, Eq, Ord)
 -- | `gr_vkinterface_t`
-data GrVkInterface = GrVkInterface
+data Gr_vkinterface = Gr_vkinterface
   deriving (Show, Eq, Ord)
 -- | `vk_physical_device_t`
-data VkPhysicalDevice = VkPhysicalDevice
+data Vk_physical_device = Vk_physical_device
   deriving (Show, Eq, Ord)
 -- | `vk_physical_device_features_t`
-data VkPhysicalDeviceFeatures = VkPhysicalDeviceFeatures
+data Vk_physical_device_features = Vk_physical_device_features
   deriving (Show, Eq, Ord)
 -- | `vk_physical_device_features_2_t`
-data VkPhysicalDeviceFeatures2 = VkPhysicalDeviceFeatures2
+data Vk_physical_device_features_2 = Vk_physical_device_features_2
   deriving (Show, Eq, Ord)
 -- | `vk_device_t`
-data VkDevice = VkDevice
+data Vk_device = Vk_device
   deriving (Show, Eq, Ord)
 -- | `vk_queue_t`
-data VkQueue = VkQueue
+data Vk_queue = Vk_queue
   deriving (Show, Eq, Ord)
 -- | `gr_vk_extensions_t`
-data GrVkExtensions = GrVkExtensions
+data Gr_vk_extensions = Gr_vk_extensions
   deriving (Show, Eq, Ord)
 -- | `gr_vk_memory_allocator_t`
-data GrVkMemoryAllocAtOr = GrVkMemoryAllocAtOr
+data Gr_vk_memory_allocator = Gr_vk_memory_allocator
   deriving (Show, Eq, Ord)
 -- | `gr_vk_func_ptr`
-type GrVkFunCPtr = IO (())
+type Gr_vk_func_ptr = IO (())
 -- | `gr_vk_get_proc`
-type GrVkGetProc = (Ptr (())) -> (Ptr (CChar)) -> (Ptr (VkInstance)) -> (Ptr (VkDevice)) -> IO (FunPtr (GrVkFunCPtr))
+type Gr_vk_get_proc = (Ptr (())) -> (Ptr (CChar)) -> (Ptr (Vk_instance)) -> (Ptr (Vk_device)) -> IO (FunPtr (Gr_vk_func_ptr))
 -- | `gr_vk_backendcontext_t`
-data GrVkBackendContext = GrVkBackendContext
-  { instance_ :: Ptr (VkInstance)
+data Gr_vk_backendcontext = Gr_vk_backendcontext
+  { fInstance :: Ptr (Vk_instance)
   -- ^ `fInstance`
-  , physicalDevice :: Ptr (VkPhysicalDevice)
+  , fPhysicalDevice :: Ptr (Vk_physical_device)
   -- ^ `fPhysicalDevice`
-  , device :: Ptr (VkDevice)
+  , fDevice :: Ptr (Vk_device)
   -- ^ `fDevice`
-  , queue :: Ptr (VkQueue)
+  , fQueue :: Ptr (Vk_queue)
   -- ^ `fQueue`
-  , graphicsQueueIndex :: Word32
+  , fGraphicsQueueIndex :: Word32
   -- ^ `fGraphicsQueueIndex`
-  , minAPIVersion :: Word32
+  , fMinAPIVersion :: Word32
   -- ^ `fMinAPIVersion`
-  , instanceVersion :: Word32
+  , fInstanceVersion :: Word32
   -- ^ `fInstanceVersion`
-  , maxAPIVersion :: Word32
+  , fMaxAPIVersion :: Word32
   -- ^ `fMaxAPIVersion`
-  , extensions :: Word32
+  , fExtensions :: Word32
   -- ^ `fExtensions`
-  , vkExtensions :: Ptr (GrVkExtensions)
+  , fVkExtensions :: Ptr (Gr_vk_extensions)
   -- ^ `fVkExtensions`
-  , features :: Word32
+  , fFeatures :: Word32
   -- ^ `fFeatures`
-  , deviceFeatures :: Ptr (VkPhysicalDeviceFeatures)
+  , fDeviceFeatures :: Ptr (Vk_physical_device_features)
   -- ^ `fDeviceFeatures`
-  , deviceFeatures2 :: Ptr (VkPhysicalDeviceFeatures2)
+  , fDeviceFeatures2 :: Ptr (Vk_physical_device_features_2)
   -- ^ `fDeviceFeatures2`
-  , memoryAllocator :: Ptr (GrVkMemoryAllocAtOr)
+  , fMemoryAllocator :: Ptr (Gr_vk_memory_allocator)
   -- ^ `fMemoryAllocator`
-  , getProc :: FunPtr (GrVkGetProc)
+  , fGetProc :: FunPtr (Gr_vk_get_proc)
   -- ^ `fGetProc`
-  , getProcUserData :: Ptr (())
+  , fGetProcUserData :: Ptr (())
   -- ^ `fGetProcUserData`
-  , ownsInstanceAndDevice :: CBool
+  , fOwnsInstanceAndDevice :: CBool
   -- ^ `fOwnsInstanceAndDevice`
-  , protectedContext :: CBool
+  , fProtectedContext :: CBool
   -- ^ `fProtectedContext`
   } deriving (Show, Eq, Ord)
-instance Offset "instance_" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fInstance)
-instance Offset "physicalDevice" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fPhysicalDevice)
-instance Offset "device" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fDevice)
-instance Offset "queue" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fQueue)
-instance Offset "graphicsQueueIndex" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fGraphicsQueueIndex)
-instance Offset "minAPIVersion" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fMinAPIVersion)
-instance Offset "instanceVersion" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fInstanceVersion)
-instance Offset "maxAPIVersion" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fMaxAPIVersion)
-instance Offset "extensions" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fExtensions)
-instance Offset "vkExtensions" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fVkExtensions)
-instance Offset "features" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fFeatures)
-instance Offset "deviceFeatures" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fDeviceFeatures)
-instance Offset "deviceFeatures2" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fDeviceFeatures2)
-instance Offset "memoryAllocator" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fMemoryAllocator)
-instance Offset "getProc" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fGetProc)
-instance Offset "getProcUserData" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fGetProcUserData)
-instance Offset "ownsInstanceAndDevice" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fOwnsInstanceAndDevice)
-instance Offset "protectedContext" GrVkBackendContext where rawOffset = (#offset gr_vk_backendcontext_t, fProtectedContext)
-instance Storable GrVkBackendContext where
+instance Offset "fInstance" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fInstance)
+instance Offset "fPhysicalDevice" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fPhysicalDevice)
+instance Offset "fDevice" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fDevice)
+instance Offset "fQueue" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fQueue)
+instance Offset "fGraphicsQueueIndex" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fGraphicsQueueIndex)
+instance Offset "fMinAPIVersion" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fMinAPIVersion)
+instance Offset "fInstanceVersion" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fInstanceVersion)
+instance Offset "fMaxAPIVersion" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fMaxAPIVersion)
+instance Offset "fExtensions" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fExtensions)
+instance Offset "fVkExtensions" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fVkExtensions)
+instance Offset "fFeatures" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fFeatures)
+instance Offset "fDeviceFeatures" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fDeviceFeatures)
+instance Offset "fDeviceFeatures2" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fDeviceFeatures2)
+instance Offset "fMemoryAllocator" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fMemoryAllocator)
+instance Offset "fGetProc" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fGetProc)
+instance Offset "fGetProcUserData" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fGetProcUserData)
+instance Offset "fOwnsInstanceAndDevice" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fOwnsInstanceAndDevice)
+instance Offset "fProtectedContext" Gr_vk_backendcontext where rawOffset = (#offset gr_vk_backendcontext_t, fProtectedContext)
+instance Storable Gr_vk_backendcontext where
   sizeOf _ = (#size gr_vk_backendcontext_t)
   alignment _ = (#alignment gr_vk_backendcontext_t)
   peek in'ptr = do
-    instance_ <- (#peek gr_vk_backendcontext_t, fInstance) in'ptr
-    physicalDevice <- (#peek gr_vk_backendcontext_t, fPhysicalDevice) in'ptr
-    device <- (#peek gr_vk_backendcontext_t, fDevice) in'ptr
-    queue <- (#peek gr_vk_backendcontext_t, fQueue) in'ptr
-    graphicsQueueIndex <- (#peek gr_vk_backendcontext_t, fGraphicsQueueIndex) in'ptr
-    minAPIVersion <- (#peek gr_vk_backendcontext_t, fMinAPIVersion) in'ptr
-    instanceVersion <- (#peek gr_vk_backendcontext_t, fInstanceVersion) in'ptr
-    maxAPIVersion <- (#peek gr_vk_backendcontext_t, fMaxAPIVersion) in'ptr
-    extensions <- (#peek gr_vk_backendcontext_t, fExtensions) in'ptr
-    vkExtensions <- (#peek gr_vk_backendcontext_t, fVkExtensions) in'ptr
-    features <- (#peek gr_vk_backendcontext_t, fFeatures) in'ptr
-    deviceFeatures <- (#peek gr_vk_backendcontext_t, fDeviceFeatures) in'ptr
-    deviceFeatures2 <- (#peek gr_vk_backendcontext_t, fDeviceFeatures2) in'ptr
-    memoryAllocator <- (#peek gr_vk_backendcontext_t, fMemoryAllocator) in'ptr
-    getProc <- (#peek gr_vk_backendcontext_t, fGetProc) in'ptr
-    getProcUserData <- (#peek gr_vk_backendcontext_t, fGetProcUserData) in'ptr
-    ownsInstanceAndDevice <- (#peek gr_vk_backendcontext_t, fOwnsInstanceAndDevice) in'ptr
-    protectedContext <- (#peek gr_vk_backendcontext_t, fProtectedContext) in'ptr
-    pure GrVkBackendContext{..}
+    fInstance <- (#peek gr_vk_backendcontext_t, fInstance) in'ptr
+    fPhysicalDevice <- (#peek gr_vk_backendcontext_t, fPhysicalDevice) in'ptr
+    fDevice <- (#peek gr_vk_backendcontext_t, fDevice) in'ptr
+    fQueue <- (#peek gr_vk_backendcontext_t, fQueue) in'ptr
+    fGraphicsQueueIndex <- (#peek gr_vk_backendcontext_t, fGraphicsQueueIndex) in'ptr
+    fMinAPIVersion <- (#peek gr_vk_backendcontext_t, fMinAPIVersion) in'ptr
+    fInstanceVersion <- (#peek gr_vk_backendcontext_t, fInstanceVersion) in'ptr
+    fMaxAPIVersion <- (#peek gr_vk_backendcontext_t, fMaxAPIVersion) in'ptr
+    fExtensions <- (#peek gr_vk_backendcontext_t, fExtensions) in'ptr
+    fVkExtensions <- (#peek gr_vk_backendcontext_t, fVkExtensions) in'ptr
+    fFeatures <- (#peek gr_vk_backendcontext_t, fFeatures) in'ptr
+    fDeviceFeatures <- (#peek gr_vk_backendcontext_t, fDeviceFeatures) in'ptr
+    fDeviceFeatures2 <- (#peek gr_vk_backendcontext_t, fDeviceFeatures2) in'ptr
+    fMemoryAllocator <- (#peek gr_vk_backendcontext_t, fMemoryAllocator) in'ptr
+    fGetProc <- (#peek gr_vk_backendcontext_t, fGetProc) in'ptr
+    fGetProcUserData <- (#peek gr_vk_backendcontext_t, fGetProcUserData) in'ptr
+    fOwnsInstanceAndDevice <- (#peek gr_vk_backendcontext_t, fOwnsInstanceAndDevice) in'ptr
+    fProtectedContext <- (#peek gr_vk_backendcontext_t, fProtectedContext) in'ptr
+    pure Gr_vk_backendcontext{..}
   poke in'ptr in'value = do
-    (#poke gr_vk_backendcontext_t, fInstance) in'ptr in'value.instance_
-    (#poke gr_vk_backendcontext_t, fPhysicalDevice) in'ptr in'value.physicalDevice
-    (#poke gr_vk_backendcontext_t, fDevice) in'ptr in'value.device
-    (#poke gr_vk_backendcontext_t, fQueue) in'ptr in'value.queue
-    (#poke gr_vk_backendcontext_t, fGraphicsQueueIndex) in'ptr in'value.graphicsQueueIndex
-    (#poke gr_vk_backendcontext_t, fMinAPIVersion) in'ptr in'value.minAPIVersion
-    (#poke gr_vk_backendcontext_t, fInstanceVersion) in'ptr in'value.instanceVersion
-    (#poke gr_vk_backendcontext_t, fMaxAPIVersion) in'ptr in'value.maxAPIVersion
-    (#poke gr_vk_backendcontext_t, fExtensions) in'ptr in'value.extensions
-    (#poke gr_vk_backendcontext_t, fVkExtensions) in'ptr in'value.vkExtensions
-    (#poke gr_vk_backendcontext_t, fFeatures) in'ptr in'value.features
-    (#poke gr_vk_backendcontext_t, fDeviceFeatures) in'ptr in'value.deviceFeatures
-    (#poke gr_vk_backendcontext_t, fDeviceFeatures2) in'ptr in'value.deviceFeatures2
-    (#poke gr_vk_backendcontext_t, fMemoryAllocator) in'ptr in'value.memoryAllocator
-    (#poke gr_vk_backendcontext_t, fGetProc) in'ptr in'value.getProc
-    (#poke gr_vk_backendcontext_t, fGetProcUserData) in'ptr in'value.getProcUserData
-    (#poke gr_vk_backendcontext_t, fOwnsInstanceAndDevice) in'ptr in'value.ownsInstanceAndDevice
-    (#poke gr_vk_backendcontext_t, fProtectedContext) in'ptr in'value.protectedContext
+    (#poke gr_vk_backendcontext_t, fInstance) in'ptr in'value.fInstance
+    (#poke gr_vk_backendcontext_t, fPhysicalDevice) in'ptr in'value.fPhysicalDevice
+    (#poke gr_vk_backendcontext_t, fDevice) in'ptr in'value.fDevice
+    (#poke gr_vk_backendcontext_t, fQueue) in'ptr in'value.fQueue
+    (#poke gr_vk_backendcontext_t, fGraphicsQueueIndex) in'ptr in'value.fGraphicsQueueIndex
+    (#poke gr_vk_backendcontext_t, fMinAPIVersion) in'ptr in'value.fMinAPIVersion
+    (#poke gr_vk_backendcontext_t, fInstanceVersion) in'ptr in'value.fInstanceVersion
+    (#poke gr_vk_backendcontext_t, fMaxAPIVersion) in'ptr in'value.fMaxAPIVersion
+    (#poke gr_vk_backendcontext_t, fExtensions) in'ptr in'value.fExtensions
+    (#poke gr_vk_backendcontext_t, fVkExtensions) in'ptr in'value.fVkExtensions
+    (#poke gr_vk_backendcontext_t, fFeatures) in'ptr in'value.fFeatures
+    (#poke gr_vk_backendcontext_t, fDeviceFeatures) in'ptr in'value.fDeviceFeatures
+    (#poke gr_vk_backendcontext_t, fDeviceFeatures2) in'ptr in'value.fDeviceFeatures2
+    (#poke gr_vk_backendcontext_t, fMemoryAllocator) in'ptr in'value.fMemoryAllocator
+    (#poke gr_vk_backendcontext_t, fGetProc) in'ptr in'value.fGetProc
+    (#poke gr_vk_backendcontext_t, fGetProcUserData) in'ptr in'value.fGetProcUserData
+    (#poke gr_vk_backendcontext_t, fOwnsInstanceAndDevice) in'ptr in'value.fOwnsInstanceAndDevice
+    (#poke gr_vk_backendcontext_t, fProtectedContext) in'ptr in'value.fProtectedContext
 -- | `gr_vk_backendmemory_t`
-type GrVkBackendMemory = CIntPtr
+type Gr_vk_backendmemory = CIntPtr
 -- | `gr_vk_alloc_t`
-data GrVkAlloc = GrVkAlloc
-  { memory :: Word64
+data Gr_vk_alloc = Gr_vk_alloc
+  { fMemory :: Word64
   -- ^ `fMemory`
-  , offset :: Word64
+  , fOffset :: Word64
   -- ^ `fOffset`
-  , size :: Word64
+  , fSize :: Word64
   -- ^ `fSize`
-  , flags :: Word32
+  , fFlags :: Word32
   -- ^ `fFlags`
-  , backendMemory :: GrVkBackendMemory
+  , fBackendMemory :: Gr_vk_backendmemory
   -- ^ `fBackendMemory`
-  , fUsesSystemHeap :: CBool
+  , _private_fUsesSystemHeap :: CBool
   -- ^ `_private_fUsesSystemHeap`
   } deriving (Show, Eq, Ord)
-instance Offset "memory" GrVkAlloc where rawOffset = (#offset gr_vk_alloc_t, fMemory)
-instance Offset "offset" GrVkAlloc where rawOffset = (#offset gr_vk_alloc_t, fOffset)
-instance Offset "size" GrVkAlloc where rawOffset = (#offset gr_vk_alloc_t, fSize)
-instance Offset "flags" GrVkAlloc where rawOffset = (#offset gr_vk_alloc_t, fFlags)
-instance Offset "backendMemory" GrVkAlloc where rawOffset = (#offset gr_vk_alloc_t, fBackendMemory)
-instance Offset "fUsesSystemHeap" GrVkAlloc where rawOffset = (#offset gr_vk_alloc_t, _private_fUsesSystemHeap)
-instance Storable GrVkAlloc where
+instance Offset "fMemory" Gr_vk_alloc where rawOffset = (#offset gr_vk_alloc_t, fMemory)
+instance Offset "fOffset" Gr_vk_alloc where rawOffset = (#offset gr_vk_alloc_t, fOffset)
+instance Offset "fSize" Gr_vk_alloc where rawOffset = (#offset gr_vk_alloc_t, fSize)
+instance Offset "fFlags" Gr_vk_alloc where rawOffset = (#offset gr_vk_alloc_t, fFlags)
+instance Offset "fBackendMemory" Gr_vk_alloc where rawOffset = (#offset gr_vk_alloc_t, fBackendMemory)
+instance Offset "_private_fUsesSystemHeap" Gr_vk_alloc where rawOffset = (#offset gr_vk_alloc_t, _private_fUsesSystemHeap)
+instance Storable Gr_vk_alloc where
   sizeOf _ = (#size gr_vk_alloc_t)
   alignment _ = (#alignment gr_vk_alloc_t)
   peek in'ptr = do
-    memory <- (#peek gr_vk_alloc_t, fMemory) in'ptr
-    offset <- (#peek gr_vk_alloc_t, fOffset) in'ptr
-    size <- (#peek gr_vk_alloc_t, fSize) in'ptr
-    flags <- (#peek gr_vk_alloc_t, fFlags) in'ptr
-    backendMemory <- (#peek gr_vk_alloc_t, fBackendMemory) in'ptr
-    fUsesSystemHeap <- (#peek gr_vk_alloc_t, _private_fUsesSystemHeap) in'ptr
-    pure GrVkAlloc{..}
+    fMemory <- (#peek gr_vk_alloc_t, fMemory) in'ptr
+    fOffset <- (#peek gr_vk_alloc_t, fOffset) in'ptr
+    fSize <- (#peek gr_vk_alloc_t, fSize) in'ptr
+    fFlags <- (#peek gr_vk_alloc_t, fFlags) in'ptr
+    fBackendMemory <- (#peek gr_vk_alloc_t, fBackendMemory) in'ptr
+    _private_fUsesSystemHeap <- (#peek gr_vk_alloc_t, _private_fUsesSystemHeap) in'ptr
+    pure Gr_vk_alloc{..}
   poke in'ptr in'value = do
-    (#poke gr_vk_alloc_t, fMemory) in'ptr in'value.memory
-    (#poke gr_vk_alloc_t, fOffset) in'ptr in'value.offset
-    (#poke gr_vk_alloc_t, fSize) in'ptr in'value.size
-    (#poke gr_vk_alloc_t, fFlags) in'ptr in'value.flags
-    (#poke gr_vk_alloc_t, fBackendMemory) in'ptr in'value.backendMemory
-    (#poke gr_vk_alloc_t, _private_fUsesSystemHeap) in'ptr in'value.fUsesSystemHeap
+    (#poke gr_vk_alloc_t, fMemory) in'ptr in'value.fMemory
+    (#poke gr_vk_alloc_t, fOffset) in'ptr in'value.fOffset
+    (#poke gr_vk_alloc_t, fSize) in'ptr in'value.fSize
+    (#poke gr_vk_alloc_t, fFlags) in'ptr in'value.fFlags
+    (#poke gr_vk_alloc_t, fBackendMemory) in'ptr in'value.fBackendMemory
+    (#poke gr_vk_alloc_t, _private_fUsesSystemHeap) in'ptr in'value._private_fUsesSystemHeap
 -- | `gr_vk_ycbcrconversioninfo_t`
-data GrVkYCbcRConversionInfo = GrVkYCbcRConversionInfo
-  { format :: Word32
+data Gr_vk_ycbcrconversioninfo = Gr_vk_ycbcrconversioninfo
+  { fFormat :: Word32
   -- ^ `fFormat`
-  , externalFormat :: Word64
+  , fExternalFormat :: Word64
   -- ^ `fExternalFormat`
-  , ycbcrModel :: Word32
+  , fYcbcrModel :: Word32
   -- ^ `fYcbcrModel`
-  , ycbcrRange :: Word32
+  , fYcbcrRange :: Word32
   -- ^ `fYcbcrRange`
-  , xChromaOffset :: Word32
+  , fXChromaOffset :: Word32
   -- ^ `fXChromaOffset`
-  , yChromaOffset :: Word32
+  , fYChromaOffset :: Word32
   -- ^ `fYChromaOffset`
-  , chromaFilter :: Word32
+  , fChromaFilter :: Word32
   -- ^ `fChromaFilter`
-  , forceExplicitReconstruction :: Word32
+  , fForceExplicitReconstruction :: Word32
   -- ^ `fForceExplicitReconstruction`
-  , formatFeatures :: Word32
+  , fFormatFeatures :: Word32
   -- ^ `fFormatFeatures`
   } deriving (Show, Eq, Ord)
-instance Offset "format" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fFormat)
-instance Offset "externalFormat" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fExternalFormat)
-instance Offset "ycbcrModel" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fYcbcrModel)
-instance Offset "ycbcrRange" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fYcbcrRange)
-instance Offset "xChromaOffset" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fXChromaOffset)
-instance Offset "yChromaOffset" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fYChromaOffset)
-instance Offset "chromaFilter" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fChromaFilter)
-instance Offset "forceExplicitReconstruction" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fForceExplicitReconstruction)
-instance Offset "formatFeatures" GrVkYCbcRConversionInfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fFormatFeatures)
-instance Storable GrVkYCbcRConversionInfo where
+instance Offset "fFormat" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fFormat)
+instance Offset "fExternalFormat" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fExternalFormat)
+instance Offset "fYcbcrModel" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fYcbcrModel)
+instance Offset "fYcbcrRange" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fYcbcrRange)
+instance Offset "fXChromaOffset" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fXChromaOffset)
+instance Offset "fYChromaOffset" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fYChromaOffset)
+instance Offset "fChromaFilter" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fChromaFilter)
+instance Offset "fForceExplicitReconstruction" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fForceExplicitReconstruction)
+instance Offset "fFormatFeatures" Gr_vk_ycbcrconversioninfo where rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fFormatFeatures)
+instance Storable Gr_vk_ycbcrconversioninfo where
   sizeOf _ = (#size gr_vk_ycbcrconversioninfo_t)
   alignment _ = (#alignment gr_vk_ycbcrconversioninfo_t)
   peek in'ptr = do
-    format <- (#peek gr_vk_ycbcrconversioninfo_t, fFormat) in'ptr
-    externalFormat <- (#peek gr_vk_ycbcrconversioninfo_t, fExternalFormat) in'ptr
-    ycbcrModel <- (#peek gr_vk_ycbcrconversioninfo_t, fYcbcrModel) in'ptr
-    ycbcrRange <- (#peek gr_vk_ycbcrconversioninfo_t, fYcbcrRange) in'ptr
-    xChromaOffset <- (#peek gr_vk_ycbcrconversioninfo_t, fXChromaOffset) in'ptr
-    yChromaOffset <- (#peek gr_vk_ycbcrconversioninfo_t, fYChromaOffset) in'ptr
-    chromaFilter <- (#peek gr_vk_ycbcrconversioninfo_t, fChromaFilter) in'ptr
-    forceExplicitReconstruction <- (#peek gr_vk_ycbcrconversioninfo_t, fForceExplicitReconstruction) in'ptr
-    formatFeatures <- (#peek gr_vk_ycbcrconversioninfo_t, fFormatFeatures) in'ptr
-    pure GrVkYCbcRConversionInfo{..}
+    fFormat <- (#peek gr_vk_ycbcrconversioninfo_t, fFormat) in'ptr
+    fExternalFormat <- (#peek gr_vk_ycbcrconversioninfo_t, fExternalFormat) in'ptr
+    fYcbcrModel <- (#peek gr_vk_ycbcrconversioninfo_t, fYcbcrModel) in'ptr
+    fYcbcrRange <- (#peek gr_vk_ycbcrconversioninfo_t, fYcbcrRange) in'ptr
+    fXChromaOffset <- (#peek gr_vk_ycbcrconversioninfo_t, fXChromaOffset) in'ptr
+    fYChromaOffset <- (#peek gr_vk_ycbcrconversioninfo_t, fYChromaOffset) in'ptr
+    fChromaFilter <- (#peek gr_vk_ycbcrconversioninfo_t, fChromaFilter) in'ptr
+    fForceExplicitReconstruction <- (#peek gr_vk_ycbcrconversioninfo_t, fForceExplicitReconstruction) in'ptr
+    fFormatFeatures <- (#peek gr_vk_ycbcrconversioninfo_t, fFormatFeatures) in'ptr
+    pure Gr_vk_ycbcrconversioninfo{..}
   poke in'ptr in'value = do
-    (#poke gr_vk_ycbcrconversioninfo_t, fFormat) in'ptr in'value.format
-    (#poke gr_vk_ycbcrconversioninfo_t, fExternalFormat) in'ptr in'value.externalFormat
-    (#poke gr_vk_ycbcrconversioninfo_t, fYcbcrModel) in'ptr in'value.ycbcrModel
-    (#poke gr_vk_ycbcrconversioninfo_t, fYcbcrRange) in'ptr in'value.ycbcrRange
-    (#poke gr_vk_ycbcrconversioninfo_t, fXChromaOffset) in'ptr in'value.xChromaOffset
-    (#poke gr_vk_ycbcrconversioninfo_t, fYChromaOffset) in'ptr in'value.yChromaOffset
-    (#poke gr_vk_ycbcrconversioninfo_t, fChromaFilter) in'ptr in'value.chromaFilter
-    (#poke gr_vk_ycbcrconversioninfo_t, fForceExplicitReconstruction) in'ptr in'value.forceExplicitReconstruction
-    (#poke gr_vk_ycbcrconversioninfo_t, fFormatFeatures) in'ptr in'value.formatFeatures
+    (#poke gr_vk_ycbcrconversioninfo_t, fFormat) in'ptr in'value.fFormat
+    (#poke gr_vk_ycbcrconversioninfo_t, fExternalFormat) in'ptr in'value.fExternalFormat
+    (#poke gr_vk_ycbcrconversioninfo_t, fYcbcrModel) in'ptr in'value.fYcbcrModel
+    (#poke gr_vk_ycbcrconversioninfo_t, fYcbcrRange) in'ptr in'value.fYcbcrRange
+    (#poke gr_vk_ycbcrconversioninfo_t, fXChromaOffset) in'ptr in'value.fXChromaOffset
+    (#poke gr_vk_ycbcrconversioninfo_t, fYChromaOffset) in'ptr in'value.fYChromaOffset
+    (#poke gr_vk_ycbcrconversioninfo_t, fChromaFilter) in'ptr in'value.fChromaFilter
+    (#poke gr_vk_ycbcrconversioninfo_t, fForceExplicitReconstruction) in'ptr in'value.fForceExplicitReconstruction
+    (#poke gr_vk_ycbcrconversioninfo_t, fFormatFeatures) in'ptr in'value.fFormatFeatures
 -- | `gr_vk_imageinfo_t`
-data GrVkImageInfo = GrVkImageInfo
-  { image :: Word64
+data Gr_vk_imageinfo = Gr_vk_imageinfo
+  { fImage :: Word64
   -- ^ `fImage`
-  , alloc :: GrVkAlloc
+  , fAlloc :: Gr_vk_alloc
   -- ^ `fAlloc`
-  , imageTiling :: Word32
+  , fImageTiling :: Word32
   -- ^ `fImageTiling`
-  , imageLayout :: Word32
+  , fImageLayout :: Word32
   -- ^ `fImageLayout`
-  , format :: Word32
+  , fFormat :: Word32
   -- ^ `fFormat`
-  , imageUsageFlags :: Word32
+  , fImageUsageFlags :: Word32
   -- ^ `fImageUsageFlags`
-  , sampleCount :: Word32
+  , fSampleCount :: Word32
   -- ^ `fSampleCount`
-  , levelCount :: Word32
+  , fLevelCount :: Word32
   -- ^ `fLevelCount`
-  , currentQueueFamily :: Word32
+  , fCurrentQueueFamily :: Word32
   -- ^ `fCurrentQueueFamily`
-  , protected :: CBool
+  , fProtected :: CBool
   -- ^ `fProtected`
-  , ycbcrConversionInfo :: GrVkYCbcRConversionInfo
+  , fYcbcrConversionInfo :: Gr_vk_ycbcrconversioninfo
   -- ^ `fYcbcrConversionInfo`
-  , sharingMode :: Word32
+  , fSharingMode :: Word32
   -- ^ `fSharingMode`
   } deriving (Show, Eq, Ord)
-instance Offset "image" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fImage)
-instance Offset "alloc" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fAlloc)
-instance Offset "imageTiling" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fImageTiling)
-instance Offset "imageLayout" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fImageLayout)
-instance Offset "format" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fFormat)
-instance Offset "imageUsageFlags" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fImageUsageFlags)
-instance Offset "sampleCount" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fSampleCount)
-instance Offset "levelCount" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fLevelCount)
-instance Offset "currentQueueFamily" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fCurrentQueueFamily)
-instance Offset "protected" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fProtected)
-instance Offset "ycbcrConversionInfo" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fYcbcrConversionInfo)
-instance Offset "sharingMode" GrVkImageInfo where rawOffset = (#offset gr_vk_imageinfo_t, fSharingMode)
-instance Storable GrVkImageInfo where
+instance Offset "fImage" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fImage)
+instance Offset "fAlloc" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fAlloc)
+instance Offset "fImageTiling" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fImageTiling)
+instance Offset "fImageLayout" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fImageLayout)
+instance Offset "fFormat" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fFormat)
+instance Offset "fImageUsageFlags" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fImageUsageFlags)
+instance Offset "fSampleCount" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fSampleCount)
+instance Offset "fLevelCount" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fLevelCount)
+instance Offset "fCurrentQueueFamily" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fCurrentQueueFamily)
+instance Offset "fProtected" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fProtected)
+instance Offset "fYcbcrConversionInfo" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fYcbcrConversionInfo)
+instance Offset "fSharingMode" Gr_vk_imageinfo where rawOffset = (#offset gr_vk_imageinfo_t, fSharingMode)
+instance Storable Gr_vk_imageinfo where
   sizeOf _ = (#size gr_vk_imageinfo_t)
   alignment _ = (#alignment gr_vk_imageinfo_t)
   peek in'ptr = do
-    image <- (#peek gr_vk_imageinfo_t, fImage) in'ptr
-    alloc <- (#peek gr_vk_imageinfo_t, fAlloc) in'ptr
-    imageTiling <- (#peek gr_vk_imageinfo_t, fImageTiling) in'ptr
-    imageLayout <- (#peek gr_vk_imageinfo_t, fImageLayout) in'ptr
-    format <- (#peek gr_vk_imageinfo_t, fFormat) in'ptr
-    imageUsageFlags <- (#peek gr_vk_imageinfo_t, fImageUsageFlags) in'ptr
-    sampleCount <- (#peek gr_vk_imageinfo_t, fSampleCount) in'ptr
-    levelCount <- (#peek gr_vk_imageinfo_t, fLevelCount) in'ptr
-    currentQueueFamily <- (#peek gr_vk_imageinfo_t, fCurrentQueueFamily) in'ptr
-    protected <- (#peek gr_vk_imageinfo_t, fProtected) in'ptr
-    ycbcrConversionInfo <- (#peek gr_vk_imageinfo_t, fYcbcrConversionInfo) in'ptr
-    sharingMode <- (#peek gr_vk_imageinfo_t, fSharingMode) in'ptr
-    pure GrVkImageInfo{..}
+    fImage <- (#peek gr_vk_imageinfo_t, fImage) in'ptr
+    fAlloc <- (#peek gr_vk_imageinfo_t, fAlloc) in'ptr
+    fImageTiling <- (#peek gr_vk_imageinfo_t, fImageTiling) in'ptr
+    fImageLayout <- (#peek gr_vk_imageinfo_t, fImageLayout) in'ptr
+    fFormat <- (#peek gr_vk_imageinfo_t, fFormat) in'ptr
+    fImageUsageFlags <- (#peek gr_vk_imageinfo_t, fImageUsageFlags) in'ptr
+    fSampleCount <- (#peek gr_vk_imageinfo_t, fSampleCount) in'ptr
+    fLevelCount <- (#peek gr_vk_imageinfo_t, fLevelCount) in'ptr
+    fCurrentQueueFamily <- (#peek gr_vk_imageinfo_t, fCurrentQueueFamily) in'ptr
+    fProtected <- (#peek gr_vk_imageinfo_t, fProtected) in'ptr
+    fYcbcrConversionInfo <- (#peek gr_vk_imageinfo_t, fYcbcrConversionInfo) in'ptr
+    fSharingMode <- (#peek gr_vk_imageinfo_t, fSharingMode) in'ptr
+    pure Gr_vk_imageinfo{..}
   poke in'ptr in'value = do
-    (#poke gr_vk_imageinfo_t, fImage) in'ptr in'value.image
-    (#poke gr_vk_imageinfo_t, fAlloc) in'ptr in'value.alloc
-    (#poke gr_vk_imageinfo_t, fImageTiling) in'ptr in'value.imageTiling
-    (#poke gr_vk_imageinfo_t, fImageLayout) in'ptr in'value.imageLayout
-    (#poke gr_vk_imageinfo_t, fFormat) in'ptr in'value.format
-    (#poke gr_vk_imageinfo_t, fImageUsageFlags) in'ptr in'value.imageUsageFlags
-    (#poke gr_vk_imageinfo_t, fSampleCount) in'ptr in'value.sampleCount
-    (#poke gr_vk_imageinfo_t, fLevelCount) in'ptr in'value.levelCount
-    (#poke gr_vk_imageinfo_t, fCurrentQueueFamily) in'ptr in'value.currentQueueFamily
-    (#poke gr_vk_imageinfo_t, fProtected) in'ptr in'value.protected
-    (#poke gr_vk_imageinfo_t, fYcbcrConversionInfo) in'ptr in'value.ycbcrConversionInfo
-    (#poke gr_vk_imageinfo_t, fSharingMode) in'ptr in'value.sharingMode
+    (#poke gr_vk_imageinfo_t, fImage) in'ptr in'value.fImage
+    (#poke gr_vk_imageinfo_t, fAlloc) in'ptr in'value.fAlloc
+    (#poke gr_vk_imageinfo_t, fImageTiling) in'ptr in'value.fImageTiling
+    (#poke gr_vk_imageinfo_t, fImageLayout) in'ptr in'value.fImageLayout
+    (#poke gr_vk_imageinfo_t, fFormat) in'ptr in'value.fFormat
+    (#poke gr_vk_imageinfo_t, fImageUsageFlags) in'ptr in'value.fImageUsageFlags
+    (#poke gr_vk_imageinfo_t, fSampleCount) in'ptr in'value.fSampleCount
+    (#poke gr_vk_imageinfo_t, fLevelCount) in'ptr in'value.fLevelCount
+    (#poke gr_vk_imageinfo_t, fCurrentQueueFamily) in'ptr in'value.fCurrentQueueFamily
+    (#poke gr_vk_imageinfo_t, fProtected) in'ptr in'value.fProtected
+    (#poke gr_vk_imageinfo_t, fYcbcrConversionInfo) in'ptr in'value.fYcbcrConversionInfo
+    (#poke gr_vk_imageinfo_t, fSharingMode) in'ptr in'value.fSharingMode
 -- | `gr_mtl_textureinfo_t`
-data GrMtLTextureInfo = GrMtLTextureInfo
-  { texture :: Ptr (())
+data Gr_mtl_textureinfo = Gr_mtl_textureinfo
+  { fTexture :: Ptr (())
   -- ^ `fTexture`
   } deriving (Show, Eq, Ord)
-instance Offset "texture" GrMtLTextureInfo where rawOffset = (#offset gr_mtl_textureinfo_t, fTexture)
-instance Storable GrMtLTextureInfo where
+instance Offset "fTexture" Gr_mtl_textureinfo where rawOffset = (#offset gr_mtl_textureinfo_t, fTexture)
+instance Storable Gr_mtl_textureinfo where
   sizeOf _ = (#size gr_mtl_textureinfo_t)
   alignment _ = (#alignment gr_mtl_textureinfo_t)
   peek in'ptr = do
-    texture <- (#peek gr_mtl_textureinfo_t, fTexture) in'ptr
-    pure GrMtLTextureInfo{..}
+    fTexture <- (#peek gr_mtl_textureinfo_t, fTexture) in'ptr
+    pure Gr_mtl_textureinfo{..}
   poke in'ptr in'value = do
-    (#poke gr_mtl_textureinfo_t, fTexture) in'ptr in'value.texture
+    (#poke gr_mtl_textureinfo_t, fTexture) in'ptr in'value.fTexture
 -- | `sk_pathop_t`
-newtype SkPathOp = SkPathOp (#type sk_pathop_t)
+newtype Sk_pathop = Sk_pathop (#type sk_pathop_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `DIFFERENCE_SK_PATHOP`
-skPathOp'Difference :: SkPathOp
-skPathOp'Difference = #const DIFFERENCE_SK_PATHOP
+sk_pathop'DIFFERENCE_SK_PATHOP :: Sk_pathop
+sk_pathop'DIFFERENCE_SK_PATHOP = #const DIFFERENCE_SK_PATHOP
 -- | `INTERSECT_SK_PATHOP`
-skPathOp'Intersect :: SkPathOp
-skPathOp'Intersect = #const INTERSECT_SK_PATHOP
+sk_pathop'INTERSECT_SK_PATHOP :: Sk_pathop
+sk_pathop'INTERSECT_SK_PATHOP = #const INTERSECT_SK_PATHOP
 -- | `UNION_SK_PATHOP`
-skPathOp'Union :: SkPathOp
-skPathOp'Union = #const UNION_SK_PATHOP
+sk_pathop'UNION_SK_PATHOP :: Sk_pathop
+sk_pathop'UNION_SK_PATHOP = #const UNION_SK_PATHOP
 -- | `XOR_SK_PATHOP`
-skPathOp'Xor :: SkPathOp
-skPathOp'Xor = #const XOR_SK_PATHOP
+sk_pathop'XOR_SK_PATHOP :: Sk_pathop
+sk_pathop'XOR_SK_PATHOP = #const XOR_SK_PATHOP
 -- | `REVERSE_DIFFERENCE_SK_PATHOP`
-skPathOp'ReverseDifference :: SkPathOp
-skPathOp'ReverseDifference = #const REVERSE_DIFFERENCE_SK_PATHOP
+sk_pathop'REVERSE_DIFFERENCE_SK_PATHOP :: Sk_pathop
+sk_pathop'REVERSE_DIFFERENCE_SK_PATHOP = #const REVERSE_DIFFERENCE_SK_PATHOP
 -- | `sk_opbuilder_t`
-data SkOpBuilder = SkOpBuilder
+data Sk_opbuilder = Sk_opbuilder
   deriving (Show, Eq, Ord)
 -- | `sk_lattice_recttype_t`
-newtype SkLatticeRectType = SkLatticeRectType (#type sk_lattice_recttype_t)
+newtype Sk_lattice_recttype = Sk_lattice_recttype (#type sk_lattice_recttype_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `DEFAULT_SK_LATTICE_RECT_TYPE`
-skLatticeRectType'Default :: SkLatticeRectType
-skLatticeRectType'Default = #const DEFAULT_SK_LATTICE_RECT_TYPE
+sk_lattice_recttype'DEFAULT_SK_LATTICE_RECT_TYPE :: Sk_lattice_recttype
+sk_lattice_recttype'DEFAULT_SK_LATTICE_RECT_TYPE = #const DEFAULT_SK_LATTICE_RECT_TYPE
 -- | `TRANSPARENT_SK_LATTICE_RECT_TYPE`
-skLatticeRectType'Transparent :: SkLatticeRectType
-skLatticeRectType'Transparent = #const TRANSPARENT_SK_LATTICE_RECT_TYPE
+sk_lattice_recttype'TRANSPARENT_SK_LATTICE_RECT_TYPE :: Sk_lattice_recttype
+sk_lattice_recttype'TRANSPARENT_SK_LATTICE_RECT_TYPE = #const TRANSPARENT_SK_LATTICE_RECT_TYPE
 -- | `FIXED_COLOR_SK_LATTICE_RECT_TYPE`
-skLatticeRectType'FixedColor :: SkLatticeRectType
-skLatticeRectType'FixedColor = #const FIXED_COLOR_SK_LATTICE_RECT_TYPE
+sk_lattice_recttype'FIXED_COLOR_SK_LATTICE_RECT_TYPE :: Sk_lattice_recttype
+sk_lattice_recttype'FIXED_COLOR_SK_LATTICE_RECT_TYPE = #const FIXED_COLOR_SK_LATTICE_RECT_TYPE
 -- | `sk_lattice_t`
-data SkLattice = SkLattice
-  { xDivs :: Ptr (CInt)
+data Sk_lattice = Sk_lattice
+  { fXDivs :: Ptr (CInt)
   -- ^ `fXDivs`
-  , yDivs :: Ptr (CInt)
+  , fYDivs :: Ptr (CInt)
   -- ^ `fYDivs`
-  , rectTypes :: Ptr (SkLatticeRectType)
+  , fRectTypes :: Ptr (Sk_lattice_recttype)
   -- ^ `fRectTypes`
-  , xCount :: CInt
+  , fXCount :: CInt
   -- ^ `fXCount`
-  , yCount :: CInt
+  , fYCount :: CInt
   -- ^ `fYCount`
-  , bounds :: Ptr (SkIRect)
+  , fBounds :: Ptr (Sk_irect)
   -- ^ `fBounds`
-  , colors :: Ptr (SkColor)
+  , fColors :: Ptr (Sk_color)
   -- ^ `fColors`
   } deriving (Show, Eq, Ord)
-instance Offset "xDivs" SkLattice where rawOffset = (#offset sk_lattice_t, fXDivs)
-instance Offset "yDivs" SkLattice where rawOffset = (#offset sk_lattice_t, fYDivs)
-instance Offset "rectTypes" SkLattice where rawOffset = (#offset sk_lattice_t, fRectTypes)
-instance Offset "xCount" SkLattice where rawOffset = (#offset sk_lattice_t, fXCount)
-instance Offset "yCount" SkLattice where rawOffset = (#offset sk_lattice_t, fYCount)
-instance Offset "bounds" SkLattice where rawOffset = (#offset sk_lattice_t, fBounds)
-instance Offset "colors" SkLattice where rawOffset = (#offset sk_lattice_t, fColors)
-instance Storable SkLattice where
+instance Offset "fXDivs" Sk_lattice where rawOffset = (#offset sk_lattice_t, fXDivs)
+instance Offset "fYDivs" Sk_lattice where rawOffset = (#offset sk_lattice_t, fYDivs)
+instance Offset "fRectTypes" Sk_lattice where rawOffset = (#offset sk_lattice_t, fRectTypes)
+instance Offset "fXCount" Sk_lattice where rawOffset = (#offset sk_lattice_t, fXCount)
+instance Offset "fYCount" Sk_lattice where rawOffset = (#offset sk_lattice_t, fYCount)
+instance Offset "fBounds" Sk_lattice where rawOffset = (#offset sk_lattice_t, fBounds)
+instance Offset "fColors" Sk_lattice where rawOffset = (#offset sk_lattice_t, fColors)
+instance Storable Sk_lattice where
   sizeOf _ = (#size sk_lattice_t)
   alignment _ = (#alignment sk_lattice_t)
   peek in'ptr = do
-    xDivs <- (#peek sk_lattice_t, fXDivs) in'ptr
-    yDivs <- (#peek sk_lattice_t, fYDivs) in'ptr
-    rectTypes <- (#peek sk_lattice_t, fRectTypes) in'ptr
-    xCount <- (#peek sk_lattice_t, fXCount) in'ptr
-    yCount <- (#peek sk_lattice_t, fYCount) in'ptr
-    bounds <- (#peek sk_lattice_t, fBounds) in'ptr
-    colors <- (#peek sk_lattice_t, fColors) in'ptr
-    pure SkLattice{..}
+    fXDivs <- (#peek sk_lattice_t, fXDivs) in'ptr
+    fYDivs <- (#peek sk_lattice_t, fYDivs) in'ptr
+    fRectTypes <- (#peek sk_lattice_t, fRectTypes) in'ptr
+    fXCount <- (#peek sk_lattice_t, fXCount) in'ptr
+    fYCount <- (#peek sk_lattice_t, fYCount) in'ptr
+    fBounds <- (#peek sk_lattice_t, fBounds) in'ptr
+    fColors <- (#peek sk_lattice_t, fColors) in'ptr
+    pure Sk_lattice{..}
   poke in'ptr in'value = do
-    (#poke sk_lattice_t, fXDivs) in'ptr in'value.xDivs
-    (#poke sk_lattice_t, fYDivs) in'ptr in'value.yDivs
-    (#poke sk_lattice_t, fRectTypes) in'ptr in'value.rectTypes
-    (#poke sk_lattice_t, fXCount) in'ptr in'value.xCount
-    (#poke sk_lattice_t, fYCount) in'ptr in'value.yCount
-    (#poke sk_lattice_t, fBounds) in'ptr in'value.bounds
-    (#poke sk_lattice_t, fColors) in'ptr in'value.colors
+    (#poke sk_lattice_t, fXDivs) in'ptr in'value.fXDivs
+    (#poke sk_lattice_t, fYDivs) in'ptr in'value.fYDivs
+    (#poke sk_lattice_t, fRectTypes) in'ptr in'value.fRectTypes
+    (#poke sk_lattice_t, fXCount) in'ptr in'value.fXCount
+    (#poke sk_lattice_t, fYCount) in'ptr in'value.fYCount
+    (#poke sk_lattice_t, fBounds) in'ptr in'value.fBounds
+    (#poke sk_lattice_t, fColors) in'ptr in'value.fColors
 -- | `sk_pathmeasure_t`
-data SkPathMeasure = SkPathMeasure
+data Sk_pathmeasure = Sk_pathmeasure
   deriving (Show, Eq, Ord)
 -- | `sk_pathmeasure_matrixflags_t`
-newtype SkPathMeasureMatrixFlags = SkPathMeasureMatrixFlags (#type sk_pathmeasure_matrixflags_t)
+newtype Sk_pathmeasure_matrixflags = Sk_pathmeasure_matrixflags (#type sk_pathmeasure_matrixflags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS`
-skPathMeasureMatrixFlags'GetPosition :: SkPathMeasureMatrixFlags
-skPathMeasureMatrixFlags'GetPosition = #const GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS
+sk_pathmeasure_matrixflags'GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS :: Sk_pathmeasure_matrixflags
+sk_pathmeasure_matrixflags'GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS = #const GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS
 -- | `GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS`
-skPathMeasureMatrixFlags'GetTangent :: SkPathMeasureMatrixFlags
-skPathMeasureMatrixFlags'GetTangent = #const GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS
+sk_pathmeasure_matrixflags'GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS :: Sk_pathmeasure_matrixflags
+sk_pathmeasure_matrixflags'GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS = #const GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS
 -- | `GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS`
-skPathMeasureMatrixFlags'GetPosAndTan :: SkPathMeasureMatrixFlags
-skPathMeasureMatrixFlags'GetPosAndTan = #const GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS
+sk_pathmeasure_matrixflags'GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS :: Sk_pathmeasure_matrixflags
+sk_pathmeasure_matrixflags'GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS = #const GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS
 -- | `sk_bitmap_release_proc`
-type SkBitmapReleaseProc = (Ptr (())) -> (Ptr (())) -> IO (())
+type Sk_bitmap_release_proc = (Ptr (())) -> (Ptr (())) -> IO (())
 -- | `sk_data_release_proc`
-type SkDataReleaseProc = (Ptr (())) -> (Ptr (())) -> IO (())
+type Sk_data_release_proc = (Ptr (())) -> (Ptr (())) -> IO (())
 -- | `sk_image_raster_release_proc`
-type SkImageRasterReleaseProc = (Ptr (())) -> (Ptr (())) -> IO (())
+type Sk_image_raster_release_proc = (Ptr (())) -> (Ptr (())) -> IO (())
 -- | `sk_image_texture_release_proc`
-type SkImageTextureReleaseProc = (Ptr (())) -> IO (())
+type Sk_image_texture_release_proc = (Ptr (())) -> IO (())
 -- | `sk_surface_raster_release_proc`
-type SkSurfaceRasterReleaseProc = (Ptr (())) -> (Ptr (())) -> IO (())
+type Sk_surface_raster_release_proc = (Ptr (())) -> (Ptr (())) -> IO (())
 -- | `sk_glyph_path_proc`
-type SkGlyphPathProc = (Ptr (SkPath)) -> (Ptr (SkMatrix)) -> (Ptr (())) -> IO (())
+type Sk_glyph_path_proc = (Ptr (Sk_path)) -> (Ptr (Sk_matrix)) -> (Ptr (())) -> IO (())
 -- | `sk_image_caching_hint_t`
-newtype SkImageCachingHint = SkImageCachingHint (#type sk_image_caching_hint_t)
+newtype Sk_image_caching_hint = Sk_image_caching_hint (#type sk_image_caching_hint_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `ALLOW_SK_IMAGE_CACHING_HINT`
-skImageCachingHint'Allow :: SkImageCachingHint
-skImageCachingHint'Allow = #const ALLOW_SK_IMAGE_CACHING_HINT
+sk_image_caching_hint'ALLOW_SK_IMAGE_CACHING_HINT :: Sk_image_caching_hint
+sk_image_caching_hint'ALLOW_SK_IMAGE_CACHING_HINT = #const ALLOW_SK_IMAGE_CACHING_HINT
 -- | `DISALLOW_SK_IMAGE_CACHING_HINT`
-skImageCachingHint'Disallow :: SkImageCachingHint
-skImageCachingHint'Disallow = #const DISALLOW_SK_IMAGE_CACHING_HINT
+sk_image_caching_hint'DISALLOW_SK_IMAGE_CACHING_HINT :: Sk_image_caching_hint
+sk_image_caching_hint'DISALLOW_SK_IMAGE_CACHING_HINT = #const DISALLOW_SK_IMAGE_CACHING_HINT
 -- | `sk_bitmap_allocflags_t`
-newtype SkBitmapAllocFlags = SkBitmapAllocFlags (#type sk_bitmap_allocflags_t)
+newtype Sk_bitmap_allocflags = Sk_bitmap_allocflags (#type sk_bitmap_allocflags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NONE_SK_BITMAP_ALLOC_FLAGS`
-skBitmapAllocFlags'None :: SkBitmapAllocFlags
-skBitmapAllocFlags'None = #const NONE_SK_BITMAP_ALLOC_FLAGS
+sk_bitmap_allocflags'NONE_SK_BITMAP_ALLOC_FLAGS :: Sk_bitmap_allocflags
+sk_bitmap_allocflags'NONE_SK_BITMAP_ALLOC_FLAGS = #const NONE_SK_BITMAP_ALLOC_FLAGS
 -- | `ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS`
-skBitmapAllocFlags'ZeroPixels :: SkBitmapAllocFlags
-skBitmapAllocFlags'ZeroPixels = #const ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS
+sk_bitmap_allocflags'ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS :: Sk_bitmap_allocflags
+sk_bitmap_allocflags'ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS = #const ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS
 -- | `sk_document_pdf_datetime_t`
-data SkDocumentPdfDateTime = SkDocumentPdfDateTime
-  { timeZoneMinutes :: Int16
+data Sk_document_pdf_datetime = Sk_document_pdf_datetime
+  { fTimeZoneMinutes :: Int16
   -- ^ `fTimeZoneMinutes`
-  , year :: Word16
+  , fYear :: Word16
   -- ^ `fYear`
-  , month :: Word8
+  , fMonth :: Word8
   -- ^ `fMonth`
-  , dayOfWeek :: Word8
+  , fDayOfWeek :: Word8
   -- ^ `fDayOfWeek`
-  , day :: Word8
+  , fDay :: Word8
   -- ^ `fDay`
-  , hour :: Word8
+  , fHour :: Word8
   -- ^ `fHour`
-  , minute :: Word8
+  , fMinute :: Word8
   -- ^ `fMinute`
-  , second :: Word8
+  , fSecond :: Word8
   -- ^ `fSecond`
   } deriving (Show, Eq, Ord)
-instance Offset "timeZoneMinutes" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fTimeZoneMinutes)
-instance Offset "year" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fYear)
-instance Offset "month" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fMonth)
-instance Offset "dayOfWeek" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fDayOfWeek)
-instance Offset "day" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fDay)
-instance Offset "hour" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fHour)
-instance Offset "minute" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fMinute)
-instance Offset "second" SkDocumentPdfDateTime where rawOffset = (#offset sk_document_pdf_datetime_t, fSecond)
-instance Storable SkDocumentPdfDateTime where
+instance Offset "fTimeZoneMinutes" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fTimeZoneMinutes)
+instance Offset "fYear" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fYear)
+instance Offset "fMonth" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fMonth)
+instance Offset "fDayOfWeek" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fDayOfWeek)
+instance Offset "fDay" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fDay)
+instance Offset "fHour" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fHour)
+instance Offset "fMinute" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fMinute)
+instance Offset "fSecond" Sk_document_pdf_datetime where rawOffset = (#offset sk_document_pdf_datetime_t, fSecond)
+instance Storable Sk_document_pdf_datetime where
   sizeOf _ = (#size sk_document_pdf_datetime_t)
   alignment _ = (#alignment sk_document_pdf_datetime_t)
   peek in'ptr = do
-    timeZoneMinutes <- (#peek sk_document_pdf_datetime_t, fTimeZoneMinutes) in'ptr
-    year <- (#peek sk_document_pdf_datetime_t, fYear) in'ptr
-    month <- (#peek sk_document_pdf_datetime_t, fMonth) in'ptr
-    dayOfWeek <- (#peek sk_document_pdf_datetime_t, fDayOfWeek) in'ptr
-    day <- (#peek sk_document_pdf_datetime_t, fDay) in'ptr
-    hour <- (#peek sk_document_pdf_datetime_t, fHour) in'ptr
-    minute <- (#peek sk_document_pdf_datetime_t, fMinute) in'ptr
-    second <- (#peek sk_document_pdf_datetime_t, fSecond) in'ptr
-    pure SkDocumentPdfDateTime{..}
+    fTimeZoneMinutes <- (#peek sk_document_pdf_datetime_t, fTimeZoneMinutes) in'ptr
+    fYear <- (#peek sk_document_pdf_datetime_t, fYear) in'ptr
+    fMonth <- (#peek sk_document_pdf_datetime_t, fMonth) in'ptr
+    fDayOfWeek <- (#peek sk_document_pdf_datetime_t, fDayOfWeek) in'ptr
+    fDay <- (#peek sk_document_pdf_datetime_t, fDay) in'ptr
+    fHour <- (#peek sk_document_pdf_datetime_t, fHour) in'ptr
+    fMinute <- (#peek sk_document_pdf_datetime_t, fMinute) in'ptr
+    fSecond <- (#peek sk_document_pdf_datetime_t, fSecond) in'ptr
+    pure Sk_document_pdf_datetime{..}
   poke in'ptr in'value = do
-    (#poke sk_document_pdf_datetime_t, fTimeZoneMinutes) in'ptr in'value.timeZoneMinutes
-    (#poke sk_document_pdf_datetime_t, fYear) in'ptr in'value.year
-    (#poke sk_document_pdf_datetime_t, fMonth) in'ptr in'value.month
-    (#poke sk_document_pdf_datetime_t, fDayOfWeek) in'ptr in'value.dayOfWeek
-    (#poke sk_document_pdf_datetime_t, fDay) in'ptr in'value.day
-    (#poke sk_document_pdf_datetime_t, fHour) in'ptr in'value.hour
-    (#poke sk_document_pdf_datetime_t, fMinute) in'ptr in'value.minute
-    (#poke sk_document_pdf_datetime_t, fSecond) in'ptr in'value.second
+    (#poke sk_document_pdf_datetime_t, fTimeZoneMinutes) in'ptr in'value.fTimeZoneMinutes
+    (#poke sk_document_pdf_datetime_t, fYear) in'ptr in'value.fYear
+    (#poke sk_document_pdf_datetime_t, fMonth) in'ptr in'value.fMonth
+    (#poke sk_document_pdf_datetime_t, fDayOfWeek) in'ptr in'value.fDayOfWeek
+    (#poke sk_document_pdf_datetime_t, fDay) in'ptr in'value.fDay
+    (#poke sk_document_pdf_datetime_t, fHour) in'ptr in'value.fHour
+    (#poke sk_document_pdf_datetime_t, fMinute) in'ptr in'value.fMinute
+    (#poke sk_document_pdf_datetime_t, fSecond) in'ptr in'value.fSecond
 -- | `sk_document_pdf_metadata_t`
-data SkDocumentPdfMetadata = SkDocumentPdfMetadata
-  { title :: Ptr (SkString)
+data Sk_document_pdf_metadata = Sk_document_pdf_metadata
+  { fTitle :: Ptr (Sk_string)
   -- ^ `fTitle`
-  , author :: Ptr (SkString)
+  , fAuthor :: Ptr (Sk_string)
   -- ^ `fAuthor`
-  , subject :: Ptr (SkString)
+  , fSubject :: Ptr (Sk_string)
   -- ^ `fSubject`
-  , keywords :: Ptr (SkString)
+  , fKeywords :: Ptr (Sk_string)
   -- ^ `fKeywords`
-  , creator :: Ptr (SkString)
+  , fCreator :: Ptr (Sk_string)
   -- ^ `fCreator`
-  , producer :: Ptr (SkString)
+  , fProducer :: Ptr (Sk_string)
   -- ^ `fProducer`
-  , creation :: Ptr (SkDocumentPdfDateTime)
+  , fCreation :: Ptr (Sk_document_pdf_datetime)
   -- ^ `fCreation`
-  , modified :: Ptr (SkDocumentPdfDateTime)
+  , fModified :: Ptr (Sk_document_pdf_datetime)
   -- ^ `fModified`
-  , rasterDPI :: CFloat
+  , fRasterDPI :: CFloat
   -- ^ `fRasterDPI`
-  , pdfa :: CBool
+  , fPDFA :: CBool
   -- ^ `fPDFA`
-  , encodingQuality :: CInt
+  , fEncodingQuality :: CInt
   -- ^ `fEncodingQuality`
   } deriving (Show, Eq, Ord)
-instance Offset "title" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fTitle)
-instance Offset "author" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fAuthor)
-instance Offset "subject" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fSubject)
-instance Offset "keywords" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fKeywords)
-instance Offset "creator" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fCreator)
-instance Offset "producer" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fProducer)
-instance Offset "creation" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fCreation)
-instance Offset "modified" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fModified)
-instance Offset "rasterDPI" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fRasterDPI)
-instance Offset "pdfa" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fPDFA)
-instance Offset "encodingQuality" SkDocumentPdfMetadata where rawOffset = (#offset sk_document_pdf_metadata_t, fEncodingQuality)
-instance Storable SkDocumentPdfMetadata where
+instance Offset "fTitle" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fTitle)
+instance Offset "fAuthor" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fAuthor)
+instance Offset "fSubject" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fSubject)
+instance Offset "fKeywords" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fKeywords)
+instance Offset "fCreator" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fCreator)
+instance Offset "fProducer" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fProducer)
+instance Offset "fCreation" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fCreation)
+instance Offset "fModified" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fModified)
+instance Offset "fRasterDPI" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fRasterDPI)
+instance Offset "fPDFA" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fPDFA)
+instance Offset "fEncodingQuality" Sk_document_pdf_metadata where rawOffset = (#offset sk_document_pdf_metadata_t, fEncodingQuality)
+instance Storable Sk_document_pdf_metadata where
   sizeOf _ = (#size sk_document_pdf_metadata_t)
   alignment _ = (#alignment sk_document_pdf_metadata_t)
   peek in'ptr = do
-    title <- (#peek sk_document_pdf_metadata_t, fTitle) in'ptr
-    author <- (#peek sk_document_pdf_metadata_t, fAuthor) in'ptr
-    subject <- (#peek sk_document_pdf_metadata_t, fSubject) in'ptr
-    keywords <- (#peek sk_document_pdf_metadata_t, fKeywords) in'ptr
-    creator <- (#peek sk_document_pdf_metadata_t, fCreator) in'ptr
-    producer <- (#peek sk_document_pdf_metadata_t, fProducer) in'ptr
-    creation <- (#peek sk_document_pdf_metadata_t, fCreation) in'ptr
-    modified <- (#peek sk_document_pdf_metadata_t, fModified) in'ptr
-    rasterDPI <- (#peek sk_document_pdf_metadata_t, fRasterDPI) in'ptr
-    pdfa <- (#peek sk_document_pdf_metadata_t, fPDFA) in'ptr
-    encodingQuality <- (#peek sk_document_pdf_metadata_t, fEncodingQuality) in'ptr
-    pure SkDocumentPdfMetadata{..}
+    fTitle <- (#peek sk_document_pdf_metadata_t, fTitle) in'ptr
+    fAuthor <- (#peek sk_document_pdf_metadata_t, fAuthor) in'ptr
+    fSubject <- (#peek sk_document_pdf_metadata_t, fSubject) in'ptr
+    fKeywords <- (#peek sk_document_pdf_metadata_t, fKeywords) in'ptr
+    fCreator <- (#peek sk_document_pdf_metadata_t, fCreator) in'ptr
+    fProducer <- (#peek sk_document_pdf_metadata_t, fProducer) in'ptr
+    fCreation <- (#peek sk_document_pdf_metadata_t, fCreation) in'ptr
+    fModified <- (#peek sk_document_pdf_metadata_t, fModified) in'ptr
+    fRasterDPI <- (#peek sk_document_pdf_metadata_t, fRasterDPI) in'ptr
+    fPDFA <- (#peek sk_document_pdf_metadata_t, fPDFA) in'ptr
+    fEncodingQuality <- (#peek sk_document_pdf_metadata_t, fEncodingQuality) in'ptr
+    pure Sk_document_pdf_metadata{..}
   poke in'ptr in'value = do
-    (#poke sk_document_pdf_metadata_t, fTitle) in'ptr in'value.title
-    (#poke sk_document_pdf_metadata_t, fAuthor) in'ptr in'value.author
-    (#poke sk_document_pdf_metadata_t, fSubject) in'ptr in'value.subject
-    (#poke sk_document_pdf_metadata_t, fKeywords) in'ptr in'value.keywords
-    (#poke sk_document_pdf_metadata_t, fCreator) in'ptr in'value.creator
-    (#poke sk_document_pdf_metadata_t, fProducer) in'ptr in'value.producer
-    (#poke sk_document_pdf_metadata_t, fCreation) in'ptr in'value.creation
-    (#poke sk_document_pdf_metadata_t, fModified) in'ptr in'value.modified
-    (#poke sk_document_pdf_metadata_t, fRasterDPI) in'ptr in'value.rasterDPI
-    (#poke sk_document_pdf_metadata_t, fPDFA) in'ptr in'value.pdfa
-    (#poke sk_document_pdf_metadata_t, fEncodingQuality) in'ptr in'value.encodingQuality
+    (#poke sk_document_pdf_metadata_t, fTitle) in'ptr in'value.fTitle
+    (#poke sk_document_pdf_metadata_t, fAuthor) in'ptr in'value.fAuthor
+    (#poke sk_document_pdf_metadata_t, fSubject) in'ptr in'value.fSubject
+    (#poke sk_document_pdf_metadata_t, fKeywords) in'ptr in'value.fKeywords
+    (#poke sk_document_pdf_metadata_t, fCreator) in'ptr in'value.fCreator
+    (#poke sk_document_pdf_metadata_t, fProducer) in'ptr in'value.fProducer
+    (#poke sk_document_pdf_metadata_t, fCreation) in'ptr in'value.fCreation
+    (#poke sk_document_pdf_metadata_t, fModified) in'ptr in'value.fModified
+    (#poke sk_document_pdf_metadata_t, fRasterDPI) in'ptr in'value.fRasterDPI
+    (#poke sk_document_pdf_metadata_t, fPDFA) in'ptr in'value.fPDFA
+    (#poke sk_document_pdf_metadata_t, fEncodingQuality) in'ptr in'value.fEncodingQuality
 -- | `sk_imageinfo_t`
-data SkImageInfo = SkImageInfo
-  { colorspace :: Ptr (SkColorSpace)
+data Sk_imageinfo = Sk_imageinfo
+  { colorspace :: Ptr (Sk_colorspace)
   -- ^ `colorspace`
   , width :: Int32
   -- ^ `width`
   , height :: Int32
   -- ^ `height`
-  , colorType :: SkColorType
+  , colorType :: Sk_colortype
   -- ^ `colorType`
-  , alphaType :: SkAlphaType
+  , alphaType :: Sk_alphatype
   -- ^ `alphaType`
   } deriving (Show, Eq, Ord)
-instance Offset "colorspace" SkImageInfo where rawOffset = (#offset sk_imageinfo_t, colorspace)
-instance Offset "width" SkImageInfo where rawOffset = (#offset sk_imageinfo_t, width)
-instance Offset "height" SkImageInfo where rawOffset = (#offset sk_imageinfo_t, height)
-instance Offset "colorType" SkImageInfo where rawOffset = (#offset sk_imageinfo_t, colorType)
-instance Offset "alphaType" SkImageInfo where rawOffset = (#offset sk_imageinfo_t, alphaType)
-instance Storable SkImageInfo where
+instance Offset "colorspace" Sk_imageinfo where rawOffset = (#offset sk_imageinfo_t, colorspace)
+instance Offset "width" Sk_imageinfo where rawOffset = (#offset sk_imageinfo_t, width)
+instance Offset "height" Sk_imageinfo where rawOffset = (#offset sk_imageinfo_t, height)
+instance Offset "colorType" Sk_imageinfo where rawOffset = (#offset sk_imageinfo_t, colorType)
+instance Offset "alphaType" Sk_imageinfo where rawOffset = (#offset sk_imageinfo_t, alphaType)
+instance Storable Sk_imageinfo where
   sizeOf _ = (#size sk_imageinfo_t)
   alignment _ = (#alignment sk_imageinfo_t)
   peek in'ptr = do
@@ -1953,7 +1953,7 @@ instance Storable SkImageInfo where
     height <- (#peek sk_imageinfo_t, height) in'ptr
     colorType <- (#peek sk_imageinfo_t, colorType) in'ptr
     alphaType <- (#peek sk_imageinfo_t, alphaType) in'ptr
-    pure SkImageInfo{..}
+    pure Sk_imageinfo{..}
   poke in'ptr in'value = do
     (#poke sk_imageinfo_t, colorspace) in'ptr in'value.colorspace
     (#poke sk_imageinfo_t, width) in'ptr in'value.width
@@ -1961,482 +1961,482 @@ instance Storable SkImageInfo where
     (#poke sk_imageinfo_t, colorType) in'ptr in'value.colorType
     (#poke sk_imageinfo_t, alphaType) in'ptr in'value.alphaType
 -- | `sk_codecanimation_disposalmethod_t`
-newtype SkCodecAnimationDisposalMethod = SkCodecAnimationDisposalMethod (#type sk_codecanimation_disposalmethod_t)
+newtype Sk_codecanimation_disposalmethod = Sk_codecanimation_disposalmethod (#type sk_codecanimation_disposalmethod_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD`
-skCodecAnimationDisposalMethod'Keep :: SkCodecAnimationDisposalMethod
-skCodecAnimationDisposalMethod'Keep = #const KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD
+sk_codecanimation_disposalmethod'KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD :: Sk_codecanimation_disposalmethod
+sk_codecanimation_disposalmethod'KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD = #const KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD
 -- | `RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD`
-skCodecAnimationDisposalMethod'RestoreBgColor :: SkCodecAnimationDisposalMethod
-skCodecAnimationDisposalMethod'RestoreBgColor = #const RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD
+sk_codecanimation_disposalmethod'RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD :: Sk_codecanimation_disposalmethod
+sk_codecanimation_disposalmethod'RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD = #const RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD
 -- | `RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD`
-skCodecAnimationDisposalMethod'RestorePrevious :: SkCodecAnimationDisposalMethod
-skCodecAnimationDisposalMethod'RestorePrevious = #const RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD
+sk_codecanimation_disposalmethod'RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD :: Sk_codecanimation_disposalmethod
+sk_codecanimation_disposalmethod'RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD = #const RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD
 -- | `sk_codecanimation_blend_t`
-newtype SkCodecAnimationBlend = SkCodecAnimationBlend (#type sk_codecanimation_blend_t)
+newtype Sk_codecanimation_blend = Sk_codecanimation_blend (#type sk_codecanimation_blend_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `SRC_OVER_SK_CODEC_ANIMATION_BLEND`
-skCodecAnimationBlend'SrcOver :: SkCodecAnimationBlend
-skCodecAnimationBlend'SrcOver = #const SRC_OVER_SK_CODEC_ANIMATION_BLEND
+sk_codecanimation_blend'SRC_OVER_SK_CODEC_ANIMATION_BLEND :: Sk_codecanimation_blend
+sk_codecanimation_blend'SRC_OVER_SK_CODEC_ANIMATION_BLEND = #const SRC_OVER_SK_CODEC_ANIMATION_BLEND
 -- | `SRC_SK_CODEC_ANIMATION_BLEND`
-skCodecAnimationBlend'Src :: SkCodecAnimationBlend
-skCodecAnimationBlend'Src = #const SRC_SK_CODEC_ANIMATION_BLEND
+sk_codecanimation_blend'SRC_SK_CODEC_ANIMATION_BLEND :: Sk_codecanimation_blend
+sk_codecanimation_blend'SRC_SK_CODEC_ANIMATION_BLEND = #const SRC_SK_CODEC_ANIMATION_BLEND
 -- | `sk_codec_frameinfo_t`
-data SkCodecFrameInfo = SkCodecFrameInfo
-  { requiredFrame :: CInt
+data Sk_codec_frameinfo = Sk_codec_frameinfo
+  { fRequiredFrame :: CInt
   -- ^ `fRequiredFrame`
-  , duration :: CInt
+  , fDuration :: CInt
   -- ^ `fDuration`
-  , fullyReceived :: CBool
+  , fFullyReceived :: CBool
   -- ^ `fFullyReceived`
-  , alphaType :: SkAlphaType
+  , fAlphaType :: Sk_alphatype
   -- ^ `fAlphaType`
-  , hasAlphaWithinBounds :: CBool
+  , fHasAlphaWithinBounds :: CBool
   -- ^ `fHasAlphaWithinBounds`
-  , disposalMethod :: SkCodecAnimationDisposalMethod
+  , fDisposalMethod :: Sk_codecanimation_disposalmethod
   -- ^ `fDisposalMethod`
-  , blend :: SkCodecAnimationBlend
+  , fBlend :: Sk_codecanimation_blend
   -- ^ `fBlend`
-  , frameRect :: SkIRect
+  , fFrameRect :: Sk_irect
   -- ^ `fFrameRect`
   } deriving (Show, Eq, Ord)
-instance Offset "requiredFrame" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fRequiredFrame)
-instance Offset "duration" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fDuration)
-instance Offset "fullyReceived" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fFullyReceived)
-instance Offset "alphaType" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fAlphaType)
-instance Offset "hasAlphaWithinBounds" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fHasAlphaWithinBounds)
-instance Offset "disposalMethod" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fDisposalMethod)
-instance Offset "blend" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fBlend)
-instance Offset "frameRect" SkCodecFrameInfo where rawOffset = (#offset sk_codec_frameinfo_t, fFrameRect)
-instance Storable SkCodecFrameInfo where
+instance Offset "fRequiredFrame" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fRequiredFrame)
+instance Offset "fDuration" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fDuration)
+instance Offset "fFullyReceived" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fFullyReceived)
+instance Offset "fAlphaType" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fAlphaType)
+instance Offset "fHasAlphaWithinBounds" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fHasAlphaWithinBounds)
+instance Offset "fDisposalMethod" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fDisposalMethod)
+instance Offset "fBlend" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fBlend)
+instance Offset "fFrameRect" Sk_codec_frameinfo where rawOffset = (#offset sk_codec_frameinfo_t, fFrameRect)
+instance Storable Sk_codec_frameinfo where
   sizeOf _ = (#size sk_codec_frameinfo_t)
   alignment _ = (#alignment sk_codec_frameinfo_t)
   peek in'ptr = do
-    requiredFrame <- (#peek sk_codec_frameinfo_t, fRequiredFrame) in'ptr
-    duration <- (#peek sk_codec_frameinfo_t, fDuration) in'ptr
-    fullyReceived <- (#peek sk_codec_frameinfo_t, fFullyReceived) in'ptr
-    alphaType <- (#peek sk_codec_frameinfo_t, fAlphaType) in'ptr
-    hasAlphaWithinBounds <- (#peek sk_codec_frameinfo_t, fHasAlphaWithinBounds) in'ptr
-    disposalMethod <- (#peek sk_codec_frameinfo_t, fDisposalMethod) in'ptr
-    blend <- (#peek sk_codec_frameinfo_t, fBlend) in'ptr
-    frameRect <- (#peek sk_codec_frameinfo_t, fFrameRect) in'ptr
-    pure SkCodecFrameInfo{..}
+    fRequiredFrame <- (#peek sk_codec_frameinfo_t, fRequiredFrame) in'ptr
+    fDuration <- (#peek sk_codec_frameinfo_t, fDuration) in'ptr
+    fFullyReceived <- (#peek sk_codec_frameinfo_t, fFullyReceived) in'ptr
+    fAlphaType <- (#peek sk_codec_frameinfo_t, fAlphaType) in'ptr
+    fHasAlphaWithinBounds <- (#peek sk_codec_frameinfo_t, fHasAlphaWithinBounds) in'ptr
+    fDisposalMethod <- (#peek sk_codec_frameinfo_t, fDisposalMethod) in'ptr
+    fBlend <- (#peek sk_codec_frameinfo_t, fBlend) in'ptr
+    fFrameRect <- (#peek sk_codec_frameinfo_t, fFrameRect) in'ptr
+    pure Sk_codec_frameinfo{..}
   poke in'ptr in'value = do
-    (#poke sk_codec_frameinfo_t, fRequiredFrame) in'ptr in'value.requiredFrame
-    (#poke sk_codec_frameinfo_t, fDuration) in'ptr in'value.duration
-    (#poke sk_codec_frameinfo_t, fFullyReceived) in'ptr in'value.fullyReceived
-    (#poke sk_codec_frameinfo_t, fAlphaType) in'ptr in'value.alphaType
-    (#poke sk_codec_frameinfo_t, fHasAlphaWithinBounds) in'ptr in'value.hasAlphaWithinBounds
-    (#poke sk_codec_frameinfo_t, fDisposalMethod) in'ptr in'value.disposalMethod
-    (#poke sk_codec_frameinfo_t, fBlend) in'ptr in'value.blend
-    (#poke sk_codec_frameinfo_t, fFrameRect) in'ptr in'value.frameRect
+    (#poke sk_codec_frameinfo_t, fRequiredFrame) in'ptr in'value.fRequiredFrame
+    (#poke sk_codec_frameinfo_t, fDuration) in'ptr in'value.fDuration
+    (#poke sk_codec_frameinfo_t, fFullyReceived) in'ptr in'value.fFullyReceived
+    (#poke sk_codec_frameinfo_t, fAlphaType) in'ptr in'value.fAlphaType
+    (#poke sk_codec_frameinfo_t, fHasAlphaWithinBounds) in'ptr in'value.fHasAlphaWithinBounds
+    (#poke sk_codec_frameinfo_t, fDisposalMethod) in'ptr in'value.fDisposalMethod
+    (#poke sk_codec_frameinfo_t, fBlend) in'ptr in'value.fBlend
+    (#poke sk_codec_frameinfo_t, fFrameRect) in'ptr in'value.fFrameRect
 -- | `sk_svgcanvas_t`
-data SkSvgCanvas = SkSvgCanvas
+data Sk_svgcanvas = Sk_svgcanvas
   deriving (Show, Eq, Ord)
 -- | `sk_vertices_vertex_mode_t`
-newtype SkVerticesVertexMode = SkVerticesVertexMode (#type sk_vertices_vertex_mode_t)
+newtype Sk_vertices_vertex_mode = Sk_vertices_vertex_mode (#type sk_vertices_vertex_mode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `TRIANGLES_SK_VERTICES_VERTEX_MODE`
-skVerticesVertexMode'Triangles :: SkVerticesVertexMode
-skVerticesVertexMode'Triangles = #const TRIANGLES_SK_VERTICES_VERTEX_MODE
+sk_vertices_vertex_mode'TRIANGLES_SK_VERTICES_VERTEX_MODE :: Sk_vertices_vertex_mode
+sk_vertices_vertex_mode'TRIANGLES_SK_VERTICES_VERTEX_MODE = #const TRIANGLES_SK_VERTICES_VERTEX_MODE
 -- | `TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE`
-skVerticesVertexMode'TriangleStrip :: SkVerticesVertexMode
-skVerticesVertexMode'TriangleStrip = #const TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE
+sk_vertices_vertex_mode'TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE :: Sk_vertices_vertex_mode
+sk_vertices_vertex_mode'TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE = #const TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE
 -- | `TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE`
-skVerticesVertexMode'TriangleFan :: SkVerticesVertexMode
-skVerticesVertexMode'TriangleFan = #const TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE
+sk_vertices_vertex_mode'TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE :: Sk_vertices_vertex_mode
+sk_vertices_vertex_mode'TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE = #const TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE
 -- | `sk_vertices_t`
-data SkVertices = SkVertices
+data Sk_vertices = Sk_vertices
   deriving (Show, Eq, Ord)
 -- | `sk_colorspace_transfer_fn_t`
-data SkColorSpaceTransferFn = SkColorSpaceTransferFn
-  { g :: CFloat
+data Sk_colorspace_transfer_fn = Sk_colorspace_transfer_fn
+  { fG :: CFloat
   -- ^ `fG`
-  , a :: CFloat
+  , fA :: CFloat
   -- ^ `fA`
-  , b :: CFloat
+  , fB :: CFloat
   -- ^ `fB`
-  , c :: CFloat
+  , fC :: CFloat
   -- ^ `fC`
-  , d :: CFloat
+  , fD :: CFloat
   -- ^ `fD`
-  , e :: CFloat
+  , fE :: CFloat
   -- ^ `fE`
-  , f :: CFloat
+  , fF :: CFloat
   -- ^ `fF`
   } deriving (Show, Eq, Ord)
-instance Offset "g" SkColorSpaceTransferFn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fG)
-instance Offset "a" SkColorSpaceTransferFn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fA)
-instance Offset "b" SkColorSpaceTransferFn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fB)
-instance Offset "c" SkColorSpaceTransferFn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fC)
-instance Offset "d" SkColorSpaceTransferFn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fD)
-instance Offset "e" SkColorSpaceTransferFn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fE)
-instance Offset "f" SkColorSpaceTransferFn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fF)
-instance Storable SkColorSpaceTransferFn where
+instance Offset "fG" Sk_colorspace_transfer_fn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fG)
+instance Offset "fA" Sk_colorspace_transfer_fn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fA)
+instance Offset "fB" Sk_colorspace_transfer_fn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fB)
+instance Offset "fC" Sk_colorspace_transfer_fn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fC)
+instance Offset "fD" Sk_colorspace_transfer_fn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fD)
+instance Offset "fE" Sk_colorspace_transfer_fn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fE)
+instance Offset "fF" Sk_colorspace_transfer_fn where rawOffset = (#offset sk_colorspace_transfer_fn_t, fF)
+instance Storable Sk_colorspace_transfer_fn where
   sizeOf _ = (#size sk_colorspace_transfer_fn_t)
   alignment _ = (#alignment sk_colorspace_transfer_fn_t)
   peek in'ptr = do
-    g <- (#peek sk_colorspace_transfer_fn_t, fG) in'ptr
-    a <- (#peek sk_colorspace_transfer_fn_t, fA) in'ptr
-    b <- (#peek sk_colorspace_transfer_fn_t, fB) in'ptr
-    c <- (#peek sk_colorspace_transfer_fn_t, fC) in'ptr
-    d <- (#peek sk_colorspace_transfer_fn_t, fD) in'ptr
-    e <- (#peek sk_colorspace_transfer_fn_t, fE) in'ptr
-    f <- (#peek sk_colorspace_transfer_fn_t, fF) in'ptr
-    pure SkColorSpaceTransferFn{..}
+    fG <- (#peek sk_colorspace_transfer_fn_t, fG) in'ptr
+    fA <- (#peek sk_colorspace_transfer_fn_t, fA) in'ptr
+    fB <- (#peek sk_colorspace_transfer_fn_t, fB) in'ptr
+    fC <- (#peek sk_colorspace_transfer_fn_t, fC) in'ptr
+    fD <- (#peek sk_colorspace_transfer_fn_t, fD) in'ptr
+    fE <- (#peek sk_colorspace_transfer_fn_t, fE) in'ptr
+    fF <- (#peek sk_colorspace_transfer_fn_t, fF) in'ptr
+    pure Sk_colorspace_transfer_fn{..}
   poke in'ptr in'value = do
-    (#poke sk_colorspace_transfer_fn_t, fG) in'ptr in'value.g
-    (#poke sk_colorspace_transfer_fn_t, fA) in'ptr in'value.a
-    (#poke sk_colorspace_transfer_fn_t, fB) in'ptr in'value.b
-    (#poke sk_colorspace_transfer_fn_t, fC) in'ptr in'value.c
-    (#poke sk_colorspace_transfer_fn_t, fD) in'ptr in'value.d
-    (#poke sk_colorspace_transfer_fn_t, fE) in'ptr in'value.e
-    (#poke sk_colorspace_transfer_fn_t, fF) in'ptr in'value.f
+    (#poke sk_colorspace_transfer_fn_t, fG) in'ptr in'value.fG
+    (#poke sk_colorspace_transfer_fn_t, fA) in'ptr in'value.fA
+    (#poke sk_colorspace_transfer_fn_t, fB) in'ptr in'value.fB
+    (#poke sk_colorspace_transfer_fn_t, fC) in'ptr in'value.fC
+    (#poke sk_colorspace_transfer_fn_t, fD) in'ptr in'value.fD
+    (#poke sk_colorspace_transfer_fn_t, fE) in'ptr in'value.fE
+    (#poke sk_colorspace_transfer_fn_t, fF) in'ptr in'value.fF
 -- | `sk_colorspace_primaries_t`
-data SkColorSpacePrimaries = SkColorSpacePrimaries
-  { rx :: CFloat
+data Sk_colorspace_primaries = Sk_colorspace_primaries
+  { fRX :: CFloat
   -- ^ `fRX`
-  , ry :: CFloat
+  , fRY :: CFloat
   -- ^ `fRY`
-  , gx :: CFloat
+  , fGX :: CFloat
   -- ^ `fGX`
-  , gy :: CFloat
+  , fGY :: CFloat
   -- ^ `fGY`
-  , bx :: CFloat
+  , fBX :: CFloat
   -- ^ `fBX`
-  , by :: CFloat
+  , fBY :: CFloat
   -- ^ `fBY`
-  , wx :: CFloat
+  , fWX :: CFloat
   -- ^ `fWX`
-  , wy :: CFloat
+  , fWY :: CFloat
   -- ^ `fWY`
   } deriving (Show, Eq, Ord)
-instance Offset "rx" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fRX)
-instance Offset "ry" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fRY)
-instance Offset "gx" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fGX)
-instance Offset "gy" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fGY)
-instance Offset "bx" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fBX)
-instance Offset "by" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fBY)
-instance Offset "wx" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fWX)
-instance Offset "wy" SkColorSpacePrimaries where rawOffset = (#offset sk_colorspace_primaries_t, fWY)
-instance Storable SkColorSpacePrimaries where
+instance Offset "fRX" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fRX)
+instance Offset "fRY" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fRY)
+instance Offset "fGX" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fGX)
+instance Offset "fGY" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fGY)
+instance Offset "fBX" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fBX)
+instance Offset "fBY" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fBY)
+instance Offset "fWX" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fWX)
+instance Offset "fWY" Sk_colorspace_primaries where rawOffset = (#offset sk_colorspace_primaries_t, fWY)
+instance Storable Sk_colorspace_primaries where
   sizeOf _ = (#size sk_colorspace_primaries_t)
   alignment _ = (#alignment sk_colorspace_primaries_t)
   peek in'ptr = do
-    rx <- (#peek sk_colorspace_primaries_t, fRX) in'ptr
-    ry <- (#peek sk_colorspace_primaries_t, fRY) in'ptr
-    gx <- (#peek sk_colorspace_primaries_t, fGX) in'ptr
-    gy <- (#peek sk_colorspace_primaries_t, fGY) in'ptr
-    bx <- (#peek sk_colorspace_primaries_t, fBX) in'ptr
-    by <- (#peek sk_colorspace_primaries_t, fBY) in'ptr
-    wx <- (#peek sk_colorspace_primaries_t, fWX) in'ptr
-    wy <- (#peek sk_colorspace_primaries_t, fWY) in'ptr
-    pure SkColorSpacePrimaries{..}
+    fRX <- (#peek sk_colorspace_primaries_t, fRX) in'ptr
+    fRY <- (#peek sk_colorspace_primaries_t, fRY) in'ptr
+    fGX <- (#peek sk_colorspace_primaries_t, fGX) in'ptr
+    fGY <- (#peek sk_colorspace_primaries_t, fGY) in'ptr
+    fBX <- (#peek sk_colorspace_primaries_t, fBX) in'ptr
+    fBY <- (#peek sk_colorspace_primaries_t, fBY) in'ptr
+    fWX <- (#peek sk_colorspace_primaries_t, fWX) in'ptr
+    fWY <- (#peek sk_colorspace_primaries_t, fWY) in'ptr
+    pure Sk_colorspace_primaries{..}
   poke in'ptr in'value = do
-    (#poke sk_colorspace_primaries_t, fRX) in'ptr in'value.rx
-    (#poke sk_colorspace_primaries_t, fRY) in'ptr in'value.ry
-    (#poke sk_colorspace_primaries_t, fGX) in'ptr in'value.gx
-    (#poke sk_colorspace_primaries_t, fGY) in'ptr in'value.gy
-    (#poke sk_colorspace_primaries_t, fBX) in'ptr in'value.bx
-    (#poke sk_colorspace_primaries_t, fBY) in'ptr in'value.by
-    (#poke sk_colorspace_primaries_t, fWX) in'ptr in'value.wx
-    (#poke sk_colorspace_primaries_t, fWY) in'ptr in'value.wy
+    (#poke sk_colorspace_primaries_t, fRX) in'ptr in'value.fRX
+    (#poke sk_colorspace_primaries_t, fRY) in'ptr in'value.fRY
+    (#poke sk_colorspace_primaries_t, fGX) in'ptr in'value.fGX
+    (#poke sk_colorspace_primaries_t, fGY) in'ptr in'value.fGY
+    (#poke sk_colorspace_primaries_t, fBX) in'ptr in'value.fBX
+    (#poke sk_colorspace_primaries_t, fBY) in'ptr in'value.fBY
+    (#poke sk_colorspace_primaries_t, fWX) in'ptr in'value.fWX
+    (#poke sk_colorspace_primaries_t, fWY) in'ptr in'value.fWY
 -- | `sk_colorspace_xyz_t`
-data SkColorSpaceXyz = SkColorSpaceXyz
-  { m00 :: CFloat
+data Sk_colorspace_xyz = Sk_colorspace_xyz
+  { fM00 :: CFloat
   -- ^ `fM00`
-  , m01 :: CFloat
+  , fM01 :: CFloat
   -- ^ `fM01`
-  , m02 :: CFloat
+  , fM02 :: CFloat
   -- ^ `fM02`
-  , m10 :: CFloat
+  , fM10 :: CFloat
   -- ^ `fM10`
-  , m11 :: CFloat
+  , fM11 :: CFloat
   -- ^ `fM11`
-  , m12 :: CFloat
+  , fM12 :: CFloat
   -- ^ `fM12`
-  , m20 :: CFloat
+  , fM20 :: CFloat
   -- ^ `fM20`
-  , m21 :: CFloat
+  , fM21 :: CFloat
   -- ^ `fM21`
-  , m22 :: CFloat
+  , fM22 :: CFloat
   -- ^ `fM22`
   } deriving (Show, Eq, Ord)
-instance Offset "m00" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM00)
-instance Offset "m01" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM01)
-instance Offset "m02" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM02)
-instance Offset "m10" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM10)
-instance Offset "m11" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM11)
-instance Offset "m12" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM12)
-instance Offset "m20" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM20)
-instance Offset "m21" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM21)
-instance Offset "m22" SkColorSpaceXyz where rawOffset = (#offset sk_colorspace_xyz_t, fM22)
-instance Storable SkColorSpaceXyz where
+instance Offset "fM00" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM00)
+instance Offset "fM01" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM01)
+instance Offset "fM02" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM02)
+instance Offset "fM10" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM10)
+instance Offset "fM11" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM11)
+instance Offset "fM12" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM12)
+instance Offset "fM20" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM20)
+instance Offset "fM21" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM21)
+instance Offset "fM22" Sk_colorspace_xyz where rawOffset = (#offset sk_colorspace_xyz_t, fM22)
+instance Storable Sk_colorspace_xyz where
   sizeOf _ = (#size sk_colorspace_xyz_t)
   alignment _ = (#alignment sk_colorspace_xyz_t)
   peek in'ptr = do
-    m00 <- (#peek sk_colorspace_xyz_t, fM00) in'ptr
-    m01 <- (#peek sk_colorspace_xyz_t, fM01) in'ptr
-    m02 <- (#peek sk_colorspace_xyz_t, fM02) in'ptr
-    m10 <- (#peek sk_colorspace_xyz_t, fM10) in'ptr
-    m11 <- (#peek sk_colorspace_xyz_t, fM11) in'ptr
-    m12 <- (#peek sk_colorspace_xyz_t, fM12) in'ptr
-    m20 <- (#peek sk_colorspace_xyz_t, fM20) in'ptr
-    m21 <- (#peek sk_colorspace_xyz_t, fM21) in'ptr
-    m22 <- (#peek sk_colorspace_xyz_t, fM22) in'ptr
-    pure SkColorSpaceXyz{..}
+    fM00 <- (#peek sk_colorspace_xyz_t, fM00) in'ptr
+    fM01 <- (#peek sk_colorspace_xyz_t, fM01) in'ptr
+    fM02 <- (#peek sk_colorspace_xyz_t, fM02) in'ptr
+    fM10 <- (#peek sk_colorspace_xyz_t, fM10) in'ptr
+    fM11 <- (#peek sk_colorspace_xyz_t, fM11) in'ptr
+    fM12 <- (#peek sk_colorspace_xyz_t, fM12) in'ptr
+    fM20 <- (#peek sk_colorspace_xyz_t, fM20) in'ptr
+    fM21 <- (#peek sk_colorspace_xyz_t, fM21) in'ptr
+    fM22 <- (#peek sk_colorspace_xyz_t, fM22) in'ptr
+    pure Sk_colorspace_xyz{..}
   poke in'ptr in'value = do
-    (#poke sk_colorspace_xyz_t, fM00) in'ptr in'value.m00
-    (#poke sk_colorspace_xyz_t, fM01) in'ptr in'value.m01
-    (#poke sk_colorspace_xyz_t, fM02) in'ptr in'value.m02
-    (#poke sk_colorspace_xyz_t, fM10) in'ptr in'value.m10
-    (#poke sk_colorspace_xyz_t, fM11) in'ptr in'value.m11
-    (#poke sk_colorspace_xyz_t, fM12) in'ptr in'value.m12
-    (#poke sk_colorspace_xyz_t, fM20) in'ptr in'value.m20
-    (#poke sk_colorspace_xyz_t, fM21) in'ptr in'value.m21
-    (#poke sk_colorspace_xyz_t, fM22) in'ptr in'value.m22
+    (#poke sk_colorspace_xyz_t, fM00) in'ptr in'value.fM00
+    (#poke sk_colorspace_xyz_t, fM01) in'ptr in'value.fM01
+    (#poke sk_colorspace_xyz_t, fM02) in'ptr in'value.fM02
+    (#poke sk_colorspace_xyz_t, fM10) in'ptr in'value.fM10
+    (#poke sk_colorspace_xyz_t, fM11) in'ptr in'value.fM11
+    (#poke sk_colorspace_xyz_t, fM12) in'ptr in'value.fM12
+    (#poke sk_colorspace_xyz_t, fM20) in'ptr in'value.fM20
+    (#poke sk_colorspace_xyz_t, fM21) in'ptr in'value.fM21
+    (#poke sk_colorspace_xyz_t, fM22) in'ptr in'value.fM22
 -- | `sk_colorspace_icc_profile_t`
-data SkColorSpaceIccProfile = SkColorSpaceIccProfile
+data Sk_colorspace_icc_profile = Sk_colorspace_icc_profile
   deriving (Show, Eq, Ord)
 -- | `sk_highcontrastconfig_invertstyle_t`
-newtype SkHighContrastConfigInvertStyle = SkHighContrastConfigInvertStyle (#type sk_highcontrastconfig_invertstyle_t)
+newtype Sk_highcontrastconfig_invertstyle = Sk_highcontrastconfig_invertstyle (#type sk_highcontrastconfig_invertstyle_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE`
-skHighContrastConfigInvertStyle'NoInvert :: SkHighContrastConfigInvertStyle
-skHighContrastConfigInvertStyle'NoInvert = #const NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE
+sk_highcontrastconfig_invertstyle'NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE :: Sk_highcontrastconfig_invertstyle
+sk_highcontrastconfig_invertstyle'NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE = #const NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE
 -- | `INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE`
-skHighContrastConfigInvertStyle'InvertBrightness :: SkHighContrastConfigInvertStyle
-skHighContrastConfigInvertStyle'InvertBrightness = #const INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE
+sk_highcontrastconfig_invertstyle'INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE :: Sk_highcontrastconfig_invertstyle
+sk_highcontrastconfig_invertstyle'INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE = #const INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE
 -- | `INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE`
-skHighContrastConfigInvertStyle'InvertLightness :: SkHighContrastConfigInvertStyle
-skHighContrastConfigInvertStyle'InvertLightness = #const INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE
+sk_highcontrastconfig_invertstyle'INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE :: Sk_highcontrastconfig_invertstyle
+sk_highcontrastconfig_invertstyle'INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE = #const INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE
 -- | `sk_highcontrastconfig_t`
-data SkHighContrastConfig = SkHighContrastConfig
-  { grayscale :: CBool
+data Sk_highcontrastconfig = Sk_highcontrastconfig
+  { fGrayscale :: CBool
   -- ^ `fGrayscale`
-  , invertStyle :: SkHighContrastConfigInvertStyle
+  , fInvertStyle :: Sk_highcontrastconfig_invertstyle
   -- ^ `fInvertStyle`
-  , contrast :: CFloat
+  , fContrast :: CFloat
   -- ^ `fContrast`
   } deriving (Show, Eq, Ord)
-instance Offset "grayscale" SkHighContrastConfig where rawOffset = (#offset sk_highcontrastconfig_t, fGrayscale)
-instance Offset "invertStyle" SkHighContrastConfig where rawOffset = (#offset sk_highcontrastconfig_t, fInvertStyle)
-instance Offset "contrast" SkHighContrastConfig where rawOffset = (#offset sk_highcontrastconfig_t, fContrast)
-instance Storable SkHighContrastConfig where
+instance Offset "fGrayscale" Sk_highcontrastconfig where rawOffset = (#offset sk_highcontrastconfig_t, fGrayscale)
+instance Offset "fInvertStyle" Sk_highcontrastconfig where rawOffset = (#offset sk_highcontrastconfig_t, fInvertStyle)
+instance Offset "fContrast" Sk_highcontrastconfig where rawOffset = (#offset sk_highcontrastconfig_t, fContrast)
+instance Storable Sk_highcontrastconfig where
   sizeOf _ = (#size sk_highcontrastconfig_t)
   alignment _ = (#alignment sk_highcontrastconfig_t)
   peek in'ptr = do
-    grayscale <- (#peek sk_highcontrastconfig_t, fGrayscale) in'ptr
-    invertStyle <- (#peek sk_highcontrastconfig_t, fInvertStyle) in'ptr
-    contrast <- (#peek sk_highcontrastconfig_t, fContrast) in'ptr
-    pure SkHighContrastConfig{..}
+    fGrayscale <- (#peek sk_highcontrastconfig_t, fGrayscale) in'ptr
+    fInvertStyle <- (#peek sk_highcontrastconfig_t, fInvertStyle) in'ptr
+    fContrast <- (#peek sk_highcontrastconfig_t, fContrast) in'ptr
+    pure Sk_highcontrastconfig{..}
   poke in'ptr in'value = do
-    (#poke sk_highcontrastconfig_t, fGrayscale) in'ptr in'value.grayscale
-    (#poke sk_highcontrastconfig_t, fInvertStyle) in'ptr in'value.invertStyle
-    (#poke sk_highcontrastconfig_t, fContrast) in'ptr in'value.contrast
+    (#poke sk_highcontrastconfig_t, fGrayscale) in'ptr in'value.fGrayscale
+    (#poke sk_highcontrastconfig_t, fInvertStyle) in'ptr in'value.fInvertStyle
+    (#poke sk_highcontrastconfig_t, fContrast) in'ptr in'value.fContrast
 -- | `sk_pngencoder_filterflags_t`
-newtype SkPngEncoderFilterFlags = SkPngEncoderFilterFlags (#type sk_pngencoder_filterflags_t)
+newtype Sk_pngencoder_filterflags = Sk_pngencoder_filterflags (#type sk_pngencoder_filterflags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `ZERO_SK_PNGENCODER_FILTER_FLAGS`
-skPngEncoderFilterFlags'Zero :: SkPngEncoderFilterFlags
-skPngEncoderFilterFlags'Zero = #const ZERO_SK_PNGENCODER_FILTER_FLAGS
+sk_pngencoder_filterflags'ZERO_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
+sk_pngencoder_filterflags'ZERO_SK_PNGENCODER_FILTER_FLAGS = #const ZERO_SK_PNGENCODER_FILTER_FLAGS
 -- | `NONE_SK_PNGENCODER_FILTER_FLAGS`
-skPngEncoderFilterFlags'None :: SkPngEncoderFilterFlags
-skPngEncoderFilterFlags'None = #const NONE_SK_PNGENCODER_FILTER_FLAGS
+sk_pngencoder_filterflags'NONE_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
+sk_pngencoder_filterflags'NONE_SK_PNGENCODER_FILTER_FLAGS = #const NONE_SK_PNGENCODER_FILTER_FLAGS
 -- | `SUB_SK_PNGENCODER_FILTER_FLAGS`
-skPngEncoderFilterFlags'Sub :: SkPngEncoderFilterFlags
-skPngEncoderFilterFlags'Sub = #const SUB_SK_PNGENCODER_FILTER_FLAGS
+sk_pngencoder_filterflags'SUB_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
+sk_pngencoder_filterflags'SUB_SK_PNGENCODER_FILTER_FLAGS = #const SUB_SK_PNGENCODER_FILTER_FLAGS
 -- | `UP_SK_PNGENCODER_FILTER_FLAGS`
-skPngEncoderFilterFlags'Up :: SkPngEncoderFilterFlags
-skPngEncoderFilterFlags'Up = #const UP_SK_PNGENCODER_FILTER_FLAGS
+sk_pngencoder_filterflags'UP_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
+sk_pngencoder_filterflags'UP_SK_PNGENCODER_FILTER_FLAGS = #const UP_SK_PNGENCODER_FILTER_FLAGS
 -- | `AVG_SK_PNGENCODER_FILTER_FLAGS`
-skPngEncoderFilterFlags'Avg :: SkPngEncoderFilterFlags
-skPngEncoderFilterFlags'Avg = #const AVG_SK_PNGENCODER_FILTER_FLAGS
+sk_pngencoder_filterflags'AVG_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
+sk_pngencoder_filterflags'AVG_SK_PNGENCODER_FILTER_FLAGS = #const AVG_SK_PNGENCODER_FILTER_FLAGS
 -- | `PAETH_SK_PNGENCODER_FILTER_FLAGS`
-skPngEncoderFilterFlags'PaeTh :: SkPngEncoderFilterFlags
-skPngEncoderFilterFlags'PaeTh = #const PAETH_SK_PNGENCODER_FILTER_FLAGS
+sk_pngencoder_filterflags'PAETH_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
+sk_pngencoder_filterflags'PAETH_SK_PNGENCODER_FILTER_FLAGS = #const PAETH_SK_PNGENCODER_FILTER_FLAGS
 -- | `ALL_SK_PNGENCODER_FILTER_FLAGS`
-skPngEncoderFilterFlags'All :: SkPngEncoderFilterFlags
-skPngEncoderFilterFlags'All = #const ALL_SK_PNGENCODER_FILTER_FLAGS
+sk_pngencoder_filterflags'ALL_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
+sk_pngencoder_filterflags'ALL_SK_PNGENCODER_FILTER_FLAGS = #const ALL_SK_PNGENCODER_FILTER_FLAGS
 -- | `sk_pngencoder_options_t`
-data SkPngEncoderOptions = SkPngEncoderOptions
-  { filterFlags :: SkPngEncoderFilterFlags
+data Sk_pngencoder_options = Sk_pngencoder_options
+  { fFilterFlags :: Sk_pngencoder_filterflags
   -- ^ `fFilterFlags`
-  , zLibLevel :: CInt
+  , fZLibLevel :: CInt
   -- ^ `fZLibLevel`
-  , comments :: Ptr (())
+  , fComments :: Ptr (())
   -- ^ `fComments`
-  , iccProfile :: Ptr (SkColorSpaceIccProfile)
+  , fICCProfile :: Ptr (Sk_colorspace_icc_profile)
   -- ^ `fICCProfile`
-  , iccProfileDescription :: Ptr (CChar)
+  , fICCProfileDescription :: Ptr (CChar)
   -- ^ `fICCProfileDescription`
   } deriving (Show, Eq, Ord)
-instance Offset "filterFlags" SkPngEncoderOptions where rawOffset = (#offset sk_pngencoder_options_t, fFilterFlags)
-instance Offset "zLibLevel" SkPngEncoderOptions where rawOffset = (#offset sk_pngencoder_options_t, fZLibLevel)
-instance Offset "comments" SkPngEncoderOptions where rawOffset = (#offset sk_pngencoder_options_t, fComments)
-instance Offset "iccProfile" SkPngEncoderOptions where rawOffset = (#offset sk_pngencoder_options_t, fICCProfile)
-instance Offset "iccProfileDescription" SkPngEncoderOptions where rawOffset = (#offset sk_pngencoder_options_t, fICCProfileDescription)
-instance Storable SkPngEncoderOptions where
+instance Offset "fFilterFlags" Sk_pngencoder_options where rawOffset = (#offset sk_pngencoder_options_t, fFilterFlags)
+instance Offset "fZLibLevel" Sk_pngencoder_options where rawOffset = (#offset sk_pngencoder_options_t, fZLibLevel)
+instance Offset "fComments" Sk_pngencoder_options where rawOffset = (#offset sk_pngencoder_options_t, fComments)
+instance Offset "fICCProfile" Sk_pngencoder_options where rawOffset = (#offset sk_pngencoder_options_t, fICCProfile)
+instance Offset "fICCProfileDescription" Sk_pngencoder_options where rawOffset = (#offset sk_pngencoder_options_t, fICCProfileDescription)
+instance Storable Sk_pngencoder_options where
   sizeOf _ = (#size sk_pngencoder_options_t)
   alignment _ = (#alignment sk_pngencoder_options_t)
   peek in'ptr = do
-    filterFlags <- (#peek sk_pngencoder_options_t, fFilterFlags) in'ptr
-    zLibLevel <- (#peek sk_pngencoder_options_t, fZLibLevel) in'ptr
-    comments <- (#peek sk_pngencoder_options_t, fComments) in'ptr
-    iccProfile <- (#peek sk_pngencoder_options_t, fICCProfile) in'ptr
-    iccProfileDescription <- (#peek sk_pngencoder_options_t, fICCProfileDescription) in'ptr
-    pure SkPngEncoderOptions{..}
+    fFilterFlags <- (#peek sk_pngencoder_options_t, fFilterFlags) in'ptr
+    fZLibLevel <- (#peek sk_pngencoder_options_t, fZLibLevel) in'ptr
+    fComments <- (#peek sk_pngencoder_options_t, fComments) in'ptr
+    fICCProfile <- (#peek sk_pngencoder_options_t, fICCProfile) in'ptr
+    fICCProfileDescription <- (#peek sk_pngencoder_options_t, fICCProfileDescription) in'ptr
+    pure Sk_pngencoder_options{..}
   poke in'ptr in'value = do
-    (#poke sk_pngencoder_options_t, fFilterFlags) in'ptr in'value.filterFlags
-    (#poke sk_pngencoder_options_t, fZLibLevel) in'ptr in'value.zLibLevel
-    (#poke sk_pngencoder_options_t, fComments) in'ptr in'value.comments
-    (#poke sk_pngencoder_options_t, fICCProfile) in'ptr in'value.iccProfile
-    (#poke sk_pngencoder_options_t, fICCProfileDescription) in'ptr in'value.iccProfileDescription
+    (#poke sk_pngencoder_options_t, fFilterFlags) in'ptr in'value.fFilterFlags
+    (#poke sk_pngencoder_options_t, fZLibLevel) in'ptr in'value.fZLibLevel
+    (#poke sk_pngencoder_options_t, fComments) in'ptr in'value.fComments
+    (#poke sk_pngencoder_options_t, fICCProfile) in'ptr in'value.fICCProfile
+    (#poke sk_pngencoder_options_t, fICCProfileDescription) in'ptr in'value.fICCProfileDescription
 -- | `sk_jpegencoder_downsample_t`
-newtype SkJpegEncoderDownSample = SkJpegEncoderDownSample (#type sk_jpegencoder_downsample_t)
+newtype Sk_jpegencoder_downsample = Sk_jpegencoder_downsample (#type sk_jpegencoder_downsample_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE`
-skJpegEncoderDownSample'DownSample420 :: SkJpegEncoderDownSample
-skJpegEncoderDownSample'DownSample420 = #const DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE
+sk_jpegencoder_downsample'DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE :: Sk_jpegencoder_downsample
+sk_jpegencoder_downsample'DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE = #const DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE
 -- | `DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE`
-skJpegEncoderDownSample'DownSample422 :: SkJpegEncoderDownSample
-skJpegEncoderDownSample'DownSample422 = #const DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE
+sk_jpegencoder_downsample'DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE :: Sk_jpegencoder_downsample
+sk_jpegencoder_downsample'DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE = #const DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE
 -- | `DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE`
-skJpegEncoderDownSample'DownSample444 :: SkJpegEncoderDownSample
-skJpegEncoderDownSample'DownSample444 = #const DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE
+sk_jpegencoder_downsample'DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE :: Sk_jpegencoder_downsample
+sk_jpegencoder_downsample'DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE = #const DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE
 -- | `sk_jpegencoder_alphaoption_t`
-newtype SkJpegEncoderAlphaOption = SkJpegEncoderAlphaOption (#type sk_jpegencoder_alphaoption_t)
+newtype Sk_jpegencoder_alphaoption = Sk_jpegencoder_alphaoption (#type sk_jpegencoder_alphaoption_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `IGNORE_SK_JPEGENCODER_ALPHA_OPTION`
-skJpegEncoderAlphaOption'Ignore :: SkJpegEncoderAlphaOption
-skJpegEncoderAlphaOption'Ignore = #const IGNORE_SK_JPEGENCODER_ALPHA_OPTION
+sk_jpegencoder_alphaoption'IGNORE_SK_JPEGENCODER_ALPHA_OPTION :: Sk_jpegencoder_alphaoption
+sk_jpegencoder_alphaoption'IGNORE_SK_JPEGENCODER_ALPHA_OPTION = #const IGNORE_SK_JPEGENCODER_ALPHA_OPTION
 -- | `BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION`
-skJpegEncoderAlphaOption'BlendOnBlack :: SkJpegEncoderAlphaOption
-skJpegEncoderAlphaOption'BlendOnBlack = #const BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION
+sk_jpegencoder_alphaoption'BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION :: Sk_jpegencoder_alphaoption
+sk_jpegencoder_alphaoption'BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION = #const BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION
 -- | `sk_jpegencoder_options_t`
-data SkJpegEncoderOptions = SkJpegEncoderOptions
-  { quality :: CInt
+data Sk_jpegencoder_options = Sk_jpegencoder_options
+  { fQuality :: CInt
   -- ^ `fQuality`
-  , downsample :: SkJpegEncoderDownSample
+  , fDownsample :: Sk_jpegencoder_downsample
   -- ^ `fDownsample`
-  , alphaOption :: SkJpegEncoderAlphaOption
+  , fAlphaOption :: Sk_jpegencoder_alphaoption
   -- ^ `fAlphaOption`
-  , xmpMetadata :: Ptr (SkData)
+  , xmpMetadata :: Ptr (Sk_data)
   -- ^ `xmpMetadata`
-  , iccProfile :: Ptr (SkColorSpaceIccProfile)
+  , fICCProfile :: Ptr (Sk_colorspace_icc_profile)
   -- ^ `fICCProfile`
-  , iccProfileDescription :: Ptr (CChar)
+  , fICCProfileDescription :: Ptr (CChar)
   -- ^ `fICCProfileDescription`
   } deriving (Show, Eq, Ord)
-instance Offset "quality" SkJpegEncoderOptions where rawOffset = (#offset sk_jpegencoder_options_t, fQuality)
-instance Offset "downsample" SkJpegEncoderOptions where rawOffset = (#offset sk_jpegencoder_options_t, fDownsample)
-instance Offset "alphaOption" SkJpegEncoderOptions where rawOffset = (#offset sk_jpegencoder_options_t, fAlphaOption)
-instance Offset "xmpMetadata" SkJpegEncoderOptions where rawOffset = (#offset sk_jpegencoder_options_t, xmpMetadata)
-instance Offset "iccProfile" SkJpegEncoderOptions where rawOffset = (#offset sk_jpegencoder_options_t, fICCProfile)
-instance Offset "iccProfileDescription" SkJpegEncoderOptions where rawOffset = (#offset sk_jpegencoder_options_t, fICCProfileDescription)
-instance Storable SkJpegEncoderOptions where
+instance Offset "fQuality" Sk_jpegencoder_options where rawOffset = (#offset sk_jpegencoder_options_t, fQuality)
+instance Offset "fDownsample" Sk_jpegencoder_options where rawOffset = (#offset sk_jpegencoder_options_t, fDownsample)
+instance Offset "fAlphaOption" Sk_jpegencoder_options where rawOffset = (#offset sk_jpegencoder_options_t, fAlphaOption)
+instance Offset "xmpMetadata" Sk_jpegencoder_options where rawOffset = (#offset sk_jpegencoder_options_t, xmpMetadata)
+instance Offset "fICCProfile" Sk_jpegencoder_options where rawOffset = (#offset sk_jpegencoder_options_t, fICCProfile)
+instance Offset "fICCProfileDescription" Sk_jpegencoder_options where rawOffset = (#offset sk_jpegencoder_options_t, fICCProfileDescription)
+instance Storable Sk_jpegencoder_options where
   sizeOf _ = (#size sk_jpegencoder_options_t)
   alignment _ = (#alignment sk_jpegencoder_options_t)
   peek in'ptr = do
-    quality <- (#peek sk_jpegencoder_options_t, fQuality) in'ptr
-    downsample <- (#peek sk_jpegencoder_options_t, fDownsample) in'ptr
-    alphaOption <- (#peek sk_jpegencoder_options_t, fAlphaOption) in'ptr
+    fQuality <- (#peek sk_jpegencoder_options_t, fQuality) in'ptr
+    fDownsample <- (#peek sk_jpegencoder_options_t, fDownsample) in'ptr
+    fAlphaOption <- (#peek sk_jpegencoder_options_t, fAlphaOption) in'ptr
     xmpMetadata <- (#peek sk_jpegencoder_options_t, xmpMetadata) in'ptr
-    iccProfile <- (#peek sk_jpegencoder_options_t, fICCProfile) in'ptr
-    iccProfileDescription <- (#peek sk_jpegencoder_options_t, fICCProfileDescription) in'ptr
-    pure SkJpegEncoderOptions{..}
+    fICCProfile <- (#peek sk_jpegencoder_options_t, fICCProfile) in'ptr
+    fICCProfileDescription <- (#peek sk_jpegencoder_options_t, fICCProfileDescription) in'ptr
+    pure Sk_jpegencoder_options{..}
   poke in'ptr in'value = do
-    (#poke sk_jpegencoder_options_t, fQuality) in'ptr in'value.quality
-    (#poke sk_jpegencoder_options_t, fDownsample) in'ptr in'value.downsample
-    (#poke sk_jpegencoder_options_t, fAlphaOption) in'ptr in'value.alphaOption
+    (#poke sk_jpegencoder_options_t, fQuality) in'ptr in'value.fQuality
+    (#poke sk_jpegencoder_options_t, fDownsample) in'ptr in'value.fDownsample
+    (#poke sk_jpegencoder_options_t, fAlphaOption) in'ptr in'value.fAlphaOption
     (#poke sk_jpegencoder_options_t, xmpMetadata) in'ptr in'value.xmpMetadata
-    (#poke sk_jpegencoder_options_t, fICCProfile) in'ptr in'value.iccProfile
-    (#poke sk_jpegencoder_options_t, fICCProfileDescription) in'ptr in'value.iccProfileDescription
+    (#poke sk_jpegencoder_options_t, fICCProfile) in'ptr in'value.fICCProfile
+    (#poke sk_jpegencoder_options_t, fICCProfileDescription) in'ptr in'value.fICCProfileDescription
 -- | `sk_webpencoder_compression_t`
-newtype SkWebpEncoderCompression = SkWebpEncoderCompression (#type sk_webpencoder_compression_t)
+newtype Sk_webpencoder_compression = Sk_webpencoder_compression (#type sk_webpencoder_compression_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `LOSSY_SK_WEBPENCODER_COMPTRESSION`
-skWebpEncoderCompression'LossySkWebpEncoderCompTressIon :: SkWebpEncoderCompression
-skWebpEncoderCompression'LossySkWebpEncoderCompTressIon = #const LOSSY_SK_WEBPENCODER_COMPTRESSION
+sk_webpencoder_compression'LOSSY_SK_WEBPENCODER_COMPTRESSION :: Sk_webpencoder_compression
+sk_webpencoder_compression'LOSSY_SK_WEBPENCODER_COMPTRESSION = #const LOSSY_SK_WEBPENCODER_COMPTRESSION
 -- | `LOSSLESS_SK_WEBPENCODER_COMPTRESSION`
-skWebpEncoderCompression'LosslessSkWebpEncoderCompTressIon :: SkWebpEncoderCompression
-skWebpEncoderCompression'LosslessSkWebpEncoderCompTressIon = #const LOSSLESS_SK_WEBPENCODER_COMPTRESSION
+sk_webpencoder_compression'LOSSLESS_SK_WEBPENCODER_COMPTRESSION :: Sk_webpencoder_compression
+sk_webpencoder_compression'LOSSLESS_SK_WEBPENCODER_COMPTRESSION = #const LOSSLESS_SK_WEBPENCODER_COMPTRESSION
 -- | `sk_webpencoder_options_t`
-data SkWebpEncoderOptions = SkWebpEncoderOptions
-  { compression :: SkWebpEncoderCompression
+data Sk_webpencoder_options = Sk_webpencoder_options
+  { fCompression :: Sk_webpencoder_compression
   -- ^ `fCompression`
-  , quality :: CFloat
+  , fQuality :: CFloat
   -- ^ `fQuality`
-  , iccProfile :: Ptr (SkColorSpaceIccProfile)
+  , fICCProfile :: Ptr (Sk_colorspace_icc_profile)
   -- ^ `fICCProfile`
-  , iccProfileDescription :: Ptr (CChar)
+  , fICCProfileDescription :: Ptr (CChar)
   -- ^ `fICCProfileDescription`
   } deriving (Show, Eq, Ord)
-instance Offset "compression" SkWebpEncoderOptions where rawOffset = (#offset sk_webpencoder_options_t, fCompression)
-instance Offset "quality" SkWebpEncoderOptions where rawOffset = (#offset sk_webpencoder_options_t, fQuality)
-instance Offset "iccProfile" SkWebpEncoderOptions where rawOffset = (#offset sk_webpencoder_options_t, fICCProfile)
-instance Offset "iccProfileDescription" SkWebpEncoderOptions where rawOffset = (#offset sk_webpencoder_options_t, fICCProfileDescription)
-instance Storable SkWebpEncoderOptions where
+instance Offset "fCompression" Sk_webpencoder_options where rawOffset = (#offset sk_webpencoder_options_t, fCompression)
+instance Offset "fQuality" Sk_webpencoder_options where rawOffset = (#offset sk_webpencoder_options_t, fQuality)
+instance Offset "fICCProfile" Sk_webpencoder_options where rawOffset = (#offset sk_webpencoder_options_t, fICCProfile)
+instance Offset "fICCProfileDescription" Sk_webpencoder_options where rawOffset = (#offset sk_webpencoder_options_t, fICCProfileDescription)
+instance Storable Sk_webpencoder_options where
   sizeOf _ = (#size sk_webpencoder_options_t)
   alignment _ = (#alignment sk_webpencoder_options_t)
   peek in'ptr = do
-    compression <- (#peek sk_webpencoder_options_t, fCompression) in'ptr
-    quality <- (#peek sk_webpencoder_options_t, fQuality) in'ptr
-    iccProfile <- (#peek sk_webpencoder_options_t, fICCProfile) in'ptr
-    iccProfileDescription <- (#peek sk_webpencoder_options_t, fICCProfileDescription) in'ptr
-    pure SkWebpEncoderOptions{..}
+    fCompression <- (#peek sk_webpencoder_options_t, fCompression) in'ptr
+    fQuality <- (#peek sk_webpencoder_options_t, fQuality) in'ptr
+    fICCProfile <- (#peek sk_webpencoder_options_t, fICCProfile) in'ptr
+    fICCProfileDescription <- (#peek sk_webpencoder_options_t, fICCProfileDescription) in'ptr
+    pure Sk_webpencoder_options{..}
   poke in'ptr in'value = do
-    (#poke sk_webpencoder_options_t, fCompression) in'ptr in'value.compression
-    (#poke sk_webpencoder_options_t, fQuality) in'ptr in'value.quality
-    (#poke sk_webpencoder_options_t, fICCProfile) in'ptr in'value.iccProfile
-    (#poke sk_webpencoder_options_t, fICCProfileDescription) in'ptr in'value.iccProfileDescription
+    (#poke sk_webpencoder_options_t, fCompression) in'ptr in'value.fCompression
+    (#poke sk_webpencoder_options_t, fQuality) in'ptr in'value.fQuality
+    (#poke sk_webpencoder_options_t, fICCProfile) in'ptr in'value.fICCProfile
+    (#poke sk_webpencoder_options_t, fICCProfileDescription) in'ptr in'value.fICCProfileDescription
 -- | `sk_rrect_t`
-data SkRRect = SkRRect
+data Sk_rrect = Sk_rrect
   deriving (Show, Eq, Ord)
 -- | `sk_rrect_type_t`
-newtype SkRRectType = SkRRectType (#type sk_rrect_type_t)
+newtype Sk_rrect_type = Sk_rrect_type (#type sk_rrect_type_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `EMPTY_SK_RRECT_TYPE`
-skRRectType'Empty :: SkRRectType
-skRRectType'Empty = #const EMPTY_SK_RRECT_TYPE
+sk_rrect_type'EMPTY_SK_RRECT_TYPE :: Sk_rrect_type
+sk_rrect_type'EMPTY_SK_RRECT_TYPE = #const EMPTY_SK_RRECT_TYPE
 -- | `RECT_SK_RRECT_TYPE`
-skRRectType'Rect :: SkRRectType
-skRRectType'Rect = #const RECT_SK_RRECT_TYPE
+sk_rrect_type'RECT_SK_RRECT_TYPE :: Sk_rrect_type
+sk_rrect_type'RECT_SK_RRECT_TYPE = #const RECT_SK_RRECT_TYPE
 -- | `OVAL_SK_RRECT_TYPE`
-skRRectType'Oval :: SkRRectType
-skRRectType'Oval = #const OVAL_SK_RRECT_TYPE
+sk_rrect_type'OVAL_SK_RRECT_TYPE :: Sk_rrect_type
+sk_rrect_type'OVAL_SK_RRECT_TYPE = #const OVAL_SK_RRECT_TYPE
 -- | `SIMPLE_SK_RRECT_TYPE`
-skRRectType'Simple :: SkRRectType
-skRRectType'Simple = #const SIMPLE_SK_RRECT_TYPE
+sk_rrect_type'SIMPLE_SK_RRECT_TYPE :: Sk_rrect_type
+sk_rrect_type'SIMPLE_SK_RRECT_TYPE = #const SIMPLE_SK_RRECT_TYPE
 -- | `NINE_PATCH_SK_RRECT_TYPE`
-skRRectType'NinePatch :: SkRRectType
-skRRectType'NinePatch = #const NINE_PATCH_SK_RRECT_TYPE
+sk_rrect_type'NINE_PATCH_SK_RRECT_TYPE :: Sk_rrect_type
+sk_rrect_type'NINE_PATCH_SK_RRECT_TYPE = #const NINE_PATCH_SK_RRECT_TYPE
 -- | `COMPLEX_SK_RRECT_TYPE`
-skRRectType'Complex :: SkRRectType
-skRRectType'Complex = #const COMPLEX_SK_RRECT_TYPE
+sk_rrect_type'COMPLEX_SK_RRECT_TYPE :: Sk_rrect_type
+sk_rrect_type'COMPLEX_SK_RRECT_TYPE = #const COMPLEX_SK_RRECT_TYPE
 -- | `sk_rrect_corner_t`
-newtype SkRRectCorner = SkRRectCorner (#type sk_rrect_corner_t)
+newtype Sk_rrect_corner = Sk_rrect_corner (#type sk_rrect_corner_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `UPPER_LEFT_SK_RRECT_CORNER`
-skRRectCorner'UpperLeft :: SkRRectCorner
-skRRectCorner'UpperLeft = #const UPPER_LEFT_SK_RRECT_CORNER
+sk_rrect_corner'UPPER_LEFT_SK_RRECT_CORNER :: Sk_rrect_corner
+sk_rrect_corner'UPPER_LEFT_SK_RRECT_CORNER = #const UPPER_LEFT_SK_RRECT_CORNER
 -- | `UPPER_RIGHT_SK_RRECT_CORNER`
-skRRectCorner'UpperRight :: SkRRectCorner
-skRRectCorner'UpperRight = #const UPPER_RIGHT_SK_RRECT_CORNER
+sk_rrect_corner'UPPER_RIGHT_SK_RRECT_CORNER :: Sk_rrect_corner
+sk_rrect_corner'UPPER_RIGHT_SK_RRECT_CORNER = #const UPPER_RIGHT_SK_RRECT_CORNER
 -- | `LOWER_RIGHT_SK_RRECT_CORNER`
-skRRectCorner'LowerRight :: SkRRectCorner
-skRRectCorner'LowerRight = #const LOWER_RIGHT_SK_RRECT_CORNER
+sk_rrect_corner'LOWER_RIGHT_SK_RRECT_CORNER :: Sk_rrect_corner
+sk_rrect_corner'LOWER_RIGHT_SK_RRECT_CORNER = #const LOWER_RIGHT_SK_RRECT_CORNER
 -- | `LOWER_LEFT_SK_RRECT_CORNER`
-skRRectCorner'LowerLeft :: SkRRectCorner
-skRRectCorner'LowerLeft = #const LOWER_LEFT_SK_RRECT_CORNER
+sk_rrect_corner'LOWER_LEFT_SK_RRECT_CORNER :: Sk_rrect_corner
+sk_rrect_corner'LOWER_LEFT_SK_RRECT_CORNER = #const LOWER_LEFT_SK_RRECT_CORNER
 -- | `sk_textblob_t`
-data SkTextBlob = SkTextBlob
+data Sk_textblob = Sk_textblob
   deriving (Show, Eq, Ord)
 -- | `sk_textblob_builder_t`
-data SkTextBlobBuilder = SkTextBlobBuilder
+data Sk_textblob_builder = Sk_textblob_builder
   deriving (Show, Eq, Ord)
 -- | `sk_textblob_builder_runbuffer_t`
-data SkTextBlobBuilderRunBuffer = SkTextBlobBuilderRunBuffer
+data Sk_textblob_builder_runbuffer = Sk_textblob_builder_runbuffer
   { glyphs :: Ptr (())
   -- ^ `glyphs`
   , pos :: Ptr (())
@@ -2446,11 +2446,11 @@ data SkTextBlobBuilderRunBuffer = SkTextBlobBuilderRunBuffer
   , clusters :: Ptr (())
   -- ^ `clusters`
   } deriving (Show, Eq, Ord)
-instance Offset "glyphs" SkTextBlobBuilderRunBuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, glyphs)
-instance Offset "pos" SkTextBlobBuilderRunBuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, pos)
-instance Offset "utf8text" SkTextBlobBuilderRunBuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, utf8text)
-instance Offset "clusters" SkTextBlobBuilderRunBuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, clusters)
-instance Storable SkTextBlobBuilderRunBuffer where
+instance Offset "glyphs" Sk_textblob_builder_runbuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, glyphs)
+instance Offset "pos" Sk_textblob_builder_runbuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, pos)
+instance Offset "utf8text" Sk_textblob_builder_runbuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, utf8text)
+instance Offset "clusters" Sk_textblob_builder_runbuffer where rawOffset = (#offset sk_textblob_builder_runbuffer_t, clusters)
+instance Storable Sk_textblob_builder_runbuffer where
   sizeOf _ = (#size sk_textblob_builder_runbuffer_t)
   alignment _ = (#alignment sk_textblob_builder_runbuffer_t)
   peek in'ptr = do
@@ -2458,2262 +2458,2262 @@ instance Storable SkTextBlobBuilderRunBuffer where
     pos <- (#peek sk_textblob_builder_runbuffer_t, pos) in'ptr
     utf8text <- (#peek sk_textblob_builder_runbuffer_t, utf8text) in'ptr
     clusters <- (#peek sk_textblob_builder_runbuffer_t, clusters) in'ptr
-    pure SkTextBlobBuilderRunBuffer{..}
+    pure Sk_textblob_builder_runbuffer{..}
   poke in'ptr in'value = do
     (#poke sk_textblob_builder_runbuffer_t, glyphs) in'ptr in'value.glyphs
     (#poke sk_textblob_builder_runbuffer_t, pos) in'ptr in'value.pos
     (#poke sk_textblob_builder_runbuffer_t, utf8text) in'ptr in'value.utf8text
     (#poke sk_textblob_builder_runbuffer_t, clusters) in'ptr in'value.clusters
 -- | `sk_rsxform_t`
-data SkRsxForm = SkRsxForm
-  { sCos :: CFloat
+data Sk_rsxform = Sk_rsxform
+  { fSCos :: CFloat
   -- ^ `fSCos`
-  , sSin :: CFloat
+  , fSSin :: CFloat
   -- ^ `fSSin`
-  , tx :: CFloat
+  , fTX :: CFloat
   -- ^ `fTX`
-  , ty :: CFloat
+  , fTY :: CFloat
   -- ^ `fTY`
   } deriving (Show, Eq, Ord)
-instance Offset "sCos" SkRsxForm where rawOffset = (#offset sk_rsxform_t, fSCos)
-instance Offset "sSin" SkRsxForm where rawOffset = (#offset sk_rsxform_t, fSSin)
-instance Offset "tx" SkRsxForm where rawOffset = (#offset sk_rsxform_t, fTX)
-instance Offset "ty" SkRsxForm where rawOffset = (#offset sk_rsxform_t, fTY)
-instance Storable SkRsxForm where
+instance Offset "fSCos" Sk_rsxform where rawOffset = (#offset sk_rsxform_t, fSCos)
+instance Offset "fSSin" Sk_rsxform where rawOffset = (#offset sk_rsxform_t, fSSin)
+instance Offset "fTX" Sk_rsxform where rawOffset = (#offset sk_rsxform_t, fTX)
+instance Offset "fTY" Sk_rsxform where rawOffset = (#offset sk_rsxform_t, fTY)
+instance Storable Sk_rsxform where
   sizeOf _ = (#size sk_rsxform_t)
   alignment _ = (#alignment sk_rsxform_t)
   peek in'ptr = do
-    sCos <- (#peek sk_rsxform_t, fSCos) in'ptr
-    sSin <- (#peek sk_rsxform_t, fSSin) in'ptr
-    tx <- (#peek sk_rsxform_t, fTX) in'ptr
-    ty <- (#peek sk_rsxform_t, fTY) in'ptr
-    pure SkRsxForm{..}
+    fSCos <- (#peek sk_rsxform_t, fSCos) in'ptr
+    fSSin <- (#peek sk_rsxform_t, fSSin) in'ptr
+    fTX <- (#peek sk_rsxform_t, fTX) in'ptr
+    fTY <- (#peek sk_rsxform_t, fTY) in'ptr
+    pure Sk_rsxform{..}
   poke in'ptr in'value = do
-    (#poke sk_rsxform_t, fSCos) in'ptr in'value.sCos
-    (#poke sk_rsxform_t, fSSin) in'ptr in'value.sSin
-    (#poke sk_rsxform_t, fTX) in'ptr in'value.tx
-    (#poke sk_rsxform_t, fTY) in'ptr in'value.ty
+    (#poke sk_rsxform_t, fSCos) in'ptr in'value.fSCos
+    (#poke sk_rsxform_t, fSSin) in'ptr in'value.fSSin
+    (#poke sk_rsxform_t, fTX) in'ptr in'value.fTX
+    (#poke sk_rsxform_t, fTY) in'ptr in'value.fTY
 -- | `sk_tracememorydump_t`
-data SkTraceMemoryDump = SkTraceMemoryDump
+data Sk_tracememorydump = Sk_tracememorydump
   deriving (Show, Eq, Ord)
 -- | `sk_runtimeeffect_t`
-data SkRuntimeEffect = SkRuntimeEffect
+data Sk_runtimeeffect = Sk_runtimeeffect
   deriving (Show, Eq, Ord)
 -- | `sk_runtimeeffect_uniform_type_t`
-newtype SkRuntimeEffectUniformType = SkRuntimeEffectUniformType (#type sk_runtimeeffect_uniform_type_t)
+newtype Sk_runtimeeffect_uniform_type = Sk_runtimeeffect_uniform_type (#type sk_runtimeeffect_uniform_type_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Float :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Float = #const FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Float2 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Float2 = #const FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Float3 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Float3 = #const FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Float4 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Float4 = #const FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Float2X2 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Float2X2 = #const FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Float3X3 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Float3X3 = #const FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Float4X4 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Float4X4 = #const FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Int :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Int = #const INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Int2 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Int2 = #const INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Int3 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Int3 = #const INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE`
-skRuntimeEffectUniformType'Int4 :: SkRuntimeEffectUniformType
-skRuntimeEffectUniformType'Int4 = #const INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+sk_runtimeeffect_uniform_type'INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
+sk_runtimeeffect_uniform_type'INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE = #const INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE
 -- | `sk_runtimeeffect_child_type_t`
-newtype SkRuntimeEffectChildType = SkRuntimeEffectChildType (#type sk_runtimeeffect_child_type_t)
+newtype Sk_runtimeeffect_child_type = Sk_runtimeeffect_child_type (#type sk_runtimeeffect_child_type_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE`
-skRuntimeEffectChildType'Shader :: SkRuntimeEffectChildType
-skRuntimeEffectChildType'Shader = #const SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE
+sk_runtimeeffect_child_type'SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE :: Sk_runtimeeffect_child_type
+sk_runtimeeffect_child_type'SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE = #const SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE
 -- | `COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE`
-skRuntimeEffectChildType'ColorFilter :: SkRuntimeEffectChildType
-skRuntimeEffectChildType'ColorFilter = #const COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE
+sk_runtimeeffect_child_type'COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE :: Sk_runtimeeffect_child_type
+sk_runtimeeffect_child_type'COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE = #const COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE
 -- | `BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE`
-skRuntimeEffectChildType'Blender :: SkRuntimeEffectChildType
-skRuntimeEffectChildType'Blender = #const BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE
+sk_runtimeeffect_child_type'BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE :: Sk_runtimeeffect_child_type
+sk_runtimeeffect_child_type'BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE = #const BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE
 -- | `sk_runtimeeffect_uniform_flags_t`
-newtype SkRuntimeEffectUniformFlags = SkRuntimeEffectUniformFlags (#type sk_runtimeeffect_uniform_flags_t)
+newtype Sk_runtimeeffect_uniform_flags = Sk_runtimeeffect_uniform_flags (#type sk_runtimeeffect_uniform_flags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS`
-skRuntimeEffectUniformFlags'None :: SkRuntimeEffectUniformFlags
-skRuntimeEffectUniformFlags'None = #const NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
+sk_runtimeeffect_uniform_flags'NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
+sk_runtimeeffect_uniform_flags'NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = #const NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
 -- | `ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS`
-skRuntimeEffectUniformFlags'Array :: SkRuntimeEffectUniformFlags
-skRuntimeEffectUniformFlags'Array = #const ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
+sk_runtimeeffect_uniform_flags'ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
+sk_runtimeeffect_uniform_flags'ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = #const ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
 -- | `COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS`
-skRuntimeEffectUniformFlags'Color :: SkRuntimeEffectUniformFlags
-skRuntimeEffectUniformFlags'Color = #const COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
+sk_runtimeeffect_uniform_flags'COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
+sk_runtimeeffect_uniform_flags'COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = #const COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
 -- | `VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS`
-skRuntimeEffectUniformFlags'Vertex :: SkRuntimeEffectUniformFlags
-skRuntimeEffectUniformFlags'Vertex = #const VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
+sk_runtimeeffect_uniform_flags'VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
+sk_runtimeeffect_uniform_flags'VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = #const VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
 -- | `FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS`
-skRuntimeEffectUniformFlags'Fragment :: SkRuntimeEffectUniformFlags
-skRuntimeEffectUniformFlags'Fragment = #const FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
+sk_runtimeeffect_uniform_flags'FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
+sk_runtimeeffect_uniform_flags'FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = #const FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
 -- | `HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS`
-skRuntimeEffectUniformFlags'HalfPrecision :: SkRuntimeEffectUniformFlags
-skRuntimeEffectUniformFlags'HalfPrecision = #const HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
+sk_runtimeeffect_uniform_flags'HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
+sk_runtimeeffect_uniform_flags'HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = #const HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS
 -- | `sk_runtimeeffect_uniform_t`
-data SkRuntimeEffectUniform = SkRuntimeEffectUniform
-  { name :: Ptr (CChar)
+data Sk_runtimeeffect_uniform = Sk_runtimeeffect_uniform
+  { fName :: Ptr (CChar)
   -- ^ `fName`
-  , nameLength :: CSize
+  , fNameLength :: CSize
   -- ^ `fNameLength`
-  , offset :: CSize
+  , fOffset :: CSize
   -- ^ `fOffset`
-  , type_ :: SkRuntimeEffectUniformType
+  , fType :: Sk_runtimeeffect_uniform_type
   -- ^ `fType`
-  , count :: CInt
+  , fCount :: CInt
   -- ^ `fCount`
-  , flags :: SkRuntimeEffectUniformFlags
+  , fFlags :: Sk_runtimeeffect_uniform_flags
   -- ^ `fFlags`
   } deriving (Show, Eq, Ord)
-instance Offset "name" SkRuntimeEffectUniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fName)
-instance Offset "nameLength" SkRuntimeEffectUniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fNameLength)
-instance Offset "offset" SkRuntimeEffectUniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fOffset)
-instance Offset "type_" SkRuntimeEffectUniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fType)
-instance Offset "count" SkRuntimeEffectUniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fCount)
-instance Offset "flags" SkRuntimeEffectUniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fFlags)
-instance Storable SkRuntimeEffectUniform where
+instance Offset "fName" Sk_runtimeeffect_uniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fName)
+instance Offset "fNameLength" Sk_runtimeeffect_uniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fNameLength)
+instance Offset "fOffset" Sk_runtimeeffect_uniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fOffset)
+instance Offset "fType" Sk_runtimeeffect_uniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fType)
+instance Offset "fCount" Sk_runtimeeffect_uniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fCount)
+instance Offset "fFlags" Sk_runtimeeffect_uniform where rawOffset = (#offset sk_runtimeeffect_uniform_t, fFlags)
+instance Storable Sk_runtimeeffect_uniform where
   sizeOf _ = (#size sk_runtimeeffect_uniform_t)
   alignment _ = (#alignment sk_runtimeeffect_uniform_t)
   peek in'ptr = do
-    name <- (#peek sk_runtimeeffect_uniform_t, fName) in'ptr
-    nameLength <- (#peek sk_runtimeeffect_uniform_t, fNameLength) in'ptr
-    offset <- (#peek sk_runtimeeffect_uniform_t, fOffset) in'ptr
-    type_ <- (#peek sk_runtimeeffect_uniform_t, fType) in'ptr
-    count <- (#peek sk_runtimeeffect_uniform_t, fCount) in'ptr
-    flags <- (#peek sk_runtimeeffect_uniform_t, fFlags) in'ptr
-    pure SkRuntimeEffectUniform{..}
+    fName <- (#peek sk_runtimeeffect_uniform_t, fName) in'ptr
+    fNameLength <- (#peek sk_runtimeeffect_uniform_t, fNameLength) in'ptr
+    fOffset <- (#peek sk_runtimeeffect_uniform_t, fOffset) in'ptr
+    fType <- (#peek sk_runtimeeffect_uniform_t, fType) in'ptr
+    fCount <- (#peek sk_runtimeeffect_uniform_t, fCount) in'ptr
+    fFlags <- (#peek sk_runtimeeffect_uniform_t, fFlags) in'ptr
+    pure Sk_runtimeeffect_uniform{..}
   poke in'ptr in'value = do
-    (#poke sk_runtimeeffect_uniform_t, fName) in'ptr in'value.name
-    (#poke sk_runtimeeffect_uniform_t, fNameLength) in'ptr in'value.nameLength
-    (#poke sk_runtimeeffect_uniform_t, fOffset) in'ptr in'value.offset
-    (#poke sk_runtimeeffect_uniform_t, fType) in'ptr in'value.type_
-    (#poke sk_runtimeeffect_uniform_t, fCount) in'ptr in'value.count
-    (#poke sk_runtimeeffect_uniform_t, fFlags) in'ptr in'value.flags
+    (#poke sk_runtimeeffect_uniform_t, fName) in'ptr in'value.fName
+    (#poke sk_runtimeeffect_uniform_t, fNameLength) in'ptr in'value.fNameLength
+    (#poke sk_runtimeeffect_uniform_t, fOffset) in'ptr in'value.fOffset
+    (#poke sk_runtimeeffect_uniform_t, fType) in'ptr in'value.fType
+    (#poke sk_runtimeeffect_uniform_t, fCount) in'ptr in'value.fCount
+    (#poke sk_runtimeeffect_uniform_t, fFlags) in'ptr in'value.fFlags
 -- | `sk_runtimeeffect_child_t`
-data SkRuntimeEffectChild = SkRuntimeEffectChild
-  { name :: Ptr (CChar)
+data Sk_runtimeeffect_child = Sk_runtimeeffect_child
+  { fName :: Ptr (CChar)
   -- ^ `fName`
-  , nameLength :: CSize
+  , fNameLength :: CSize
   -- ^ `fNameLength`
-  , type_ :: SkRuntimeEffectChildType
+  , fType :: Sk_runtimeeffect_child_type
   -- ^ `fType`
-  , index :: CInt
+  , fIndex :: CInt
   -- ^ `fIndex`
   } deriving (Show, Eq, Ord)
-instance Offset "name" SkRuntimeEffectChild where rawOffset = (#offset sk_runtimeeffect_child_t, fName)
-instance Offset "nameLength" SkRuntimeEffectChild where rawOffset = (#offset sk_runtimeeffect_child_t, fNameLength)
-instance Offset "type_" SkRuntimeEffectChild where rawOffset = (#offset sk_runtimeeffect_child_t, fType)
-instance Offset "index" SkRuntimeEffectChild where rawOffset = (#offset sk_runtimeeffect_child_t, fIndex)
-instance Storable SkRuntimeEffectChild where
+instance Offset "fName" Sk_runtimeeffect_child where rawOffset = (#offset sk_runtimeeffect_child_t, fName)
+instance Offset "fNameLength" Sk_runtimeeffect_child where rawOffset = (#offset sk_runtimeeffect_child_t, fNameLength)
+instance Offset "fType" Sk_runtimeeffect_child where rawOffset = (#offset sk_runtimeeffect_child_t, fType)
+instance Offset "fIndex" Sk_runtimeeffect_child where rawOffset = (#offset sk_runtimeeffect_child_t, fIndex)
+instance Storable Sk_runtimeeffect_child where
   sizeOf _ = (#size sk_runtimeeffect_child_t)
   alignment _ = (#alignment sk_runtimeeffect_child_t)
   peek in'ptr = do
-    name <- (#peek sk_runtimeeffect_child_t, fName) in'ptr
-    nameLength <- (#peek sk_runtimeeffect_child_t, fNameLength) in'ptr
-    type_ <- (#peek sk_runtimeeffect_child_t, fType) in'ptr
-    index <- (#peek sk_runtimeeffect_child_t, fIndex) in'ptr
-    pure SkRuntimeEffectChild{..}
+    fName <- (#peek sk_runtimeeffect_child_t, fName) in'ptr
+    fNameLength <- (#peek sk_runtimeeffect_child_t, fNameLength) in'ptr
+    fType <- (#peek sk_runtimeeffect_child_t, fType) in'ptr
+    fIndex <- (#peek sk_runtimeeffect_child_t, fIndex) in'ptr
+    pure Sk_runtimeeffect_child{..}
   poke in'ptr in'value = do
-    (#poke sk_runtimeeffect_child_t, fName) in'ptr in'value.name
-    (#poke sk_runtimeeffect_child_t, fNameLength) in'ptr in'value.nameLength
-    (#poke sk_runtimeeffect_child_t, fType) in'ptr in'value.type_
-    (#poke sk_runtimeeffect_child_t, fIndex) in'ptr in'value.index
+    (#poke sk_runtimeeffect_child_t, fName) in'ptr in'value.fName
+    (#poke sk_runtimeeffect_child_t, fNameLength) in'ptr in'value.fNameLength
+    (#poke sk_runtimeeffect_child_t, fType) in'ptr in'value.fType
+    (#poke sk_runtimeeffect_child_t, fIndex) in'ptr in'value.fIndex
 -- | `sk_filter_mode_t`
-newtype SkFilterMode = SkFilterMode (#type sk_filter_mode_t)
+newtype Sk_filter_mode = Sk_filter_mode (#type sk_filter_mode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NEAREST_SK_FILTER_MODE`
-skFilterMode'Nearest :: SkFilterMode
-skFilterMode'Nearest = #const NEAREST_SK_FILTER_MODE
+sk_filter_mode'NEAREST_SK_FILTER_MODE :: Sk_filter_mode
+sk_filter_mode'NEAREST_SK_FILTER_MODE = #const NEAREST_SK_FILTER_MODE
 -- | `LINEAR_SK_FILTER_MODE`
-skFilterMode'Linear :: SkFilterMode
-skFilterMode'Linear = #const LINEAR_SK_FILTER_MODE
+sk_filter_mode'LINEAR_SK_FILTER_MODE :: Sk_filter_mode
+sk_filter_mode'LINEAR_SK_FILTER_MODE = #const LINEAR_SK_FILTER_MODE
 -- | `sk_mipmap_mode_t`
-newtype SkMIpMapMode = SkMIpMapMode (#type sk_mipmap_mode_t)
+newtype Sk_mipmap_mode = Sk_mipmap_mode (#type sk_mipmap_mode_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NONE_SK_MIPMAP_MODE`
-skMIpMapMode'None :: SkMIpMapMode
-skMIpMapMode'None = #const NONE_SK_MIPMAP_MODE
+sk_mipmap_mode'NONE_SK_MIPMAP_MODE :: Sk_mipmap_mode
+sk_mipmap_mode'NONE_SK_MIPMAP_MODE = #const NONE_SK_MIPMAP_MODE
 -- | `NEAREST_SK_MIPMAP_MODE`
-skMIpMapMode'Nearest :: SkMIpMapMode
-skMIpMapMode'Nearest = #const NEAREST_SK_MIPMAP_MODE
+sk_mipmap_mode'NEAREST_SK_MIPMAP_MODE :: Sk_mipmap_mode
+sk_mipmap_mode'NEAREST_SK_MIPMAP_MODE = #const NEAREST_SK_MIPMAP_MODE
 -- | `LINEAR_SK_MIPMAP_MODE`
-skMIpMapMode'Linear :: SkMIpMapMode
-skMIpMapMode'Linear = #const LINEAR_SK_MIPMAP_MODE
+sk_mipmap_mode'LINEAR_SK_MIPMAP_MODE :: Sk_mipmap_mode
+sk_mipmap_mode'LINEAR_SK_MIPMAP_MODE = #const LINEAR_SK_MIPMAP_MODE
 -- | `sk_cubic_resampler_t`
-data SkCubicReSampler = SkCubicReSampler
-  { b :: CFloat
+data Sk_cubic_resampler = Sk_cubic_resampler
+  { fB :: CFloat
   -- ^ `fB`
-  , c :: CFloat
+  , fC :: CFloat
   -- ^ `fC`
   } deriving (Show, Eq, Ord)
-instance Offset "b" SkCubicReSampler where rawOffset = (#offset sk_cubic_resampler_t, fB)
-instance Offset "c" SkCubicReSampler where rawOffset = (#offset sk_cubic_resampler_t, fC)
-instance Storable SkCubicReSampler where
+instance Offset "fB" Sk_cubic_resampler where rawOffset = (#offset sk_cubic_resampler_t, fB)
+instance Offset "fC" Sk_cubic_resampler where rawOffset = (#offset sk_cubic_resampler_t, fC)
+instance Storable Sk_cubic_resampler where
   sizeOf _ = (#size sk_cubic_resampler_t)
   alignment _ = (#alignment sk_cubic_resampler_t)
   peek in'ptr = do
-    b <- (#peek sk_cubic_resampler_t, fB) in'ptr
-    c <- (#peek sk_cubic_resampler_t, fC) in'ptr
-    pure SkCubicReSampler{..}
+    fB <- (#peek sk_cubic_resampler_t, fB) in'ptr
+    fC <- (#peek sk_cubic_resampler_t, fC) in'ptr
+    pure Sk_cubic_resampler{..}
   poke in'ptr in'value = do
-    (#poke sk_cubic_resampler_t, fB) in'ptr in'value.b
-    (#poke sk_cubic_resampler_t, fC) in'ptr in'value.c
+    (#poke sk_cubic_resampler_t, fB) in'ptr in'value.fB
+    (#poke sk_cubic_resampler_t, fC) in'ptr in'value.fC
 -- | `sk_sampling_options_t`
-data SkSamplingOptions = SkSamplingOptions
-  { maxAniso :: CInt
+data Sk_sampling_options = Sk_sampling_options
+  { fMaxAniso :: CInt
   -- ^ `fMaxAniso`
-  , useCubic :: CBool
+  , fUseCubic :: CBool
   -- ^ `fUseCubic`
-  , cubic :: SkCubicReSampler
+  , fCubic :: Sk_cubic_resampler
   -- ^ `fCubic`
-  , filter :: SkFilterMode
+  , fFilter :: Sk_filter_mode
   -- ^ `fFilter`
-  , mipmap :: SkMIpMapMode
+  , fMipmap :: Sk_mipmap_mode
   -- ^ `fMipmap`
   } deriving (Show, Eq, Ord)
-instance Offset "maxAniso" SkSamplingOptions where rawOffset = (#offset sk_sampling_options_t, fMaxAniso)
-instance Offset "useCubic" SkSamplingOptions where rawOffset = (#offset sk_sampling_options_t, fUseCubic)
-instance Offset "cubic" SkSamplingOptions where rawOffset = (#offset sk_sampling_options_t, fCubic)
-instance Offset "filter" SkSamplingOptions where rawOffset = (#offset sk_sampling_options_t, fFilter)
-instance Offset "mipmap" SkSamplingOptions where rawOffset = (#offset sk_sampling_options_t, fMipmap)
-instance Storable SkSamplingOptions where
+instance Offset "fMaxAniso" Sk_sampling_options where rawOffset = (#offset sk_sampling_options_t, fMaxAniso)
+instance Offset "fUseCubic" Sk_sampling_options where rawOffset = (#offset sk_sampling_options_t, fUseCubic)
+instance Offset "fCubic" Sk_sampling_options where rawOffset = (#offset sk_sampling_options_t, fCubic)
+instance Offset "fFilter" Sk_sampling_options where rawOffset = (#offset sk_sampling_options_t, fFilter)
+instance Offset "fMipmap" Sk_sampling_options where rawOffset = (#offset sk_sampling_options_t, fMipmap)
+instance Storable Sk_sampling_options where
   sizeOf _ = (#size sk_sampling_options_t)
   alignment _ = (#alignment sk_sampling_options_t)
   peek in'ptr = do
-    maxAniso <- (#peek sk_sampling_options_t, fMaxAniso) in'ptr
-    useCubic <- (#peek sk_sampling_options_t, fUseCubic) in'ptr
-    cubic <- (#peek sk_sampling_options_t, fCubic) in'ptr
-    filter <- (#peek sk_sampling_options_t, fFilter) in'ptr
-    mipmap <- (#peek sk_sampling_options_t, fMipmap) in'ptr
-    pure SkSamplingOptions{..}
+    fMaxAniso <- (#peek sk_sampling_options_t, fMaxAniso) in'ptr
+    fUseCubic <- (#peek sk_sampling_options_t, fUseCubic) in'ptr
+    fCubic <- (#peek sk_sampling_options_t, fCubic) in'ptr
+    fFilter <- (#peek sk_sampling_options_t, fFilter) in'ptr
+    fMipmap <- (#peek sk_sampling_options_t, fMipmap) in'ptr
+    pure Sk_sampling_options{..}
   poke in'ptr in'value = do
-    (#poke sk_sampling_options_t, fMaxAniso) in'ptr in'value.maxAniso
-    (#poke sk_sampling_options_t, fUseCubic) in'ptr in'value.useCubic
-    (#poke sk_sampling_options_t, fCubic) in'ptr in'value.cubic
-    (#poke sk_sampling_options_t, fFilter) in'ptr in'value.filter
-    (#poke sk_sampling_options_t, fMipmap) in'ptr in'value.mipmap
+    (#poke sk_sampling_options_t, fMaxAniso) in'ptr in'value.fMaxAniso
+    (#poke sk_sampling_options_t, fUseCubic) in'ptr in'value.fUseCubic
+    (#poke sk_sampling_options_t, fCubic) in'ptr in'value.fCubic
+    (#poke sk_sampling_options_t, fFilter) in'ptr in'value.fFilter
+    (#poke sk_sampling_options_t, fMipmap) in'ptr in'value.fMipmap
 -- | `sk_canvas_savelayerrec_flags_t`
-newtype SkCanvasSaveLayerRecFlags = SkCanvasSaveLayerRecFlags (#type sk_canvas_savelayerrec_flags_t)
+newtype Sk_canvas_savelayerrec_flags = Sk_canvas_savelayerrec_flags (#type sk_canvas_savelayerrec_flags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NONE_SK_CANVAS_SAVELAYERREC_FLAGS`
-skCanvasSaveLayerRecFlags'None :: SkCanvasSaveLayerRecFlags
-skCanvasSaveLayerRecFlags'None = #const NONE_SK_CANVAS_SAVELAYERREC_FLAGS
+sk_canvas_savelayerrec_flags'NONE_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
+sk_canvas_savelayerrec_flags'NONE_SK_CANVAS_SAVELAYERREC_FLAGS = #const NONE_SK_CANVAS_SAVELAYERREC_FLAGS
 -- | `PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS`
-skCanvasSaveLayerRecFlags'PreserveLcdText :: SkCanvasSaveLayerRecFlags
-skCanvasSaveLayerRecFlags'PreserveLcdText = #const PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS
+sk_canvas_savelayerrec_flags'PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
+sk_canvas_savelayerrec_flags'PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS = #const PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS
 -- | `INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS`
-skCanvasSaveLayerRecFlags'InitializeWithPrevious :: SkCanvasSaveLayerRecFlags
-skCanvasSaveLayerRecFlags'InitializeWithPrevious = #const INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS
+sk_canvas_savelayerrec_flags'INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
+sk_canvas_savelayerrec_flags'INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS = #const INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS
 -- | `F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS`
-skCanvasSaveLayerRecFlags'F16ColorType :: SkCanvasSaveLayerRecFlags
-skCanvasSaveLayerRecFlags'F16ColorType = #const F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS
+sk_canvas_savelayerrec_flags'F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
+sk_canvas_savelayerrec_flags'F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS = #const F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS
 -- | `sk_canvas_savelayerrec_t`
-data SkCanvasSaveLayerRec = SkCanvasSaveLayerRec
-  { bounds :: Ptr (SkRect)
+data Sk_canvas_savelayerrec = Sk_canvas_savelayerrec
+  { fBounds :: Ptr (Sk_rect)
   -- ^ `fBounds`
-  , paint :: Ptr (SkPaint)
+  , fPaint :: Ptr (Sk_paint)
   -- ^ `fPaint`
-  , backdrop :: Ptr (SkImageFilter)
+  , fBackdrop :: Ptr (Sk_imagefilter)
   -- ^ `fBackdrop`
-  , flags :: SkCanvasSaveLayerRecFlags
+  , fFlags :: Sk_canvas_savelayerrec_flags
   -- ^ `fFlags`
   } deriving (Show, Eq, Ord)
-instance Offset "bounds" SkCanvasSaveLayerRec where rawOffset = (#offset sk_canvas_savelayerrec_t, fBounds)
-instance Offset "paint" SkCanvasSaveLayerRec where rawOffset = (#offset sk_canvas_savelayerrec_t, fPaint)
-instance Offset "backdrop" SkCanvasSaveLayerRec where rawOffset = (#offset sk_canvas_savelayerrec_t, fBackdrop)
-instance Offset "flags" SkCanvasSaveLayerRec where rawOffset = (#offset sk_canvas_savelayerrec_t, fFlags)
-instance Storable SkCanvasSaveLayerRec where
+instance Offset "fBounds" Sk_canvas_savelayerrec where rawOffset = (#offset sk_canvas_savelayerrec_t, fBounds)
+instance Offset "fPaint" Sk_canvas_savelayerrec where rawOffset = (#offset sk_canvas_savelayerrec_t, fPaint)
+instance Offset "fBackdrop" Sk_canvas_savelayerrec where rawOffset = (#offset sk_canvas_savelayerrec_t, fBackdrop)
+instance Offset "fFlags" Sk_canvas_savelayerrec where rawOffset = (#offset sk_canvas_savelayerrec_t, fFlags)
+instance Storable Sk_canvas_savelayerrec where
   sizeOf _ = (#size sk_canvas_savelayerrec_t)
   alignment _ = (#alignment sk_canvas_savelayerrec_t)
   peek in'ptr = do
-    bounds <- (#peek sk_canvas_savelayerrec_t, fBounds) in'ptr
-    paint <- (#peek sk_canvas_savelayerrec_t, fPaint) in'ptr
-    backdrop <- (#peek sk_canvas_savelayerrec_t, fBackdrop) in'ptr
-    flags <- (#peek sk_canvas_savelayerrec_t, fFlags) in'ptr
-    pure SkCanvasSaveLayerRec{..}
+    fBounds <- (#peek sk_canvas_savelayerrec_t, fBounds) in'ptr
+    fPaint <- (#peek sk_canvas_savelayerrec_t, fPaint) in'ptr
+    fBackdrop <- (#peek sk_canvas_savelayerrec_t, fBackdrop) in'ptr
+    fFlags <- (#peek sk_canvas_savelayerrec_t, fFlags) in'ptr
+    pure Sk_canvas_savelayerrec{..}
   poke in'ptr in'value = do
-    (#poke sk_canvas_savelayerrec_t, fBounds) in'ptr in'value.bounds
-    (#poke sk_canvas_savelayerrec_t, fPaint) in'ptr in'value.paint
-    (#poke sk_canvas_savelayerrec_t, fBackdrop) in'ptr in'value.backdrop
-    (#poke sk_canvas_savelayerrec_t, fFlags) in'ptr in'value.flags
+    (#poke sk_canvas_savelayerrec_t, fBounds) in'ptr in'value.fBounds
+    (#poke sk_canvas_savelayerrec_t, fPaint) in'ptr in'value.fPaint
+    (#poke sk_canvas_savelayerrec_t, fBackdrop) in'ptr in'value.fBackdrop
+    (#poke sk_canvas_savelayerrec_t, fFlags) in'ptr in'value.fFlags
 -- | `skottie_animation_t`
-data SkottieAnimation = SkottieAnimation
+data Skottie_animation = Skottie_animation
   deriving (Show, Eq, Ord)
 -- | `skottie_animation_builder_t`
-data SkottieAnimationBuilder = SkottieAnimationBuilder
+data Skottie_animation_builder = Skottie_animation_builder
   deriving (Show, Eq, Ord)
 -- | `skottie_resource_provider_t`
-data SkottieResourceProvider = SkottieResourceProvider
+data Skottie_resource_provider = Skottie_resource_provider
   deriving (Show, Eq, Ord)
 -- | `skottie_property_observer_t`
-data SkottiePropertyObserver = SkottiePropertyObserver
+data Skottie_property_observer = Skottie_property_observer
   deriving (Show, Eq, Ord)
 -- | `skottie_logger_t`
-data SkottieLogger = SkottieLogger
+data Skottie_logger = Skottie_logger
   deriving (Show, Eq, Ord)
 -- | `skottie_marker_observer_t`
-data SkottieMarkerObserver = SkottieMarkerObserver
+data Skottie_marker_observer = Skottie_marker_observer
   deriving (Show, Eq, Ord)
 -- | `sksg_invalidation_controller_t`
-data SksgInvalidationController = SksgInvalidationController
+data Sksg_invalidation_controller = Sksg_invalidation_controller
   deriving (Show, Eq, Ord)
 -- | `skottie_animation_renderflags_t`
-newtype SkottieAnimationRenderFlags = SkottieAnimationRenderFlags (#type skottie_animation_renderflags_t)
+newtype Skottie_animation_renderflags = Skottie_animation_renderflags (#type skottie_animation_renderflags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `SKIP_TOP_LEVEL_ISOLATION`
-skottieAnimationRenderFlags'SkipTopLevelIsolation :: SkottieAnimationRenderFlags
-skottieAnimationRenderFlags'SkipTopLevelIsolation = #const SKIP_TOP_LEVEL_ISOLATION
+skottie_animation_renderflags'SKIP_TOP_LEVEL_ISOLATION :: Skottie_animation_renderflags
+skottie_animation_renderflags'SKIP_TOP_LEVEL_ISOLATION = #const SKIP_TOP_LEVEL_ISOLATION
 -- | `DISABLE_TOP_LEVEL_CLIPPING`
-skottieAnimationRenderFlags'DisableTopLevelClipping :: SkottieAnimationRenderFlags
-skottieAnimationRenderFlags'DisableTopLevelClipping = #const DISABLE_TOP_LEVEL_CLIPPING
+skottie_animation_renderflags'DISABLE_TOP_LEVEL_CLIPPING :: Skottie_animation_renderflags
+skottie_animation_renderflags'DISABLE_TOP_LEVEL_CLIPPING = #const DISABLE_TOP_LEVEL_CLIPPING
 -- | `skottie_animation_builder_flags_t`
-newtype SkottieAnimationBuilderFlags = SkottieAnimationBuilderFlags (#type skottie_animation_builder_flags_t)
+newtype Skottie_animation_builder_flags = Skottie_animation_builder_flags (#type skottie_animation_builder_flags_t)
   deriving (Show, Eq, Ord) deriving newtype (Num, Bits, Storable)
 -- | `NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS`
-skottieAnimationBuilderFlags'None :: SkottieAnimationBuilderFlags
-skottieAnimationBuilderFlags'None = #const NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS
+skottie_animation_builder_flags'NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS :: Skottie_animation_builder_flags
+skottie_animation_builder_flags'NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS = #const NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS
 -- | `DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS`
-skottieAnimationBuilderFlags'DeferImageLoading :: SkottieAnimationBuilderFlags
-skottieAnimationBuilderFlags'DeferImageLoading = #const DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS
+skottie_animation_builder_flags'DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS :: Skottie_animation_builder_flags
+skottie_animation_builder_flags'DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS = #const DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS
 -- | `PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS`
-skottieAnimationBuilderFlags'PreferEmbeddedFonts :: SkottieAnimationBuilderFlags
-skottieAnimationBuilderFlags'PreferEmbeddedFonts = #const PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS
+skottie_animation_builder_flags'PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS :: Skottie_animation_builder_flags
+skottie_animation_builder_flags'PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS = #const PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS
 -- | `skottie_animation_builder_stats_t`
-data SkottieAnimationBuilderStats = SkottieAnimationBuilderStats
-  { totalLoadTimeMS :: CFloat
+data Skottie_animation_builder_stats = Skottie_animation_builder_stats
+  { fTotalLoadTimeMS :: CFloat
   -- ^ `fTotalLoadTimeMS`
-  , jsonParseTimeMS :: CFloat
+  , fJsonParseTimeMS :: CFloat
   -- ^ `fJsonParseTimeMS`
-  , sceneParseTimeMS :: CFloat
+  , fSceneParseTimeMS :: CFloat
   -- ^ `fSceneParseTimeMS`
-  , jsonSize :: CSize
+  , fJsonSize :: CSize
   -- ^ `fJsonSize`
-  , animatorCount :: CSize
+  , fAnimatorCount :: CSize
   -- ^ `fAnimatorCount`
   } deriving (Show, Eq, Ord)
-instance Offset "totalLoadTimeMS" SkottieAnimationBuilderStats where rawOffset = (#offset skottie_animation_builder_stats_t, fTotalLoadTimeMS)
-instance Offset "jsonParseTimeMS" SkottieAnimationBuilderStats where rawOffset = (#offset skottie_animation_builder_stats_t, fJsonParseTimeMS)
-instance Offset "sceneParseTimeMS" SkottieAnimationBuilderStats where rawOffset = (#offset skottie_animation_builder_stats_t, fSceneParseTimeMS)
-instance Offset "jsonSize" SkottieAnimationBuilderStats where rawOffset = (#offset skottie_animation_builder_stats_t, fJsonSize)
-instance Offset "animatorCount" SkottieAnimationBuilderStats where rawOffset = (#offset skottie_animation_builder_stats_t, fAnimatorCount)
-instance Storable SkottieAnimationBuilderStats where
+instance Offset "fTotalLoadTimeMS" Skottie_animation_builder_stats where rawOffset = (#offset skottie_animation_builder_stats_t, fTotalLoadTimeMS)
+instance Offset "fJsonParseTimeMS" Skottie_animation_builder_stats where rawOffset = (#offset skottie_animation_builder_stats_t, fJsonParseTimeMS)
+instance Offset "fSceneParseTimeMS" Skottie_animation_builder_stats where rawOffset = (#offset skottie_animation_builder_stats_t, fSceneParseTimeMS)
+instance Offset "fJsonSize" Skottie_animation_builder_stats where rawOffset = (#offset skottie_animation_builder_stats_t, fJsonSize)
+instance Offset "fAnimatorCount" Skottie_animation_builder_stats where rawOffset = (#offset skottie_animation_builder_stats_t, fAnimatorCount)
+instance Storable Skottie_animation_builder_stats where
   sizeOf _ = (#size skottie_animation_builder_stats_t)
   alignment _ = (#alignment skottie_animation_builder_stats_t)
   peek in'ptr = do
-    totalLoadTimeMS <- (#peek skottie_animation_builder_stats_t, fTotalLoadTimeMS) in'ptr
-    jsonParseTimeMS <- (#peek skottie_animation_builder_stats_t, fJsonParseTimeMS) in'ptr
-    sceneParseTimeMS <- (#peek skottie_animation_builder_stats_t, fSceneParseTimeMS) in'ptr
-    jsonSize <- (#peek skottie_animation_builder_stats_t, fJsonSize) in'ptr
-    animatorCount <- (#peek skottie_animation_builder_stats_t, fAnimatorCount) in'ptr
-    pure SkottieAnimationBuilderStats{..}
+    fTotalLoadTimeMS <- (#peek skottie_animation_builder_stats_t, fTotalLoadTimeMS) in'ptr
+    fJsonParseTimeMS <- (#peek skottie_animation_builder_stats_t, fJsonParseTimeMS) in'ptr
+    fSceneParseTimeMS <- (#peek skottie_animation_builder_stats_t, fSceneParseTimeMS) in'ptr
+    fJsonSize <- (#peek skottie_animation_builder_stats_t, fJsonSize) in'ptr
+    fAnimatorCount <- (#peek skottie_animation_builder_stats_t, fAnimatorCount) in'ptr
+    pure Skottie_animation_builder_stats{..}
   poke in'ptr in'value = do
-    (#poke skottie_animation_builder_stats_t, fTotalLoadTimeMS) in'ptr in'value.totalLoadTimeMS
-    (#poke skottie_animation_builder_stats_t, fJsonParseTimeMS) in'ptr in'value.jsonParseTimeMS
-    (#poke skottie_animation_builder_stats_t, fSceneParseTimeMS) in'ptr in'value.sceneParseTimeMS
-    (#poke skottie_animation_builder_stats_t, fJsonSize) in'ptr in'value.jsonSize
-    (#poke skottie_animation_builder_stats_t, fAnimatorCount) in'ptr in'value.animatorCount
+    (#poke skottie_animation_builder_stats_t, fTotalLoadTimeMS) in'ptr in'value.fTotalLoadTimeMS
+    (#poke skottie_animation_builder_stats_t, fJsonParseTimeMS) in'ptr in'value.fJsonParseTimeMS
+    (#poke skottie_animation_builder_stats_t, fSceneParseTimeMS) in'ptr in'value.fSceneParseTimeMS
+    (#poke skottie_animation_builder_stats_t, fJsonSize) in'ptr in'value.fJsonSize
+    (#poke skottie_animation_builder_stats_t, fAnimatorCount) in'ptr in'value.fAnimatorCount
 -- | `skresources_image_asset_t`
-data SkResourcesImageAsset = SkResourcesImageAsset
+data Skresources_image_asset = Skresources_image_asset
   deriving (Show, Eq, Ord)
 -- | `skresources_multi_frame_image_asset_t`
-data SkResourcesMultiFrameImageAsset = SkResourcesMultiFrameImageAsset
+data Skresources_multi_frame_image_asset = Skresources_multi_frame_image_asset
   deriving (Show, Eq, Ord)
 -- | `skresources_external_track_asset_t`
-data SkResourcesExternalTrackAsset = SkResourcesExternalTrackAsset
+data Skresources_external_track_asset = Skresources_external_track_asset
   deriving (Show, Eq, Ord)
 -- | `skresources_resource_provider_t`
-data SkResourcesResourceProvider = SkResourcesResourceProvider
+data Skresources_resource_provider = Skresources_resource_provider
   deriving (Show, Eq, Ord)
 -- | `d3d_dxgi_adapter_t`
-data D3dDxgiAdapter = D3dDxgiAdapter
+data D3d_dxgi_adapter = D3d_dxgi_adapter
   deriving (Show, Eq, Ord)
 -- | `d3d_d12_device_t`
-data D3dD12Device = D3dD12Device
+data D3d_d12_device = D3d_d12_device
   deriving (Show, Eq, Ord)
 -- | `d3d_d12_command_queue_t`
-data D3dD12CommandQueue = D3dD12CommandQueue
+data D3d_d12_command_queue = D3d_d12_command_queue
   deriving (Show, Eq, Ord)
 -- | `gr_d3d_memory_allocator_t`
-data GrD3dMemoryAllocAtOr = GrD3dMemoryAllocAtOr
+data Gr_d3d_memory_allocator = Gr_d3d_memory_allocator
   deriving (Show, Eq, Ord)
 -- | `gr_d3d_backendcontext_t`
-data GrD3dBackendContext = GrD3dBackendContext
-  { adapter :: Ptr (D3dDxgiAdapter)
+data Gr_d3d_backendcontext = Gr_d3d_backendcontext
+  { fAdapter :: Ptr (D3d_dxgi_adapter)
   -- ^ `fAdapter`
-  , device :: Ptr (D3dD12Device)
+  , fDevice :: Ptr (D3d_d12_device)
   -- ^ `fDevice`
-  , queue :: Ptr (D3dD12CommandQueue)
+  , fQueue :: Ptr (D3d_d12_command_queue)
   -- ^ `fQueue`
-  , memoryAllocator :: Ptr (GrD3dMemoryAllocAtOr)
+  , fMemoryAllocator :: Ptr (Gr_d3d_memory_allocator)
   -- ^ `fMemoryAllocator`
-  , protectedContext :: CBool
+  , fProtectedContext :: CBool
   -- ^ `fProtectedContext`
   } deriving (Show, Eq, Ord)
-instance Offset "adapter" GrD3dBackendContext where rawOffset = (#offset gr_d3d_backendcontext_t, fAdapter)
-instance Offset "device" GrD3dBackendContext where rawOffset = (#offset gr_d3d_backendcontext_t, fDevice)
-instance Offset "queue" GrD3dBackendContext where rawOffset = (#offset gr_d3d_backendcontext_t, fQueue)
-instance Offset "memoryAllocator" GrD3dBackendContext where rawOffset = (#offset gr_d3d_backendcontext_t, fMemoryAllocator)
-instance Offset "protectedContext" GrD3dBackendContext where rawOffset = (#offset gr_d3d_backendcontext_t, fProtectedContext)
-instance Storable GrD3dBackendContext where
+instance Offset "fAdapter" Gr_d3d_backendcontext where rawOffset = (#offset gr_d3d_backendcontext_t, fAdapter)
+instance Offset "fDevice" Gr_d3d_backendcontext where rawOffset = (#offset gr_d3d_backendcontext_t, fDevice)
+instance Offset "fQueue" Gr_d3d_backendcontext where rawOffset = (#offset gr_d3d_backendcontext_t, fQueue)
+instance Offset "fMemoryAllocator" Gr_d3d_backendcontext where rawOffset = (#offset gr_d3d_backendcontext_t, fMemoryAllocator)
+instance Offset "fProtectedContext" Gr_d3d_backendcontext where rawOffset = (#offset gr_d3d_backendcontext_t, fProtectedContext)
+instance Storable Gr_d3d_backendcontext where
   sizeOf _ = (#size gr_d3d_backendcontext_t)
   alignment _ = (#alignment gr_d3d_backendcontext_t)
   peek in'ptr = do
-    adapter <- (#peek gr_d3d_backendcontext_t, fAdapter) in'ptr
-    device <- (#peek gr_d3d_backendcontext_t, fDevice) in'ptr
-    queue <- (#peek gr_d3d_backendcontext_t, fQueue) in'ptr
-    memoryAllocator <- (#peek gr_d3d_backendcontext_t, fMemoryAllocator) in'ptr
-    protectedContext <- (#peek gr_d3d_backendcontext_t, fProtectedContext) in'ptr
-    pure GrD3dBackendContext{..}
+    fAdapter <- (#peek gr_d3d_backendcontext_t, fAdapter) in'ptr
+    fDevice <- (#peek gr_d3d_backendcontext_t, fDevice) in'ptr
+    fQueue <- (#peek gr_d3d_backendcontext_t, fQueue) in'ptr
+    fMemoryAllocator <- (#peek gr_d3d_backendcontext_t, fMemoryAllocator) in'ptr
+    fProtectedContext <- (#peek gr_d3d_backendcontext_t, fProtectedContext) in'ptr
+    pure Gr_d3d_backendcontext{..}
   poke in'ptr in'value = do
-    (#poke gr_d3d_backendcontext_t, fAdapter) in'ptr in'value.adapter
-    (#poke gr_d3d_backendcontext_t, fDevice) in'ptr in'value.device
-    (#poke gr_d3d_backendcontext_t, fQueue) in'ptr in'value.queue
-    (#poke gr_d3d_backendcontext_t, fMemoryAllocator) in'ptr in'value.memoryAllocator
-    (#poke gr_d3d_backendcontext_t, fProtectedContext) in'ptr in'value.protectedContext
+    (#poke gr_d3d_backendcontext_t, fAdapter) in'ptr in'value.fAdapter
+    (#poke gr_d3d_backendcontext_t, fDevice) in'ptr in'value.fDevice
+    (#poke gr_d3d_backendcontext_t, fQueue) in'ptr in'value.fQueue
+    (#poke gr_d3d_backendcontext_t, fMemoryAllocator) in'ptr in'value.fMemoryAllocator
+    (#poke gr_d3d_backendcontext_t, fProtectedContext) in'ptr in'value.fProtectedContext
 -- | `d3d_d12_resource_t`
-data D3dD12Resource = D3dD12Resource
+data D3d_d12_resource = D3d_d12_resource
   deriving (Show, Eq, Ord)
 -- | `d3d_alloc_t`
-data D3dAlloc = D3dAlloc
+data D3d_alloc = D3d_alloc
   deriving (Show, Eq, Ord)
 -- | `gr_d3d_textureresourceinfo_t`
-data GrD3dTextureResourceInfo = GrD3dTextureResourceInfo
-  { resource :: Ptr (D3dD12Resource)
+data Gr_d3d_textureresourceinfo = Gr_d3d_textureresourceinfo
+  { fResource :: Ptr (D3d_d12_resource)
   -- ^ `fResource`
-  , alloc :: Ptr (D3dAlloc)
+  , fAlloc :: Ptr (D3d_alloc)
   -- ^ `fAlloc`
-  , resourceState :: Word32
+  , fResourceState :: Word32
   -- ^ `fResourceState`
-  , format :: Word32
+  , fFormat :: Word32
   -- ^ `fFormat`
-  , sampleCount :: Word32
+  , fSampleCount :: Word32
   -- ^ `fSampleCount`
-  , levelCount :: Word32
+  , fLevelCount :: Word32
   -- ^ `fLevelCount`
-  , sampleQualityPattern :: CUInt
+  , fSampleQualityPattern :: CUInt
   -- ^ `fSampleQualityPattern`
-  , protected :: CBool
+  , fProtected :: CBool
   -- ^ `fProtected`
   } deriving (Show, Eq, Ord)
-instance Offset "resource" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fResource)
-instance Offset "alloc" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fAlloc)
-instance Offset "resourceState" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fResourceState)
-instance Offset "format" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fFormat)
-instance Offset "sampleCount" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fSampleCount)
-instance Offset "levelCount" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fLevelCount)
-instance Offset "sampleQualityPattern" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fSampleQualityPattern)
-instance Offset "protected" GrD3dTextureResourceInfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fProtected)
-instance Storable GrD3dTextureResourceInfo where
+instance Offset "fResource" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fResource)
+instance Offset "fAlloc" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fAlloc)
+instance Offset "fResourceState" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fResourceState)
+instance Offset "fFormat" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fFormat)
+instance Offset "fSampleCount" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fSampleCount)
+instance Offset "fLevelCount" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fLevelCount)
+instance Offset "fSampleQualityPattern" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fSampleQualityPattern)
+instance Offset "fProtected" Gr_d3d_textureresourceinfo where rawOffset = (#offset gr_d3d_textureresourceinfo_t, fProtected)
+instance Storable Gr_d3d_textureresourceinfo where
   sizeOf _ = (#size gr_d3d_textureresourceinfo_t)
   alignment _ = (#alignment gr_d3d_textureresourceinfo_t)
   peek in'ptr = do
-    resource <- (#peek gr_d3d_textureresourceinfo_t, fResource) in'ptr
-    alloc <- (#peek gr_d3d_textureresourceinfo_t, fAlloc) in'ptr
-    resourceState <- (#peek gr_d3d_textureresourceinfo_t, fResourceState) in'ptr
-    format <- (#peek gr_d3d_textureresourceinfo_t, fFormat) in'ptr
-    sampleCount <- (#peek gr_d3d_textureresourceinfo_t, fSampleCount) in'ptr
-    levelCount <- (#peek gr_d3d_textureresourceinfo_t, fLevelCount) in'ptr
-    sampleQualityPattern <- (#peek gr_d3d_textureresourceinfo_t, fSampleQualityPattern) in'ptr
-    protected <- (#peek gr_d3d_textureresourceinfo_t, fProtected) in'ptr
-    pure GrD3dTextureResourceInfo{..}
+    fResource <- (#peek gr_d3d_textureresourceinfo_t, fResource) in'ptr
+    fAlloc <- (#peek gr_d3d_textureresourceinfo_t, fAlloc) in'ptr
+    fResourceState <- (#peek gr_d3d_textureresourceinfo_t, fResourceState) in'ptr
+    fFormat <- (#peek gr_d3d_textureresourceinfo_t, fFormat) in'ptr
+    fSampleCount <- (#peek gr_d3d_textureresourceinfo_t, fSampleCount) in'ptr
+    fLevelCount <- (#peek gr_d3d_textureresourceinfo_t, fLevelCount) in'ptr
+    fSampleQualityPattern <- (#peek gr_d3d_textureresourceinfo_t, fSampleQualityPattern) in'ptr
+    fProtected <- (#peek gr_d3d_textureresourceinfo_t, fProtected) in'ptr
+    pure Gr_d3d_textureresourceinfo{..}
   poke in'ptr in'value = do
-    (#poke gr_d3d_textureresourceinfo_t, fResource) in'ptr in'value.resource
-    (#poke gr_d3d_textureresourceinfo_t, fAlloc) in'ptr in'value.alloc
-    (#poke gr_d3d_textureresourceinfo_t, fResourceState) in'ptr in'value.resourceState
-    (#poke gr_d3d_textureresourceinfo_t, fFormat) in'ptr in'value.format
-    (#poke gr_d3d_textureresourceinfo_t, fSampleCount) in'ptr in'value.sampleCount
-    (#poke gr_d3d_textureresourceinfo_t, fLevelCount) in'ptr in'value.levelCount
-    (#poke gr_d3d_textureresourceinfo_t, fSampleQualityPattern) in'ptr in'value.sampleQualityPattern
-    (#poke gr_d3d_textureresourceinfo_t, fProtected) in'ptr in'value.protected
+    (#poke gr_d3d_textureresourceinfo_t, fResource) in'ptr in'value.fResource
+    (#poke gr_d3d_textureresourceinfo_t, fAlloc) in'ptr in'value.fAlloc
+    (#poke gr_d3d_textureresourceinfo_t, fResourceState) in'ptr in'value.fResourceState
+    (#poke gr_d3d_textureresourceinfo_t, fFormat) in'ptr in'value.fFormat
+    (#poke gr_d3d_textureresourceinfo_t, fSampleCount) in'ptr in'value.fSampleCount
+    (#poke gr_d3d_textureresourceinfo_t, fLevelCount) in'ptr in'value.fLevelCount
+    (#poke gr_d3d_textureresourceinfo_t, fSampleQualityPattern) in'ptr in'value.fSampleQualityPattern
+    (#poke gr_d3d_textureresourceinfo_t, fProtected) in'ptr in'value.fProtected
 -- | `sk_colorfilter_unref`
-foreign import ccall "sk_colorfilter_unref" skColorFilterUnRef :: (Ptr (SkColorFilter)) -> IO (())
+foreign import ccall "sk_colorfilter_unref" sk_colorfilter_unref :: (Ptr (Sk_colorfilter)) -> IO (())
 -- | `sk_colorfilter_new_mode`
-foreign import ccall "sk_colorfilter_new_mode" skColorFilterNewMode :: (SkColor) -> (SkBlendMode) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_mode" sk_colorfilter_new_mode :: (Sk_color) -> (Sk_blendmode) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_lighting`
-foreign import ccall "sk_colorfilter_new_lighting" skColorFilterNewLighting :: (SkColor) -> (SkColor) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_lighting" sk_colorfilter_new_lighting :: (Sk_color) -> (Sk_color) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_compose`
-foreign import ccall "sk_colorfilter_new_compose" skColorFilterNewCompose :: (Ptr (SkColorFilter)) -> (Ptr (SkColorFilter)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_compose" sk_colorfilter_new_compose :: (Ptr (Sk_colorfilter)) -> (Ptr (Sk_colorfilter)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_color_matrix`
-foreign import ccall "sk_colorfilter_new_color_matrix" skColorFilterNewColorMatrix :: (Ptr (CFloat)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_color_matrix" sk_colorfilter_new_color_matrix :: (Ptr (CFloat)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_hsla_matrix`
-foreign import ccall "sk_colorfilter_new_hsla_matrix" skColorFilterNewHsLaMatrix :: (Ptr (CFloat)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_hsla_matrix" sk_colorfilter_new_hsla_matrix :: (Ptr (CFloat)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_linear_to_srgb_gamma`
-foreign import ccall "sk_colorfilter_new_linear_to_srgb_gamma" skColorFilterNewLinearToSrgbGamma :: IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_linear_to_srgb_gamma" sk_colorfilter_new_linear_to_srgb_gamma :: IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_srgb_to_linear_gamma`
-foreign import ccall "sk_colorfilter_new_srgb_to_linear_gamma" skColorFilterNewSrgbToLinearGamma :: IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_srgb_to_linear_gamma" sk_colorfilter_new_srgb_to_linear_gamma :: IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_lerp`
-foreign import ccall "sk_colorfilter_new_lerp" skColorFilterNewLeRp :: (CFloat) -> (Ptr (SkColorFilter)) -> (Ptr (SkColorFilter)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_lerp" sk_colorfilter_new_lerp :: (CFloat) -> (Ptr (Sk_colorfilter)) -> (Ptr (Sk_colorfilter)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_luma_color`
-foreign import ccall "sk_colorfilter_new_luma_color" skColorFilterNewLumaColor :: IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_luma_color" sk_colorfilter_new_luma_color :: IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_high_contrast`
-foreign import ccall "sk_colorfilter_new_high_contrast" skColorFilterNewHighContrast :: (Ptr (SkHighContrastConfig)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_high_contrast" sk_colorfilter_new_high_contrast :: (Ptr (Sk_highcontrastconfig)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_table`
-foreign import ccall "sk_colorfilter_new_table" skColorFilterNewTable :: (Ptr (Word8)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_table" sk_colorfilter_new_table :: (Ptr (Word8)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_colorfilter_new_table_argb`
-foreign import ccall "sk_colorfilter_new_table_argb" skColorFilterNewTableArgb :: (Ptr (Word8)) -> (Ptr (Word8)) -> (Ptr (Word8)) -> (Ptr (Word8)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_colorfilter_new_table_argb" sk_colorfilter_new_table_argb :: (Ptr (Word8)) -> (Ptr (Word8)) -> (Ptr (Word8)) -> (Ptr (Word8)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_typeface_unref`
-foreign import ccall "sk_typeface_unref" skTypefaceUnRef :: (Ptr (SkTypeface)) -> IO (())
+foreign import ccall "sk_typeface_unref" sk_typeface_unref :: (Ptr (Sk_typeface)) -> IO (())
 -- | `sk_typeface_get_fontstyle`
-foreign import ccall "sk_typeface_get_fontstyle" skTypefaceGetFontStyle :: (Ptr (SkTypeface)) -> IO (Ptr (SkFontStyle))
+foreign import ccall "sk_typeface_get_fontstyle" sk_typeface_get_fontstyle :: (Ptr (Sk_typeface)) -> IO (Ptr (Sk_fontstyle))
 -- | `sk_typeface_get_font_weight`
-foreign import ccall "sk_typeface_get_font_weight" skTypefaceGetFontWeight :: (Ptr (SkTypeface)) -> IO (CInt)
+foreign import ccall "sk_typeface_get_font_weight" sk_typeface_get_font_weight :: (Ptr (Sk_typeface)) -> IO (CInt)
 -- | `sk_typeface_get_font_width`
-foreign import ccall "sk_typeface_get_font_width" skTypefaceGetFontWidth :: (Ptr (SkTypeface)) -> IO (CInt)
+foreign import ccall "sk_typeface_get_font_width" sk_typeface_get_font_width :: (Ptr (Sk_typeface)) -> IO (CInt)
 -- | `sk_typeface_get_font_slant`
-foreign import ccall "sk_typeface_get_font_slant" skTypefaceGetFontSlant :: (Ptr (SkTypeface)) -> IO (SkFontStyleSlant)
+foreign import ccall "sk_typeface_get_font_slant" sk_typeface_get_font_slant :: (Ptr (Sk_typeface)) -> IO (Sk_font_style_slant)
 -- | `sk_typeface_is_fixed_pitch`
-foreign import ccall "sk_typeface_is_fixed_pitch" skTypefaceIsFixedPitch :: (Ptr (SkTypeface)) -> IO (CBool)
+foreign import ccall "sk_typeface_is_fixed_pitch" sk_typeface_is_fixed_pitch :: (Ptr (Sk_typeface)) -> IO (CBool)
 -- | `sk_typeface_create_default`
-foreign import ccall "sk_typeface_create_default" skTypefaceCreateDefault :: IO (Ptr (SkTypeface))
+foreign import ccall "sk_typeface_create_default" sk_typeface_create_default :: IO (Ptr (Sk_typeface))
 -- | `sk_typeface_ref_default`
-foreign import ccall "sk_typeface_ref_default" skTypefaceRefDefault :: IO (Ptr (SkTypeface))
+foreign import ccall "sk_typeface_ref_default" sk_typeface_ref_default :: IO (Ptr (Sk_typeface))
 -- | `sk_typeface_create_from_name`
-foreign import ccall "sk_typeface_create_from_name" skTypefaceCreateFromName :: (Ptr (CChar)) -> (Ptr (SkFontStyle)) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_typeface_create_from_name" sk_typeface_create_from_name :: (Ptr (CChar)) -> (Ptr (Sk_fontstyle)) -> IO (Ptr (Sk_typeface))
 -- | `sk_typeface_create_from_file`
-foreign import ccall "sk_typeface_create_from_file" skTypefaceCreateFromFile :: (Ptr (CChar)) -> (CInt) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_typeface_create_from_file" sk_typeface_create_from_file :: (Ptr (CChar)) -> (CInt) -> IO (Ptr (Sk_typeface))
 -- | `sk_typeface_create_from_stream`
-foreign import ccall "sk_typeface_create_from_stream" skTypefaceCreateFromStream :: (Ptr (SkStreamAsset)) -> (CInt) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_typeface_create_from_stream" sk_typeface_create_from_stream :: (Ptr (Sk_stream_asset)) -> (CInt) -> IO (Ptr (Sk_typeface))
 -- | `sk_typeface_create_from_data`
-foreign import ccall "sk_typeface_create_from_data" skTypefaceCreateFromData :: (Ptr (SkData)) -> (CInt) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_typeface_create_from_data" sk_typeface_create_from_data :: (Ptr (Sk_data)) -> (CInt) -> IO (Ptr (Sk_typeface))
 -- | `sk_typeface_unichars_to_glyphs`
-foreign import ccall "sk_typeface_unichars_to_glyphs" skTypefaceUniCharsToGlyphs :: (Ptr (SkTypeface)) -> (Ptr (Int32)) -> (CInt) -> (Ptr (Word16)) -> IO (())
+foreign import ccall "sk_typeface_unichars_to_glyphs" sk_typeface_unichars_to_glyphs :: (Ptr (Sk_typeface)) -> (Ptr (Int32)) -> (CInt) -> (Ptr (Word16)) -> IO (())
 -- | `sk_typeface_unichar_to_glyph`
-foreign import ccall "sk_typeface_unichar_to_glyph" skTypefaceUniCharToGlyph :: (Ptr (SkTypeface)) -> (Int32) -> IO (Word16)
+foreign import ccall "sk_typeface_unichar_to_glyph" sk_typeface_unichar_to_glyph :: (Ptr (Sk_typeface)) -> (Int32) -> IO (Word16)
 -- | `sk_typeface_count_glyphs`
-foreign import ccall "sk_typeface_count_glyphs" skTypefaceCountGlyphs :: (Ptr (SkTypeface)) -> IO (CInt)
+foreign import ccall "sk_typeface_count_glyphs" sk_typeface_count_glyphs :: (Ptr (Sk_typeface)) -> IO (CInt)
 -- | `sk_typeface_count_tables`
-foreign import ccall "sk_typeface_count_tables" skTypefaceCountTables :: (Ptr (SkTypeface)) -> IO (CInt)
+foreign import ccall "sk_typeface_count_tables" sk_typeface_count_tables :: (Ptr (Sk_typeface)) -> IO (CInt)
 -- | `sk_typeface_get_table_tags`
-foreign import ccall "sk_typeface_get_table_tags" skTypefaceGetTableTags :: (Ptr (SkTypeface)) -> (Ptr (SkFontTableTag)) -> IO (CInt)
+foreign import ccall "sk_typeface_get_table_tags" sk_typeface_get_table_tags :: (Ptr (Sk_typeface)) -> (Ptr (Sk_font_table_tag)) -> IO (CInt)
 -- | `sk_typeface_get_table_size`
-foreign import ccall "sk_typeface_get_table_size" skTypefaceGetTableSize :: (Ptr (SkTypeface)) -> (SkFontTableTag) -> IO (CSize)
+foreign import ccall "sk_typeface_get_table_size" sk_typeface_get_table_size :: (Ptr (Sk_typeface)) -> (Sk_font_table_tag) -> IO (CSize)
 -- | `sk_typeface_get_table_data`
-foreign import ccall "sk_typeface_get_table_data" skTypefaceGetTableData :: (Ptr (SkTypeface)) -> (SkFontTableTag) -> (CSize) -> (CSize) -> (Ptr (())) -> IO (CSize)
+foreign import ccall "sk_typeface_get_table_data" sk_typeface_get_table_data :: (Ptr (Sk_typeface)) -> (Sk_font_table_tag) -> (CSize) -> (CSize) -> (Ptr (())) -> IO (CSize)
 -- | `sk_typeface_copy_table_data`
-foreign import ccall "sk_typeface_copy_table_data" skTypefaceCopyTableData :: (Ptr (SkTypeface)) -> (SkFontTableTag) -> IO (Ptr (SkData))
+foreign import ccall "sk_typeface_copy_table_data" sk_typeface_copy_table_data :: (Ptr (Sk_typeface)) -> (Sk_font_table_tag) -> IO (Ptr (Sk_data))
 -- | `sk_typeface_get_units_per_em`
-foreign import ccall "sk_typeface_get_units_per_em" skTypefaceGetUnitsPerEm :: (Ptr (SkTypeface)) -> IO (CInt)
+foreign import ccall "sk_typeface_get_units_per_em" sk_typeface_get_units_per_em :: (Ptr (Sk_typeface)) -> IO (CInt)
 -- | `sk_typeface_get_kerning_pair_adjustments`
-foreign import ccall "sk_typeface_get_kerning_pair_adjustments" skTypefaceGetKernIngPairAdjustments :: (Ptr (SkTypeface)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (Int32)) -> IO (CBool)
+foreign import ccall "sk_typeface_get_kerning_pair_adjustments" sk_typeface_get_kerning_pair_adjustments :: (Ptr (Sk_typeface)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (Int32)) -> IO (CBool)
 -- | `sk_typeface_get_family_name`
-foreign import ccall "sk_typeface_get_family_name" skTypefaceGetFamilyName :: (Ptr (SkTypeface)) -> IO (Ptr (SkString))
+foreign import ccall "sk_typeface_get_family_name" sk_typeface_get_family_name :: (Ptr (Sk_typeface)) -> IO (Ptr (Sk_string))
 -- | `sk_typeface_open_stream`
-foreign import ccall "sk_typeface_open_stream" skTypefaceOpenStream :: (Ptr (SkTypeface)) -> (Ptr (CInt)) -> IO (Ptr (SkStreamAsset))
+foreign import ccall "sk_typeface_open_stream" sk_typeface_open_stream :: (Ptr (Sk_typeface)) -> (Ptr (CInt)) -> IO (Ptr (Sk_stream_asset))
 -- | `sk_fontmgr_create_default`
-foreign import ccall "sk_fontmgr_create_default" skFontMGrCreateDefault :: IO (Ptr (SkFontMGr))
+foreign import ccall "sk_fontmgr_create_default" sk_fontmgr_create_default :: IO (Ptr (Sk_fontmgr))
 -- | `sk_fontmgr_ref_default`
-foreign import ccall "sk_fontmgr_ref_default" skFontMGrRefDefault :: IO (Ptr (SkFontMGr))
+foreign import ccall "sk_fontmgr_ref_default" sk_fontmgr_ref_default :: IO (Ptr (Sk_fontmgr))
 -- | `sk_fontmgr_unref`
-foreign import ccall "sk_fontmgr_unref" skFontMGrUnRef :: (Ptr (SkFontMGr)) -> IO (())
+foreign import ccall "sk_fontmgr_unref" sk_fontmgr_unref :: (Ptr (Sk_fontmgr)) -> IO (())
 -- | `sk_fontmgr_count_families`
-foreign import ccall "sk_fontmgr_count_families" skFontMGrCountFamilies :: (Ptr (SkFontMGr)) -> IO (CInt)
+foreign import ccall "sk_fontmgr_count_families" sk_fontmgr_count_families :: (Ptr (Sk_fontmgr)) -> IO (CInt)
 -- | `sk_fontmgr_get_family_name`
-foreign import ccall "sk_fontmgr_get_family_name" skFontMGrGetFamilyName :: (Ptr (SkFontMGr)) -> (CInt) -> (Ptr (SkString)) -> IO (())
+foreign import ccall "sk_fontmgr_get_family_name" sk_fontmgr_get_family_name :: (Ptr (Sk_fontmgr)) -> (CInt) -> (Ptr (Sk_string)) -> IO (())
 -- | `sk_fontmgr_create_styleset`
-foreign import ccall "sk_fontmgr_create_styleset" skFontMGrCreateStyleSet :: (Ptr (SkFontMGr)) -> (CInt) -> IO (Ptr (SkFontStyleSet))
+foreign import ccall "sk_fontmgr_create_styleset" sk_fontmgr_create_styleset :: (Ptr (Sk_fontmgr)) -> (CInt) -> IO (Ptr (Sk_fontstyleset))
 -- | `sk_fontmgr_match_family`
-foreign import ccall "sk_fontmgr_match_family" skFontMGrMatchFamily :: (Ptr (SkFontMGr)) -> (Ptr (CChar)) -> IO (Ptr (SkFontStyleSet))
+foreign import ccall "sk_fontmgr_match_family" sk_fontmgr_match_family :: (Ptr (Sk_fontmgr)) -> (Ptr (CChar)) -> IO (Ptr (Sk_fontstyleset))
 -- | `sk_fontmgr_match_family_style`
-foreign import ccall "sk_fontmgr_match_family_style" skFontMGrMatchFamilyStyle :: (Ptr (SkFontMGr)) -> (Ptr (CChar)) -> (Ptr (SkFontStyle)) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_fontmgr_match_family_style" sk_fontmgr_match_family_style :: (Ptr (Sk_fontmgr)) -> (Ptr (CChar)) -> (Ptr (Sk_fontstyle)) -> IO (Ptr (Sk_typeface))
 -- | `sk_fontmgr_match_family_style_character`
-foreign import ccall "sk_fontmgr_match_family_style_character" skFontMGrMatchFamilyStyleCharacter :: (Ptr (SkFontMGr)) -> (Ptr (CChar)) -> (Ptr (SkFontStyle)) -> (Ptr (Ptr (CChar))) -> (CInt) -> (Int32) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_fontmgr_match_family_style_character" sk_fontmgr_match_family_style_character :: (Ptr (Sk_fontmgr)) -> (Ptr (CChar)) -> (Ptr (Sk_fontstyle)) -> (Ptr (Ptr (CChar))) -> (CInt) -> (Int32) -> IO (Ptr (Sk_typeface))
 -- | `sk_fontmgr_create_from_data`
-foreign import ccall "sk_fontmgr_create_from_data" skFontMGrCreateFromData :: (Ptr (SkFontMGr)) -> (Ptr (SkData)) -> (CInt) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_fontmgr_create_from_data" sk_fontmgr_create_from_data :: (Ptr (Sk_fontmgr)) -> (Ptr (Sk_data)) -> (CInt) -> IO (Ptr (Sk_typeface))
 -- | `sk_fontmgr_create_from_stream`
-foreign import ccall "sk_fontmgr_create_from_stream" skFontMGrCreateFromStream :: (Ptr (SkFontMGr)) -> (Ptr (SkStreamAsset)) -> (CInt) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_fontmgr_create_from_stream" sk_fontmgr_create_from_stream :: (Ptr (Sk_fontmgr)) -> (Ptr (Sk_stream_asset)) -> (CInt) -> IO (Ptr (Sk_typeface))
 -- | `sk_fontmgr_create_from_file`
-foreign import ccall "sk_fontmgr_create_from_file" skFontMGrCreateFromFile :: (Ptr (SkFontMGr)) -> (Ptr (CChar)) -> (CInt) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_fontmgr_create_from_file" sk_fontmgr_create_from_file :: (Ptr (Sk_fontmgr)) -> (Ptr (CChar)) -> (CInt) -> IO (Ptr (Sk_typeface))
 -- | `sk_fontstyle_new`
-foreign import ccall "sk_fontstyle_new" skFontStyleNew :: (CInt) -> (CInt) -> (SkFontStyleSlant) -> IO (Ptr (SkFontStyle))
+foreign import ccall "sk_fontstyle_new" sk_fontstyle_new :: (CInt) -> (CInt) -> (Sk_font_style_slant) -> IO (Ptr (Sk_fontstyle))
 -- | `sk_fontstyle_delete`
-foreign import ccall "sk_fontstyle_delete" skFontStyleDelete :: (Ptr (SkFontStyle)) -> IO (())
+foreign import ccall "sk_fontstyle_delete" sk_fontstyle_delete :: (Ptr (Sk_fontstyle)) -> IO (())
 -- | `sk_fontstyle_get_weight`
-foreign import ccall "sk_fontstyle_get_weight" skFontStyleGetWeight :: (Ptr (SkFontStyle)) -> IO (CInt)
+foreign import ccall "sk_fontstyle_get_weight" sk_fontstyle_get_weight :: (Ptr (Sk_fontstyle)) -> IO (CInt)
 -- | `sk_fontstyle_get_width`
-foreign import ccall "sk_fontstyle_get_width" skFontStyleGetWidth :: (Ptr (SkFontStyle)) -> IO (CInt)
+foreign import ccall "sk_fontstyle_get_width" sk_fontstyle_get_width :: (Ptr (Sk_fontstyle)) -> IO (CInt)
 -- | `sk_fontstyle_get_slant`
-foreign import ccall "sk_fontstyle_get_slant" skFontStyleGetSlant :: (Ptr (SkFontStyle)) -> IO (SkFontStyleSlant)
+foreign import ccall "sk_fontstyle_get_slant" sk_fontstyle_get_slant :: (Ptr (Sk_fontstyle)) -> IO (Sk_font_style_slant)
 -- | `sk_fontstyleset_create_empty`
-foreign import ccall "sk_fontstyleset_create_empty" skFontStyleSetCreateEmpty :: IO (Ptr (SkFontStyleSet))
+foreign import ccall "sk_fontstyleset_create_empty" sk_fontstyleset_create_empty :: IO (Ptr (Sk_fontstyleset))
 -- | `sk_fontstyleset_unref`
-foreign import ccall "sk_fontstyleset_unref" skFontStyleSetUnRef :: (Ptr (SkFontStyleSet)) -> IO (())
+foreign import ccall "sk_fontstyleset_unref" sk_fontstyleset_unref :: (Ptr (Sk_fontstyleset)) -> IO (())
 -- | `sk_fontstyleset_get_count`
-foreign import ccall "sk_fontstyleset_get_count" skFontStyleSetGetCount :: (Ptr (SkFontStyleSet)) -> IO (CInt)
+foreign import ccall "sk_fontstyleset_get_count" sk_fontstyleset_get_count :: (Ptr (Sk_fontstyleset)) -> IO (CInt)
 -- | `sk_fontstyleset_get_style`
-foreign import ccall "sk_fontstyleset_get_style" skFontStyleSetGetStyle :: (Ptr (SkFontStyleSet)) -> (CInt) -> (Ptr (SkFontStyle)) -> (Ptr (SkString)) -> IO (())
+foreign import ccall "sk_fontstyleset_get_style" sk_fontstyleset_get_style :: (Ptr (Sk_fontstyleset)) -> (CInt) -> (Ptr (Sk_fontstyle)) -> (Ptr (Sk_string)) -> IO (())
 -- | `sk_fontstyleset_create_typeface`
-foreign import ccall "sk_fontstyleset_create_typeface" skFontStyleSetCreateTypeface :: (Ptr (SkFontStyleSet)) -> (CInt) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_fontstyleset_create_typeface" sk_fontstyleset_create_typeface :: (Ptr (Sk_fontstyleset)) -> (CInt) -> IO (Ptr (Sk_typeface))
 -- | `sk_fontstyleset_match_style`
-foreign import ccall "sk_fontstyleset_match_style" skFontStyleSetMatchStyle :: (Ptr (SkFontStyleSet)) -> (Ptr (SkFontStyle)) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_fontstyleset_match_style" sk_fontstyleset_match_style :: (Ptr (Sk_fontstyleset)) -> (Ptr (Sk_fontstyle)) -> IO (Ptr (Sk_typeface))
 -- | `sk_picture_recorder_new`
-foreign import ccall "sk_picture_recorder_new" skPictureRecorderNew :: IO (Ptr (SkPictureRecorder))
+foreign import ccall "sk_picture_recorder_new" sk_picture_recorder_new :: IO (Ptr (Sk_picture_recorder))
 -- | `sk_picture_recorder_delete`
-foreign import ccall "sk_picture_recorder_delete" skPictureRecorderDelete :: (Ptr (SkPictureRecorder)) -> IO (())
+foreign import ccall "sk_picture_recorder_delete" sk_picture_recorder_delete :: (Ptr (Sk_picture_recorder)) -> IO (())
 -- | `sk_picture_recorder_begin_recording`
-foreign import ccall "sk_picture_recorder_begin_recording" skPictureRecorderBeginRecording :: (Ptr (SkPictureRecorder)) -> (Ptr (SkRect)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_picture_recorder_begin_recording" sk_picture_recorder_begin_recording :: (Ptr (Sk_picture_recorder)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_canvas))
 -- | `sk_picture_recorder_begin_recording_with_bbh_factory`
-foreign import ccall "sk_picture_recorder_begin_recording_with_bbh_factory" skPictureRecorderBeginRecordingWithBbhFactory :: (Ptr (SkPictureRecorder)) -> (Ptr (SkRect)) -> (Ptr (SkBbhFactory)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_picture_recorder_begin_recording_with_bbh_factory" sk_picture_recorder_begin_recording_with_bbh_factory :: (Ptr (Sk_picture_recorder)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_bbh_factory)) -> IO (Ptr (Sk_canvas))
 -- | `sk_picture_recorder_end_recording`
-foreign import ccall "sk_picture_recorder_end_recording" skPictureRecorderEndRecording :: (Ptr (SkPictureRecorder)) -> IO (Ptr (SkPicture))
+foreign import ccall "sk_picture_recorder_end_recording" sk_picture_recorder_end_recording :: (Ptr (Sk_picture_recorder)) -> IO (Ptr (Sk_picture))
 -- | `sk_picture_recorder_end_recording_as_drawable`
-foreign import ccall "sk_picture_recorder_end_recording_as_drawable" skPictureRecorderEndRecordingAsDrawAble :: (Ptr (SkPictureRecorder)) -> IO (Ptr (SkDrawAble))
+foreign import ccall "sk_picture_recorder_end_recording_as_drawable" sk_picture_recorder_end_recording_as_drawable :: (Ptr (Sk_picture_recorder)) -> IO (Ptr (Sk_drawable))
 -- | `sk_picture_get_recording_canvas`
-foreign import ccall "sk_picture_get_recording_canvas" skPictureGetRecordingCanvas :: (Ptr (SkPictureRecorder)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_picture_get_recording_canvas" sk_picture_get_recording_canvas :: (Ptr (Sk_picture_recorder)) -> IO (Ptr (Sk_canvas))
 -- | `sk_picture_ref`
-foreign import ccall "sk_picture_ref" skPictureRef :: (Ptr (SkPicture)) -> IO (())
+foreign import ccall "sk_picture_ref" sk_picture_ref :: (Ptr (Sk_picture)) -> IO (())
 -- | `sk_picture_unref`
-foreign import ccall "sk_picture_unref" skPictureUnRef :: (Ptr (SkPicture)) -> IO (())
+foreign import ccall "sk_picture_unref" sk_picture_unref :: (Ptr (Sk_picture)) -> IO (())
 -- | `sk_picture_get_unique_id`
-foreign import ccall "sk_picture_get_unique_id" skPictureGetUniqueId :: (Ptr (SkPicture)) -> IO (Word32)
+foreign import ccall "sk_picture_get_unique_id" sk_picture_get_unique_id :: (Ptr (Sk_picture)) -> IO (Word32)
 -- | `sk_picture_get_cull_rect`
-foreign import ccall "sk_picture_get_cull_rect" skPictureGetCullRect :: (Ptr (SkPicture)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_picture_get_cull_rect" sk_picture_get_cull_rect :: (Ptr (Sk_picture)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_picture_make_shader`
-foreign import ccall "sk_picture_make_shader" skPictureMakeShader :: (Ptr (SkPicture)) -> (SkShaderTileMode) -> (SkShaderTileMode) -> (SkFilterMode) -> (Ptr (SkMatrix)) -> (Ptr (SkRect)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_picture_make_shader" sk_picture_make_shader :: (Ptr (Sk_picture)) -> (Sk_shader_tilemode) -> (Sk_shader_tilemode) -> (Sk_filter_mode) -> (Ptr (Sk_matrix)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_shader))
 -- | `sk_picture_serialize_to_data`
-foreign import ccall "sk_picture_serialize_to_data" skPictureSerializeToData :: (Ptr (SkPicture)) -> IO (Ptr (SkData))
+foreign import ccall "sk_picture_serialize_to_data" sk_picture_serialize_to_data :: (Ptr (Sk_picture)) -> IO (Ptr (Sk_data))
 -- | `sk_picture_serialize_to_stream`
-foreign import ccall "sk_picture_serialize_to_stream" skPictureSerializeToStream :: (Ptr (SkPicture)) -> (Ptr (SkWStream)) -> IO (())
+foreign import ccall "sk_picture_serialize_to_stream" sk_picture_serialize_to_stream :: (Ptr (Sk_picture)) -> (Ptr (Sk_wstream)) -> IO (())
 -- | `sk_picture_deserialize_from_stream`
-foreign import ccall "sk_picture_deserialize_from_stream" skPictureDeSerializeFromStream :: (Ptr (SkStream)) -> IO (Ptr (SkPicture))
+foreign import ccall "sk_picture_deserialize_from_stream" sk_picture_deserialize_from_stream :: (Ptr (Sk_stream)) -> IO (Ptr (Sk_picture))
 -- | `sk_picture_deserialize_from_data`
-foreign import ccall "sk_picture_deserialize_from_data" skPictureDeSerializeFromData :: (Ptr (SkData)) -> IO (Ptr (SkPicture))
+foreign import ccall "sk_picture_deserialize_from_data" sk_picture_deserialize_from_data :: (Ptr (Sk_data)) -> IO (Ptr (Sk_picture))
 -- | `sk_picture_deserialize_from_memory`
-foreign import ccall "sk_picture_deserialize_from_memory" skPictureDeSerializeFromMemory :: (Ptr (())) -> (CSize) -> IO (Ptr (SkPicture))
+foreign import ccall "sk_picture_deserialize_from_memory" sk_picture_deserialize_from_memory :: (Ptr (())) -> (CSize) -> IO (Ptr (Sk_picture))
 -- | `sk_picture_playback`
-foreign import ccall "sk_picture_playback" skPicturePlayback :: (Ptr (SkPicture)) -> (Ptr (SkCanvas)) -> IO (())
+foreign import ccall "sk_picture_playback" sk_picture_playback :: (Ptr (Sk_picture)) -> (Ptr (Sk_canvas)) -> IO (())
 -- | `sk_picture_approximate_op_count`
-foreign import ccall "sk_picture_approximate_op_count" skPictureApproximateOpCount :: (Ptr (SkPicture)) -> (CBool) -> IO (CInt)
+foreign import ccall "sk_picture_approximate_op_count" sk_picture_approximate_op_count :: (Ptr (Sk_picture)) -> (CBool) -> IO (CInt)
 -- | `sk_picture_approximate_bytes_used`
-foreign import ccall "sk_picture_approximate_bytes_used" skPictureApproximateBytesUsed :: (Ptr (SkPicture)) -> IO (CSize)
+foreign import ccall "sk_picture_approximate_bytes_used" sk_picture_approximate_bytes_used :: (Ptr (Sk_picture)) -> IO (CSize)
 -- | `sk_rtree_factory_new`
-foreign import ccall "sk_rtree_factory_new" skRTreeFactoryNew :: IO (Ptr (SkRTreeFactory))
+foreign import ccall "sk_rtree_factory_new" sk_rtree_factory_new :: IO (Ptr (Sk_rtree_factory))
 -- | `sk_rtree_factory_delete`
-foreign import ccall "sk_rtree_factory_delete" skRTreeFactoryDelete :: (Ptr (SkRTreeFactory)) -> IO (())
+foreign import ccall "sk_rtree_factory_delete" sk_rtree_factory_delete :: (Ptr (Sk_rtree_factory)) -> IO (())
 -- | `sk_surface_new_null`
-foreign import ccall "sk_surface_new_null" skSurfaceNewNull :: (CInt) -> (CInt) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_null" sk_surface_new_null :: (CInt) -> (CInt) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_new_raster`
-foreign import ccall "sk_surface_new_raster" skSurfaceNewRaster :: (Ptr (SkImageInfo)) -> (CSize) -> (Ptr (SkSurfaceProps)) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_raster" sk_surface_new_raster :: (Ptr (Sk_imageinfo)) -> (CSize) -> (Ptr (Sk_surfaceprops)) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_new_raster_direct`
-foreign import ccall "sk_surface_new_raster_direct" skSurfaceNewRasterDirect :: (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (FunPtr (SkSurfaceRasterReleaseProc)) -> (Ptr (())) -> (Ptr (SkSurfaceProps)) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_raster_direct" sk_surface_new_raster_direct :: (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (FunPtr (Sk_surface_raster_release_proc)) -> (Ptr (())) -> (Ptr (Sk_surfaceprops)) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_new_backend_texture`
-foreign import ccall "sk_surface_new_backend_texture" skSurfaceNewBackendTexture :: (Ptr (GrRecordingContext)) -> (Ptr (GrBackendTexture)) -> (GrSurfaceOrigin) -> (CInt) -> (SkColorType) -> (Ptr (SkColorSpace)) -> (Ptr (SkSurfaceProps)) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_backend_texture" sk_surface_new_backend_texture :: (Ptr (Gr_recording_context)) -> (Ptr (Gr_backendtexture)) -> (Gr_surfaceorigin) -> (CInt) -> (Sk_colortype) -> (Ptr (Sk_colorspace)) -> (Ptr (Sk_surfaceprops)) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_new_backend_render_target`
-foreign import ccall "sk_surface_new_backend_render_target" skSurfaceNewBackendRenderTarget :: (Ptr (GrRecordingContext)) -> (Ptr (GrBackendRenderTarget)) -> (GrSurfaceOrigin) -> (SkColorType) -> (Ptr (SkColorSpace)) -> (Ptr (SkSurfaceProps)) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_backend_render_target" sk_surface_new_backend_render_target :: (Ptr (Gr_recording_context)) -> (Ptr (Gr_backendrendertarget)) -> (Gr_surfaceorigin) -> (Sk_colortype) -> (Ptr (Sk_colorspace)) -> (Ptr (Sk_surfaceprops)) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_new_render_target`
-foreign import ccall "sk_surface_new_render_target" skSurfaceNewRenderTarget :: (Ptr (GrRecordingContext)) -> (CBool) -> (Ptr (SkImageInfo)) -> (CInt) -> (GrSurfaceOrigin) -> (Ptr (SkSurfaceProps)) -> (CBool) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_render_target" sk_surface_new_render_target :: (Ptr (Gr_recording_context)) -> (CBool) -> (Ptr (Sk_imageinfo)) -> (CInt) -> (Gr_surfaceorigin) -> (Ptr (Sk_surfaceprops)) -> (CBool) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_new_metal_layer`
-foreign import ccall "sk_surface_new_metal_layer" skSurfaceNewMetalLayer :: (Ptr (GrRecordingContext)) -> (Ptr (())) -> (GrSurfaceOrigin) -> (CInt) -> (SkColorType) -> (Ptr (SkColorSpace)) -> (Ptr (SkSurfaceProps)) -> (Ptr (Ptr (()))) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_metal_layer" sk_surface_new_metal_layer :: (Ptr (Gr_recording_context)) -> (Ptr (())) -> (Gr_surfaceorigin) -> (CInt) -> (Sk_colortype) -> (Ptr (Sk_colorspace)) -> (Ptr (Sk_surfaceprops)) -> (Ptr (Ptr (()))) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_new_metal_view`
-foreign import ccall "sk_surface_new_metal_view" skSurfaceNewMetalView :: (Ptr (GrRecordingContext)) -> (Ptr (())) -> (GrSurfaceOrigin) -> (CInt) -> (SkColorType) -> (Ptr (SkColorSpace)) -> (Ptr (SkSurfaceProps)) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_surface_new_metal_view" sk_surface_new_metal_view :: (Ptr (Gr_recording_context)) -> (Ptr (())) -> (Gr_surfaceorigin) -> (CInt) -> (Sk_colortype) -> (Ptr (Sk_colorspace)) -> (Ptr (Sk_surfaceprops)) -> IO (Ptr (Sk_surface))
 -- | `sk_surface_unref`
-foreign import ccall "sk_surface_unref" skSurfaceUnRef :: (Ptr (SkSurface)) -> IO (())
+foreign import ccall "sk_surface_unref" sk_surface_unref :: (Ptr (Sk_surface)) -> IO (())
 -- | `sk_surface_get_canvas`
-foreign import ccall "sk_surface_get_canvas" skSurfaceGetCanvas :: (Ptr (SkSurface)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_surface_get_canvas" sk_surface_get_canvas :: (Ptr (Sk_surface)) -> IO (Ptr (Sk_canvas))
 -- | `sk_surface_new_image_snapshot`
-foreign import ccall "sk_surface_new_image_snapshot" skSurfaceNewImageSnapshot :: (Ptr (SkSurface)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_surface_new_image_snapshot" sk_surface_new_image_snapshot :: (Ptr (Sk_surface)) -> IO (Ptr (Sk_image))
 -- | `sk_surface_new_image_snapshot_with_crop`
-foreign import ccall "sk_surface_new_image_snapshot_with_crop" skSurfaceNewImageSnapshotWithCrop :: (Ptr (SkSurface)) -> (Ptr (SkIRect)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_surface_new_image_snapshot_with_crop" sk_surface_new_image_snapshot_with_crop :: (Ptr (Sk_surface)) -> (Ptr (Sk_irect)) -> IO (Ptr (Sk_image))
 -- | `sk_surface_draw`
-foreign import ccall "sk_surface_draw" skSurfaceDraw :: (Ptr (SkSurface)) -> (Ptr (SkCanvas)) -> (CFloat) -> (CFloat) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_surface_draw" sk_surface_draw :: (Ptr (Sk_surface)) -> (Ptr (Sk_canvas)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_surface_peek_pixels`
-foreign import ccall "sk_surface_peek_pixels" skSurfacePeekPixels :: (Ptr (SkSurface)) -> (Ptr (SkPixmap)) -> IO (CBool)
+foreign import ccall "sk_surface_peek_pixels" sk_surface_peek_pixels :: (Ptr (Sk_surface)) -> (Ptr (Sk_pixmap)) -> IO (CBool)
 -- | `sk_surface_read_pixels`
-foreign import ccall "sk_surface_read_pixels" skSurfaceReadPixels :: (Ptr (SkSurface)) -> (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (CInt) -> (CInt) -> IO (CBool)
+foreign import ccall "sk_surface_read_pixels" sk_surface_read_pixels :: (Ptr (Sk_surface)) -> (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (CInt) -> (CInt) -> IO (CBool)
 -- | `sk_surface_get_props`
-foreign import ccall "sk_surface_get_props" skSurfaceGetProps :: (Ptr (SkSurface)) -> IO (Ptr (SkSurfaceProps))
+foreign import ccall "sk_surface_get_props" sk_surface_get_props :: (Ptr (Sk_surface)) -> IO (Ptr (Sk_surfaceprops))
 -- | `sk_surface_get_recording_context`
-foreign import ccall "sk_surface_get_recording_context" skSurfaceGetRecordingContext :: (Ptr (SkSurface)) -> IO (Ptr (GrRecordingContext))
+foreign import ccall "sk_surface_get_recording_context" sk_surface_get_recording_context :: (Ptr (Sk_surface)) -> IO (Ptr (Gr_recording_context))
 -- | `sk_surfaceprops_new`
-foreign import ccall "sk_surfaceprops_new" skSurfacePropsNew :: (Word32) -> (SkPixelGeometry) -> IO (Ptr (SkSurfaceProps))
+foreign import ccall "sk_surfaceprops_new" sk_surfaceprops_new :: (Word32) -> (Sk_pixelgeometry) -> IO (Ptr (Sk_surfaceprops))
 -- | `sk_surfaceprops_delete`
-foreign import ccall "sk_surfaceprops_delete" skSurfacePropsDelete :: (Ptr (SkSurfaceProps)) -> IO (())
+foreign import ccall "sk_surfaceprops_delete" sk_surfaceprops_delete :: (Ptr (Sk_surfaceprops)) -> IO (())
 -- | `sk_surfaceprops_get_flags`
-foreign import ccall "sk_surfaceprops_get_flags" skSurfacePropsGetFlags :: (Ptr (SkSurfaceProps)) -> IO (Word32)
+foreign import ccall "sk_surfaceprops_get_flags" sk_surfaceprops_get_flags :: (Ptr (Sk_surfaceprops)) -> IO (Word32)
 -- | `sk_surfaceprops_get_pixel_geometry`
-foreign import ccall "sk_surfaceprops_get_pixel_geometry" skSurfacePropsGetPixelGeometry :: (Ptr (SkSurfaceProps)) -> IO (SkPixelGeometry)
+foreign import ccall "sk_surfaceprops_get_pixel_geometry" sk_surfaceprops_get_pixel_geometry :: (Ptr (Sk_surfaceprops)) -> IO (Sk_pixelgeometry)
 -- | `sk_pixmap_destructor`
-foreign import ccall "sk_pixmap_destructor" skPixmapDestructOr :: (Ptr (SkPixmap)) -> IO (())
+foreign import ccall "sk_pixmap_destructor" sk_pixmap_destructor :: (Ptr (Sk_pixmap)) -> IO (())
 -- | `sk_pixmap_new`
-foreign import ccall "sk_pixmap_new" skPixmapNew :: IO (Ptr (SkPixmap))
+foreign import ccall "sk_pixmap_new" sk_pixmap_new :: IO (Ptr (Sk_pixmap))
 -- | `sk_pixmap_new_with_params`
-foreign import ccall "sk_pixmap_new_with_params" skPixmapNewWithParams :: (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> IO (Ptr (SkPixmap))
+foreign import ccall "sk_pixmap_new_with_params" sk_pixmap_new_with_params :: (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> IO (Ptr (Sk_pixmap))
 -- | `sk_pixmap_reset`
-foreign import ccall "sk_pixmap_reset" skPixmapReset :: (Ptr (SkPixmap)) -> IO (())
+foreign import ccall "sk_pixmap_reset" sk_pixmap_reset :: (Ptr (Sk_pixmap)) -> IO (())
 -- | `sk_pixmap_reset_with_params`
-foreign import ccall "sk_pixmap_reset_with_params" skPixmapResetWithParams :: (Ptr (SkPixmap)) -> (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> IO (())
+foreign import ccall "sk_pixmap_reset_with_params" sk_pixmap_reset_with_params :: (Ptr (Sk_pixmap)) -> (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> IO (())
 -- | `sk_pixmap_set_colorspace`
-foreign import ccall "sk_pixmap_set_colorspace" skPixmapSetColorSpace :: (Ptr (SkPixmap)) -> (Ptr (SkColorSpace)) -> IO (())
+foreign import ccall "sk_pixmap_set_colorspace" sk_pixmap_set_colorspace :: (Ptr (Sk_pixmap)) -> (Ptr (Sk_colorspace)) -> IO (())
 -- | `sk_pixmap_extract_subset`
-foreign import ccall "sk_pixmap_extract_subset" skPixmapExtractSubset :: (Ptr (SkPixmap)) -> (Ptr (SkPixmap)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_pixmap_extract_subset" sk_pixmap_extract_subset :: (Ptr (Sk_pixmap)) -> (Ptr (Sk_pixmap)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_pixmap_get_info`
-foreign import ccall "sk_pixmap_get_info" skPixmapGetInfo :: (Ptr (SkPixmap)) -> (Ptr (SkImageInfo)) -> IO (())
+foreign import ccall "sk_pixmap_get_info" sk_pixmap_get_info :: (Ptr (Sk_pixmap)) -> (Ptr (Sk_imageinfo)) -> IO (())
 -- | `sk_pixmap_get_row_bytes`
-foreign import ccall "sk_pixmap_get_row_bytes" skPixmapGetRowBytes :: (Ptr (SkPixmap)) -> IO (CSize)
+foreign import ccall "sk_pixmap_get_row_bytes" sk_pixmap_get_row_bytes :: (Ptr (Sk_pixmap)) -> IO (CSize)
 -- | `sk_pixmap_get_colorspace`
-foreign import ccall "sk_pixmap_get_colorspace" skPixmapGetColorSpace :: (Ptr (SkPixmap)) -> IO (Ptr (SkColorSpace))
+foreign import ccall "sk_pixmap_get_colorspace" sk_pixmap_get_colorspace :: (Ptr (Sk_pixmap)) -> IO (Ptr (Sk_colorspace))
 -- | `sk_pixmap_compute_is_opaque`
-foreign import ccall "sk_pixmap_compute_is_opaque" skPixmapComputeIsOpaque :: (Ptr (SkPixmap)) -> IO (CBool)
+foreign import ccall "sk_pixmap_compute_is_opaque" sk_pixmap_compute_is_opaque :: (Ptr (Sk_pixmap)) -> IO (CBool)
 -- | `sk_pixmap_get_pixel_color`
-foreign import ccall "sk_pixmap_get_pixel_color" skPixmapGetPixelColor :: (Ptr (SkPixmap)) -> (CInt) -> (CInt) -> IO (SkColor)
+foreign import ccall "sk_pixmap_get_pixel_color" sk_pixmap_get_pixel_color :: (Ptr (Sk_pixmap)) -> (CInt) -> (CInt) -> IO (Sk_color)
 -- | `sk_pixmap_get_pixel_color4f`
-foreign import ccall "sk_pixmap_get_pixel_color4f" skPixmapGetPixelColor4F :: (Ptr (SkPixmap)) -> (CInt) -> (CInt) -> (Ptr (SkColor4F)) -> IO (())
+foreign import ccall "sk_pixmap_get_pixel_color4f" sk_pixmap_get_pixel_color4f :: (Ptr (Sk_pixmap)) -> (CInt) -> (CInt) -> (Ptr (Sk_color4f)) -> IO (())
 -- | `sk_pixmap_get_pixel_alphaf`
-foreign import ccall "sk_pixmap_get_pixel_alphaf" skPixmapGetPixelAlphaF :: (Ptr (SkPixmap)) -> (CInt) -> (CInt) -> IO (CFloat)
+foreign import ccall "sk_pixmap_get_pixel_alphaf" sk_pixmap_get_pixel_alphaf :: (Ptr (Sk_pixmap)) -> (CInt) -> (CInt) -> IO (CFloat)
 -- | `sk_pixmap_get_writable_addr`
-foreign import ccall "sk_pixmap_get_writable_addr" skPixmapGetWritableAddR :: (Ptr (SkPixmap)) -> IO (Ptr (()))
+foreign import ccall "sk_pixmap_get_writable_addr" sk_pixmap_get_writable_addr :: (Ptr (Sk_pixmap)) -> IO (Ptr (()))
 -- | `sk_pixmap_get_writeable_addr_with_xy`
-foreign import ccall "sk_pixmap_get_writeable_addr_with_xy" skPixmapGetWriteAbleAddRWithXy :: (Ptr (SkPixmap)) -> (CInt) -> (CInt) -> IO (Ptr (()))
+foreign import ccall "sk_pixmap_get_writeable_addr_with_xy" sk_pixmap_get_writeable_addr_with_xy :: (Ptr (Sk_pixmap)) -> (CInt) -> (CInt) -> IO (Ptr (()))
 -- | `sk_pixmap_read_pixels`
-foreign import ccall "sk_pixmap_read_pixels" skPixmapReadPixels :: (Ptr (SkPixmap)) -> (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (CInt) -> (CInt) -> IO (CBool)
+foreign import ccall "sk_pixmap_read_pixels" sk_pixmap_read_pixels :: (Ptr (Sk_pixmap)) -> (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (CInt) -> (CInt) -> IO (CBool)
 -- | `sk_pixmap_scale_pixels`
-foreign import ccall "sk_pixmap_scale_pixels" skPixmapScalePixels :: (Ptr (SkPixmap)) -> (Ptr (SkPixmap)) -> (Ptr (SkSamplingOptions)) -> IO (CBool)
+foreign import ccall "sk_pixmap_scale_pixels" sk_pixmap_scale_pixels :: (Ptr (Sk_pixmap)) -> (Ptr (Sk_pixmap)) -> (Ptr (Sk_sampling_options)) -> IO (CBool)
 -- | `sk_pixmap_erase_color`
-foreign import ccall "sk_pixmap_erase_color" skPixmapEraseColor :: (Ptr (SkPixmap)) -> (SkColor) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_pixmap_erase_color" sk_pixmap_erase_color :: (Ptr (Sk_pixmap)) -> (Sk_color) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_pixmap_erase_color4f`
-foreign import ccall "sk_pixmap_erase_color4f" skPixmapEraseColor4F :: (Ptr (SkPixmap)) -> (Ptr (SkColor4F)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_pixmap_erase_color4f" sk_pixmap_erase_color4f :: (Ptr (Sk_pixmap)) -> (Ptr (Sk_color4f)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_webpencoder_encode`
-foreign import ccall "sk_webpencoder_encode" skWebpEncoderEncode :: (Ptr (SkWStream)) -> (Ptr (SkPixmap)) -> (Ptr (SkWebpEncoderOptions)) -> IO (CBool)
+foreign import ccall "sk_webpencoder_encode" sk_webpencoder_encode :: (Ptr (Sk_wstream)) -> (Ptr (Sk_pixmap)) -> (Ptr (Sk_webpencoder_options)) -> IO (CBool)
 -- | `sk_jpegencoder_encode`
-foreign import ccall "sk_jpegencoder_encode" skJpegEncoderEncode :: (Ptr (SkWStream)) -> (Ptr (SkPixmap)) -> (Ptr (SkJpegEncoderOptions)) -> IO (CBool)
+foreign import ccall "sk_jpegencoder_encode" sk_jpegencoder_encode :: (Ptr (Sk_wstream)) -> (Ptr (Sk_pixmap)) -> (Ptr (Sk_jpegencoder_options)) -> IO (CBool)
 -- | `sk_pngencoder_encode`
-foreign import ccall "sk_pngencoder_encode" skPngEncoderEncode :: (Ptr (SkWStream)) -> (Ptr (SkPixmap)) -> (Ptr (SkPngEncoderOptions)) -> IO (CBool)
+foreign import ccall "sk_pngencoder_encode" sk_pngencoder_encode :: (Ptr (Sk_wstream)) -> (Ptr (Sk_pixmap)) -> (Ptr (Sk_pngencoder_options)) -> IO (CBool)
 -- | `sk_swizzle_swap_rb`
-foreign import ccall "sk_swizzle_swap_rb" skSwizzLeSwapRb :: (Ptr (Word32)) -> (Ptr (Word32)) -> (CInt) -> IO (())
+foreign import ccall "sk_swizzle_swap_rb" sk_swizzle_swap_rb :: (Ptr (Word32)) -> (Ptr (Word32)) -> (CInt) -> IO (())
 -- | `sk_color_unpremultiply`
-foreign import ccall "sk_color_unpremultiply" skColorUnpremulTipLy :: (SkPmColor) -> IO (SkColor)
+foreign import ccall "sk_color_unpremultiply" sk_color_unpremultiply :: (Sk_pmcolor) -> IO (Sk_color)
 -- | `sk_color_premultiply`
-foreign import ccall "sk_color_premultiply" skColorPreMultiply :: (SkColor) -> IO (SkPmColor)
+foreign import ccall "sk_color_premultiply" sk_color_premultiply :: (Sk_color) -> IO (Sk_pmcolor)
 -- | `sk_color_unpremultiply_array`
-foreign import ccall "sk_color_unpremultiply_array" skColorUnpremulTipLyArray :: (Ptr (SkPmColor)) -> (CInt) -> (Ptr (SkColor)) -> IO (())
+foreign import ccall "sk_color_unpremultiply_array" sk_color_unpremultiply_array :: (Ptr (Sk_pmcolor)) -> (CInt) -> (Ptr (Sk_color)) -> IO (())
 -- | `sk_color_premultiply_array`
-foreign import ccall "sk_color_premultiply_array" skColorPreMultiplyArray :: (Ptr (SkColor)) -> (CInt) -> (Ptr (SkPmColor)) -> IO (())
+foreign import ccall "sk_color_premultiply_array" sk_color_premultiply_array :: (Ptr (Sk_color)) -> (CInt) -> (Ptr (Sk_pmcolor)) -> IO (())
 -- | `sk_color_get_bit_shift`
-foreign import ccall "sk_color_get_bit_shift" skColorGetBitShift :: (Ptr (CInt)) -> (Ptr (CInt)) -> (Ptr (CInt)) -> (Ptr (CInt)) -> IO (())
+foreign import ccall "sk_color_get_bit_shift" sk_color_get_bit_shift :: (Ptr (CInt)) -> (Ptr (CInt)) -> (Ptr (CInt)) -> (Ptr (CInt)) -> IO (())
 -- | `sk_region_new`
-foreign import ccall "sk_region_new" skRegionNew :: IO (Ptr (SkRegion))
+foreign import ccall "sk_region_new" sk_region_new :: IO (Ptr (Sk_region))
 -- | `sk_region_delete`
-foreign import ccall "sk_region_delete" skRegionDelete :: (Ptr (SkRegion)) -> IO (())
+foreign import ccall "sk_region_delete" sk_region_delete :: (Ptr (Sk_region)) -> IO (())
 -- | `sk_region_is_empty`
-foreign import ccall "sk_region_is_empty" skRegionIsEmpty :: (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_is_empty" sk_region_is_empty :: (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_is_rect`
-foreign import ccall "sk_region_is_rect" skRegionIsRect :: (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_is_rect" sk_region_is_rect :: (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_is_complex`
-foreign import ccall "sk_region_is_complex" skRegionIsComplex :: (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_is_complex" sk_region_is_complex :: (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_get_bounds`
-foreign import ccall "sk_region_get_bounds" skRegionGetBounds :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> IO (())
+foreign import ccall "sk_region_get_bounds" sk_region_get_bounds :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> IO (())
 -- | `sk_region_get_boundary_path`
-foreign import ccall "sk_region_get_boundary_path" skRegionGetBoundaryPath :: (Ptr (SkRegion)) -> (Ptr (SkPath)) -> IO (CBool)
+foreign import ccall "sk_region_get_boundary_path" sk_region_get_boundary_path :: (Ptr (Sk_region)) -> (Ptr (Sk_path)) -> IO (CBool)
 -- | `sk_region_set_empty`
-foreign import ccall "sk_region_set_empty" skRegionSetEmpty :: (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_set_empty" sk_region_set_empty :: (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_set_rect`
-foreign import ccall "sk_region_set_rect" skRegionSetRect :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_region_set_rect" sk_region_set_rect :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_region_set_rects`
-foreign import ccall "sk_region_set_rects" skRegionSetRectS :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> (CInt) -> IO (CBool)
+foreign import ccall "sk_region_set_rects" sk_region_set_rects :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> (CInt) -> IO (CBool)
 -- | `sk_region_set_region`
-foreign import ccall "sk_region_set_region" skRegionSetRegion :: (Ptr (SkRegion)) -> (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_set_region" sk_region_set_region :: (Ptr (Sk_region)) -> (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_set_path`
-foreign import ccall "sk_region_set_path" skRegionSetPath :: (Ptr (SkRegion)) -> (Ptr (SkPath)) -> (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_set_path" sk_region_set_path :: (Ptr (Sk_region)) -> (Ptr (Sk_path)) -> (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_intersects_rect`
-foreign import ccall "sk_region_intersects_rect" skRegionIntersectsRect :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_region_intersects_rect" sk_region_intersects_rect :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_region_intersects`
-foreign import ccall "sk_region_intersects" skRegionIntersects :: (Ptr (SkRegion)) -> (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_intersects" sk_region_intersects :: (Ptr (Sk_region)) -> (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_contains_point`
-foreign import ccall "sk_region_contains_point" skRegionContainsPoint :: (Ptr (SkRegion)) -> (CInt) -> (CInt) -> IO (CBool)
+foreign import ccall "sk_region_contains_point" sk_region_contains_point :: (Ptr (Sk_region)) -> (CInt) -> (CInt) -> IO (CBool)
 -- | `sk_region_contains_rect`
-foreign import ccall "sk_region_contains_rect" skRegionContainsRect :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_region_contains_rect" sk_region_contains_rect :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_region_contains`
-foreign import ccall "sk_region_contains" skRegionContains :: (Ptr (SkRegion)) -> (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_contains" sk_region_contains :: (Ptr (Sk_region)) -> (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_quick_contains`
-foreign import ccall "sk_region_quick_contains" skRegionQuickContains :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_region_quick_contains" sk_region_quick_contains :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_region_quick_reject_rect`
-foreign import ccall "sk_region_quick_reject_rect" skRegionQuickRejectRect :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_region_quick_reject_rect" sk_region_quick_reject_rect :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_region_quick_reject`
-foreign import ccall "sk_region_quick_reject" skRegionQuickReject :: (Ptr (SkRegion)) -> (Ptr (SkRegion)) -> IO (CBool)
+foreign import ccall "sk_region_quick_reject" sk_region_quick_reject :: (Ptr (Sk_region)) -> (Ptr (Sk_region)) -> IO (CBool)
 -- | `sk_region_translate`
-foreign import ccall "sk_region_translate" skRegionTranslate :: (Ptr (SkRegion)) -> (CInt) -> (CInt) -> IO (())
+foreign import ccall "sk_region_translate" sk_region_translate :: (Ptr (Sk_region)) -> (CInt) -> (CInt) -> IO (())
 -- | `sk_region_op_rect`
-foreign import ccall "sk_region_op_rect" skRegionOpRect :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> (SkRegionOp) -> IO (CBool)
+foreign import ccall "sk_region_op_rect" sk_region_op_rect :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> (Sk_region_op) -> IO (CBool)
 -- | `sk_region_op`
-foreign import ccall "sk_region_op" skRegionOp :: (Ptr (SkRegion)) -> (Ptr (SkRegion)) -> (SkRegionOp) -> IO (CBool)
+foreign import ccall "sk_region_op" sk_region_op :: (Ptr (Sk_region)) -> (Ptr (Sk_region)) -> (Sk_region_op) -> IO (CBool)
 -- | `sk_region_iterator_new`
-foreign import ccall "sk_region_iterator_new" skRegionIteratorNew :: (Ptr (SkRegion)) -> IO (Ptr (SkRegionIterator))
+foreign import ccall "sk_region_iterator_new" sk_region_iterator_new :: (Ptr (Sk_region)) -> IO (Ptr (Sk_region_iterator))
 -- | `sk_region_iterator_delete`
-foreign import ccall "sk_region_iterator_delete" skRegionIteratorDelete :: (Ptr (SkRegionIterator)) -> IO (())
+foreign import ccall "sk_region_iterator_delete" sk_region_iterator_delete :: (Ptr (Sk_region_iterator)) -> IO (())
 -- | `sk_region_iterator_rewind`
-foreign import ccall "sk_region_iterator_rewind" skRegionIteratorRewind :: (Ptr (SkRegionIterator)) -> IO (CBool)
+foreign import ccall "sk_region_iterator_rewind" sk_region_iterator_rewind :: (Ptr (Sk_region_iterator)) -> IO (CBool)
 -- | `sk_region_iterator_done`
-foreign import ccall "sk_region_iterator_done" skRegionIteratorDone :: (Ptr (SkRegionIterator)) -> IO (CBool)
+foreign import ccall "sk_region_iterator_done" sk_region_iterator_done :: (Ptr (Sk_region_iterator)) -> IO (CBool)
 -- | `sk_region_iterator_next`
-foreign import ccall "sk_region_iterator_next" skRegionIteratorNext :: (Ptr (SkRegionIterator)) -> IO (())
+foreign import ccall "sk_region_iterator_next" sk_region_iterator_next :: (Ptr (Sk_region_iterator)) -> IO (())
 -- | `sk_region_iterator_rect`
-foreign import ccall "sk_region_iterator_rect" skRegionIteratorRect :: (Ptr (SkRegionIterator)) -> (Ptr (SkIRect)) -> IO (())
+foreign import ccall "sk_region_iterator_rect" sk_region_iterator_rect :: (Ptr (Sk_region_iterator)) -> (Ptr (Sk_irect)) -> IO (())
 -- | `sk_region_cliperator_new`
-foreign import ccall "sk_region_cliperator_new" skRegionCliperatorNew :: (Ptr (SkRegion)) -> (Ptr (SkIRect)) -> IO (Ptr (SkRegionCliperator))
+foreign import ccall "sk_region_cliperator_new" sk_region_cliperator_new :: (Ptr (Sk_region)) -> (Ptr (Sk_irect)) -> IO (Ptr (Sk_region_cliperator))
 -- | `sk_region_cliperator_delete`
-foreign import ccall "sk_region_cliperator_delete" skRegionCliperatorDelete :: (Ptr (SkRegionCliperator)) -> IO (())
+foreign import ccall "sk_region_cliperator_delete" sk_region_cliperator_delete :: (Ptr (Sk_region_cliperator)) -> IO (())
 -- | `sk_region_cliperator_done`
-foreign import ccall "sk_region_cliperator_done" skRegionCliperatorDone :: (Ptr (SkRegionCliperator)) -> IO (CBool)
+foreign import ccall "sk_region_cliperator_done" sk_region_cliperator_done :: (Ptr (Sk_region_cliperator)) -> IO (CBool)
 -- | `sk_region_cliperator_next`
-foreign import ccall "sk_region_cliperator_next" skRegionCliperatorNext :: (Ptr (SkRegionCliperator)) -> IO (())
+foreign import ccall "sk_region_cliperator_next" sk_region_cliperator_next :: (Ptr (Sk_region_cliperator)) -> IO (())
 -- | `sk_region_cliperator_rect`
-foreign import ccall "sk_region_cliperator_rect" skRegionCliperatorRect :: (Ptr (SkRegionCliperator)) -> (Ptr (SkIRect)) -> IO (())
+foreign import ccall "sk_region_cliperator_rect" sk_region_cliperator_rect :: (Ptr (Sk_region_cliperator)) -> (Ptr (Sk_irect)) -> IO (())
 -- | `sk_region_spanerator_new`
-foreign import ccall "sk_region_spanerator_new" skRegionSpaneratorNew :: (Ptr (SkRegion)) -> (CInt) -> (CInt) -> (CInt) -> IO (Ptr (SkRegionSpanerator))
+foreign import ccall "sk_region_spanerator_new" sk_region_spanerator_new :: (Ptr (Sk_region)) -> (CInt) -> (CInt) -> (CInt) -> IO (Ptr (Sk_region_spanerator))
 -- | `sk_region_spanerator_delete`
-foreign import ccall "sk_region_spanerator_delete" skRegionSpaneratorDelete :: (Ptr (SkRegionSpanerator)) -> IO (())
+foreign import ccall "sk_region_spanerator_delete" sk_region_spanerator_delete :: (Ptr (Sk_region_spanerator)) -> IO (())
 -- | `sk_region_spanerator_next`
-foreign import ccall "sk_region_spanerator_next" skRegionSpaneratorNext :: (Ptr (SkRegionSpanerator)) -> (Ptr (CInt)) -> (Ptr (CInt)) -> IO (CBool)
+foreign import ccall "sk_region_spanerator_next" sk_region_spanerator_next :: (Ptr (Sk_region_spanerator)) -> (Ptr (CInt)) -> (Ptr (CInt)) -> IO (CBool)
 -- | `sk_canvas_destroy`
-foreign import ccall "sk_canvas_destroy" skCanvasDestroy :: (Ptr (SkCanvas)) -> IO (())
+foreign import ccall "sk_canvas_destroy" sk_canvas_destroy :: (Ptr (Sk_canvas)) -> IO (())
 -- | `sk_canvas_clear`
-foreign import ccall "sk_canvas_clear" skCanvasClear :: (Ptr (SkCanvas)) -> (SkColor) -> IO (())
+foreign import ccall "sk_canvas_clear" sk_canvas_clear :: (Ptr (Sk_canvas)) -> (Sk_color) -> IO (())
 -- | `sk_canvas_discard`
-foreign import ccall "sk_canvas_discard" skCanvasDiscard :: (Ptr (SkCanvas)) -> IO (())
+foreign import ccall "sk_canvas_discard" sk_canvas_discard :: (Ptr (Sk_canvas)) -> IO (())
 -- | `sk_canvas_get_save_count`
-foreign import ccall "sk_canvas_get_save_count" skCanvasGetSaveCount :: (Ptr (SkCanvas)) -> IO (CInt)
+foreign import ccall "sk_canvas_get_save_count" sk_canvas_get_save_count :: (Ptr (Sk_canvas)) -> IO (CInt)
 -- | `sk_canvas_restore_to_count`
-foreign import ccall "sk_canvas_restore_to_count" skCanvasRestoreToCount :: (Ptr (SkCanvas)) -> (CInt) -> IO (())
+foreign import ccall "sk_canvas_restore_to_count" sk_canvas_restore_to_count :: (Ptr (Sk_canvas)) -> (CInt) -> IO (())
 -- | `sk_canvas_draw_color`
-foreign import ccall "sk_canvas_draw_color" skCanvasDrawColor :: (Ptr (SkCanvas)) -> (SkColor) -> (SkBlendMode) -> IO (())
+foreign import ccall "sk_canvas_draw_color" sk_canvas_draw_color :: (Ptr (Sk_canvas)) -> (Sk_color) -> (Sk_blendmode) -> IO (())
 -- | `sk_canvas_draw_points`
-foreign import ccall "sk_canvas_draw_points" skCanvasDrawPoints :: (Ptr (SkCanvas)) -> (SkPointMode) -> (CSize) -> (Ptr (SkPoint)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_points" sk_canvas_draw_points :: (Ptr (Sk_canvas)) -> (Sk_point_mode) -> (CSize) -> (Ptr (Sk_point)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_point`
-foreign import ccall "sk_canvas_draw_point" skCanvasDrawPoint :: (Ptr (SkCanvas)) -> (CFloat) -> (CFloat) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_point" sk_canvas_draw_point :: (Ptr (Sk_canvas)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_line`
-foreign import ccall "sk_canvas_draw_line" skCanvasDrawLine :: (Ptr (SkCanvas)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_line" sk_canvas_draw_line :: (Ptr (Sk_canvas)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_simple_text`
-foreign import ccall "sk_canvas_draw_simple_text" skCanvasDrawSimpleText :: (Ptr (SkCanvas)) -> (Ptr (())) -> (CSize) -> (SkTextEncoding) -> (CFloat) -> (CFloat) -> (Ptr (SkFont)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_simple_text" sk_canvas_draw_simple_text :: (Ptr (Sk_canvas)) -> (Ptr (())) -> (CSize) -> (Sk_text_encoding) -> (CFloat) -> (CFloat) -> (Ptr (Sk_font)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_text_blob`
-foreign import ccall "sk_canvas_draw_text_blob" skCanvasDrawTextBlob :: (Ptr (SkCanvas)) -> (Ptr (SkTextBlob)) -> (CFloat) -> (CFloat) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_text_blob" sk_canvas_draw_text_blob :: (Ptr (Sk_canvas)) -> (Ptr (Sk_textblob)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_reset_matrix`
-foreign import ccall "sk_canvas_reset_matrix" skCanvasResetMatrix :: (Ptr (SkCanvas)) -> IO (())
+foreign import ccall "sk_canvas_reset_matrix" sk_canvas_reset_matrix :: (Ptr (Sk_canvas)) -> IO (())
 -- | `sk_canvas_set_matrix`
-foreign import ccall "sk_canvas_set_matrix" skCanvasSetMatrix :: (Ptr (SkCanvas)) -> (Ptr (SkMatrix44)) -> IO (())
+foreign import ccall "sk_canvas_set_matrix" sk_canvas_set_matrix :: (Ptr (Sk_canvas)) -> (Ptr (Sk_matrix44)) -> IO (())
 -- | `sk_canvas_get_matrix`
-foreign import ccall "sk_canvas_get_matrix" skCanvasGetMatrix :: (Ptr (SkCanvas)) -> (Ptr (SkMatrix44)) -> IO (())
+foreign import ccall "sk_canvas_get_matrix" sk_canvas_get_matrix :: (Ptr (Sk_canvas)) -> (Ptr (Sk_matrix44)) -> IO (())
 -- | `sk_canvas_draw_round_rect`
-foreign import ccall "sk_canvas_draw_round_rect" skCanvasDrawRoundRect :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_round_rect" sk_canvas_draw_round_rect :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_clip_rect_with_operation`
-foreign import ccall "sk_canvas_clip_rect_with_operation" skCanvasClipRectWithOperation :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (SkClipOp) -> (CBool) -> IO (())
+foreign import ccall "sk_canvas_clip_rect_with_operation" sk_canvas_clip_rect_with_operation :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Sk_clipop) -> (CBool) -> IO (())
 -- | `sk_canvas_clip_path_with_operation`
-foreign import ccall "sk_canvas_clip_path_with_operation" skCanvasClipPathWithOperation :: (Ptr (SkCanvas)) -> (Ptr (SkPath)) -> (SkClipOp) -> (CBool) -> IO (())
+foreign import ccall "sk_canvas_clip_path_with_operation" sk_canvas_clip_path_with_operation :: (Ptr (Sk_canvas)) -> (Ptr (Sk_path)) -> (Sk_clipop) -> (CBool) -> IO (())
 -- | `sk_canvas_clip_rrect_with_operation`
-foreign import ccall "sk_canvas_clip_rrect_with_operation" skCanvasClipRRectWithOperation :: (Ptr (SkCanvas)) -> (Ptr (SkRRect)) -> (SkClipOp) -> (CBool) -> IO (())
+foreign import ccall "sk_canvas_clip_rrect_with_operation" sk_canvas_clip_rrect_with_operation :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rrect)) -> (Sk_clipop) -> (CBool) -> IO (())
 -- | `sk_canvas_get_local_clip_bounds`
-foreign import ccall "sk_canvas_get_local_clip_bounds" skCanvasGetLocalClipBounds :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> IO (CBool)
+foreign import ccall "sk_canvas_get_local_clip_bounds" sk_canvas_get_local_clip_bounds :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> IO (CBool)
 -- | `sk_canvas_get_device_clip_bounds`
-foreign import ccall "sk_canvas_get_device_clip_bounds" skCanvasGetDeviceClipBounds :: (Ptr (SkCanvas)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_canvas_get_device_clip_bounds" sk_canvas_get_device_clip_bounds :: (Ptr (Sk_canvas)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_canvas_save`
-foreign import ccall "sk_canvas_save" skCanvasSave :: (Ptr (SkCanvas)) -> IO (CInt)
+foreign import ccall "sk_canvas_save" sk_canvas_save :: (Ptr (Sk_canvas)) -> IO (CInt)
 -- | `sk_canvas_save_layer`
-foreign import ccall "sk_canvas_save_layer" skCanvasSaveLayer :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (Ptr (SkPaint)) -> IO (CInt)
+foreign import ccall "sk_canvas_save_layer" sk_canvas_save_layer :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_paint)) -> IO (CInt)
 -- | `sk_canvas_save_layer_rec`
-foreign import ccall "sk_canvas_save_layer_rec" skCanvasSaveLayerRec :: (Ptr (SkCanvas)) -> (Ptr (SkCanvasSaveLayerRec)) -> IO (CInt)
+foreign import ccall "sk_canvas_save_layer_rec" sk_canvas_save_layer_rec :: (Ptr (Sk_canvas)) -> (Ptr (Sk_canvas_savelayerrec)) -> IO (CInt)
 -- | `sk_canvas_restore`
-foreign import ccall "sk_canvas_restore" skCanvasRestore :: (Ptr (SkCanvas)) -> IO (())
+foreign import ccall "sk_canvas_restore" sk_canvas_restore :: (Ptr (Sk_canvas)) -> IO (())
 -- | `sk_canvas_translate`
-foreign import ccall "sk_canvas_translate" skCanvasTranslate :: (Ptr (SkCanvas)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_canvas_translate" sk_canvas_translate :: (Ptr (Sk_canvas)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_canvas_scale`
-foreign import ccall "sk_canvas_scale" skCanvasScale :: (Ptr (SkCanvas)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_canvas_scale" sk_canvas_scale :: (Ptr (Sk_canvas)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_canvas_rotate_degrees`
-foreign import ccall "sk_canvas_rotate_degrees" skCanvasRotateDegrees :: (Ptr (SkCanvas)) -> (CFloat) -> IO (())
+foreign import ccall "sk_canvas_rotate_degrees" sk_canvas_rotate_degrees :: (Ptr (Sk_canvas)) -> (CFloat) -> IO (())
 -- | `sk_canvas_rotate_radians`
-foreign import ccall "sk_canvas_rotate_radians" skCanvasRotateRadians :: (Ptr (SkCanvas)) -> (CFloat) -> IO (())
+foreign import ccall "sk_canvas_rotate_radians" sk_canvas_rotate_radians :: (Ptr (Sk_canvas)) -> (CFloat) -> IO (())
 -- | `sk_canvas_skew`
-foreign import ccall "sk_canvas_skew" skCanvasSkew :: (Ptr (SkCanvas)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_canvas_skew" sk_canvas_skew :: (Ptr (Sk_canvas)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_canvas_concat`
-foreign import ccall "sk_canvas_concat" skCanvasConCat :: (Ptr (SkCanvas)) -> (Ptr (SkMatrix44)) -> IO (())
+foreign import ccall "sk_canvas_concat" sk_canvas_concat :: (Ptr (Sk_canvas)) -> (Ptr (Sk_matrix44)) -> IO (())
 -- | `sk_canvas_quick_reject`
-foreign import ccall "sk_canvas_quick_reject" skCanvasQuickReject :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> IO (CBool)
+foreign import ccall "sk_canvas_quick_reject" sk_canvas_quick_reject :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> IO (CBool)
 -- | `sk_canvas_clip_region`
-foreign import ccall "sk_canvas_clip_region" skCanvasClipRegion :: (Ptr (SkCanvas)) -> (Ptr (SkRegion)) -> (SkClipOp) -> IO (())
+foreign import ccall "sk_canvas_clip_region" sk_canvas_clip_region :: (Ptr (Sk_canvas)) -> (Ptr (Sk_region)) -> (Sk_clipop) -> IO (())
 -- | `sk_canvas_draw_paint`
-foreign import ccall "sk_canvas_draw_paint" skCanvasDrawPaint :: (Ptr (SkCanvas)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_paint" sk_canvas_draw_paint :: (Ptr (Sk_canvas)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_region`
-foreign import ccall "sk_canvas_draw_region" skCanvasDrawRegion :: (Ptr (SkCanvas)) -> (Ptr (SkRegion)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_region" sk_canvas_draw_region :: (Ptr (Sk_canvas)) -> (Ptr (Sk_region)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_rect`
-foreign import ccall "sk_canvas_draw_rect" skCanvasDrawRect :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_rect" sk_canvas_draw_rect :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_rrect`
-foreign import ccall "sk_canvas_draw_rrect" skCanvasDrawRRect :: (Ptr (SkCanvas)) -> (Ptr (SkRRect)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_rrect" sk_canvas_draw_rrect :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rrect)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_circle`
-foreign import ccall "sk_canvas_draw_circle" skCanvasDrawCircle :: (Ptr (SkCanvas)) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_circle" sk_canvas_draw_circle :: (Ptr (Sk_canvas)) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_oval`
-foreign import ccall "sk_canvas_draw_oval" skCanvasDrawOval :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_oval" sk_canvas_draw_oval :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_path`
-foreign import ccall "sk_canvas_draw_path" skCanvasDrawPath :: (Ptr (SkCanvas)) -> (Ptr (SkPath)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_path" sk_canvas_draw_path :: (Ptr (Sk_canvas)) -> (Ptr (Sk_path)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_image`
-foreign import ccall "sk_canvas_draw_image" skCanvasDrawImage :: (Ptr (SkCanvas)) -> (Ptr (SkImage)) -> (CFloat) -> (CFloat) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_image" sk_canvas_draw_image :: (Ptr (Sk_canvas)) -> (Ptr (Sk_image)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_image_rect`
-foreign import ccall "sk_canvas_draw_image_rect" skCanvasDrawImageRect :: (Ptr (SkCanvas)) -> (Ptr (SkImage)) -> (Ptr (SkRect)) -> (Ptr (SkRect)) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_image_rect" sk_canvas_draw_image_rect :: (Ptr (Sk_canvas)) -> (Ptr (Sk_image)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_picture`
-foreign import ccall "sk_canvas_draw_picture" skCanvasDrawPicture :: (Ptr (SkCanvas)) -> (Ptr (SkPicture)) -> (Ptr (SkMatrix)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_picture" sk_canvas_draw_picture :: (Ptr (Sk_canvas)) -> (Ptr (Sk_picture)) -> (Ptr (Sk_matrix)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_drawable`
-foreign import ccall "sk_canvas_draw_drawable" skCanvasDrawDrawAble :: (Ptr (SkCanvas)) -> (Ptr (SkDrawAble)) -> (Ptr (SkMatrix)) -> IO (())
+foreign import ccall "sk_canvas_draw_drawable" sk_canvas_draw_drawable :: (Ptr (Sk_canvas)) -> (Ptr (Sk_drawable)) -> (Ptr (Sk_matrix)) -> IO (())
 -- | `sk_canvas_new_from_bitmap`
-foreign import ccall "sk_canvas_new_from_bitmap" skCanvasNewFromBitmap :: (Ptr (SkBitmap)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_canvas_new_from_bitmap" sk_canvas_new_from_bitmap :: (Ptr (Sk_bitmap)) -> IO (Ptr (Sk_canvas))
 -- | `sk_canvas_new_from_raster`
-foreign import ccall "sk_canvas_new_from_raster" skCanvasNewFromRaster :: (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (Ptr (SkSurfaceProps)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_canvas_new_from_raster" sk_canvas_new_from_raster :: (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (Ptr (Sk_surfaceprops)) -> IO (Ptr (Sk_canvas))
 -- | `sk_canvas_draw_annotation`
-foreign import ccall "sk_canvas_draw_annotation" skCanvasDrawAnnotation :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (Ptr (CChar)) -> (Ptr (SkData)) -> IO (())
+foreign import ccall "sk_canvas_draw_annotation" sk_canvas_draw_annotation :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Ptr (CChar)) -> (Ptr (Sk_data)) -> IO (())
 -- | `sk_canvas_draw_url_annotation`
-foreign import ccall "sk_canvas_draw_url_annotation" skCanvasDrawUrlAnnotation :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (Ptr (SkData)) -> IO (())
+foreign import ccall "sk_canvas_draw_url_annotation" sk_canvas_draw_url_annotation :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_data)) -> IO (())
 -- | `sk_canvas_draw_named_destination_annotation`
-foreign import ccall "sk_canvas_draw_named_destination_annotation" skCanvasDrawNamedDestinationAnnotation :: (Ptr (SkCanvas)) -> (Ptr (SkPoint)) -> (Ptr (SkData)) -> IO (())
+foreign import ccall "sk_canvas_draw_named_destination_annotation" sk_canvas_draw_named_destination_annotation :: (Ptr (Sk_canvas)) -> (Ptr (Sk_point)) -> (Ptr (Sk_data)) -> IO (())
 -- | `sk_canvas_draw_link_destination_annotation`
-foreign import ccall "sk_canvas_draw_link_destination_annotation" skCanvasDrawLinkDestinationAnnotation :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (Ptr (SkData)) -> IO (())
+foreign import ccall "sk_canvas_draw_link_destination_annotation" sk_canvas_draw_link_destination_annotation :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_data)) -> IO (())
 -- | `sk_canvas_draw_image_lattice`
-foreign import ccall "sk_canvas_draw_image_lattice" skCanvasDrawImageLattice :: (Ptr (SkCanvas)) -> (Ptr (SkImage)) -> (Ptr (SkLattice)) -> (Ptr (SkRect)) -> (SkFilterMode) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_image_lattice" sk_canvas_draw_image_lattice :: (Ptr (Sk_canvas)) -> (Ptr (Sk_image)) -> (Ptr (Sk_lattice)) -> (Ptr (Sk_rect)) -> (Sk_filter_mode) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_image_nine`
-foreign import ccall "sk_canvas_draw_image_nine" skCanvasDrawImageNine :: (Ptr (SkCanvas)) -> (Ptr (SkImage)) -> (Ptr (SkIRect)) -> (Ptr (SkRect)) -> (SkFilterMode) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_image_nine" sk_canvas_draw_image_nine :: (Ptr (Sk_canvas)) -> (Ptr (Sk_image)) -> (Ptr (Sk_irect)) -> (Ptr (Sk_rect)) -> (Sk_filter_mode) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_vertices`
-foreign import ccall "sk_canvas_draw_vertices" skCanvasDrawVertices :: (Ptr (SkCanvas)) -> (Ptr (SkVertices)) -> (SkBlendMode) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_vertices" sk_canvas_draw_vertices :: (Ptr (Sk_canvas)) -> (Ptr (Sk_vertices)) -> (Sk_blendmode) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_arc`
-foreign import ccall "sk_canvas_draw_arc" skCanvasDrawArc :: (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> (CBool) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_arc" sk_canvas_draw_arc :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> (CBool) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_drrect`
-foreign import ccall "sk_canvas_draw_drrect" skCanvasDrawDrRect :: (Ptr (SkCanvas)) -> (Ptr (SkRRect)) -> (Ptr (SkRRect)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_drrect" sk_canvas_draw_drrect :: (Ptr (Sk_canvas)) -> (Ptr (Sk_rrect)) -> (Ptr (Sk_rrect)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_atlas`
-foreign import ccall "sk_canvas_draw_atlas" skCanvasDrawAtlas :: (Ptr (SkCanvas)) -> (Ptr (SkImage)) -> (Ptr (SkRsxForm)) -> (Ptr (SkRect)) -> (Ptr (SkColor)) -> (CInt) -> (SkBlendMode) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkRect)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_atlas" sk_canvas_draw_atlas :: (Ptr (Sk_canvas)) -> (Ptr (Sk_image)) -> (Ptr (Sk_rsxform)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_color)) -> (CInt) -> (Sk_blendmode) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_draw_patch`
-foreign import ccall "sk_canvas_draw_patch" skCanvasDrawPatch :: (Ptr (SkCanvas)) -> (Ptr (SkPoint)) -> (Ptr (SkColor)) -> (Ptr (SkPoint)) -> (SkBlendMode) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_canvas_draw_patch" sk_canvas_draw_patch :: (Ptr (Sk_canvas)) -> (Ptr (Sk_point)) -> (Ptr (Sk_color)) -> (Ptr (Sk_point)) -> (Sk_blendmode) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_canvas_is_clip_empty`
-foreign import ccall "sk_canvas_is_clip_empty" skCanvasIsClipEmpty :: (Ptr (SkCanvas)) -> IO (CBool)
+foreign import ccall "sk_canvas_is_clip_empty" sk_canvas_is_clip_empty :: (Ptr (Sk_canvas)) -> IO (CBool)
 -- | `sk_canvas_is_clip_rect`
-foreign import ccall "sk_canvas_is_clip_rect" skCanvasIsClipRect :: (Ptr (SkCanvas)) -> IO (CBool)
+foreign import ccall "sk_canvas_is_clip_rect" sk_canvas_is_clip_rect :: (Ptr (Sk_canvas)) -> IO (CBool)
 -- | `sk_nodraw_canvas_new`
-foreign import ccall "sk_nodraw_canvas_new" skNoDrawCanvasNew :: (CInt) -> (CInt) -> IO (Ptr (SkNoDrawCanvas))
+foreign import ccall "sk_nodraw_canvas_new" sk_nodraw_canvas_new :: (CInt) -> (CInt) -> IO (Ptr (Sk_nodraw_canvas))
 -- | `sk_nodraw_canvas_destroy`
-foreign import ccall "sk_nodraw_canvas_destroy" skNoDrawCanvasDestroy :: (Ptr (SkNoDrawCanvas)) -> IO (())
+foreign import ccall "sk_nodraw_canvas_destroy" sk_nodraw_canvas_destroy :: (Ptr (Sk_nodraw_canvas)) -> IO (())
 -- | `sk_nway_canvas_new`
-foreign import ccall "sk_nway_canvas_new" skNWayCanvasNew :: (CInt) -> (CInt) -> IO (Ptr (SkNWayCanvas))
+foreign import ccall "sk_nway_canvas_new" sk_nway_canvas_new :: (CInt) -> (CInt) -> IO (Ptr (Sk_nway_canvas))
 -- | `sk_nway_canvas_destroy`
-foreign import ccall "sk_nway_canvas_destroy" skNWayCanvasDestroy :: (Ptr (SkNWayCanvas)) -> IO (())
+foreign import ccall "sk_nway_canvas_destroy" sk_nway_canvas_destroy :: (Ptr (Sk_nway_canvas)) -> IO (())
 -- | `sk_nway_canvas_add_canvas`
-foreign import ccall "sk_nway_canvas_add_canvas" skNWayCanvasAddCanvas :: (Ptr (SkNWayCanvas)) -> (Ptr (SkCanvas)) -> IO (())
+foreign import ccall "sk_nway_canvas_add_canvas" sk_nway_canvas_add_canvas :: (Ptr (Sk_nway_canvas)) -> (Ptr (Sk_canvas)) -> IO (())
 -- | `sk_nway_canvas_remove_canvas`
-foreign import ccall "sk_nway_canvas_remove_canvas" skNWayCanvasRemoveCanvas :: (Ptr (SkNWayCanvas)) -> (Ptr (SkCanvas)) -> IO (())
+foreign import ccall "sk_nway_canvas_remove_canvas" sk_nway_canvas_remove_canvas :: (Ptr (Sk_nway_canvas)) -> (Ptr (Sk_canvas)) -> IO (())
 -- | `sk_nway_canvas_remove_all`
-foreign import ccall "sk_nway_canvas_remove_all" skNWayCanvasRemoveAll :: (Ptr (SkNWayCanvas)) -> IO (())
+foreign import ccall "sk_nway_canvas_remove_all" sk_nway_canvas_remove_all :: (Ptr (Sk_nway_canvas)) -> IO (())
 -- | `sk_overdraw_canvas_new`
-foreign import ccall "sk_overdraw_canvas_new" skOverdrawCanvasNew :: (Ptr (SkCanvas)) -> IO (Ptr (SkOverdrawCanvas))
+foreign import ccall "sk_overdraw_canvas_new" sk_overdraw_canvas_new :: (Ptr (Sk_canvas)) -> IO (Ptr (Sk_overdraw_canvas))
 -- | `sk_overdraw_canvas_destroy`
-foreign import ccall "sk_overdraw_canvas_destroy" skOverdrawCanvasDestroy :: (Ptr (SkOverdrawCanvas)) -> IO (())
+foreign import ccall "sk_overdraw_canvas_destroy" sk_overdraw_canvas_destroy :: (Ptr (Sk_overdraw_canvas)) -> IO (())
 -- | `sk_get_recording_context`
-foreign import ccall "sk_get_recording_context" skGetRecordingContext :: (Ptr (SkCanvas)) -> IO (Ptr (GrRecordingContext))
+foreign import ccall "sk_get_recording_context" sk_get_recording_context :: (Ptr (Sk_canvas)) -> IO (Ptr (Gr_recording_context))
 -- | `sk_get_surface`
-foreign import ccall "sk_get_surface" skGetSurface :: (Ptr (SkCanvas)) -> IO (Ptr (SkSurface))
+foreign import ccall "sk_get_surface" sk_get_surface :: (Ptr (Sk_canvas)) -> IO (Ptr (Sk_surface))
 -- | `sk_textblob_ref`
-foreign import ccall "sk_textblob_ref" skTextBlobRef :: (Ptr (SkTextBlob)) -> IO (())
+foreign import ccall "sk_textblob_ref" sk_textblob_ref :: (Ptr (Sk_textblob)) -> IO (())
 -- | `sk_textblob_unref`
-foreign import ccall "sk_textblob_unref" skTextBlobUnRef :: (Ptr (SkTextBlob)) -> IO (())
+foreign import ccall "sk_textblob_unref" sk_textblob_unref :: (Ptr (Sk_textblob)) -> IO (())
 -- | `sk_textblob_get_unique_id`
-foreign import ccall "sk_textblob_get_unique_id" skTextBlobGetUniqueId :: (Ptr (SkTextBlob)) -> IO (Word32)
+foreign import ccall "sk_textblob_get_unique_id" sk_textblob_get_unique_id :: (Ptr (Sk_textblob)) -> IO (Word32)
 -- | `sk_textblob_get_bounds`
-foreign import ccall "sk_textblob_get_bounds" skTextBlobGetBounds :: (Ptr (SkTextBlob)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_textblob_get_bounds" sk_textblob_get_bounds :: (Ptr (Sk_textblob)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_textblob_get_intercepts`
-foreign import ccall "sk_textblob_get_intercepts" skTextBlobGetIntercepts :: (Ptr (SkTextBlob)) -> (Ptr (CFloat)) -> (Ptr (CFloat)) -> (Ptr (SkPaint)) -> IO (CInt)
+foreign import ccall "sk_textblob_get_intercepts" sk_textblob_get_intercepts :: (Ptr (Sk_textblob)) -> (Ptr (CFloat)) -> (Ptr (CFloat)) -> (Ptr (Sk_paint)) -> IO (CInt)
 -- | `sk_textblob_builder_new`
-foreign import ccall "sk_textblob_builder_new" skTextBlobBuilderNew :: IO (Ptr (SkTextBlobBuilder))
+foreign import ccall "sk_textblob_builder_new" sk_textblob_builder_new :: IO (Ptr (Sk_textblob_builder))
 -- | `sk_textblob_builder_delete`
-foreign import ccall "sk_textblob_builder_delete" skTextBlobBuilderDelete :: (Ptr (SkTextBlobBuilder)) -> IO (())
+foreign import ccall "sk_textblob_builder_delete" sk_textblob_builder_delete :: (Ptr (Sk_textblob_builder)) -> IO (())
 -- | `sk_textblob_builder_make`
-foreign import ccall "sk_textblob_builder_make" skTextBlobBuilderMake :: (Ptr (SkTextBlobBuilder)) -> IO (Ptr (SkTextBlob))
+foreign import ccall "sk_textblob_builder_make" sk_textblob_builder_make :: (Ptr (Sk_textblob_builder)) -> IO (Ptr (Sk_textblob))
 -- | `sk_textblob_builder_alloc_run`
-foreign import ccall "sk_textblob_builder_alloc_run" skTextBlobBuilderAllocRun :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (CFloat) -> (CFloat) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run" sk_textblob_builder_alloc_run :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (CFloat) -> (CFloat) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_textblob_builder_alloc_run_pos_h`
-foreign import ccall "sk_textblob_builder_alloc_run_pos_h" skTextBlobBuilderAllocRunPosH :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (CFloat) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run_pos_h" sk_textblob_builder_alloc_run_pos_h :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (CFloat) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_textblob_builder_alloc_run_pos`
-foreign import ccall "sk_textblob_builder_alloc_run_pos" skTextBlobBuilderAllocRunPos :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run_pos" sk_textblob_builder_alloc_run_pos :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_textblob_builder_alloc_run_rsxform`
-foreign import ccall "sk_textblob_builder_alloc_run_rsxform" skTextBlobBuilderAllocRunRsxForm :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run_rsxform" sk_textblob_builder_alloc_run_rsxform :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_textblob_builder_alloc_run_text`
-foreign import ccall "sk_textblob_builder_alloc_run_text" skTextBlobBuilderAllocRunText :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (CFloat) -> (CFloat) -> (CInt) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run_text" sk_textblob_builder_alloc_run_text :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (CFloat) -> (CFloat) -> (CInt) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_textblob_builder_alloc_run_text_pos_h`
-foreign import ccall "sk_textblob_builder_alloc_run_text_pos_h" skTextBlobBuilderAllocRunTextPosH :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (CFloat) -> (CInt) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run_text_pos_h" sk_textblob_builder_alloc_run_text_pos_h :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (CFloat) -> (CInt) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_textblob_builder_alloc_run_text_pos`
-foreign import ccall "sk_textblob_builder_alloc_run_text_pos" skTextBlobBuilderAllocRunTextPos :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (CInt) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run_text_pos" sk_textblob_builder_alloc_run_text_pos :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (CInt) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_textblob_builder_alloc_run_text_rsxform`
-foreign import ccall "sk_textblob_builder_alloc_run_text_rsxform" skTextBlobBuilderAllocRunTextRsxForm :: (Ptr (SkTextBlobBuilder)) -> (Ptr (SkFont)) -> (CInt) -> (CInt) -> (Ptr (SkRect)) -> (Ptr (SkTextBlobBuilderRunBuffer)) -> IO (())
+foreign import ccall "sk_textblob_builder_alloc_run_text_rsxform" sk_textblob_builder_alloc_run_text_rsxform :: (Ptr (Sk_textblob_builder)) -> (Ptr (Sk_font)) -> (CInt) -> (CInt) -> (Ptr (Sk_rect)) -> (Ptr (Sk_textblob_builder_runbuffer)) -> IO (())
 -- | `sk_maskfilter_ref`
-foreign import ccall "sk_maskfilter_ref" skMaskFilterRef :: (Ptr (SkMaskFilter)) -> IO (())
+foreign import ccall "sk_maskfilter_ref" sk_maskfilter_ref :: (Ptr (Sk_maskfilter)) -> IO (())
 -- | `sk_maskfilter_unref`
-foreign import ccall "sk_maskfilter_unref" skMaskFilterUnRef :: (Ptr (SkMaskFilter)) -> IO (())
+foreign import ccall "sk_maskfilter_unref" sk_maskfilter_unref :: (Ptr (Sk_maskfilter)) -> IO (())
 -- | `sk_maskfilter_new_blur`
-foreign import ccall "sk_maskfilter_new_blur" skMaskFilterNewBlur :: (SkBlurStyle) -> (CFloat) -> IO (Ptr (SkMaskFilter))
+foreign import ccall "sk_maskfilter_new_blur" sk_maskfilter_new_blur :: (Sk_blurstyle) -> (CFloat) -> IO (Ptr (Sk_maskfilter))
 -- | `sk_maskfilter_new_blur_with_flags`
-foreign import ccall "sk_maskfilter_new_blur_with_flags" skMaskFilterNewBlurWithFlags :: (SkBlurStyle) -> (CFloat) -> (CBool) -> IO (Ptr (SkMaskFilter))
+foreign import ccall "sk_maskfilter_new_blur_with_flags" sk_maskfilter_new_blur_with_flags :: (Sk_blurstyle) -> (CFloat) -> (CBool) -> IO (Ptr (Sk_maskfilter))
 -- | `sk_maskfilter_new_table`
-foreign import ccall "sk_maskfilter_new_table" skMaskFilterNewTable :: (Ptr (Word8)) -> IO (Ptr (SkMaskFilter))
+foreign import ccall "sk_maskfilter_new_table" sk_maskfilter_new_table :: (Ptr (Word8)) -> IO (Ptr (Sk_maskfilter))
 -- | `sk_maskfilter_new_gamma`
-foreign import ccall "sk_maskfilter_new_gamma" skMaskFilterNewGamma :: (CFloat) -> IO (Ptr (SkMaskFilter))
+foreign import ccall "sk_maskfilter_new_gamma" sk_maskfilter_new_gamma :: (CFloat) -> IO (Ptr (Sk_maskfilter))
 -- | `sk_maskfilter_new_clip`
-foreign import ccall "sk_maskfilter_new_clip" skMaskFilterNewClip :: (Word8) -> (Word8) -> IO (Ptr (SkMaskFilter))
+foreign import ccall "sk_maskfilter_new_clip" sk_maskfilter_new_clip :: (Word8) -> (Word8) -> IO (Ptr (Sk_maskfilter))
 -- | `sk_maskfilter_new_shader`
-foreign import ccall "sk_maskfilter_new_shader" skMaskFilterNewShader :: (Ptr (SkShader)) -> IO (Ptr (SkMaskFilter))
+foreign import ccall "sk_maskfilter_new_shader" sk_maskfilter_new_shader :: (Ptr (Sk_shader)) -> IO (Ptr (Sk_maskfilter))
 -- | `sk_colorspace_ref`
-foreign import ccall "sk_colorspace_ref" skColorSpaceRef :: (Ptr (SkColorSpace)) -> IO (())
+foreign import ccall "sk_colorspace_ref" sk_colorspace_ref :: (Ptr (Sk_colorspace)) -> IO (())
 -- | `sk_colorspace_unref`
-foreign import ccall "sk_colorspace_unref" skColorSpaceUnRef :: (Ptr (SkColorSpace)) -> IO (())
+foreign import ccall "sk_colorspace_unref" sk_colorspace_unref :: (Ptr (Sk_colorspace)) -> IO (())
 -- | `sk_colorspace_new_srgb`
-foreign import ccall "sk_colorspace_new_srgb" skColorSpaceNewSrgb :: IO (Ptr (SkColorSpace))
+foreign import ccall "sk_colorspace_new_srgb" sk_colorspace_new_srgb :: IO (Ptr (Sk_colorspace))
 -- | `sk_colorspace_new_srgb_linear`
-foreign import ccall "sk_colorspace_new_srgb_linear" skColorSpaceNewSrgbLinear :: IO (Ptr (SkColorSpace))
+foreign import ccall "sk_colorspace_new_srgb_linear" sk_colorspace_new_srgb_linear :: IO (Ptr (Sk_colorspace))
 -- | `sk_colorspace_new_rgb`
-foreign import ccall "sk_colorspace_new_rgb" skColorSpaceNewRgb :: (Ptr (SkColorSpaceTransferFn)) -> (Ptr (SkColorSpaceXyz)) -> IO (Ptr (SkColorSpace))
+foreign import ccall "sk_colorspace_new_rgb" sk_colorspace_new_rgb :: (Ptr (Sk_colorspace_transfer_fn)) -> (Ptr (Sk_colorspace_xyz)) -> IO (Ptr (Sk_colorspace))
 -- | `sk_colorspace_new_icc`
-foreign import ccall "sk_colorspace_new_icc" skColorSpaceNewIcc :: (Ptr (SkColorSpaceIccProfile)) -> IO (Ptr (SkColorSpace))
+foreign import ccall "sk_colorspace_new_icc" sk_colorspace_new_icc :: (Ptr (Sk_colorspace_icc_profile)) -> IO (Ptr (Sk_colorspace))
 -- | `sk_colorspace_to_profile`
-foreign import ccall "sk_colorspace_to_profile" skColorSpaceToProfile :: (Ptr (SkColorSpace)) -> (Ptr (SkColorSpaceIccProfile)) -> IO (())
+foreign import ccall "sk_colorspace_to_profile" sk_colorspace_to_profile :: (Ptr (Sk_colorspace)) -> (Ptr (Sk_colorspace_icc_profile)) -> IO (())
 -- | `sk_colorspace_gamma_close_to_srgb`
-foreign import ccall "sk_colorspace_gamma_close_to_srgb" skColorSpaceGammaCloseToSrgb :: (Ptr (SkColorSpace)) -> IO (CBool)
+foreign import ccall "sk_colorspace_gamma_close_to_srgb" sk_colorspace_gamma_close_to_srgb :: (Ptr (Sk_colorspace)) -> IO (CBool)
 -- | `sk_colorspace_gamma_is_linear`
-foreign import ccall "sk_colorspace_gamma_is_linear" skColorSpaceGammaIsLinear :: (Ptr (SkColorSpace)) -> IO (CBool)
+foreign import ccall "sk_colorspace_gamma_is_linear" sk_colorspace_gamma_is_linear :: (Ptr (Sk_colorspace)) -> IO (CBool)
 -- | `sk_colorspace_is_numerical_transfer_fn`
-foreign import ccall "sk_colorspace_is_numerical_transfer_fn" skColorSpaceIsNumericalTransferFn :: (Ptr (SkColorSpace)) -> (Ptr (SkColorSpaceTransferFn)) -> IO (CBool)
+foreign import ccall "sk_colorspace_is_numerical_transfer_fn" sk_colorspace_is_numerical_transfer_fn :: (Ptr (Sk_colorspace)) -> (Ptr (Sk_colorspace_transfer_fn)) -> IO (CBool)
 -- | `sk_colorspace_to_xyzd50`
-foreign import ccall "sk_colorspace_to_xyzd50" skColorSpaceToXyzD50 :: (Ptr (SkColorSpace)) -> (Ptr (SkColorSpaceXyz)) -> IO (CBool)
+foreign import ccall "sk_colorspace_to_xyzd50" sk_colorspace_to_xyzd50 :: (Ptr (Sk_colorspace)) -> (Ptr (Sk_colorspace_xyz)) -> IO (CBool)
 -- | `sk_colorspace_make_linear_gamma`
-foreign import ccall "sk_colorspace_make_linear_gamma" skColorSpaceMakeLinearGamma :: (Ptr (SkColorSpace)) -> IO (Ptr (SkColorSpace))
+foreign import ccall "sk_colorspace_make_linear_gamma" sk_colorspace_make_linear_gamma :: (Ptr (Sk_colorspace)) -> IO (Ptr (Sk_colorspace))
 -- | `sk_colorspace_make_srgb_gamma`
-foreign import ccall "sk_colorspace_make_srgb_gamma" skColorSpaceMakeSrgbGamma :: (Ptr (SkColorSpace)) -> IO (Ptr (SkColorSpace))
+foreign import ccall "sk_colorspace_make_srgb_gamma" sk_colorspace_make_srgb_gamma :: (Ptr (Sk_colorspace)) -> IO (Ptr (Sk_colorspace))
 -- | `sk_colorspace_is_srgb`
-foreign import ccall "sk_colorspace_is_srgb" skColorSpaceIsSrgb :: (Ptr (SkColorSpace)) -> IO (CBool)
+foreign import ccall "sk_colorspace_is_srgb" sk_colorspace_is_srgb :: (Ptr (Sk_colorspace)) -> IO (CBool)
 -- | `sk_colorspace_equals`
-foreign import ccall "sk_colorspace_equals" skColorSpaceEquals :: (Ptr (SkColorSpace)) -> (Ptr (SkColorSpace)) -> IO (CBool)
+foreign import ccall "sk_colorspace_equals" sk_colorspace_equals :: (Ptr (Sk_colorspace)) -> (Ptr (Sk_colorspace)) -> IO (CBool)
 -- | `sk_colorspace_transfer_fn_named_srgb`
-foreign import ccall "sk_colorspace_transfer_fn_named_srgb" skColorSpaceTransferFnNamedSrgb :: (Ptr (SkColorSpaceTransferFn)) -> IO (())
+foreign import ccall "sk_colorspace_transfer_fn_named_srgb" sk_colorspace_transfer_fn_named_srgb :: (Ptr (Sk_colorspace_transfer_fn)) -> IO (())
 -- | `sk_colorspace_transfer_fn_named_2dot2`
-foreign import ccall "sk_colorspace_transfer_fn_named_2dot2" skColorSpaceTransferFnNamed2Dot2 :: (Ptr (SkColorSpaceTransferFn)) -> IO (())
+foreign import ccall "sk_colorspace_transfer_fn_named_2dot2" sk_colorspace_transfer_fn_named_2dot2 :: (Ptr (Sk_colorspace_transfer_fn)) -> IO (())
 -- | `sk_colorspace_transfer_fn_named_linear`
-foreign import ccall "sk_colorspace_transfer_fn_named_linear" skColorSpaceTransferFnNamedLinear :: (Ptr (SkColorSpaceTransferFn)) -> IO (())
+foreign import ccall "sk_colorspace_transfer_fn_named_linear" sk_colorspace_transfer_fn_named_linear :: (Ptr (Sk_colorspace_transfer_fn)) -> IO (())
 -- | `sk_colorspace_transfer_fn_named_rec2020`
-foreign import ccall "sk_colorspace_transfer_fn_named_rec2020" skColorSpaceTransferFnNamedRec2020 :: (Ptr (SkColorSpaceTransferFn)) -> IO (())
+foreign import ccall "sk_colorspace_transfer_fn_named_rec2020" sk_colorspace_transfer_fn_named_rec2020 :: (Ptr (Sk_colorspace_transfer_fn)) -> IO (())
 -- | `sk_colorspace_transfer_fn_named_pq`
-foreign import ccall "sk_colorspace_transfer_fn_named_pq" skColorSpaceTransferFnNamedPq :: (Ptr (SkColorSpaceTransferFn)) -> IO (())
+foreign import ccall "sk_colorspace_transfer_fn_named_pq" sk_colorspace_transfer_fn_named_pq :: (Ptr (Sk_colorspace_transfer_fn)) -> IO (())
 -- | `sk_colorspace_transfer_fn_named_hlg`
-foreign import ccall "sk_colorspace_transfer_fn_named_hlg" skColorSpaceTransferFnNamedHLg :: (Ptr (SkColorSpaceTransferFn)) -> IO (())
+foreign import ccall "sk_colorspace_transfer_fn_named_hlg" sk_colorspace_transfer_fn_named_hlg :: (Ptr (Sk_colorspace_transfer_fn)) -> IO (())
 -- | `sk_colorspace_transfer_fn_eval`
-foreign import ccall "sk_colorspace_transfer_fn_eval" skColorSpaceTransferFnEVal :: (Ptr (SkColorSpaceTransferFn)) -> (CFloat) -> IO (CFloat)
+foreign import ccall "sk_colorspace_transfer_fn_eval" sk_colorspace_transfer_fn_eval :: (Ptr (Sk_colorspace_transfer_fn)) -> (CFloat) -> IO (CFloat)
 -- | `sk_colorspace_transfer_fn_invert`
-foreign import ccall "sk_colorspace_transfer_fn_invert" skColorSpaceTransferFnInvert :: (Ptr (SkColorSpaceTransferFn)) -> (Ptr (SkColorSpaceTransferFn)) -> IO (CBool)
+foreign import ccall "sk_colorspace_transfer_fn_invert" sk_colorspace_transfer_fn_invert :: (Ptr (Sk_colorspace_transfer_fn)) -> (Ptr (Sk_colorspace_transfer_fn)) -> IO (CBool)
 -- | `sk_colorspace_primaries_to_xyzd50`
-foreign import ccall "sk_colorspace_primaries_to_xyzd50" skColorSpacePrimariesToXyzD50 :: (Ptr (SkColorSpacePrimaries)) -> (Ptr (SkColorSpaceXyz)) -> IO (CBool)
+foreign import ccall "sk_colorspace_primaries_to_xyzd50" sk_colorspace_primaries_to_xyzd50 :: (Ptr (Sk_colorspace_primaries)) -> (Ptr (Sk_colorspace_xyz)) -> IO (CBool)
 -- | `sk_colorspace_xyz_named_srgb`
-foreign import ccall "sk_colorspace_xyz_named_srgb" skColorSpaceXyzNamedSrgb :: (Ptr (SkColorSpaceXyz)) -> IO (())
+foreign import ccall "sk_colorspace_xyz_named_srgb" sk_colorspace_xyz_named_srgb :: (Ptr (Sk_colorspace_xyz)) -> IO (())
 -- | `sk_colorspace_xyz_named_adobe_rgb`
-foreign import ccall "sk_colorspace_xyz_named_adobe_rgb" skColorSpaceXyzNamedAdobeRgb :: (Ptr (SkColorSpaceXyz)) -> IO (())
+foreign import ccall "sk_colorspace_xyz_named_adobe_rgb" sk_colorspace_xyz_named_adobe_rgb :: (Ptr (Sk_colorspace_xyz)) -> IO (())
 -- | `sk_colorspace_xyz_named_display_p3`
-foreign import ccall "sk_colorspace_xyz_named_display_p3" skColorSpaceXyzNamedDisplayP3 :: (Ptr (SkColorSpaceXyz)) -> IO (())
+foreign import ccall "sk_colorspace_xyz_named_display_p3" sk_colorspace_xyz_named_display_p3 :: (Ptr (Sk_colorspace_xyz)) -> IO (())
 -- | `sk_colorspace_xyz_named_rec2020`
-foreign import ccall "sk_colorspace_xyz_named_rec2020" skColorSpaceXyzNamedRec2020 :: (Ptr (SkColorSpaceXyz)) -> IO (())
+foreign import ccall "sk_colorspace_xyz_named_rec2020" sk_colorspace_xyz_named_rec2020 :: (Ptr (Sk_colorspace_xyz)) -> IO (())
 -- | `sk_colorspace_xyz_named_xyz`
-foreign import ccall "sk_colorspace_xyz_named_xyz" skColorSpaceXyzNamedXyz :: (Ptr (SkColorSpaceXyz)) -> IO (())
+foreign import ccall "sk_colorspace_xyz_named_xyz" sk_colorspace_xyz_named_xyz :: (Ptr (Sk_colorspace_xyz)) -> IO (())
 -- | `sk_colorspace_xyz_invert`
-foreign import ccall "sk_colorspace_xyz_invert" skColorSpaceXyzInvert :: (Ptr (SkColorSpaceXyz)) -> (Ptr (SkColorSpaceXyz)) -> IO (CBool)
+foreign import ccall "sk_colorspace_xyz_invert" sk_colorspace_xyz_invert :: (Ptr (Sk_colorspace_xyz)) -> (Ptr (Sk_colorspace_xyz)) -> IO (CBool)
 -- | `sk_colorspace_xyz_concat`
-foreign import ccall "sk_colorspace_xyz_concat" skColorSpaceXyzConCat :: (Ptr (SkColorSpaceXyz)) -> (Ptr (SkColorSpaceXyz)) -> (Ptr (SkColorSpaceXyz)) -> IO (())
+foreign import ccall "sk_colorspace_xyz_concat" sk_colorspace_xyz_concat :: (Ptr (Sk_colorspace_xyz)) -> (Ptr (Sk_colorspace_xyz)) -> (Ptr (Sk_colorspace_xyz)) -> IO (())
 -- | `sk_colorspace_icc_profile_delete`
-foreign import ccall "sk_colorspace_icc_profile_delete" skColorSpaceIccProfileDelete :: (Ptr (SkColorSpaceIccProfile)) -> IO (())
+foreign import ccall "sk_colorspace_icc_profile_delete" sk_colorspace_icc_profile_delete :: (Ptr (Sk_colorspace_icc_profile)) -> IO (())
 -- | `sk_colorspace_icc_profile_new`
-foreign import ccall "sk_colorspace_icc_profile_new" skColorSpaceIccProfileNew :: IO (Ptr (SkColorSpaceIccProfile))
+foreign import ccall "sk_colorspace_icc_profile_new" sk_colorspace_icc_profile_new :: IO (Ptr (Sk_colorspace_icc_profile))
 -- | `sk_colorspace_icc_profile_parse`
-foreign import ccall "sk_colorspace_icc_profile_parse" skColorSpaceIccProfileParse :: (Ptr (())) -> (CSize) -> (Ptr (SkColorSpaceIccProfile)) -> IO (CBool)
+foreign import ccall "sk_colorspace_icc_profile_parse" sk_colorspace_icc_profile_parse :: (Ptr (())) -> (CSize) -> (Ptr (Sk_colorspace_icc_profile)) -> IO (CBool)
 -- | `sk_colorspace_icc_profile_get_buffer`
-foreign import ccall "sk_colorspace_icc_profile_get_buffer" skColorSpaceIccProfileGetBuffer :: (Ptr (SkColorSpaceIccProfile)) -> (Ptr (Word32)) -> IO (Ptr (Word8))
+foreign import ccall "sk_colorspace_icc_profile_get_buffer" sk_colorspace_icc_profile_get_buffer :: (Ptr (Sk_colorspace_icc_profile)) -> (Ptr (Word32)) -> IO (Ptr (Word8))
 -- | `sk_colorspace_icc_profile_get_to_xyzd50`
-foreign import ccall "sk_colorspace_icc_profile_get_to_xyzd50" skColorSpaceIccProfileGetToXyzD50 :: (Ptr (SkColorSpaceIccProfile)) -> (Ptr (SkColorSpaceXyz)) -> IO (CBool)
+foreign import ccall "sk_colorspace_icc_profile_get_to_xyzd50" sk_colorspace_icc_profile_get_to_xyzd50 :: (Ptr (Sk_colorspace_icc_profile)) -> (Ptr (Sk_colorspace_xyz)) -> IO (CBool)
 -- | `sk_color4f_to_color`
-foreign import ccall "sk_color4f_to_color" skColor4FToColor :: (Ptr (SkColor4F)) -> IO (SkColor)
+foreign import ccall "sk_color4f_to_color" sk_color4f_to_color :: (Ptr (Sk_color4f)) -> IO (Sk_color)
 -- | `sk_color4f_from_color`
-foreign import ccall "sk_color4f_from_color" skColor4FFromColor :: (SkColor) -> (Ptr (SkColor4F)) -> IO (())
+foreign import ccall "sk_color4f_from_color" sk_color4f_from_color :: (Sk_color) -> (Ptr (Sk_color4f)) -> IO (())
 -- | `sk_imagefilter_unref`
-foreign import ccall "sk_imagefilter_unref" skImageFilterUnRef :: (Ptr (SkImageFilter)) -> IO (())
+foreign import ccall "sk_imagefilter_unref" sk_imagefilter_unref :: (Ptr (Sk_imagefilter)) -> IO (())
 -- | `sk_imagefilter_new_arithmetic`
-foreign import ccall "sk_imagefilter_new_arithmetic" skImageFilterNewArithmetic :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CBool) -> (Ptr (SkImageFilter)) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_arithmetic" sk_imagefilter_new_arithmetic :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CBool) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_blend`
-foreign import ccall "sk_imagefilter_new_blend" skImageFilterNewBlend :: (SkBlendMode) -> (Ptr (SkImageFilter)) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_blend" sk_imagefilter_new_blend :: (Sk_blendmode) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_blender`
-foreign import ccall "sk_imagefilter_new_blender" skImageFilterNewBlender :: (Ptr (SkBlender)) -> (Ptr (SkImageFilter)) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_blender" sk_imagefilter_new_blender :: (Ptr (Sk_blender)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_blur`
-foreign import ccall "sk_imagefilter_new_blur" skImageFilterNewBlur :: (CFloat) -> (CFloat) -> (SkShaderTileMode) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_blur" sk_imagefilter_new_blur :: (CFloat) -> (CFloat) -> (Sk_shader_tilemode) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_color_filter`
-foreign import ccall "sk_imagefilter_new_color_filter" skImageFilterNewColorFilter :: (Ptr (SkColorFilter)) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_color_filter" sk_imagefilter_new_color_filter :: (Ptr (Sk_colorfilter)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_compose`
-foreign import ccall "sk_imagefilter_new_compose" skImageFilterNewCompose :: (Ptr (SkImageFilter)) -> (Ptr (SkImageFilter)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_compose" sk_imagefilter_new_compose :: (Ptr (Sk_imagefilter)) -> (Ptr (Sk_imagefilter)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_displacement_map_effect`
-foreign import ccall "sk_imagefilter_new_displacement_map_effect" skImageFilterNewDisplacementMapEffect :: (SkColorChannel) -> (SkColorChannel) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_displacement_map_effect" sk_imagefilter_new_displacement_map_effect :: (Sk_color_channel) -> (Sk_color_channel) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_drop_shadow`
-foreign import ccall "sk_imagefilter_new_drop_shadow" skImageFilterNewDropShadow :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (SkColor) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_drop_shadow" sk_imagefilter_new_drop_shadow :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (Sk_color) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_drop_shadow_only`
-foreign import ccall "sk_imagefilter_new_drop_shadow_only" skImageFilterNewDropShadowOnly :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (SkColor) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_drop_shadow_only" sk_imagefilter_new_drop_shadow_only :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (Sk_color) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_image`
-foreign import ccall "sk_imagefilter_new_image" skImageFilterNewImage :: (Ptr (SkImage)) -> (Ptr (SkRect)) -> (Ptr (SkRect)) -> (Ptr (SkSamplingOptions)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_image" sk_imagefilter_new_image :: (Ptr (Sk_image)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_sampling_options)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_image_simple`
-foreign import ccall "sk_imagefilter_new_image_simple" skImageFilterNewImageSimple :: (Ptr (SkImage)) -> (Ptr (SkSamplingOptions)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_image_simple" sk_imagefilter_new_image_simple :: (Ptr (Sk_image)) -> (Ptr (Sk_sampling_options)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_magnifier`
-foreign import ccall "sk_imagefilter_new_magnifier" skImageFilterNewMagnifier :: (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_magnifier" sk_imagefilter_new_magnifier :: (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_matrix_convolution`
-foreign import ccall "sk_imagefilter_new_matrix_convolution" skImageFilterNewMatrixConvolution :: (Ptr (SkISize)) -> (Ptr (CFloat)) -> (CFloat) -> (CFloat) -> (Ptr (SkIPoint)) -> (SkShaderTileMode) -> (CBool) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_matrix_convolution" sk_imagefilter_new_matrix_convolution :: (Ptr (Sk_isize)) -> (Ptr (CFloat)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_ipoint)) -> (Sk_shader_tilemode) -> (CBool) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_matrix_transform`
-foreign import ccall "sk_imagefilter_new_matrix_transform" skImageFilterNewMatrixTransform :: (Ptr (SkMatrix)) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkImageFilter)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_matrix_transform" sk_imagefilter_new_matrix_transform :: (Ptr (Sk_matrix)) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_imagefilter)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_merge`
-foreign import ccall "sk_imagefilter_new_merge" skImageFilterNewMerge :: (Ptr (Ptr (SkImageFilter))) -> (CInt) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_merge" sk_imagefilter_new_merge :: (Ptr (Ptr (Sk_imagefilter))) -> (CInt) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_merge_simple`
-foreign import ccall "sk_imagefilter_new_merge_simple" skImageFilterNewMergeSimple :: (Ptr (SkImageFilter)) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_merge_simple" sk_imagefilter_new_merge_simple :: (Ptr (Sk_imagefilter)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_offset`
-foreign import ccall "sk_imagefilter_new_offset" skImageFilterNewOffset :: (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_offset" sk_imagefilter_new_offset :: (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_picture`
-foreign import ccall "sk_imagefilter_new_picture" skImageFilterNewPicture :: (Ptr (SkPicture)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_picture" sk_imagefilter_new_picture :: (Ptr (Sk_picture)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_picture_with_rect`
-foreign import ccall "sk_imagefilter_new_picture_with_rect" skImageFilterNewPictureWithRect :: (Ptr (SkPicture)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_picture_with_rect" sk_imagefilter_new_picture_with_rect :: (Ptr (Sk_picture)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_shader`
-foreign import ccall "sk_imagefilter_new_shader" skImageFilterNewShader :: (Ptr (SkShader)) -> (CBool) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_shader" sk_imagefilter_new_shader :: (Ptr (Sk_shader)) -> (CBool) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_tile`
-foreign import ccall "sk_imagefilter_new_tile" skImageFilterNewTile :: (Ptr (SkRect)) -> (Ptr (SkRect)) -> (Ptr (SkImageFilter)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_tile" sk_imagefilter_new_tile :: (Ptr (Sk_rect)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_imagefilter)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_dilate`
-foreign import ccall "sk_imagefilter_new_dilate" skImageFilterNewDilate :: (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_dilate" sk_imagefilter_new_dilate :: (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_erode`
-foreign import ccall "sk_imagefilter_new_erode" skImageFilterNewErode :: (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_erode" sk_imagefilter_new_erode :: (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_distant_lit_diffuse`
-foreign import ccall "sk_imagefilter_new_distant_lit_diffuse" skImageFilterNewDistantLitDiffuse :: (Ptr (SkPoint3)) -> (SkColor) -> (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_distant_lit_diffuse" sk_imagefilter_new_distant_lit_diffuse :: (Ptr (Sk_point3)) -> (Sk_color) -> (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_point_lit_diffuse`
-foreign import ccall "sk_imagefilter_new_point_lit_diffuse" skImageFilterNewPointLitDiffuse :: (Ptr (SkPoint3)) -> (SkColor) -> (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_point_lit_diffuse" sk_imagefilter_new_point_lit_diffuse :: (Ptr (Sk_point3)) -> (Sk_color) -> (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_spot_lit_diffuse`
-foreign import ccall "sk_imagefilter_new_spot_lit_diffuse" skImageFilterNewSpotLitDiffuse :: (Ptr (SkPoint3)) -> (Ptr (SkPoint3)) -> (CFloat) -> (CFloat) -> (SkColor) -> (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_spot_lit_diffuse" sk_imagefilter_new_spot_lit_diffuse :: (Ptr (Sk_point3)) -> (Ptr (Sk_point3)) -> (CFloat) -> (CFloat) -> (Sk_color) -> (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_distant_lit_specular`
-foreign import ccall "sk_imagefilter_new_distant_lit_specular" skImageFilterNewDistantLitSpecULar :: (Ptr (SkPoint3)) -> (SkColor) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_distant_lit_specular" sk_imagefilter_new_distant_lit_specular :: (Ptr (Sk_point3)) -> (Sk_color) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_point_lit_specular`
-foreign import ccall "sk_imagefilter_new_point_lit_specular" skImageFilterNewPointLitSpecULar :: (Ptr (SkPoint3)) -> (SkColor) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_point_lit_specular" sk_imagefilter_new_point_lit_specular :: (Ptr (Sk_point3)) -> (Sk_color) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_imagefilter_new_spot_lit_specular`
-foreign import ccall "sk_imagefilter_new_spot_lit_specular" skImageFilterNewSpotLitSpecULar :: (Ptr (SkPoint3)) -> (Ptr (SkPoint3)) -> (CFloat) -> (CFloat) -> (SkColor) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (SkImageFilter)) -> (Ptr (SkRect)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_imagefilter_new_spot_lit_specular" sk_imagefilter_new_spot_lit_specular :: (Ptr (Sk_point3)) -> (Ptr (Sk_point3)) -> (CFloat) -> (CFloat) -> (Sk_color) -> (CFloat) -> (CFloat) -> (CFloat) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_bitmap_destructor`
-foreign import ccall "sk_bitmap_destructor" skBitmapDestructOr :: (Ptr (SkBitmap)) -> IO (())
+foreign import ccall "sk_bitmap_destructor" sk_bitmap_destructor :: (Ptr (Sk_bitmap)) -> IO (())
 -- | `sk_bitmap_new`
-foreign import ccall "sk_bitmap_new" skBitmapNew :: IO (Ptr (SkBitmap))
+foreign import ccall "sk_bitmap_new" sk_bitmap_new :: IO (Ptr (Sk_bitmap))
 -- | `sk_bitmap_get_info`
-foreign import ccall "sk_bitmap_get_info" skBitmapGetInfo :: (Ptr (SkBitmap)) -> (Ptr (SkImageInfo)) -> IO (())
+foreign import ccall "sk_bitmap_get_info" sk_bitmap_get_info :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_imageinfo)) -> IO (())
 -- | `sk_bitmap_get_pixels`
-foreign import ccall "sk_bitmap_get_pixels" skBitmapGetPixels :: (Ptr (SkBitmap)) -> (Ptr (CSize)) -> IO (Ptr (()))
+foreign import ccall "sk_bitmap_get_pixels" sk_bitmap_get_pixels :: (Ptr (Sk_bitmap)) -> (Ptr (CSize)) -> IO (Ptr (()))
 -- | `sk_bitmap_get_row_bytes`
-foreign import ccall "sk_bitmap_get_row_bytes" skBitmapGetRowBytes :: (Ptr (SkBitmap)) -> IO (CSize)
+foreign import ccall "sk_bitmap_get_row_bytes" sk_bitmap_get_row_bytes :: (Ptr (Sk_bitmap)) -> IO (CSize)
 -- | `sk_bitmap_get_byte_count`
-foreign import ccall "sk_bitmap_get_byte_count" skBitmapGetByteCount :: (Ptr (SkBitmap)) -> IO (CSize)
+foreign import ccall "sk_bitmap_get_byte_count" sk_bitmap_get_byte_count :: (Ptr (Sk_bitmap)) -> IO (CSize)
 -- | `sk_bitmap_reset`
-foreign import ccall "sk_bitmap_reset" skBitmapReset :: (Ptr (SkBitmap)) -> IO (())
+foreign import ccall "sk_bitmap_reset" sk_bitmap_reset :: (Ptr (Sk_bitmap)) -> IO (())
 -- | `sk_bitmap_is_null`
-foreign import ccall "sk_bitmap_is_null" skBitmapIsNull :: (Ptr (SkBitmap)) -> IO (CBool)
+foreign import ccall "sk_bitmap_is_null" sk_bitmap_is_null :: (Ptr (Sk_bitmap)) -> IO (CBool)
 -- | `sk_bitmap_is_immutable`
-foreign import ccall "sk_bitmap_is_immutable" skBitmapIsImmutable :: (Ptr (SkBitmap)) -> IO (CBool)
+foreign import ccall "sk_bitmap_is_immutable" sk_bitmap_is_immutable :: (Ptr (Sk_bitmap)) -> IO (CBool)
 -- | `sk_bitmap_set_immutable`
-foreign import ccall "sk_bitmap_set_immutable" skBitmapSetImmutable :: (Ptr (SkBitmap)) -> IO (())
+foreign import ccall "sk_bitmap_set_immutable" sk_bitmap_set_immutable :: (Ptr (Sk_bitmap)) -> IO (())
 -- | `sk_bitmap_erase`
-foreign import ccall "sk_bitmap_erase" skBitmapErase :: (Ptr (SkBitmap)) -> (SkColor) -> IO (())
+foreign import ccall "sk_bitmap_erase" sk_bitmap_erase :: (Ptr (Sk_bitmap)) -> (Sk_color) -> IO (())
 -- | `sk_bitmap_erase_rect`
-foreign import ccall "sk_bitmap_erase_rect" skBitmapEraseRect :: (Ptr (SkBitmap)) -> (SkColor) -> (Ptr (SkIRect)) -> IO (())
+foreign import ccall "sk_bitmap_erase_rect" sk_bitmap_erase_rect :: (Ptr (Sk_bitmap)) -> (Sk_color) -> (Ptr (Sk_irect)) -> IO (())
 -- | `sk_bitmap_get_addr_8`
-foreign import ccall "sk_bitmap_get_addr_8" skBitmapGetAddR8 :: (Ptr (SkBitmap)) -> (CInt) -> (CInt) -> IO (Ptr (Word8))
+foreign import ccall "sk_bitmap_get_addr_8" sk_bitmap_get_addr_8 :: (Ptr (Sk_bitmap)) -> (CInt) -> (CInt) -> IO (Ptr (Word8))
 -- | `sk_bitmap_get_addr_16`
-foreign import ccall "sk_bitmap_get_addr_16" skBitmapGetAddR16 :: (Ptr (SkBitmap)) -> (CInt) -> (CInt) -> IO (Ptr (Word16))
+foreign import ccall "sk_bitmap_get_addr_16" sk_bitmap_get_addr_16 :: (Ptr (Sk_bitmap)) -> (CInt) -> (CInt) -> IO (Ptr (Word16))
 -- | `sk_bitmap_get_addr_32`
-foreign import ccall "sk_bitmap_get_addr_32" skBitmapGetAddR32 :: (Ptr (SkBitmap)) -> (CInt) -> (CInt) -> IO (Ptr (Word32))
+foreign import ccall "sk_bitmap_get_addr_32" sk_bitmap_get_addr_32 :: (Ptr (Sk_bitmap)) -> (CInt) -> (CInt) -> IO (Ptr (Word32))
 -- | `sk_bitmap_get_addr`
-foreign import ccall "sk_bitmap_get_addr" skBitmapGetAddR :: (Ptr (SkBitmap)) -> (CInt) -> (CInt) -> IO (Ptr (()))
+foreign import ccall "sk_bitmap_get_addr" sk_bitmap_get_addr :: (Ptr (Sk_bitmap)) -> (CInt) -> (CInt) -> IO (Ptr (()))
 -- | `sk_bitmap_get_pixel_color`
-foreign import ccall "sk_bitmap_get_pixel_color" skBitmapGetPixelColor :: (Ptr (SkBitmap)) -> (CInt) -> (CInt) -> IO (SkColor)
+foreign import ccall "sk_bitmap_get_pixel_color" sk_bitmap_get_pixel_color :: (Ptr (Sk_bitmap)) -> (CInt) -> (CInt) -> IO (Sk_color)
 -- | `sk_bitmap_ready_to_draw`
-foreign import ccall "sk_bitmap_ready_to_draw" skBitmapReadyToDraw :: (Ptr (SkBitmap)) -> IO (CBool)
+foreign import ccall "sk_bitmap_ready_to_draw" sk_bitmap_ready_to_draw :: (Ptr (Sk_bitmap)) -> IO (CBool)
 -- | `sk_bitmap_get_pixel_colors`
-foreign import ccall "sk_bitmap_get_pixel_colors" skBitmapGetPixelColors :: (Ptr (SkBitmap)) -> (Ptr (SkColor)) -> IO (())
+foreign import ccall "sk_bitmap_get_pixel_colors" sk_bitmap_get_pixel_colors :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_color)) -> IO (())
 -- | `sk_bitmap_install_pixels`
-foreign import ccall "sk_bitmap_install_pixels" skBitmapInstallPixels :: (Ptr (SkBitmap)) -> (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (FunPtr (SkBitmapReleaseProc)) -> (Ptr (())) -> IO (CBool)
+foreign import ccall "sk_bitmap_install_pixels" sk_bitmap_install_pixels :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (FunPtr (Sk_bitmap_release_proc)) -> (Ptr (())) -> IO (CBool)
 -- | `sk_bitmap_install_pixels_with_pixmap`
-foreign import ccall "sk_bitmap_install_pixels_with_pixmap" skBitmapInstallPixelsWithPixmap :: (Ptr (SkBitmap)) -> (Ptr (SkPixmap)) -> IO (CBool)
+foreign import ccall "sk_bitmap_install_pixels_with_pixmap" sk_bitmap_install_pixels_with_pixmap :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_pixmap)) -> IO (CBool)
 -- | `sk_bitmap_try_alloc_pixels`
-foreign import ccall "sk_bitmap_try_alloc_pixels" skBitmapTryAllocPixels :: (Ptr (SkBitmap)) -> (Ptr (SkImageInfo)) -> (CSize) -> IO (CBool)
+foreign import ccall "sk_bitmap_try_alloc_pixels" sk_bitmap_try_alloc_pixels :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_imageinfo)) -> (CSize) -> IO (CBool)
 -- | `sk_bitmap_try_alloc_pixels_with_flags`
-foreign import ccall "sk_bitmap_try_alloc_pixels_with_flags" skBitmapTryAllocPixelsWithFlags :: (Ptr (SkBitmap)) -> (Ptr (SkImageInfo)) -> (Word32) -> IO (CBool)
+foreign import ccall "sk_bitmap_try_alloc_pixels_with_flags" sk_bitmap_try_alloc_pixels_with_flags :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_imageinfo)) -> (Word32) -> IO (CBool)
 -- | `sk_bitmap_set_pixels`
-foreign import ccall "sk_bitmap_set_pixels" skBitmapSetPixels :: (Ptr (SkBitmap)) -> (Ptr (())) -> IO (())
+foreign import ccall "sk_bitmap_set_pixels" sk_bitmap_set_pixels :: (Ptr (Sk_bitmap)) -> (Ptr (())) -> IO (())
 -- | `sk_bitmap_peek_pixels`
-foreign import ccall "sk_bitmap_peek_pixels" skBitmapPeekPixels :: (Ptr (SkBitmap)) -> (Ptr (SkPixmap)) -> IO (CBool)
+foreign import ccall "sk_bitmap_peek_pixels" sk_bitmap_peek_pixels :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_pixmap)) -> IO (CBool)
 -- | `sk_bitmap_extract_subset`
-foreign import ccall "sk_bitmap_extract_subset" skBitmapExtractSubset :: (Ptr (SkBitmap)) -> (Ptr (SkBitmap)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_bitmap_extract_subset" sk_bitmap_extract_subset :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_bitmap)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_bitmap_extract_alpha`
-foreign import ccall "sk_bitmap_extract_alpha" skBitmapExtractAlpha :: (Ptr (SkBitmap)) -> (Ptr (SkBitmap)) -> (Ptr (SkPaint)) -> (Ptr (SkIPoint)) -> IO (CBool)
+foreign import ccall "sk_bitmap_extract_alpha" sk_bitmap_extract_alpha :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_bitmap)) -> (Ptr (Sk_paint)) -> (Ptr (Sk_ipoint)) -> IO (CBool)
 -- | `sk_bitmap_notify_pixels_changed`
-foreign import ccall "sk_bitmap_notify_pixels_changed" skBitmapNotifyPixelsChanged :: (Ptr (SkBitmap)) -> IO (())
+foreign import ccall "sk_bitmap_notify_pixels_changed" sk_bitmap_notify_pixels_changed :: (Ptr (Sk_bitmap)) -> IO (())
 -- | `sk_bitmap_swap`
-foreign import ccall "sk_bitmap_swap" skBitmapSwap :: (Ptr (SkBitmap)) -> (Ptr (SkBitmap)) -> IO (())
+foreign import ccall "sk_bitmap_swap" sk_bitmap_swap :: (Ptr (Sk_bitmap)) -> (Ptr (Sk_bitmap)) -> IO (())
 -- | `sk_bitmap_make_shader`
-foreign import ccall "sk_bitmap_make_shader" skBitmapMakeShader :: (Ptr (SkBitmap)) -> (SkShaderTileMode) -> (SkShaderTileMode) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_bitmap_make_shader" sk_bitmap_make_shader :: (Ptr (Sk_bitmap)) -> (Sk_shader_tilemode) -> (Sk_shader_tilemode) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sksg_invalidation_controller_new`
-foreign import ccall "sksg_invalidation_controller_new" sksgInvalidationControllerNew :: IO (Ptr (SksgInvalidationController))
+foreign import ccall "sksg_invalidation_controller_new" sksg_invalidation_controller_new :: IO (Ptr (Sksg_invalidation_controller))
 -- | `sksg_invalidation_controller_delete`
-foreign import ccall "sksg_invalidation_controller_delete" sksgInvalidationControllerDelete :: (Ptr (SksgInvalidationController)) -> IO (())
+foreign import ccall "sksg_invalidation_controller_delete" sksg_invalidation_controller_delete :: (Ptr (Sksg_invalidation_controller)) -> IO (())
 -- | `sksg_invalidation_controller_inval`
-foreign import ccall "sksg_invalidation_controller_inval" sksgInvalidationControllerInVal :: (Ptr (SksgInvalidationController)) -> (Ptr (SkRect)) -> (Ptr (SkMatrix)) -> IO (())
+foreign import ccall "sksg_invalidation_controller_inval" sksg_invalidation_controller_inval :: (Ptr (Sksg_invalidation_controller)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_matrix)) -> IO (())
 -- | `sksg_invalidation_controller_get_bounds`
-foreign import ccall "sksg_invalidation_controller_get_bounds" sksgInvalidationControllerGetBounds :: (Ptr (SksgInvalidationController)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sksg_invalidation_controller_get_bounds" sksg_invalidation_controller_get_bounds :: (Ptr (Sksg_invalidation_controller)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sksg_invalidation_controller_begin`
-foreign import ccall "sksg_invalidation_controller_begin" sksgInvalidationControllerBegin :: (Ptr (SksgInvalidationController)) -> IO (())
+foreign import ccall "sksg_invalidation_controller_begin" sksg_invalidation_controller_begin :: (Ptr (Sksg_invalidation_controller)) -> IO (())
 -- | `sksg_invalidation_controller_end`
-foreign import ccall "sksg_invalidation_controller_end" sksgInvalidationControllerEnd :: (Ptr (SksgInvalidationController)) -> IO (())
+foreign import ccall "sksg_invalidation_controller_end" sksg_invalidation_controller_end :: (Ptr (Sksg_invalidation_controller)) -> IO (())
 -- | `sksg_invalidation_controller_reset`
-foreign import ccall "sksg_invalidation_controller_reset" sksgInvalidationControllerReset :: (Ptr (SksgInvalidationController)) -> IO (())
+foreign import ccall "sksg_invalidation_controller_reset" sksg_invalidation_controller_reset :: (Ptr (Sksg_invalidation_controller)) -> IO (())
 -- | `sk_path_new`
-foreign import ccall "sk_path_new" skPathNew :: IO (Ptr (SkPath))
+foreign import ccall "sk_path_new" sk_path_new :: IO (Ptr (Sk_path))
 -- | `sk_path_delete`
-foreign import ccall "sk_path_delete" skPathDelete :: (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_path_delete" sk_path_delete :: (Ptr (Sk_path)) -> IO (())
 -- | `sk_path_move_to`
-foreign import ccall "sk_path_move_to" skPathMoveTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_move_to" sk_path_move_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_line_to`
-foreign import ccall "sk_path_line_to" skPathLineTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_line_to" sk_path_line_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_quad_to`
-foreign import ccall "sk_path_quad_to" skPathQuadTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_quad_to" sk_path_quad_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_conic_to`
-foreign import ccall "sk_path_conic_to" skPathConicTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_conic_to" sk_path_conic_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_cubic_to`
-foreign import ccall "sk_path_cubic_to" skPathCubicTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_cubic_to" sk_path_cubic_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_arc_to`
-foreign import ccall "sk_path_arc_to" skPathArcTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (SkPathArcSize) -> (SkPathDirection) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_arc_to" sk_path_arc_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (Sk_path_arc_size) -> (Sk_path_direction) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_rarc_to`
-foreign import ccall "sk_path_rarc_to" skPathRArcTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (SkPathArcSize) -> (SkPathDirection) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_rarc_to" sk_path_rarc_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (Sk_path_arc_size) -> (Sk_path_direction) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_arc_to_with_oval`
-foreign import ccall "sk_path_arc_to_with_oval" skPathArcToWithOval :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> (CBool) -> IO (())
+foreign import ccall "sk_path_arc_to_with_oval" sk_path_arc_to_with_oval :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> (CBool) -> IO (())
 -- | `sk_path_arc_to_with_points`
-foreign import ccall "sk_path_arc_to_with_points" skPathArcToWithPoints :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_arc_to_with_points" sk_path_arc_to_with_points :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_close`
-foreign import ccall "sk_path_close" skPathClose :: (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_path_close" sk_path_close :: (Ptr (Sk_path)) -> IO (())
 -- | `sk_path_add_rect`
-foreign import ccall "sk_path_add_rect" skPathAddRect :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> (SkPathDirection) -> IO (())
+foreign import ccall "sk_path_add_rect" sk_path_add_rect :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (Sk_path_direction) -> IO (())
 -- | `sk_path_add_rrect`
-foreign import ccall "sk_path_add_rrect" skPathAddRRect :: (Ptr (SkPath)) -> (Ptr (SkRRect)) -> (SkPathDirection) -> IO (())
+foreign import ccall "sk_path_add_rrect" sk_path_add_rrect :: (Ptr (Sk_path)) -> (Ptr (Sk_rrect)) -> (Sk_path_direction) -> IO (())
 -- | `sk_path_add_rrect_start`
-foreign import ccall "sk_path_add_rrect_start" skPathAddRRectStart :: (Ptr (SkPath)) -> (Ptr (SkRRect)) -> (SkPathDirection) -> (Word32) -> IO (())
+foreign import ccall "sk_path_add_rrect_start" sk_path_add_rrect_start :: (Ptr (Sk_path)) -> (Ptr (Sk_rrect)) -> (Sk_path_direction) -> (Word32) -> IO (())
 -- | `sk_path_add_rounded_rect`
-foreign import ccall "sk_path_add_rounded_rect" skPathAddRoundedRect :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> (SkPathDirection) -> IO (())
+foreign import ccall "sk_path_add_rounded_rect" sk_path_add_rounded_rect :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> (Sk_path_direction) -> IO (())
 -- | `sk_path_add_oval`
-foreign import ccall "sk_path_add_oval" skPathAddOval :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> (SkPathDirection) -> IO (())
+foreign import ccall "sk_path_add_oval" sk_path_add_oval :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (Sk_path_direction) -> IO (())
 -- | `sk_path_add_circle`
-foreign import ccall "sk_path_add_circle" skPathAddCircle :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (SkPathDirection) -> IO (())
+foreign import ccall "sk_path_add_circle" sk_path_add_circle :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (Sk_path_direction) -> IO (())
 -- | `sk_path_get_bounds`
-foreign import ccall "sk_path_get_bounds" skPathGetBounds :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_path_get_bounds" sk_path_get_bounds :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_path_compute_tight_bounds`
-foreign import ccall "sk_path_compute_tight_bounds" skPathComputeTightBounds :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_path_compute_tight_bounds" sk_path_compute_tight_bounds :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_path_rmove_to`
-foreign import ccall "sk_path_rmove_to" skPathRMoveTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_rmove_to" sk_path_rmove_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_rline_to`
-foreign import ccall "sk_path_rline_to" skPathRLineTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_rline_to" sk_path_rline_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_rquad_to`
-foreign import ccall "sk_path_rquad_to" skPathRQuadTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_rquad_to" sk_path_rquad_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_rconic_to`
-foreign import ccall "sk_path_rconic_to" skPathRConicTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_rconic_to" sk_path_rconic_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_rcubic_to`
-foreign import ccall "sk_path_rcubic_to" skPathRCubicTo :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_rcubic_to" sk_path_rcubic_to :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_add_rect_start`
-foreign import ccall "sk_path_add_rect_start" skPathAddRectStart :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> (SkPathDirection) -> (Word32) -> IO (())
+foreign import ccall "sk_path_add_rect_start" sk_path_add_rect_start :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (Sk_path_direction) -> (Word32) -> IO (())
 -- | `sk_path_add_arc`
-foreign import ccall "sk_path_add_arc" skPathAddArc :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_path_add_arc" sk_path_add_arc :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_path_get_filltype`
-foreign import ccall "sk_path_get_filltype" skPathGetFillType :: (Ptr (SkPath)) -> IO (SkPathFillType)
+foreign import ccall "sk_path_get_filltype" sk_path_get_filltype :: (Ptr (Sk_path)) -> IO (Sk_path_filltype)
 -- | `sk_path_set_filltype`
-foreign import ccall "sk_path_set_filltype" skPathSetFillType :: (Ptr (SkPath)) -> (SkPathFillType) -> IO (())
+foreign import ccall "sk_path_set_filltype" sk_path_set_filltype :: (Ptr (Sk_path)) -> (Sk_path_filltype) -> IO (())
 -- | `sk_path_transform`
-foreign import ccall "sk_path_transform" skPathTransform :: (Ptr (SkPath)) -> (Ptr (SkMatrix)) -> IO (())
+foreign import ccall "sk_path_transform" sk_path_transform :: (Ptr (Sk_path)) -> (Ptr (Sk_matrix)) -> IO (())
 -- | `sk_path_transform_to_dest`
-foreign import ccall "sk_path_transform_to_dest" skPathTransformToDeSt :: (Ptr (SkPath)) -> (Ptr (SkMatrix)) -> (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_path_transform_to_dest" sk_path_transform_to_dest :: (Ptr (Sk_path)) -> (Ptr (Sk_matrix)) -> (Ptr (Sk_path)) -> IO (())
 -- | `sk_path_clone`
-foreign import ccall "sk_path_clone" skPathClone :: (Ptr (SkPath)) -> IO (Ptr (SkPath))
+foreign import ccall "sk_path_clone" sk_path_clone :: (Ptr (Sk_path)) -> IO (Ptr (Sk_path))
 -- | `sk_path_add_path_offset`
-foreign import ccall "sk_path_add_path_offset" skPathAddPathOffset :: (Ptr (SkPath)) -> (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (SkPathAddMode) -> IO (())
+foreign import ccall "sk_path_add_path_offset" sk_path_add_path_offset :: (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (Sk_path_add_mode) -> IO (())
 -- | `sk_path_add_path_matrix`
-foreign import ccall "sk_path_add_path_matrix" skPathAddPathMatrix :: (Ptr (SkPath)) -> (Ptr (SkPath)) -> (Ptr (SkMatrix)) -> (SkPathAddMode) -> IO (())
+foreign import ccall "sk_path_add_path_matrix" sk_path_add_path_matrix :: (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> (Ptr (Sk_matrix)) -> (Sk_path_add_mode) -> IO (())
 -- | `sk_path_add_path`
-foreign import ccall "sk_path_add_path" skPathAddPath :: (Ptr (SkPath)) -> (Ptr (SkPath)) -> (SkPathAddMode) -> IO (())
+foreign import ccall "sk_path_add_path" sk_path_add_path :: (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> (Sk_path_add_mode) -> IO (())
 -- | `sk_path_add_path_reverse`
-foreign import ccall "sk_path_add_path_reverse" skPathAddPathReverse :: (Ptr (SkPath)) -> (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_path_add_path_reverse" sk_path_add_path_reverse :: (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> IO (())
 -- | `sk_path_reset`
-foreign import ccall "sk_path_reset" skPathReset :: (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_path_reset" sk_path_reset :: (Ptr (Sk_path)) -> IO (())
 -- | `sk_path_rewind`
-foreign import ccall "sk_path_rewind" skPathRewind :: (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_path_rewind" sk_path_rewind :: (Ptr (Sk_path)) -> IO (())
 -- | `sk_path_count_points`
-foreign import ccall "sk_path_count_points" skPathCountPoints :: (Ptr (SkPath)) -> IO (CInt)
+foreign import ccall "sk_path_count_points" sk_path_count_points :: (Ptr (Sk_path)) -> IO (CInt)
 -- | `sk_path_count_verbs`
-foreign import ccall "sk_path_count_verbs" skPathCountVerbs :: (Ptr (SkPath)) -> IO (CInt)
+foreign import ccall "sk_path_count_verbs" sk_path_count_verbs :: (Ptr (Sk_path)) -> IO (CInt)
 -- | `sk_path_get_point`
-foreign import ccall "sk_path_get_point" skPathGetPoint :: (Ptr (SkPath)) -> (CInt) -> (Ptr (SkPoint)) -> IO (())
+foreign import ccall "sk_path_get_point" sk_path_get_point :: (Ptr (Sk_path)) -> (CInt) -> (Ptr (Sk_point)) -> IO (())
 -- | `sk_path_get_points`
-foreign import ccall "sk_path_get_points" skPathGetPoints :: (Ptr (SkPath)) -> (Ptr (SkPoint)) -> (CInt) -> IO (CInt)
+foreign import ccall "sk_path_get_points" sk_path_get_points :: (Ptr (Sk_path)) -> (Ptr (Sk_point)) -> (CInt) -> IO (CInt)
 -- | `sk_path_contains`
-foreign import ccall "sk_path_contains" skPathContains :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> IO (CBool)
+foreign import ccall "sk_path_contains" sk_path_contains :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> IO (CBool)
 -- | `sk_path_parse_svg_string`
-foreign import ccall "sk_path_parse_svg_string" skPathParseSvgString :: (Ptr (SkPath)) -> (Ptr (CChar)) -> IO (CBool)
+foreign import ccall "sk_path_parse_svg_string" sk_path_parse_svg_string :: (Ptr (Sk_path)) -> (Ptr (CChar)) -> IO (CBool)
 -- | `sk_path_to_svg_string`
-foreign import ccall "sk_path_to_svg_string" skPathToSvgString :: (Ptr (SkPath)) -> (Ptr (SkString)) -> IO (())
+foreign import ccall "sk_path_to_svg_string" sk_path_to_svg_string :: (Ptr (Sk_path)) -> (Ptr (Sk_string)) -> IO (())
 -- | `sk_path_get_last_point`
-foreign import ccall "sk_path_get_last_point" skPathGetLastPoint :: (Ptr (SkPath)) -> (Ptr (SkPoint)) -> IO (CBool)
+foreign import ccall "sk_path_get_last_point" sk_path_get_last_point :: (Ptr (Sk_path)) -> (Ptr (Sk_point)) -> IO (CBool)
 -- | `sk_path_convert_conic_to_quads`
-foreign import ccall "sk_path_convert_conic_to_quads" skPathConvertConicToQuads :: (Ptr (SkPoint)) -> (Ptr (SkPoint)) -> (Ptr (SkPoint)) -> (CFloat) -> (Ptr (SkPoint)) -> (CInt) -> IO (CInt)
+foreign import ccall "sk_path_convert_conic_to_quads" sk_path_convert_conic_to_quads :: (Ptr (Sk_point)) -> (Ptr (Sk_point)) -> (Ptr (Sk_point)) -> (CFloat) -> (Ptr (Sk_point)) -> (CInt) -> IO (CInt)
 -- | `sk_path_add_poly`
-foreign import ccall "sk_path_add_poly" skPathAddPoly :: (Ptr (SkPath)) -> (Ptr (SkPoint)) -> (CInt) -> (CBool) -> IO (())
+foreign import ccall "sk_path_add_poly" sk_path_add_poly :: (Ptr (Sk_path)) -> (Ptr (Sk_point)) -> (CInt) -> (CBool) -> IO (())
 -- | `sk_path_get_segment_masks`
-foreign import ccall "sk_path_get_segment_masks" skPathGetSegmentMasks :: (Ptr (SkPath)) -> IO (Word32)
+foreign import ccall "sk_path_get_segment_masks" sk_path_get_segment_masks :: (Ptr (Sk_path)) -> IO (Word32)
 -- | `sk_path_is_oval`
-foreign import ccall "sk_path_is_oval" skPathIsOval :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> IO (CBool)
+foreign import ccall "sk_path_is_oval" sk_path_is_oval :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> IO (CBool)
 -- | `sk_path_is_rrect`
-foreign import ccall "sk_path_is_rrect" skPathIsRRect :: (Ptr (SkPath)) -> (Ptr (SkRRect)) -> IO (CBool)
+foreign import ccall "sk_path_is_rrect" sk_path_is_rrect :: (Ptr (Sk_path)) -> (Ptr (Sk_rrect)) -> IO (CBool)
 -- | `sk_path_is_line`
-foreign import ccall "sk_path_is_line" skPathIsLine :: (Ptr (SkPath)) -> (Ptr (SkPoint)) -> IO (CBool)
+foreign import ccall "sk_path_is_line" sk_path_is_line :: (Ptr (Sk_path)) -> (Ptr (Sk_point)) -> IO (CBool)
 -- | `sk_path_is_rect`
-foreign import ccall "sk_path_is_rect" skPathIsRect :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> (Ptr (CBool)) -> (Ptr (SkPathDirection)) -> IO (CBool)
+foreign import ccall "sk_path_is_rect" sk_path_is_rect :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (Ptr (CBool)) -> (Ptr (Sk_path_direction)) -> IO (CBool)
 -- | `sk_path_is_convex`
-foreign import ccall "sk_path_is_convex" skPathIsConvex :: (Ptr (SkPath)) -> IO (CBool)
+foreign import ccall "sk_path_is_convex" sk_path_is_convex :: (Ptr (Sk_path)) -> IO (CBool)
 -- | `sk_path_create_iter`
-foreign import ccall "sk_path_create_iter" skPathCreateItEr :: (Ptr (SkPath)) -> (CInt) -> IO (Ptr (SkPathIterator))
+foreign import ccall "sk_path_create_iter" sk_path_create_iter :: (Ptr (Sk_path)) -> (CInt) -> IO (Ptr (Sk_path_iterator))
 -- | `sk_path_iter_next`
-foreign import ccall "sk_path_iter_next" skPathItErNext :: (Ptr (SkPathIterator)) -> (Ptr (SkPoint)) -> IO (SkPathVerb)
+foreign import ccall "sk_path_iter_next" sk_path_iter_next :: (Ptr (Sk_path_iterator)) -> (Ptr (Sk_point)) -> IO (Sk_path_verb)
 -- | `sk_path_iter_conic_weight`
-foreign import ccall "sk_path_iter_conic_weight" skPathItErConicWeight :: (Ptr (SkPathIterator)) -> IO (CFloat)
+foreign import ccall "sk_path_iter_conic_weight" sk_path_iter_conic_weight :: (Ptr (Sk_path_iterator)) -> IO (CFloat)
 -- | `sk_path_iter_is_close_line`
-foreign import ccall "sk_path_iter_is_close_line" skPathItErIsCloseLine :: (Ptr (SkPathIterator)) -> IO (CInt)
+foreign import ccall "sk_path_iter_is_close_line" sk_path_iter_is_close_line :: (Ptr (Sk_path_iterator)) -> IO (CInt)
 -- | `sk_path_iter_is_closed_contour`
-foreign import ccall "sk_path_iter_is_closed_contour" skPathItErIsClosedContour :: (Ptr (SkPathIterator)) -> IO (CInt)
+foreign import ccall "sk_path_iter_is_closed_contour" sk_path_iter_is_closed_contour :: (Ptr (Sk_path_iterator)) -> IO (CInt)
 -- | `sk_path_iter_destroy`
-foreign import ccall "sk_path_iter_destroy" skPathItErDestroy :: (Ptr (SkPathIterator)) -> IO (())
+foreign import ccall "sk_path_iter_destroy" sk_path_iter_destroy :: (Ptr (Sk_path_iterator)) -> IO (())
 -- | `sk_path_create_rawiter`
-foreign import ccall "sk_path_create_rawiter" skPathCreateRawItEr :: (Ptr (SkPath)) -> IO (Ptr (SkPathRawIterator))
+foreign import ccall "sk_path_create_rawiter" sk_path_create_rawiter :: (Ptr (Sk_path)) -> IO (Ptr (Sk_path_rawiterator))
 -- | `sk_path_rawiter_peek`
-foreign import ccall "sk_path_rawiter_peek" skPathRawItErPeek :: (Ptr (SkPathRawIterator)) -> IO (SkPathVerb)
+foreign import ccall "sk_path_rawiter_peek" sk_path_rawiter_peek :: (Ptr (Sk_path_rawiterator)) -> IO (Sk_path_verb)
 -- | `sk_path_rawiter_next`
-foreign import ccall "sk_path_rawiter_next" skPathRawItErNext :: (Ptr (SkPathRawIterator)) -> (Ptr (SkPoint)) -> IO (SkPathVerb)
+foreign import ccall "sk_path_rawiter_next" sk_path_rawiter_next :: (Ptr (Sk_path_rawiterator)) -> (Ptr (Sk_point)) -> IO (Sk_path_verb)
 -- | `sk_path_rawiter_conic_weight`
-foreign import ccall "sk_path_rawiter_conic_weight" skPathRawItErConicWeight :: (Ptr (SkPathRawIterator)) -> IO (CFloat)
+foreign import ccall "sk_path_rawiter_conic_weight" sk_path_rawiter_conic_weight :: (Ptr (Sk_path_rawiterator)) -> IO (CFloat)
 -- | `sk_path_rawiter_destroy`
-foreign import ccall "sk_path_rawiter_destroy" skPathRawItErDestroy :: (Ptr (SkPathRawIterator)) -> IO (())
+foreign import ccall "sk_path_rawiter_destroy" sk_path_rawiter_destroy :: (Ptr (Sk_path_rawiterator)) -> IO (())
 -- | `sk_pathop_op`
-foreign import ccall "sk_pathop_op" skPathOpOp :: (Ptr (SkPath)) -> (Ptr (SkPath)) -> (SkPathOp) -> (Ptr (SkPath)) -> IO (CBool)
+foreign import ccall "sk_pathop_op" sk_pathop_op :: (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> (Sk_pathop) -> (Ptr (Sk_path)) -> IO (CBool)
 -- | `sk_pathop_simplify`
-foreign import ccall "sk_pathop_simplify" skPathOpSimplify :: (Ptr (SkPath)) -> (Ptr (SkPath)) -> IO (CBool)
+foreign import ccall "sk_pathop_simplify" sk_pathop_simplify :: (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> IO (CBool)
 -- | `sk_pathop_tight_bounds`
-foreign import ccall "sk_pathop_tight_bounds" skPathOpTightBounds :: (Ptr (SkPath)) -> (Ptr (SkRect)) -> IO (CBool)
+foreign import ccall "sk_pathop_tight_bounds" sk_pathop_tight_bounds :: (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> IO (CBool)
 -- | `sk_pathop_as_winding`
-foreign import ccall "sk_pathop_as_winding" skPathOpAsWinding :: (Ptr (SkPath)) -> (Ptr (SkPath)) -> IO (CBool)
+foreign import ccall "sk_pathop_as_winding" sk_pathop_as_winding :: (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> IO (CBool)
 -- | `sk_opbuilder_new`
-foreign import ccall "sk_opbuilder_new" skOpBuilderNew :: IO (Ptr (SkOpBuilder))
+foreign import ccall "sk_opbuilder_new" sk_opbuilder_new :: IO (Ptr (Sk_opbuilder))
 -- | `sk_opbuilder_destroy`
-foreign import ccall "sk_opbuilder_destroy" skOpBuilderDestroy :: (Ptr (SkOpBuilder)) -> IO (())
+foreign import ccall "sk_opbuilder_destroy" sk_opbuilder_destroy :: (Ptr (Sk_opbuilder)) -> IO (())
 -- | `sk_opbuilder_add`
-foreign import ccall "sk_opbuilder_add" skOpBuilderAdd :: (Ptr (SkOpBuilder)) -> (Ptr (SkPath)) -> (SkPathOp) -> IO (())
+foreign import ccall "sk_opbuilder_add" sk_opbuilder_add :: (Ptr (Sk_opbuilder)) -> (Ptr (Sk_path)) -> (Sk_pathop) -> IO (())
 -- | `sk_opbuilder_resolve`
-foreign import ccall "sk_opbuilder_resolve" skOpBuilderResolve :: (Ptr (SkOpBuilder)) -> (Ptr (SkPath)) -> IO (CBool)
+foreign import ccall "sk_opbuilder_resolve" sk_opbuilder_resolve :: (Ptr (Sk_opbuilder)) -> (Ptr (Sk_path)) -> IO (CBool)
 -- | `sk_pathmeasure_new`
-foreign import ccall "sk_pathmeasure_new" skPathMeasureNew :: IO (Ptr (SkPathMeasure))
+foreign import ccall "sk_pathmeasure_new" sk_pathmeasure_new :: IO (Ptr (Sk_pathmeasure))
 -- | `sk_pathmeasure_new_with_path`
-foreign import ccall "sk_pathmeasure_new_with_path" skPathMeasureNewWithPath :: (Ptr (SkPath)) -> (CBool) -> (CFloat) -> IO (Ptr (SkPathMeasure))
+foreign import ccall "sk_pathmeasure_new_with_path" sk_pathmeasure_new_with_path :: (Ptr (Sk_path)) -> (CBool) -> (CFloat) -> IO (Ptr (Sk_pathmeasure))
 -- | `sk_pathmeasure_destroy`
-foreign import ccall "sk_pathmeasure_destroy" skPathMeasureDestroy :: (Ptr (SkPathMeasure)) -> IO (())
+foreign import ccall "sk_pathmeasure_destroy" sk_pathmeasure_destroy :: (Ptr (Sk_pathmeasure)) -> IO (())
 -- | `sk_pathmeasure_set_path`
-foreign import ccall "sk_pathmeasure_set_path" skPathMeasureSetPath :: (Ptr (SkPathMeasure)) -> (Ptr (SkPath)) -> (CBool) -> IO (())
+foreign import ccall "sk_pathmeasure_set_path" sk_pathmeasure_set_path :: (Ptr (Sk_pathmeasure)) -> (Ptr (Sk_path)) -> (CBool) -> IO (())
 -- | `sk_pathmeasure_get_length`
-foreign import ccall "sk_pathmeasure_get_length" skPathMeasureGetLength :: (Ptr (SkPathMeasure)) -> IO (CFloat)
+foreign import ccall "sk_pathmeasure_get_length" sk_pathmeasure_get_length :: (Ptr (Sk_pathmeasure)) -> IO (CFloat)
 -- | `sk_pathmeasure_get_pos_tan`
-foreign import ccall "sk_pathmeasure_get_pos_tan" skPathMeasureGetPosTan :: (Ptr (SkPathMeasure)) -> (CFloat) -> (Ptr (SkPoint)) -> (Ptr (SkVector)) -> IO (CBool)
+foreign import ccall "sk_pathmeasure_get_pos_tan" sk_pathmeasure_get_pos_tan :: (Ptr (Sk_pathmeasure)) -> (CFloat) -> (Ptr (Sk_point)) -> (Ptr (Sk_vector)) -> IO (CBool)
 -- | `sk_pathmeasure_get_matrix`
-foreign import ccall "sk_pathmeasure_get_matrix" skPathMeasureGetMatrix :: (Ptr (SkPathMeasure)) -> (CFloat) -> (Ptr (SkMatrix)) -> (SkPathMeasureMatrixFlags) -> IO (CBool)
+foreign import ccall "sk_pathmeasure_get_matrix" sk_pathmeasure_get_matrix :: (Ptr (Sk_pathmeasure)) -> (CFloat) -> (Ptr (Sk_matrix)) -> (Sk_pathmeasure_matrixflags) -> IO (CBool)
 -- | `sk_pathmeasure_get_segment`
-foreign import ccall "sk_pathmeasure_get_segment" skPathMeasureGetSegment :: (Ptr (SkPathMeasure)) -> (CFloat) -> (CFloat) -> (Ptr (SkPath)) -> (CBool) -> IO (CBool)
+foreign import ccall "sk_pathmeasure_get_segment" sk_pathmeasure_get_segment :: (Ptr (Sk_pathmeasure)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_path)) -> (CBool) -> IO (CBool)
 -- | `sk_pathmeasure_is_closed`
-foreign import ccall "sk_pathmeasure_is_closed" skPathMeasureIsClosed :: (Ptr (SkPathMeasure)) -> IO (CBool)
+foreign import ccall "sk_pathmeasure_is_closed" sk_pathmeasure_is_closed :: (Ptr (Sk_pathmeasure)) -> IO (CBool)
 -- | `sk_pathmeasure_next_contour`
-foreign import ccall "sk_pathmeasure_next_contour" skPathMeasureNextContour :: (Ptr (SkPathMeasure)) -> IO (CBool)
+foreign import ccall "sk_pathmeasure_next_contour" sk_pathmeasure_next_contour :: (Ptr (Sk_pathmeasure)) -> IO (CBool)
 -- | `sk_runtimeeffect_make_for_color_filter`
-foreign import ccall "sk_runtimeeffect_make_for_color_filter" skRuntimeEffectMakeForColorFilter :: (Ptr (SkString)) -> (Ptr (SkString)) -> IO (Ptr (SkRuntimeEffect))
+foreign import ccall "sk_runtimeeffect_make_for_color_filter" sk_runtimeeffect_make_for_color_filter :: (Ptr (Sk_string)) -> (Ptr (Sk_string)) -> IO (Ptr (Sk_runtimeeffect))
 -- | `sk_runtimeeffect_make_for_shader`
-foreign import ccall "sk_runtimeeffect_make_for_shader" skRuntimeEffectMakeForShader :: (Ptr (SkString)) -> (Ptr (SkString)) -> IO (Ptr (SkRuntimeEffect))
+foreign import ccall "sk_runtimeeffect_make_for_shader" sk_runtimeeffect_make_for_shader :: (Ptr (Sk_string)) -> (Ptr (Sk_string)) -> IO (Ptr (Sk_runtimeeffect))
 -- | `sk_runtimeeffect_make_for_blender`
-foreign import ccall "sk_runtimeeffect_make_for_blender" skRuntimeEffectMakeForBlender :: (Ptr (SkString)) -> (Ptr (SkString)) -> IO (Ptr (SkRuntimeEffect))
+foreign import ccall "sk_runtimeeffect_make_for_blender" sk_runtimeeffect_make_for_blender :: (Ptr (Sk_string)) -> (Ptr (Sk_string)) -> IO (Ptr (Sk_runtimeeffect))
 -- | `sk_runtimeeffect_unref`
-foreign import ccall "sk_runtimeeffect_unref" skRuntimeEffectUnRef :: (Ptr (SkRuntimeEffect)) -> IO (())
+foreign import ccall "sk_runtimeeffect_unref" sk_runtimeeffect_unref :: (Ptr (Sk_runtimeeffect)) -> IO (())
 -- | `sk_runtimeeffect_make_shader`
-foreign import ccall "sk_runtimeeffect_make_shader" skRuntimeEffectMakeShader :: (Ptr (SkRuntimeEffect)) -> (Ptr (SkData)) -> (Ptr (Ptr (SkFlattenAble))) -> (CSize) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_runtimeeffect_make_shader" sk_runtimeeffect_make_shader :: (Ptr (Sk_runtimeeffect)) -> (Ptr (Sk_data)) -> (Ptr (Ptr (Sk_flattenable))) -> (CSize) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_runtimeeffect_make_color_filter`
-foreign import ccall "sk_runtimeeffect_make_color_filter" skRuntimeEffectMakeColorFilter :: (Ptr (SkRuntimeEffect)) -> (Ptr (SkData)) -> (Ptr (Ptr (SkFlattenAble))) -> (CSize) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_runtimeeffect_make_color_filter" sk_runtimeeffect_make_color_filter :: (Ptr (Sk_runtimeeffect)) -> (Ptr (Sk_data)) -> (Ptr (Ptr (Sk_flattenable))) -> (CSize) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_runtimeeffect_make_blender`
-foreign import ccall "sk_runtimeeffect_make_blender" skRuntimeEffectMakeBlender :: (Ptr (SkRuntimeEffect)) -> (Ptr (SkData)) -> (Ptr (Ptr (SkFlattenAble))) -> (CSize) -> IO (Ptr (SkBlender))
+foreign import ccall "sk_runtimeeffect_make_blender" sk_runtimeeffect_make_blender :: (Ptr (Sk_runtimeeffect)) -> (Ptr (Sk_data)) -> (Ptr (Ptr (Sk_flattenable))) -> (CSize) -> IO (Ptr (Sk_blender))
 -- | `sk_runtimeeffect_get_uniform_byte_size`
-foreign import ccall "sk_runtimeeffect_get_uniform_byte_size" skRuntimeEffectGetUniformByteSize :: (Ptr (SkRuntimeEffect)) -> IO (CSize)
+foreign import ccall "sk_runtimeeffect_get_uniform_byte_size" sk_runtimeeffect_get_uniform_byte_size :: (Ptr (Sk_runtimeeffect)) -> IO (CSize)
 -- | `sk_runtimeeffect_get_uniforms_size`
-foreign import ccall "sk_runtimeeffect_get_uniforms_size" skRuntimeEffectGetUniformsSize :: (Ptr (SkRuntimeEffect)) -> IO (CSize)
+foreign import ccall "sk_runtimeeffect_get_uniforms_size" sk_runtimeeffect_get_uniforms_size :: (Ptr (Sk_runtimeeffect)) -> IO (CSize)
 -- | `sk_runtimeeffect_get_uniform_name`
-foreign import ccall "sk_runtimeeffect_get_uniform_name" skRuntimeEffectGetUniformName :: (Ptr (SkRuntimeEffect)) -> (CInt) -> (Ptr (SkString)) -> IO (())
+foreign import ccall "sk_runtimeeffect_get_uniform_name" sk_runtimeeffect_get_uniform_name :: (Ptr (Sk_runtimeeffect)) -> (CInt) -> (Ptr (Sk_string)) -> IO (())
 -- | `sk_runtimeeffect_get_uniform_from_index`
-foreign import ccall "sk_runtimeeffect_get_uniform_from_index" skRuntimeEffectGetUniformFromIndex :: (Ptr (SkRuntimeEffect)) -> (CInt) -> (Ptr (SkRuntimeEffectUniform)) -> IO (())
+foreign import ccall "sk_runtimeeffect_get_uniform_from_index" sk_runtimeeffect_get_uniform_from_index :: (Ptr (Sk_runtimeeffect)) -> (CInt) -> (Ptr (Sk_runtimeeffect_uniform)) -> IO (())
 -- | `sk_runtimeeffect_get_uniform_from_name`
-foreign import ccall "sk_runtimeeffect_get_uniform_from_name" skRuntimeEffectGetUniformFromName :: (Ptr (SkRuntimeEffect)) -> (Ptr (CChar)) -> (CSize) -> (Ptr (SkRuntimeEffectUniform)) -> IO (())
+foreign import ccall "sk_runtimeeffect_get_uniform_from_name" sk_runtimeeffect_get_uniform_from_name :: (Ptr (Sk_runtimeeffect)) -> (Ptr (CChar)) -> (CSize) -> (Ptr (Sk_runtimeeffect_uniform)) -> IO (())
 -- | `sk_runtimeeffect_get_children_size`
-foreign import ccall "sk_runtimeeffect_get_children_size" skRuntimeEffectGetChildrenSize :: (Ptr (SkRuntimeEffect)) -> IO (CSize)
+foreign import ccall "sk_runtimeeffect_get_children_size" sk_runtimeeffect_get_children_size :: (Ptr (Sk_runtimeeffect)) -> IO (CSize)
 -- | `sk_runtimeeffect_get_child_name`
-foreign import ccall "sk_runtimeeffect_get_child_name" skRuntimeEffectGetChildName :: (Ptr (SkRuntimeEffect)) -> (CInt) -> (Ptr (SkString)) -> IO (())
+foreign import ccall "sk_runtimeeffect_get_child_name" sk_runtimeeffect_get_child_name :: (Ptr (Sk_runtimeeffect)) -> (CInt) -> (Ptr (Sk_string)) -> IO (())
 -- | `sk_runtimeeffect_get_child_from_index`
-foreign import ccall "sk_runtimeeffect_get_child_from_index" skRuntimeEffectGetChildFromIndex :: (Ptr (SkRuntimeEffect)) -> (CInt) -> (Ptr (SkRuntimeEffectChild)) -> IO (())
+foreign import ccall "sk_runtimeeffect_get_child_from_index" sk_runtimeeffect_get_child_from_index :: (Ptr (Sk_runtimeeffect)) -> (CInt) -> (Ptr (Sk_runtimeeffect_child)) -> IO (())
 -- | `sk_runtimeeffect_get_child_from_name`
-foreign import ccall "sk_runtimeeffect_get_child_from_name" skRuntimeEffectGetChildFromName :: (Ptr (SkRuntimeEffect)) -> (Ptr (CChar)) -> (CSize) -> (Ptr (SkRuntimeEffectChild)) -> IO (())
+foreign import ccall "sk_runtimeeffect_get_child_from_name" sk_runtimeeffect_get_child_from_name :: (Ptr (Sk_runtimeeffect)) -> (Ptr (CChar)) -> (CSize) -> (Ptr (Sk_runtimeeffect_child)) -> IO (())
 -- | `sk_refcnt_unique`
-foreign import ccall "sk_refcnt_unique" skRefCntUnique :: (Ptr (SkRefCnt)) -> IO (CBool)
+foreign import ccall "sk_refcnt_unique" sk_refcnt_unique :: (Ptr (Sk_refcnt)) -> IO (CBool)
 -- | `sk_refcnt_get_ref_count`
-foreign import ccall "sk_refcnt_get_ref_count" skRefCntGetRefCount :: (Ptr (SkRefCnt)) -> IO (CInt)
+foreign import ccall "sk_refcnt_get_ref_count" sk_refcnt_get_ref_count :: (Ptr (Sk_refcnt)) -> IO (CInt)
 -- | `sk_refcnt_safe_ref`
-foreign import ccall "sk_refcnt_safe_ref" skRefCntSafeRef :: (Ptr (SkRefCnt)) -> IO (())
+foreign import ccall "sk_refcnt_safe_ref" sk_refcnt_safe_ref :: (Ptr (Sk_refcnt)) -> IO (())
 -- | `sk_refcnt_safe_unref`
-foreign import ccall "sk_refcnt_safe_unref" skRefCntSafeUnRef :: (Ptr (SkRefCnt)) -> IO (())
+foreign import ccall "sk_refcnt_safe_unref" sk_refcnt_safe_unref :: (Ptr (Sk_refcnt)) -> IO (())
 -- | `sk_nvrefcnt_unique`
-foreign import ccall "sk_nvrefcnt_unique" skNvRefCntUnique :: (Ptr (SkNvRefCnt)) -> IO (CBool)
+foreign import ccall "sk_nvrefcnt_unique" sk_nvrefcnt_unique :: (Ptr (Sk_nvrefcnt)) -> IO (CBool)
 -- | `sk_nvrefcnt_get_ref_count`
-foreign import ccall "sk_nvrefcnt_get_ref_count" skNvRefCntGetRefCount :: (Ptr (SkNvRefCnt)) -> IO (CInt)
+foreign import ccall "sk_nvrefcnt_get_ref_count" sk_nvrefcnt_get_ref_count :: (Ptr (Sk_nvrefcnt)) -> IO (CInt)
 -- | `sk_nvrefcnt_safe_ref`
-foreign import ccall "sk_nvrefcnt_safe_ref" skNvRefCntSafeRef :: (Ptr (SkNvRefCnt)) -> IO (())
+foreign import ccall "sk_nvrefcnt_safe_ref" sk_nvrefcnt_safe_ref :: (Ptr (Sk_nvrefcnt)) -> IO (())
 -- | `sk_nvrefcnt_safe_unref`
-foreign import ccall "sk_nvrefcnt_safe_unref" skNvRefCntSafeUnRef :: (Ptr (SkNvRefCnt)) -> IO (())
+foreign import ccall "sk_nvrefcnt_safe_unref" sk_nvrefcnt_safe_unref :: (Ptr (Sk_nvrefcnt)) -> IO (())
 -- | `sk_colortype_get_default_8888`
-foreign import ccall "sk_colortype_get_default_8888" skColorTypeGetDefault8888 :: IO (SkColorType)
+foreign import ccall "sk_colortype_get_default_8888" sk_colortype_get_default_8888 :: IO (Sk_colortype)
 -- | `sk_version_get_milestone`
-foreign import ccall "sk_version_get_milestone" skVersionGetMilestone :: IO (CInt)
+foreign import ccall "sk_version_get_milestone" sk_version_get_milestone :: IO (CInt)
 -- | `sk_version_get_increment`
-foreign import ccall "sk_version_get_increment" skVersionGetIncrement :: IO (CInt)
+foreign import ccall "sk_version_get_increment" sk_version_get_increment :: IO (CInt)
 -- | `sk_version_get_string`
-foreign import ccall "sk_version_get_string" skVersionGetString :: IO (Ptr (CChar))
+foreign import ccall "sk_version_get_string" sk_version_get_string :: IO (Ptr (CChar))
 -- | `sk_document_unref`
-foreign import ccall "sk_document_unref" skDocumentUnRef :: (Ptr (SkDocument)) -> IO (())
+foreign import ccall "sk_document_unref" sk_document_unref :: (Ptr (Sk_document)) -> IO (())
 -- | `sk_document_create_pdf_from_stream`
-foreign import ccall "sk_document_create_pdf_from_stream" skDocumentCreatePdfFromStream :: (Ptr (SkWStream)) -> IO (Ptr (SkDocument))
+foreign import ccall "sk_document_create_pdf_from_stream" sk_document_create_pdf_from_stream :: (Ptr (Sk_wstream)) -> IO (Ptr (Sk_document))
 -- | `sk_document_create_pdf_from_stream_with_metadata`
-foreign import ccall "sk_document_create_pdf_from_stream_with_metadata" skDocumentCreatePdfFromStreamWithMetadata :: (Ptr (SkWStream)) -> (Ptr (SkDocumentPdfMetadata)) -> IO (Ptr (SkDocument))
+foreign import ccall "sk_document_create_pdf_from_stream_with_metadata" sk_document_create_pdf_from_stream_with_metadata :: (Ptr (Sk_wstream)) -> (Ptr (Sk_document_pdf_metadata)) -> IO (Ptr (Sk_document))
 -- | `sk_document_create_xps_from_stream`
-foreign import ccall "sk_document_create_xps_from_stream" skDocumentCreateXpsFromStream :: (Ptr (SkWStream)) -> (CFloat) -> IO (Ptr (SkDocument))
+foreign import ccall "sk_document_create_xps_from_stream" sk_document_create_xps_from_stream :: (Ptr (Sk_wstream)) -> (CFloat) -> IO (Ptr (Sk_document))
 -- | `sk_document_begin_page`
-foreign import ccall "sk_document_begin_page" skDocumentBeginPage :: (Ptr (SkDocument)) -> (CFloat) -> (CFloat) -> (Ptr (SkRect)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_document_begin_page" sk_document_begin_page :: (Ptr (Sk_document)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_rect)) -> IO (Ptr (Sk_canvas))
 -- | `sk_document_end_page`
-foreign import ccall "sk_document_end_page" skDocumentEndPage :: (Ptr (SkDocument)) -> IO (())
+foreign import ccall "sk_document_end_page" sk_document_end_page :: (Ptr (Sk_document)) -> IO (())
 -- | `sk_document_close`
-foreign import ccall "sk_document_close" skDocumentClose :: (Ptr (SkDocument)) -> IO (())
+foreign import ccall "sk_document_close" sk_document_close :: (Ptr (Sk_document)) -> IO (())
 -- | `sk_document_abort`
-foreign import ccall "sk_document_abort" skDocumentAbort :: (Ptr (SkDocument)) -> IO (())
+foreign import ccall "sk_document_abort" sk_document_abort :: (Ptr (Sk_document)) -> IO (())
 -- | `sk_image_ref`
-foreign import ccall "sk_image_ref" skImageRef :: (Ptr (SkImage)) -> IO (())
+foreign import ccall "sk_image_ref" sk_image_ref :: (Ptr (Sk_image)) -> IO (())
 -- | `sk_image_unref`
-foreign import ccall "sk_image_unref" skImageUnRef :: (Ptr (SkImage)) -> IO (())
+foreign import ccall "sk_image_unref" sk_image_unref :: (Ptr (Sk_image)) -> IO (())
 -- | `sk_image_new_raster_copy`
-foreign import ccall "sk_image_new_raster_copy" skImageNewRasterCopy :: (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_raster_copy" sk_image_new_raster_copy :: (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_raster_copy_with_pixmap`
-foreign import ccall "sk_image_new_raster_copy_with_pixmap" skImageNewRasterCopyWithPixmap :: (Ptr (SkPixmap)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_raster_copy_with_pixmap" sk_image_new_raster_copy_with_pixmap :: (Ptr (Sk_pixmap)) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_raster_data`
-foreign import ccall "sk_image_new_raster_data" skImageNewRasterData :: (Ptr (SkImageInfo)) -> (Ptr (SkData)) -> (CSize) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_raster_data" sk_image_new_raster_data :: (Ptr (Sk_imageinfo)) -> (Ptr (Sk_data)) -> (CSize) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_raster`
-foreign import ccall "sk_image_new_raster" skImageNewRaster :: (Ptr (SkPixmap)) -> (FunPtr (SkImageRasterReleaseProc)) -> (Ptr (())) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_raster" sk_image_new_raster :: (Ptr (Sk_pixmap)) -> (FunPtr (Sk_image_raster_release_proc)) -> (Ptr (())) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_from_bitmap`
-foreign import ccall "sk_image_new_from_bitmap" skImageNewFromBitmap :: (Ptr (SkBitmap)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_from_bitmap" sk_image_new_from_bitmap :: (Ptr (Sk_bitmap)) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_from_encoded`
-foreign import ccall "sk_image_new_from_encoded" skImageNewFromEncoded :: (Ptr (SkData)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_from_encoded" sk_image_new_from_encoded :: (Ptr (Sk_data)) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_from_texture`
-foreign import ccall "sk_image_new_from_texture" skImageNewFromTexture :: (Ptr (GrRecordingContext)) -> (Ptr (GrBackendTexture)) -> (GrSurfaceOrigin) -> (SkColorType) -> (SkAlphaType) -> (Ptr (SkColorSpace)) -> (FunPtr (SkImageTextureReleaseProc)) -> (Ptr (())) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_from_texture" sk_image_new_from_texture :: (Ptr (Gr_recording_context)) -> (Ptr (Gr_backendtexture)) -> (Gr_surfaceorigin) -> (Sk_colortype) -> (Sk_alphatype) -> (Ptr (Sk_colorspace)) -> (FunPtr (Sk_image_texture_release_proc)) -> (Ptr (())) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_from_adopted_texture`
-foreign import ccall "sk_image_new_from_adopted_texture" skImageNewFromAdoptedTexture :: (Ptr (GrRecordingContext)) -> (Ptr (GrBackendTexture)) -> (GrSurfaceOrigin) -> (SkColorType) -> (SkAlphaType) -> (Ptr (SkColorSpace)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_from_adopted_texture" sk_image_new_from_adopted_texture :: (Ptr (Gr_recording_context)) -> (Ptr (Gr_backendtexture)) -> (Gr_surfaceorigin) -> (Sk_colortype) -> (Sk_alphatype) -> (Ptr (Sk_colorspace)) -> IO (Ptr (Sk_image))
 -- | `sk_image_new_from_picture`
-foreign import ccall "sk_image_new_from_picture" skImageNewFromPicture :: (Ptr (SkPicture)) -> (Ptr (SkISize)) -> (Ptr (SkMatrix)) -> (Ptr (SkPaint)) -> (CBool) -> (Ptr (SkColorSpace)) -> (Ptr (SkSurfaceProps)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_new_from_picture" sk_image_new_from_picture :: (Ptr (Sk_picture)) -> (Ptr (Sk_isize)) -> (Ptr (Sk_matrix)) -> (Ptr (Sk_paint)) -> (CBool) -> (Ptr (Sk_colorspace)) -> (Ptr (Sk_surfaceprops)) -> IO (Ptr (Sk_image))
 -- | `sk_image_get_width`
-foreign import ccall "sk_image_get_width" skImageGetWidth :: (Ptr (SkImage)) -> IO (CInt)
+foreign import ccall "sk_image_get_width" sk_image_get_width :: (Ptr (Sk_image)) -> IO (CInt)
 -- | `sk_image_get_height`
-foreign import ccall "sk_image_get_height" skImageGetHeight :: (Ptr (SkImage)) -> IO (CInt)
+foreign import ccall "sk_image_get_height" sk_image_get_height :: (Ptr (Sk_image)) -> IO (CInt)
 -- | `sk_image_get_unique_id`
-foreign import ccall "sk_image_get_unique_id" skImageGetUniqueId :: (Ptr (SkImage)) -> IO (Word32)
+foreign import ccall "sk_image_get_unique_id" sk_image_get_unique_id :: (Ptr (Sk_image)) -> IO (Word32)
 -- | `sk_image_get_alpha_type`
-foreign import ccall "sk_image_get_alpha_type" skImageGetAlphaType :: (Ptr (SkImage)) -> IO (SkAlphaType)
+foreign import ccall "sk_image_get_alpha_type" sk_image_get_alpha_type :: (Ptr (Sk_image)) -> IO (Sk_alphatype)
 -- | `sk_image_get_color_type`
-foreign import ccall "sk_image_get_color_type" skImageGetColorType :: (Ptr (SkImage)) -> IO (SkColorType)
+foreign import ccall "sk_image_get_color_type" sk_image_get_color_type :: (Ptr (Sk_image)) -> IO (Sk_colortype)
 -- | `sk_image_get_colorspace`
-foreign import ccall "sk_image_get_colorspace" skImageGetColorSpace :: (Ptr (SkImage)) -> IO (Ptr (SkColorSpace))
+foreign import ccall "sk_image_get_colorspace" sk_image_get_colorspace :: (Ptr (Sk_image)) -> IO (Ptr (Sk_colorspace))
 -- | `sk_image_is_alpha_only`
-foreign import ccall "sk_image_is_alpha_only" skImageIsAlphaOnly :: (Ptr (SkImage)) -> IO (CBool)
+foreign import ccall "sk_image_is_alpha_only" sk_image_is_alpha_only :: (Ptr (Sk_image)) -> IO (CBool)
 -- | `sk_image_make_shader`
-foreign import ccall "sk_image_make_shader" skImageMakeShader :: (Ptr (SkImage)) -> (SkShaderTileMode) -> (SkShaderTileMode) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_image_make_shader" sk_image_make_shader :: (Ptr (Sk_image)) -> (Sk_shader_tilemode) -> (Sk_shader_tilemode) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_image_make_raw_shader`
-foreign import ccall "sk_image_make_raw_shader" skImageMakeRawShader :: (Ptr (SkImage)) -> (SkShaderTileMode) -> (SkShaderTileMode) -> (Ptr (SkSamplingOptions)) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_image_make_raw_shader" sk_image_make_raw_shader :: (Ptr (Sk_image)) -> (Sk_shader_tilemode) -> (Sk_shader_tilemode) -> (Ptr (Sk_sampling_options)) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_image_peek_pixels`
-foreign import ccall "sk_image_peek_pixels" skImagePeekPixels :: (Ptr (SkImage)) -> (Ptr (SkPixmap)) -> IO (CBool)
+foreign import ccall "sk_image_peek_pixels" sk_image_peek_pixels :: (Ptr (Sk_image)) -> (Ptr (Sk_pixmap)) -> IO (CBool)
 -- | `sk_image_is_texture_backed`
-foreign import ccall "sk_image_is_texture_backed" skImageIsTextureBacked :: (Ptr (SkImage)) -> IO (CBool)
+foreign import ccall "sk_image_is_texture_backed" sk_image_is_texture_backed :: (Ptr (Sk_image)) -> IO (CBool)
 -- | `sk_image_is_lazy_generated`
-foreign import ccall "sk_image_is_lazy_generated" skImageIsLazyGenerated :: (Ptr (SkImage)) -> IO (CBool)
+foreign import ccall "sk_image_is_lazy_generated" sk_image_is_lazy_generated :: (Ptr (Sk_image)) -> IO (CBool)
 -- | `sk_image_is_valid`
-foreign import ccall "sk_image_is_valid" skImageIsValid :: (Ptr (SkImage)) -> (Ptr (GrRecordingContext)) -> IO (CBool)
+foreign import ccall "sk_image_is_valid" sk_image_is_valid :: (Ptr (Sk_image)) -> (Ptr (Gr_recording_context)) -> IO (CBool)
 -- | `sk_image_read_pixels`
-foreign import ccall "sk_image_read_pixels" skImageReadPixels :: (Ptr (SkImage)) -> (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (CInt) -> (CInt) -> (SkImageCachingHint) -> IO (CBool)
+foreign import ccall "sk_image_read_pixels" sk_image_read_pixels :: (Ptr (Sk_image)) -> (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (CInt) -> (CInt) -> (Sk_image_caching_hint) -> IO (CBool)
 -- | `sk_image_read_pixels_into_pixmap`
-foreign import ccall "sk_image_read_pixels_into_pixmap" skImageReadPixelsIntoPixmap :: (Ptr (SkImage)) -> (Ptr (SkPixmap)) -> (CInt) -> (CInt) -> (SkImageCachingHint) -> IO (CBool)
+foreign import ccall "sk_image_read_pixels_into_pixmap" sk_image_read_pixels_into_pixmap :: (Ptr (Sk_image)) -> (Ptr (Sk_pixmap)) -> (CInt) -> (CInt) -> (Sk_image_caching_hint) -> IO (CBool)
 -- | `sk_image_scale_pixels`
-foreign import ccall "sk_image_scale_pixels" skImageScalePixels :: (Ptr (SkImage)) -> (Ptr (SkPixmap)) -> (Ptr (SkSamplingOptions)) -> (SkImageCachingHint) -> IO (CBool)
+foreign import ccall "sk_image_scale_pixels" sk_image_scale_pixels :: (Ptr (Sk_image)) -> (Ptr (Sk_pixmap)) -> (Ptr (Sk_sampling_options)) -> (Sk_image_caching_hint) -> IO (CBool)
 -- | `sk_image_ref_encoded`
-foreign import ccall "sk_image_ref_encoded" skImageRefEncoded :: (Ptr (SkImage)) -> IO (Ptr (SkData))
+foreign import ccall "sk_image_ref_encoded" sk_image_ref_encoded :: (Ptr (Sk_image)) -> IO (Ptr (Sk_data))
 -- | `sk_image_make_subset_raster`
-foreign import ccall "sk_image_make_subset_raster" skImageMakeSubsetRaster :: (Ptr (SkImage)) -> (Ptr (SkIRect)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_make_subset_raster" sk_image_make_subset_raster :: (Ptr (Sk_image)) -> (Ptr (Sk_irect)) -> IO (Ptr (Sk_image))
 -- | `sk_image_make_subset`
-foreign import ccall "sk_image_make_subset" skImageMakeSubset :: (Ptr (SkImage)) -> (Ptr (GrDirectContext)) -> (Ptr (SkIRect)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_make_subset" sk_image_make_subset :: (Ptr (Sk_image)) -> (Ptr (Gr_direct_context)) -> (Ptr (Sk_irect)) -> IO (Ptr (Sk_image))
 -- | `sk_image_make_texture_image`
-foreign import ccall "sk_image_make_texture_image" skImageMakeTextureImage :: (Ptr (SkImage)) -> (Ptr (GrDirectContext)) -> (CBool) -> (CBool) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_make_texture_image" sk_image_make_texture_image :: (Ptr (Sk_image)) -> (Ptr (Gr_direct_context)) -> (CBool) -> (CBool) -> IO (Ptr (Sk_image))
 -- | `sk_image_make_non_texture_image`
-foreign import ccall "sk_image_make_non_texture_image" skImageMakeNonTextureImage :: (Ptr (SkImage)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_make_non_texture_image" sk_image_make_non_texture_image :: (Ptr (Sk_image)) -> IO (Ptr (Sk_image))
 -- | `sk_image_make_raster_image`
-foreign import ccall "sk_image_make_raster_image" skImageMakeRasterImage :: (Ptr (SkImage)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_make_raster_image" sk_image_make_raster_image :: (Ptr (Sk_image)) -> IO (Ptr (Sk_image))
 -- | `sk_image_make_with_filter_raster`
-foreign import ccall "sk_image_make_with_filter_raster" skImageMakeWithFilterRaster :: (Ptr (SkImage)) -> (Ptr (SkImageFilter)) -> (Ptr (SkIRect)) -> (Ptr (SkIRect)) -> (Ptr (SkIRect)) -> (Ptr (SkIPoint)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_make_with_filter_raster" sk_image_make_with_filter_raster :: (Ptr (Sk_image)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_irect)) -> (Ptr (Sk_irect)) -> (Ptr (Sk_irect)) -> (Ptr (Sk_ipoint)) -> IO (Ptr (Sk_image))
 -- | `sk_image_make_with_filter`
-foreign import ccall "sk_image_make_with_filter" skImageMakeWithFilter :: (Ptr (SkImage)) -> (Ptr (GrRecordingContext)) -> (Ptr (SkImageFilter)) -> (Ptr (SkIRect)) -> (Ptr (SkIRect)) -> (Ptr (SkIRect)) -> (Ptr (SkIPoint)) -> IO (Ptr (SkImage))
+foreign import ccall "sk_image_make_with_filter" sk_image_make_with_filter :: (Ptr (Sk_image)) -> (Ptr (Gr_recording_context)) -> (Ptr (Sk_imagefilter)) -> (Ptr (Sk_irect)) -> (Ptr (Sk_irect)) -> (Ptr (Sk_irect)) -> (Ptr (Sk_ipoint)) -> IO (Ptr (Sk_image))
 -- | `sk_codec_min_buffered_bytes_needed`
-foreign import ccall "sk_codec_min_buffered_bytes_needed" skCodecMinBufferedBytesNeeded :: IO (CSize)
+foreign import ccall "sk_codec_min_buffered_bytes_needed" sk_codec_min_buffered_bytes_needed :: IO (CSize)
 -- | `sk_codec_new_from_stream`
-foreign import ccall "sk_codec_new_from_stream" skCodecNewFromStream :: (Ptr (SkStream)) -> (Ptr (SkCodecResult)) -> IO (Ptr (SkCodec))
+foreign import ccall "sk_codec_new_from_stream" sk_codec_new_from_stream :: (Ptr (Sk_stream)) -> (Ptr (Sk_codec_result)) -> IO (Ptr (Sk_codec))
 -- | `sk_codec_new_from_data`
-foreign import ccall "sk_codec_new_from_data" skCodecNewFromData :: (Ptr (SkData)) -> IO (Ptr (SkCodec))
+foreign import ccall "sk_codec_new_from_data" sk_codec_new_from_data :: (Ptr (Sk_data)) -> IO (Ptr (Sk_codec))
 -- | `sk_codec_destroy`
-foreign import ccall "sk_codec_destroy" skCodecDestroy :: (Ptr (SkCodec)) -> IO (())
+foreign import ccall "sk_codec_destroy" sk_codec_destroy :: (Ptr (Sk_codec)) -> IO (())
 -- | `sk_codec_get_info`
-foreign import ccall "sk_codec_get_info" skCodecGetInfo :: (Ptr (SkCodec)) -> (Ptr (SkImageInfo)) -> IO (())
+foreign import ccall "sk_codec_get_info" sk_codec_get_info :: (Ptr (Sk_codec)) -> (Ptr (Sk_imageinfo)) -> IO (())
 -- | `sk_codec_get_origin`
-foreign import ccall "sk_codec_get_origin" skCodecGetOrigin :: (Ptr (SkCodec)) -> IO (SkEncodedOrigin)
+foreign import ccall "sk_codec_get_origin" sk_codec_get_origin :: (Ptr (Sk_codec)) -> IO (Sk_encodedorigin)
 -- | `sk_codec_get_scaled_dimensions`
-foreign import ccall "sk_codec_get_scaled_dimensions" skCodecGetScaledDimensions :: (Ptr (SkCodec)) -> (CFloat) -> (Ptr (SkISize)) -> IO (())
+foreign import ccall "sk_codec_get_scaled_dimensions" sk_codec_get_scaled_dimensions :: (Ptr (Sk_codec)) -> (CFloat) -> (Ptr (Sk_isize)) -> IO (())
 -- | `sk_codec_get_valid_subset`
-foreign import ccall "sk_codec_get_valid_subset" skCodecGetValidSubset :: (Ptr (SkCodec)) -> (Ptr (SkIRect)) -> IO (CBool)
+foreign import ccall "sk_codec_get_valid_subset" sk_codec_get_valid_subset :: (Ptr (Sk_codec)) -> (Ptr (Sk_irect)) -> IO (CBool)
 -- | `sk_codec_get_encoded_format`
-foreign import ccall "sk_codec_get_encoded_format" skCodecGetEncodedFormat :: (Ptr (SkCodec)) -> IO (SkEncodedImageFormat)
+foreign import ccall "sk_codec_get_encoded_format" sk_codec_get_encoded_format :: (Ptr (Sk_codec)) -> IO (Sk_encoded_image_format)
 -- | `sk_codec_get_pixels`
-foreign import ccall "sk_codec_get_pixels" skCodecGetPixels :: (Ptr (SkCodec)) -> (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (Ptr (SkCodecOptions)) -> IO (SkCodecResult)
+foreign import ccall "sk_codec_get_pixels" sk_codec_get_pixels :: (Ptr (Sk_codec)) -> (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (Ptr (Sk_codec_options)) -> IO (Sk_codec_result)
 -- | `sk_codec_start_incremental_decode`
-foreign import ccall "sk_codec_start_incremental_decode" skCodecStartIncrementalDecode :: (Ptr (SkCodec)) -> (Ptr (SkImageInfo)) -> (Ptr (())) -> (CSize) -> (Ptr (SkCodecOptions)) -> IO (SkCodecResult)
+foreign import ccall "sk_codec_start_incremental_decode" sk_codec_start_incremental_decode :: (Ptr (Sk_codec)) -> (Ptr (Sk_imageinfo)) -> (Ptr (())) -> (CSize) -> (Ptr (Sk_codec_options)) -> IO (Sk_codec_result)
 -- | `sk_codec_incremental_decode`
-foreign import ccall "sk_codec_incremental_decode" skCodecIncrementalDecode :: (Ptr (SkCodec)) -> (Ptr (CInt)) -> IO (SkCodecResult)
+foreign import ccall "sk_codec_incremental_decode" sk_codec_incremental_decode :: (Ptr (Sk_codec)) -> (Ptr (CInt)) -> IO (Sk_codec_result)
 -- | `sk_codec_start_scanline_decode`
-foreign import ccall "sk_codec_start_scanline_decode" skCodecStartScanLineDecode :: (Ptr (SkCodec)) -> (Ptr (SkImageInfo)) -> (Ptr (SkCodecOptions)) -> IO (SkCodecResult)
+foreign import ccall "sk_codec_start_scanline_decode" sk_codec_start_scanline_decode :: (Ptr (Sk_codec)) -> (Ptr (Sk_imageinfo)) -> (Ptr (Sk_codec_options)) -> IO (Sk_codec_result)
 -- | `sk_codec_get_scanlines`
-foreign import ccall "sk_codec_get_scanlines" skCodecGetScanLines :: (Ptr (SkCodec)) -> (Ptr (())) -> (CInt) -> (CSize) -> IO (CInt)
+foreign import ccall "sk_codec_get_scanlines" sk_codec_get_scanlines :: (Ptr (Sk_codec)) -> (Ptr (())) -> (CInt) -> (CSize) -> IO (CInt)
 -- | `sk_codec_skip_scanlines`
-foreign import ccall "sk_codec_skip_scanlines" skCodecSkipScanLines :: (Ptr (SkCodec)) -> (CInt) -> IO (CBool)
+foreign import ccall "sk_codec_skip_scanlines" sk_codec_skip_scanlines :: (Ptr (Sk_codec)) -> (CInt) -> IO (CBool)
 -- | `sk_codec_get_scanline_order`
-foreign import ccall "sk_codec_get_scanline_order" skCodecGetScanLineOrder :: (Ptr (SkCodec)) -> IO (SkCodecScanLineOrder)
+foreign import ccall "sk_codec_get_scanline_order" sk_codec_get_scanline_order :: (Ptr (Sk_codec)) -> IO (Sk_codec_scanline_order)
 -- | `sk_codec_next_scanline`
-foreign import ccall "sk_codec_next_scanline" skCodecNextScanLine :: (Ptr (SkCodec)) -> IO (CInt)
+foreign import ccall "sk_codec_next_scanline" sk_codec_next_scanline :: (Ptr (Sk_codec)) -> IO (CInt)
 -- | `sk_codec_output_scanline`
-foreign import ccall "sk_codec_output_scanline" skCodecOutputScanLine :: (Ptr (SkCodec)) -> (CInt) -> IO (CInt)
+foreign import ccall "sk_codec_output_scanline" sk_codec_output_scanline :: (Ptr (Sk_codec)) -> (CInt) -> IO (CInt)
 -- | `sk_codec_get_frame_count`
-foreign import ccall "sk_codec_get_frame_count" skCodecGetFrameCount :: (Ptr (SkCodec)) -> IO (CInt)
+foreign import ccall "sk_codec_get_frame_count" sk_codec_get_frame_count :: (Ptr (Sk_codec)) -> IO (CInt)
 -- | `sk_codec_get_frame_info`
-foreign import ccall "sk_codec_get_frame_info" skCodecGetFrameInfo :: (Ptr (SkCodec)) -> (Ptr (SkCodecFrameInfo)) -> IO (())
+foreign import ccall "sk_codec_get_frame_info" sk_codec_get_frame_info :: (Ptr (Sk_codec)) -> (Ptr (Sk_codec_frameinfo)) -> IO (())
 -- | `sk_codec_get_frame_info_for_index`
-foreign import ccall "sk_codec_get_frame_info_for_index" skCodecGetFrameInfoForIndex :: (Ptr (SkCodec)) -> (CInt) -> (Ptr (SkCodecFrameInfo)) -> IO (CBool)
+foreign import ccall "sk_codec_get_frame_info_for_index" sk_codec_get_frame_info_for_index :: (Ptr (Sk_codec)) -> (CInt) -> (Ptr (Sk_codec_frameinfo)) -> IO (CBool)
 -- | `sk_codec_get_repetition_count`
-foreign import ccall "sk_codec_get_repetition_count" skCodecGetRepetitionCount :: (Ptr (SkCodec)) -> IO (CInt)
+foreign import ccall "sk_codec_get_repetition_count" sk_codec_get_repetition_count :: (Ptr (Sk_codec)) -> IO (CInt)
 -- | `sk_data_new_empty`
-foreign import ccall "sk_data_new_empty" skDataNewEmpty :: IO (Ptr (SkData))
+foreign import ccall "sk_data_new_empty" sk_data_new_empty :: IO (Ptr (Sk_data))
 -- | `sk_data_new_with_copy`
-foreign import ccall "sk_data_new_with_copy" skDataNewWithCopy :: (Ptr (())) -> (CSize) -> IO (Ptr (SkData))
+foreign import ccall "sk_data_new_with_copy" sk_data_new_with_copy :: (Ptr (())) -> (CSize) -> IO (Ptr (Sk_data))
 -- | `sk_data_new_subset`
-foreign import ccall "sk_data_new_subset" skDataNewSubset :: (Ptr (SkData)) -> (CSize) -> (CSize) -> IO (Ptr (SkData))
+foreign import ccall "sk_data_new_subset" sk_data_new_subset :: (Ptr (Sk_data)) -> (CSize) -> (CSize) -> IO (Ptr (Sk_data))
 -- | `sk_data_ref`
-foreign import ccall "sk_data_ref" skDataRef :: (Ptr (SkData)) -> IO (())
+foreign import ccall "sk_data_ref" sk_data_ref :: (Ptr (Sk_data)) -> IO (())
 -- | `sk_data_unref`
-foreign import ccall "sk_data_unref" skDataUnRef :: (Ptr (SkData)) -> IO (())
+foreign import ccall "sk_data_unref" sk_data_unref :: (Ptr (Sk_data)) -> IO (())
 -- | `sk_data_get_size`
-foreign import ccall "sk_data_get_size" skDataGetSize :: (Ptr (SkData)) -> IO (CSize)
+foreign import ccall "sk_data_get_size" sk_data_get_size :: (Ptr (Sk_data)) -> IO (CSize)
 -- | `sk_data_get_data`
-foreign import ccall "sk_data_get_data" skDataGetData :: (Ptr (SkData)) -> IO (Ptr (()))
+foreign import ccall "sk_data_get_data" sk_data_get_data :: (Ptr (Sk_data)) -> IO (Ptr (()))
 -- | `sk_data_new_from_file`
-foreign import ccall "sk_data_new_from_file" skDataNewFromFile :: (Ptr (CChar)) -> IO (Ptr (SkData))
+foreign import ccall "sk_data_new_from_file" sk_data_new_from_file :: (Ptr (CChar)) -> IO (Ptr (Sk_data))
 -- | `sk_data_new_from_stream`
-foreign import ccall "sk_data_new_from_stream" skDataNewFromStream :: (Ptr (SkStream)) -> (CSize) -> IO (Ptr (SkData))
+foreign import ccall "sk_data_new_from_stream" sk_data_new_from_stream :: (Ptr (Sk_stream)) -> (CSize) -> IO (Ptr (Sk_data))
 -- | `sk_data_get_bytes`
-foreign import ccall "sk_data_get_bytes" skDataGetBytes :: (Ptr (SkData)) -> IO (Ptr (Word8))
+foreign import ccall "sk_data_get_bytes" sk_data_get_bytes :: (Ptr (Sk_data)) -> IO (Ptr (Word8))
 -- | `sk_data_new_with_proc`
-foreign import ccall "sk_data_new_with_proc" skDataNewWithProc :: (Ptr (())) -> (CSize) -> (FunPtr (SkDataReleaseProc)) -> (Ptr (())) -> IO (Ptr (SkData))
+foreign import ccall "sk_data_new_with_proc" sk_data_new_with_proc :: (Ptr (())) -> (CSize) -> (FunPtr (Sk_data_release_proc)) -> (Ptr (())) -> IO (Ptr (Sk_data))
 -- | `sk_data_new_uninitialized`
-foreign import ccall "sk_data_new_uninitialized" skDataNewUninitialized :: (CSize) -> IO (Ptr (SkData))
+foreign import ccall "sk_data_new_uninitialized" sk_data_new_uninitialized :: (CSize) -> IO (Ptr (Sk_data))
 -- | `sk_paint_new`
-foreign import ccall "sk_paint_new" skPaintNew :: IO (Ptr (SkPaint))
+foreign import ccall "sk_paint_new" sk_paint_new :: IO (Ptr (Sk_paint))
 -- | `sk_paint_clone`
-foreign import ccall "sk_paint_clone" skPaintClone :: (Ptr (SkPaint)) -> IO (Ptr (SkPaint))
+foreign import ccall "sk_paint_clone" sk_paint_clone :: (Ptr (Sk_paint)) -> IO (Ptr (Sk_paint))
 -- | `sk_paint_delete`
-foreign import ccall "sk_paint_delete" skPaintDelete :: (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_paint_delete" sk_paint_delete :: (Ptr (Sk_paint)) -> IO (())
 -- | `sk_paint_reset`
-foreign import ccall "sk_paint_reset" skPaintReset :: (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_paint_reset" sk_paint_reset :: (Ptr (Sk_paint)) -> IO (())
 -- | `sk_paint_is_antialias`
-foreign import ccall "sk_paint_is_antialias" skPaintIsAntiAlias :: (Ptr (SkPaint)) -> IO (CBool)
+foreign import ccall "sk_paint_is_antialias" sk_paint_is_antialias :: (Ptr (Sk_paint)) -> IO (CBool)
 -- | `sk_paint_set_antialias`
-foreign import ccall "sk_paint_set_antialias" skPaintSetAntiAlias :: (Ptr (SkPaint)) -> (CBool) -> IO (())
+foreign import ccall "sk_paint_set_antialias" sk_paint_set_antialias :: (Ptr (Sk_paint)) -> (CBool) -> IO (())
 -- | `sk_paint_get_color`
-foreign import ccall "sk_paint_get_color" skPaintGetColor :: (Ptr (SkPaint)) -> IO (SkColor)
+foreign import ccall "sk_paint_get_color" sk_paint_get_color :: (Ptr (Sk_paint)) -> IO (Sk_color)
 -- | `sk_paint_get_color4f`
-foreign import ccall "sk_paint_get_color4f" skPaintGetColor4F :: (Ptr (SkPaint)) -> (Ptr (SkColor4F)) -> IO (())
+foreign import ccall "sk_paint_get_color4f" sk_paint_get_color4f :: (Ptr (Sk_paint)) -> (Ptr (Sk_color4f)) -> IO (())
 -- | `sk_paint_set_color`
-foreign import ccall "sk_paint_set_color" skPaintSetColor :: (Ptr (SkPaint)) -> (SkColor) -> IO (())
+foreign import ccall "sk_paint_set_color" sk_paint_set_color :: (Ptr (Sk_paint)) -> (Sk_color) -> IO (())
 -- | `sk_paint_set_color4f`
-foreign import ccall "sk_paint_set_color4f" skPaintSetColor4F :: (Ptr (SkPaint)) -> (Ptr (SkColor4F)) -> (Ptr (SkColorSpace)) -> IO (())
+foreign import ccall "sk_paint_set_color4f" sk_paint_set_color4f :: (Ptr (Sk_paint)) -> (Ptr (Sk_color4f)) -> (Ptr (Sk_colorspace)) -> IO (())
 -- | `sk_paint_get_style`
-foreign import ccall "sk_paint_get_style" skPaintGetStyle :: (Ptr (SkPaint)) -> IO (SkPaintStyle)
+foreign import ccall "sk_paint_get_style" sk_paint_get_style :: (Ptr (Sk_paint)) -> IO (Sk_paint_style)
 -- | `sk_paint_set_style`
-foreign import ccall "sk_paint_set_style" skPaintSetStyle :: (Ptr (SkPaint)) -> (SkPaintStyle) -> IO (())
+foreign import ccall "sk_paint_set_style" sk_paint_set_style :: (Ptr (Sk_paint)) -> (Sk_paint_style) -> IO (())
 -- | `sk_paint_get_stroke_width`
-foreign import ccall "sk_paint_get_stroke_width" skPaintGetStrokeWidth :: (Ptr (SkPaint)) -> IO (CFloat)
+foreign import ccall "sk_paint_get_stroke_width" sk_paint_get_stroke_width :: (Ptr (Sk_paint)) -> IO (CFloat)
 -- | `sk_paint_set_stroke_width`
-foreign import ccall "sk_paint_set_stroke_width" skPaintSetStrokeWidth :: (Ptr (SkPaint)) -> (CFloat) -> IO (())
+foreign import ccall "sk_paint_set_stroke_width" sk_paint_set_stroke_width :: (Ptr (Sk_paint)) -> (CFloat) -> IO (())
 -- | `sk_paint_get_stroke_miter`
-foreign import ccall "sk_paint_get_stroke_miter" skPaintGetStrokeMiter :: (Ptr (SkPaint)) -> IO (CFloat)
+foreign import ccall "sk_paint_get_stroke_miter" sk_paint_get_stroke_miter :: (Ptr (Sk_paint)) -> IO (CFloat)
 -- | `sk_paint_set_stroke_miter`
-foreign import ccall "sk_paint_set_stroke_miter" skPaintSetStrokeMiter :: (Ptr (SkPaint)) -> (CFloat) -> IO (())
+foreign import ccall "sk_paint_set_stroke_miter" sk_paint_set_stroke_miter :: (Ptr (Sk_paint)) -> (CFloat) -> IO (())
 -- | `sk_paint_get_stroke_cap`
-foreign import ccall "sk_paint_get_stroke_cap" skPaintGetStrokeCap :: (Ptr (SkPaint)) -> IO (SkStrokeCap)
+foreign import ccall "sk_paint_get_stroke_cap" sk_paint_get_stroke_cap :: (Ptr (Sk_paint)) -> IO (Sk_stroke_cap)
 -- | `sk_paint_set_stroke_cap`
-foreign import ccall "sk_paint_set_stroke_cap" skPaintSetStrokeCap :: (Ptr (SkPaint)) -> (SkStrokeCap) -> IO (())
+foreign import ccall "sk_paint_set_stroke_cap" sk_paint_set_stroke_cap :: (Ptr (Sk_paint)) -> (Sk_stroke_cap) -> IO (())
 -- | `sk_paint_get_stroke_join`
-foreign import ccall "sk_paint_get_stroke_join" skPaintGetStrokeJoin :: (Ptr (SkPaint)) -> IO (SkStrokeJoin)
+foreign import ccall "sk_paint_get_stroke_join" sk_paint_get_stroke_join :: (Ptr (Sk_paint)) -> IO (Sk_stroke_join)
 -- | `sk_paint_set_stroke_join`
-foreign import ccall "sk_paint_set_stroke_join" skPaintSetStrokeJoin :: (Ptr (SkPaint)) -> (SkStrokeJoin) -> IO (())
+foreign import ccall "sk_paint_set_stroke_join" sk_paint_set_stroke_join :: (Ptr (Sk_paint)) -> (Sk_stroke_join) -> IO (())
 -- | `sk_paint_set_shader`
-foreign import ccall "sk_paint_set_shader" skPaintSetShader :: (Ptr (SkPaint)) -> (Ptr (SkShader)) -> IO (())
+foreign import ccall "sk_paint_set_shader" sk_paint_set_shader :: (Ptr (Sk_paint)) -> (Ptr (Sk_shader)) -> IO (())
 -- | `sk_paint_set_maskfilter`
-foreign import ccall "sk_paint_set_maskfilter" skPaintSetMaskFilter :: (Ptr (SkPaint)) -> (Ptr (SkMaskFilter)) -> IO (())
+foreign import ccall "sk_paint_set_maskfilter" sk_paint_set_maskfilter :: (Ptr (Sk_paint)) -> (Ptr (Sk_maskfilter)) -> IO (())
 -- | `sk_paint_set_blendmode`
-foreign import ccall "sk_paint_set_blendmode" skPaintSetBlendMode :: (Ptr (SkPaint)) -> (SkBlendMode) -> IO (())
+foreign import ccall "sk_paint_set_blendmode" sk_paint_set_blendmode :: (Ptr (Sk_paint)) -> (Sk_blendmode) -> IO (())
 -- | `sk_paint_set_blender`
-foreign import ccall "sk_paint_set_blender" skPaintSetBlender :: (Ptr (SkPaint)) -> (Ptr (SkBlender)) -> IO (())
+foreign import ccall "sk_paint_set_blender" sk_paint_set_blender :: (Ptr (Sk_paint)) -> (Ptr (Sk_blender)) -> IO (())
 -- | `sk_paint_is_dither`
-foreign import ccall "sk_paint_is_dither" skPaintIsDither :: (Ptr (SkPaint)) -> IO (CBool)
+foreign import ccall "sk_paint_is_dither" sk_paint_is_dither :: (Ptr (Sk_paint)) -> IO (CBool)
 -- | `sk_paint_set_dither`
-foreign import ccall "sk_paint_set_dither" skPaintSetDither :: (Ptr (SkPaint)) -> (CBool) -> IO (())
+foreign import ccall "sk_paint_set_dither" sk_paint_set_dither :: (Ptr (Sk_paint)) -> (CBool) -> IO (())
 -- | `sk_paint_get_shader`
-foreign import ccall "sk_paint_get_shader" skPaintGetShader :: (Ptr (SkPaint)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_paint_get_shader" sk_paint_get_shader :: (Ptr (Sk_paint)) -> IO (Ptr (Sk_shader))
 -- | `sk_paint_get_maskfilter`
-foreign import ccall "sk_paint_get_maskfilter" skPaintGetMaskFilter :: (Ptr (SkPaint)) -> IO (Ptr (SkMaskFilter))
+foreign import ccall "sk_paint_get_maskfilter" sk_paint_get_maskfilter :: (Ptr (Sk_paint)) -> IO (Ptr (Sk_maskfilter))
 -- | `sk_paint_set_colorfilter`
-foreign import ccall "sk_paint_set_colorfilter" skPaintSetColorFilter :: (Ptr (SkPaint)) -> (Ptr (SkColorFilter)) -> IO (())
+foreign import ccall "sk_paint_set_colorfilter" sk_paint_set_colorfilter :: (Ptr (Sk_paint)) -> (Ptr (Sk_colorfilter)) -> IO (())
 -- | `sk_paint_get_colorfilter`
-foreign import ccall "sk_paint_get_colorfilter" skPaintGetColorFilter :: (Ptr (SkPaint)) -> IO (Ptr (SkColorFilter))
+foreign import ccall "sk_paint_get_colorfilter" sk_paint_get_colorfilter :: (Ptr (Sk_paint)) -> IO (Ptr (Sk_colorfilter))
 -- | `sk_paint_set_imagefilter`
-foreign import ccall "sk_paint_set_imagefilter" skPaintSetImageFilter :: (Ptr (SkPaint)) -> (Ptr (SkImageFilter)) -> IO (())
+foreign import ccall "sk_paint_set_imagefilter" sk_paint_set_imagefilter :: (Ptr (Sk_paint)) -> (Ptr (Sk_imagefilter)) -> IO (())
 -- | `sk_paint_get_imagefilter`
-foreign import ccall "sk_paint_get_imagefilter" skPaintGetImageFilter :: (Ptr (SkPaint)) -> IO (Ptr (SkImageFilter))
+foreign import ccall "sk_paint_get_imagefilter" sk_paint_get_imagefilter :: (Ptr (Sk_paint)) -> IO (Ptr (Sk_imagefilter))
 -- | `sk_paint_get_blendmode`
-foreign import ccall "sk_paint_get_blendmode" skPaintGetBlendMode :: (Ptr (SkPaint)) -> IO (SkBlendMode)
+foreign import ccall "sk_paint_get_blendmode" sk_paint_get_blendmode :: (Ptr (Sk_paint)) -> IO (Sk_blendmode)
 -- | `sk_paint_get_blender`
-foreign import ccall "sk_paint_get_blender" skPaintGetBlender :: (Ptr (SkPaint)) -> IO (Ptr (SkBlender))
+foreign import ccall "sk_paint_get_blender" sk_paint_get_blender :: (Ptr (Sk_paint)) -> IO (Ptr (Sk_blender))
 -- | `sk_paint_get_path_effect`
-foreign import ccall "sk_paint_get_path_effect" skPaintGetPathEffect :: (Ptr (SkPaint)) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_paint_get_path_effect" sk_paint_get_path_effect :: (Ptr (Sk_paint)) -> IO (Ptr (Sk_path_effect))
 -- | `sk_paint_set_path_effect`
-foreign import ccall "sk_paint_set_path_effect" skPaintSetPathEffect :: (Ptr (SkPaint)) -> (Ptr (SkPathEffect)) -> IO (())
+foreign import ccall "sk_paint_set_path_effect" sk_paint_set_path_effect :: (Ptr (Sk_paint)) -> (Ptr (Sk_path_effect)) -> IO (())
 -- | `sk_paint_get_fill_path`
-foreign import ccall "sk_paint_get_fill_path" skPaintGetFillPath :: (Ptr (SkPaint)) -> (Ptr (SkPath)) -> (Ptr (SkPath)) -> (Ptr (SkRect)) -> (Ptr (SkMatrix)) -> IO (CBool)
+foreign import ccall "sk_paint_get_fill_path" sk_paint_get_fill_path :: (Ptr (Sk_paint)) -> (Ptr (Sk_path)) -> (Ptr (Sk_path)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_matrix)) -> IO (CBool)
 -- | `sk_stream_asset_destroy`
-foreign import ccall "sk_stream_asset_destroy" skStreamAssetDestroy :: (Ptr (SkStreamAsset)) -> IO (())
+foreign import ccall "sk_stream_asset_destroy" sk_stream_asset_destroy :: (Ptr (Sk_stream_asset)) -> IO (())
 -- | `sk_filestream_new`
-foreign import ccall "sk_filestream_new" skFileStreamNew :: (Ptr (CChar)) -> IO (Ptr (SkStreamFileStream))
+foreign import ccall "sk_filestream_new" sk_filestream_new :: (Ptr (CChar)) -> IO (Ptr (Sk_stream_filestream))
 -- | `sk_filestream_destroy`
-foreign import ccall "sk_filestream_destroy" skFileStreamDestroy :: (Ptr (SkStreamFileStream)) -> IO (())
+foreign import ccall "sk_filestream_destroy" sk_filestream_destroy :: (Ptr (Sk_stream_filestream)) -> IO (())
 -- | `sk_filestream_is_valid`
-foreign import ccall "sk_filestream_is_valid" skFileStreamIsValid :: (Ptr (SkStreamFileStream)) -> IO (CBool)
+foreign import ccall "sk_filestream_is_valid" sk_filestream_is_valid :: (Ptr (Sk_stream_filestream)) -> IO (CBool)
 -- | `sk_memorystream_new`
-foreign import ccall "sk_memorystream_new" skMemoryStreamNew :: IO (Ptr (SkStreamMemoryStream))
+foreign import ccall "sk_memorystream_new" sk_memorystream_new :: IO (Ptr (Sk_stream_memorystream))
 -- | `sk_memorystream_new_with_length`
-foreign import ccall "sk_memorystream_new_with_length" skMemoryStreamNewWithLength :: (CSize) -> IO (Ptr (SkStreamMemoryStream))
+foreign import ccall "sk_memorystream_new_with_length" sk_memorystream_new_with_length :: (CSize) -> IO (Ptr (Sk_stream_memorystream))
 -- | `sk_memorystream_new_with_data`
-foreign import ccall "sk_memorystream_new_with_data" skMemoryStreamNewWithData :: (Ptr (())) -> (CSize) -> (CBool) -> IO (Ptr (SkStreamMemoryStream))
+foreign import ccall "sk_memorystream_new_with_data" sk_memorystream_new_with_data :: (Ptr (())) -> (CSize) -> (CBool) -> IO (Ptr (Sk_stream_memorystream))
 -- | `sk_memorystream_new_with_skdata`
-foreign import ccall "sk_memorystream_new_with_skdata" skMemoryStreamNewWithSkData :: (Ptr (SkData)) -> IO (Ptr (SkStreamMemoryStream))
+foreign import ccall "sk_memorystream_new_with_skdata" sk_memorystream_new_with_skdata :: (Ptr (Sk_data)) -> IO (Ptr (Sk_stream_memorystream))
 -- | `sk_memorystream_set_memory`
-foreign import ccall "sk_memorystream_set_memory" skMemoryStreamSetMemory :: (Ptr (SkStreamMemoryStream)) -> (Ptr (())) -> (CSize) -> (CBool) -> IO (())
+foreign import ccall "sk_memorystream_set_memory" sk_memorystream_set_memory :: (Ptr (Sk_stream_memorystream)) -> (Ptr (())) -> (CSize) -> (CBool) -> IO (())
 -- | `sk_memorystream_destroy`
-foreign import ccall "sk_memorystream_destroy" skMemoryStreamDestroy :: (Ptr (SkStreamMemoryStream)) -> IO (())
+foreign import ccall "sk_memorystream_destroy" sk_memorystream_destroy :: (Ptr (Sk_stream_memorystream)) -> IO (())
 -- | `sk_stream_read`
-foreign import ccall "sk_stream_read" skStreamRead :: (Ptr (SkStream)) -> (Ptr (())) -> (CSize) -> IO (CSize)
+foreign import ccall "sk_stream_read" sk_stream_read :: (Ptr (Sk_stream)) -> (Ptr (())) -> (CSize) -> IO (CSize)
 -- | `sk_stream_peek`
-foreign import ccall "sk_stream_peek" skStreamPeek :: (Ptr (SkStream)) -> (Ptr (())) -> (CSize) -> IO (CSize)
+foreign import ccall "sk_stream_peek" sk_stream_peek :: (Ptr (Sk_stream)) -> (Ptr (())) -> (CSize) -> IO (CSize)
 -- | `sk_stream_skip`
-foreign import ccall "sk_stream_skip" skStreamSkip :: (Ptr (SkStream)) -> (CSize) -> IO (CSize)
+foreign import ccall "sk_stream_skip" sk_stream_skip :: (Ptr (Sk_stream)) -> (CSize) -> IO (CSize)
 -- | `sk_stream_is_at_end`
-foreign import ccall "sk_stream_is_at_end" skStreamIsAtEnd :: (Ptr (SkStream)) -> IO (CBool)
+foreign import ccall "sk_stream_is_at_end" sk_stream_is_at_end :: (Ptr (Sk_stream)) -> IO (CBool)
 -- | `sk_stream_read_s8`
-foreign import ccall "sk_stream_read_s8" skStreamReadS8 :: (Ptr (SkStream)) -> (Ptr (Int8)) -> IO (CBool)
+foreign import ccall "sk_stream_read_s8" sk_stream_read_s8 :: (Ptr (Sk_stream)) -> (Ptr (Int8)) -> IO (CBool)
 -- | `sk_stream_read_s16`
-foreign import ccall "sk_stream_read_s16" skStreamReadS16 :: (Ptr (SkStream)) -> (Ptr (Int16)) -> IO (CBool)
+foreign import ccall "sk_stream_read_s16" sk_stream_read_s16 :: (Ptr (Sk_stream)) -> (Ptr (Int16)) -> IO (CBool)
 -- | `sk_stream_read_s32`
-foreign import ccall "sk_stream_read_s32" skStreamReadS32 :: (Ptr (SkStream)) -> (Ptr (Int32)) -> IO (CBool)
+foreign import ccall "sk_stream_read_s32" sk_stream_read_s32 :: (Ptr (Sk_stream)) -> (Ptr (Int32)) -> IO (CBool)
 -- | `sk_stream_read_u8`
-foreign import ccall "sk_stream_read_u8" skStreamReadU8 :: (Ptr (SkStream)) -> (Ptr (Word8)) -> IO (CBool)
+foreign import ccall "sk_stream_read_u8" sk_stream_read_u8 :: (Ptr (Sk_stream)) -> (Ptr (Word8)) -> IO (CBool)
 -- | `sk_stream_read_u16`
-foreign import ccall "sk_stream_read_u16" skStreamReadU16 :: (Ptr (SkStream)) -> (Ptr (Word16)) -> IO (CBool)
+foreign import ccall "sk_stream_read_u16" sk_stream_read_u16 :: (Ptr (Sk_stream)) -> (Ptr (Word16)) -> IO (CBool)
 -- | `sk_stream_read_u32`
-foreign import ccall "sk_stream_read_u32" skStreamReadU32 :: (Ptr (SkStream)) -> (Ptr (Word32)) -> IO (CBool)
+foreign import ccall "sk_stream_read_u32" sk_stream_read_u32 :: (Ptr (Sk_stream)) -> (Ptr (Word32)) -> IO (CBool)
 -- | `sk_stream_read_bool`
-foreign import ccall "sk_stream_read_bool" skStreamReadBooL :: (Ptr (SkStream)) -> (Ptr (CBool)) -> IO (CBool)
+foreign import ccall "sk_stream_read_bool" sk_stream_read_bool :: (Ptr (Sk_stream)) -> (Ptr (CBool)) -> IO (CBool)
 -- | `sk_stream_rewind`
-foreign import ccall "sk_stream_rewind" skStreamRewind :: (Ptr (SkStream)) -> IO (CBool)
+foreign import ccall "sk_stream_rewind" sk_stream_rewind :: (Ptr (Sk_stream)) -> IO (CBool)
 -- | `sk_stream_has_position`
-foreign import ccall "sk_stream_has_position" skStreamHasPosition :: (Ptr (SkStream)) -> IO (CBool)
+foreign import ccall "sk_stream_has_position" sk_stream_has_position :: (Ptr (Sk_stream)) -> IO (CBool)
 -- | `sk_stream_get_position`
-foreign import ccall "sk_stream_get_position" skStreamGetPosition :: (Ptr (SkStream)) -> IO (CSize)
+foreign import ccall "sk_stream_get_position" sk_stream_get_position :: (Ptr (Sk_stream)) -> IO (CSize)
 -- | `sk_stream_seek`
-foreign import ccall "sk_stream_seek" skStreamSeek :: (Ptr (SkStream)) -> (CSize) -> IO (CBool)
+foreign import ccall "sk_stream_seek" sk_stream_seek :: (Ptr (Sk_stream)) -> (CSize) -> IO (CBool)
 -- | `sk_stream_move`
-foreign import ccall "sk_stream_move" skStreamMove :: (Ptr (SkStream)) -> (CLong) -> IO (CBool)
+foreign import ccall "sk_stream_move" sk_stream_move :: (Ptr (Sk_stream)) -> (CLong) -> IO (CBool)
 -- | `sk_stream_has_length`
-foreign import ccall "sk_stream_has_length" skStreamHasLength :: (Ptr (SkStream)) -> IO (CBool)
+foreign import ccall "sk_stream_has_length" sk_stream_has_length :: (Ptr (Sk_stream)) -> IO (CBool)
 -- | `sk_stream_get_length`
-foreign import ccall "sk_stream_get_length" skStreamGetLength :: (Ptr (SkStream)) -> IO (CSize)
+foreign import ccall "sk_stream_get_length" sk_stream_get_length :: (Ptr (Sk_stream)) -> IO (CSize)
 -- | `sk_stream_get_memory_base`
-foreign import ccall "sk_stream_get_memory_base" skStreamGetMemoryBase :: (Ptr (SkStream)) -> IO (Ptr (()))
+foreign import ccall "sk_stream_get_memory_base" sk_stream_get_memory_base :: (Ptr (Sk_stream)) -> IO (Ptr (()))
 -- | `sk_stream_fork`
-foreign import ccall "sk_stream_fork" skStreamFork :: (Ptr (SkStream)) -> IO (Ptr (SkStream))
+foreign import ccall "sk_stream_fork" sk_stream_fork :: (Ptr (Sk_stream)) -> IO (Ptr (Sk_stream))
 -- | `sk_stream_duplicate`
-foreign import ccall "sk_stream_duplicate" skStreamDuplicate :: (Ptr (SkStream)) -> IO (Ptr (SkStream))
+foreign import ccall "sk_stream_duplicate" sk_stream_duplicate :: (Ptr (Sk_stream)) -> IO (Ptr (Sk_stream))
 -- | `sk_stream_destroy`
-foreign import ccall "sk_stream_destroy" skStreamDestroy :: (Ptr (SkStream)) -> IO (())
+foreign import ccall "sk_stream_destroy" sk_stream_destroy :: (Ptr (Sk_stream)) -> IO (())
 -- | `sk_filewstream_new`
-foreign import ccall "sk_filewstream_new" skFileWStreamNew :: (Ptr (CChar)) -> IO (Ptr (SkWStreamFileStream))
+foreign import ccall "sk_filewstream_new" sk_filewstream_new :: (Ptr (CChar)) -> IO (Ptr (Sk_wstream_filestream))
 -- | `sk_filewstream_destroy`
-foreign import ccall "sk_filewstream_destroy" skFileWStreamDestroy :: (Ptr (SkWStreamFileStream)) -> IO (())
+foreign import ccall "sk_filewstream_destroy" sk_filewstream_destroy :: (Ptr (Sk_wstream_filestream)) -> IO (())
 -- | `sk_filewstream_is_valid`
-foreign import ccall "sk_filewstream_is_valid" skFileWStreamIsValid :: (Ptr (SkWStreamFileStream)) -> IO (CBool)
+foreign import ccall "sk_filewstream_is_valid" sk_filewstream_is_valid :: (Ptr (Sk_wstream_filestream)) -> IO (CBool)
 -- | `sk_dynamicmemorywstream_new`
-foreign import ccall "sk_dynamicmemorywstream_new" skDynamicMemoryWStreamNew :: IO (Ptr (SkWStreamDynamicMemoryStream))
+foreign import ccall "sk_dynamicmemorywstream_new" sk_dynamicmemorywstream_new :: IO (Ptr (Sk_wstream_dynamicmemorystream))
 -- | `sk_dynamicmemorywstream_detach_as_stream`
-foreign import ccall "sk_dynamicmemorywstream_detach_as_stream" skDynamicMemoryWStreamDetachAsStream :: (Ptr (SkWStreamDynamicMemoryStream)) -> IO (Ptr (SkStreamAsset))
+foreign import ccall "sk_dynamicmemorywstream_detach_as_stream" sk_dynamicmemorywstream_detach_as_stream :: (Ptr (Sk_wstream_dynamicmemorystream)) -> IO (Ptr (Sk_stream_asset))
 -- | `sk_dynamicmemorywstream_detach_as_data`
-foreign import ccall "sk_dynamicmemorywstream_detach_as_data" skDynamicMemoryWStreamDetachAsData :: (Ptr (SkWStreamDynamicMemoryStream)) -> IO (Ptr (SkData))
+foreign import ccall "sk_dynamicmemorywstream_detach_as_data" sk_dynamicmemorywstream_detach_as_data :: (Ptr (Sk_wstream_dynamicmemorystream)) -> IO (Ptr (Sk_data))
 -- | `sk_dynamicmemorywstream_copy_to`
-foreign import ccall "sk_dynamicmemorywstream_copy_to" skDynamicMemoryWStreamCopyTo :: (Ptr (SkWStreamDynamicMemoryStream)) -> (Ptr (())) -> IO (())
+foreign import ccall "sk_dynamicmemorywstream_copy_to" sk_dynamicmemorywstream_copy_to :: (Ptr (Sk_wstream_dynamicmemorystream)) -> (Ptr (())) -> IO (())
 -- | `sk_dynamicmemorywstream_write_to_stream`
-foreign import ccall "sk_dynamicmemorywstream_write_to_stream" skDynamicMemoryWStreamWriteToStream :: (Ptr (SkWStreamDynamicMemoryStream)) -> (Ptr (SkWStream)) -> IO (CBool)
+foreign import ccall "sk_dynamicmemorywstream_write_to_stream" sk_dynamicmemorywstream_write_to_stream :: (Ptr (Sk_wstream_dynamicmemorystream)) -> (Ptr (Sk_wstream)) -> IO (CBool)
 -- | `sk_dynamicmemorywstream_destroy`
-foreign import ccall "sk_dynamicmemorywstream_destroy" skDynamicMemoryWStreamDestroy :: (Ptr (SkWStreamDynamicMemoryStream)) -> IO (())
+foreign import ccall "sk_dynamicmemorywstream_destroy" sk_dynamicmemorywstream_destroy :: (Ptr (Sk_wstream_dynamicmemorystream)) -> IO (())
 -- | `sk_wstream_write`
-foreign import ccall "sk_wstream_write" skWStreamWrite :: (Ptr (SkWStream)) -> (Ptr (())) -> (CSize) -> IO (CBool)
+foreign import ccall "sk_wstream_write" sk_wstream_write :: (Ptr (Sk_wstream)) -> (Ptr (())) -> (CSize) -> IO (CBool)
 -- | `sk_wstream_newline`
-foreign import ccall "sk_wstream_newline" skWStreamNewline :: (Ptr (SkWStream)) -> IO (CBool)
+foreign import ccall "sk_wstream_newline" sk_wstream_newline :: (Ptr (Sk_wstream)) -> IO (CBool)
 -- | `sk_wstream_flush`
-foreign import ccall "sk_wstream_flush" skWStreamFlush :: (Ptr (SkWStream)) -> IO (())
+foreign import ccall "sk_wstream_flush" sk_wstream_flush :: (Ptr (Sk_wstream)) -> IO (())
 -- | `sk_wstream_bytes_written`
-foreign import ccall "sk_wstream_bytes_written" skWStreamBytesWritten :: (Ptr (SkWStream)) -> IO (CSize)
+foreign import ccall "sk_wstream_bytes_written" sk_wstream_bytes_written :: (Ptr (Sk_wstream)) -> IO (CSize)
 -- | `sk_wstream_write_8`
-foreign import ccall "sk_wstream_write_8" skWStreamWrite8 :: (Ptr (SkWStream)) -> (Word8) -> IO (CBool)
+foreign import ccall "sk_wstream_write_8" sk_wstream_write_8 :: (Ptr (Sk_wstream)) -> (Word8) -> IO (CBool)
 -- | `sk_wstream_write_16`
-foreign import ccall "sk_wstream_write_16" skWStreamWrite16 :: (Ptr (SkWStream)) -> (Word16) -> IO (CBool)
+foreign import ccall "sk_wstream_write_16" sk_wstream_write_16 :: (Ptr (Sk_wstream)) -> (Word16) -> IO (CBool)
 -- | `sk_wstream_write_32`
-foreign import ccall "sk_wstream_write_32" skWStreamWrite32 :: (Ptr (SkWStream)) -> (Word32) -> IO (CBool)
+foreign import ccall "sk_wstream_write_32" sk_wstream_write_32 :: (Ptr (Sk_wstream)) -> (Word32) -> IO (CBool)
 -- | `sk_wstream_write_text`
-foreign import ccall "sk_wstream_write_text" skWStreamWriteText :: (Ptr (SkWStream)) -> (Ptr (CChar)) -> IO (CBool)
+foreign import ccall "sk_wstream_write_text" sk_wstream_write_text :: (Ptr (Sk_wstream)) -> (Ptr (CChar)) -> IO (CBool)
 -- | `sk_wstream_write_dec_as_text`
-foreign import ccall "sk_wstream_write_dec_as_text" skWStreamWriteDecAsText :: (Ptr (SkWStream)) -> (Int32) -> IO (CBool)
+foreign import ccall "sk_wstream_write_dec_as_text" sk_wstream_write_dec_as_text :: (Ptr (Sk_wstream)) -> (Int32) -> IO (CBool)
 -- | `sk_wstream_write_bigdec_as_text`
-foreign import ccall "sk_wstream_write_bigdec_as_text" skWStreamWriteBigDecAsText :: (Ptr (SkWStream)) -> (Int64) -> (CInt) -> IO (CBool)
+foreign import ccall "sk_wstream_write_bigdec_as_text" sk_wstream_write_bigdec_as_text :: (Ptr (Sk_wstream)) -> (Int64) -> (CInt) -> IO (CBool)
 -- | `sk_wstream_write_hex_as_text`
-foreign import ccall "sk_wstream_write_hex_as_text" skWStreamWriteHexAsText :: (Ptr (SkWStream)) -> (Word32) -> (CInt) -> IO (CBool)
+foreign import ccall "sk_wstream_write_hex_as_text" sk_wstream_write_hex_as_text :: (Ptr (Sk_wstream)) -> (Word32) -> (CInt) -> IO (CBool)
 -- | `sk_wstream_write_scalar_as_text`
-foreign import ccall "sk_wstream_write_scalar_as_text" skWStreamWriteScalarAsText :: (Ptr (SkWStream)) -> (CFloat) -> IO (CBool)
+foreign import ccall "sk_wstream_write_scalar_as_text" sk_wstream_write_scalar_as_text :: (Ptr (Sk_wstream)) -> (CFloat) -> IO (CBool)
 -- | `sk_wstream_write_bool`
-foreign import ccall "sk_wstream_write_bool" skWStreamWriteBooL :: (Ptr (SkWStream)) -> (CBool) -> IO (CBool)
+foreign import ccall "sk_wstream_write_bool" sk_wstream_write_bool :: (Ptr (Sk_wstream)) -> (CBool) -> IO (CBool)
 -- | `sk_wstream_write_scalar`
-foreign import ccall "sk_wstream_write_scalar" skWStreamWriteScalar :: (Ptr (SkWStream)) -> (CFloat) -> IO (CBool)
+foreign import ccall "sk_wstream_write_scalar" sk_wstream_write_scalar :: (Ptr (Sk_wstream)) -> (CFloat) -> IO (CBool)
 -- | `sk_wstream_write_packed_uint`
-foreign import ccall "sk_wstream_write_packed_uint" skWStreamWritePackedUInt :: (Ptr (SkWStream)) -> (CSize) -> IO (CBool)
+foreign import ccall "sk_wstream_write_packed_uint" sk_wstream_write_packed_uint :: (Ptr (Sk_wstream)) -> (CSize) -> IO (CBool)
 -- | `sk_wstream_write_stream`
-foreign import ccall "sk_wstream_write_stream" skWStreamWriteStream :: (Ptr (SkWStream)) -> (Ptr (SkStream)) -> (CSize) -> IO (CBool)
+foreign import ccall "sk_wstream_write_stream" sk_wstream_write_stream :: (Ptr (Sk_wstream)) -> (Ptr (Sk_stream)) -> (CSize) -> IO (CBool)
 -- | `sk_wstream_get_size_of_packed_uint`
-foreign import ccall "sk_wstream_get_size_of_packed_uint" skWStreamGetSizeOfPackedUInt :: (CSize) -> IO (CInt)
+foreign import ccall "sk_wstream_get_size_of_packed_uint" sk_wstream_get_size_of_packed_uint :: (CSize) -> IO (CInt)
 -- | `sk_blender_ref`
-foreign import ccall "sk_blender_ref" skBlenderRef :: (Ptr (SkBlender)) -> IO (())
+foreign import ccall "sk_blender_ref" sk_blender_ref :: (Ptr (Sk_blender)) -> IO (())
 -- | `sk_blender_unref`
-foreign import ccall "sk_blender_unref" skBlenderUnRef :: (Ptr (SkBlender)) -> IO (())
+foreign import ccall "sk_blender_unref" sk_blender_unref :: (Ptr (Sk_blender)) -> IO (())
 -- | `sk_blender_new_mode`
-foreign import ccall "sk_blender_new_mode" skBlenderNewMode :: (SkBlendMode) -> IO (Ptr (SkBlender))
+foreign import ccall "sk_blender_new_mode" sk_blender_new_mode :: (Sk_blendmode) -> IO (Ptr (Sk_blender))
 -- | `sk_blender_new_arithmetic`
-foreign import ccall "sk_blender_new_arithmetic" skBlenderNewArithmetic :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CBool) -> IO (Ptr (SkBlender))
+foreign import ccall "sk_blender_new_arithmetic" sk_blender_new_arithmetic :: (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> (CBool) -> IO (Ptr (Sk_blender))
 -- | `sk_graphics_init`
-foreign import ccall "sk_graphics_init" skGraphicsInit :: IO (())
+foreign import ccall "sk_graphics_init" sk_graphics_init :: IO (())
 -- | `sk_graphics_purge_font_cache`
-foreign import ccall "sk_graphics_purge_font_cache" skGraphicsPurgeFontCache :: IO (())
+foreign import ccall "sk_graphics_purge_font_cache" sk_graphics_purge_font_cache :: IO (())
 -- | `sk_graphics_purge_resource_cache`
-foreign import ccall "sk_graphics_purge_resource_cache" skGraphicsPurgeResourceCache :: IO (())
+foreign import ccall "sk_graphics_purge_resource_cache" sk_graphics_purge_resource_cache :: IO (())
 -- | `sk_graphics_purge_all_caches`
-foreign import ccall "sk_graphics_purge_all_caches" skGraphicsPurgeAllCaches :: IO (())
+foreign import ccall "sk_graphics_purge_all_caches" sk_graphics_purge_all_caches :: IO (())
 -- | `sk_graphics_get_font_cache_used`
-foreign import ccall "sk_graphics_get_font_cache_used" skGraphicsGetFontCacheUsed :: IO (CSize)
+foreign import ccall "sk_graphics_get_font_cache_used" sk_graphics_get_font_cache_used :: IO (CSize)
 -- | `sk_graphics_get_font_cache_limit`
-foreign import ccall "sk_graphics_get_font_cache_limit" skGraphicsGetFontCacheLimit :: IO (CSize)
+foreign import ccall "sk_graphics_get_font_cache_limit" sk_graphics_get_font_cache_limit :: IO (CSize)
 -- | `sk_graphics_set_font_cache_limit`
-foreign import ccall "sk_graphics_set_font_cache_limit" skGraphicsSetFontCacheLimit :: (CSize) -> IO (CSize)
+foreign import ccall "sk_graphics_set_font_cache_limit" sk_graphics_set_font_cache_limit :: (CSize) -> IO (CSize)
 -- | `sk_graphics_get_font_cache_count_used`
-foreign import ccall "sk_graphics_get_font_cache_count_used" skGraphicsGetFontCacheCountUsed :: IO (CInt)
+foreign import ccall "sk_graphics_get_font_cache_count_used" sk_graphics_get_font_cache_count_used :: IO (CInt)
 -- | `sk_graphics_get_font_cache_count_limit`
-foreign import ccall "sk_graphics_get_font_cache_count_limit" skGraphicsGetFontCacheCountLimit :: IO (CInt)
+foreign import ccall "sk_graphics_get_font_cache_count_limit" sk_graphics_get_font_cache_count_limit :: IO (CInt)
 -- | `sk_graphics_set_font_cache_count_limit`
-foreign import ccall "sk_graphics_set_font_cache_count_limit" skGraphicsSetFontCacheCountLimit :: (CInt) -> IO (CInt)
+foreign import ccall "sk_graphics_set_font_cache_count_limit" sk_graphics_set_font_cache_count_limit :: (CInt) -> IO (CInt)
 -- | `sk_graphics_get_resource_cache_total_bytes_used`
-foreign import ccall "sk_graphics_get_resource_cache_total_bytes_used" skGraphicsGetResourceCacheTotalBytesUsed :: IO (CSize)
+foreign import ccall "sk_graphics_get_resource_cache_total_bytes_used" sk_graphics_get_resource_cache_total_bytes_used :: IO (CSize)
 -- | `sk_graphics_get_resource_cache_total_byte_limit`
-foreign import ccall "sk_graphics_get_resource_cache_total_byte_limit" skGraphicsGetResourceCacheTotalByteLimit :: IO (CSize)
+foreign import ccall "sk_graphics_get_resource_cache_total_byte_limit" sk_graphics_get_resource_cache_total_byte_limit :: IO (CSize)
 -- | `sk_graphics_set_resource_cache_total_byte_limit`
-foreign import ccall "sk_graphics_set_resource_cache_total_byte_limit" skGraphicsSetResourceCacheTotalByteLimit :: (CSize) -> IO (CSize)
+foreign import ccall "sk_graphics_set_resource_cache_total_byte_limit" sk_graphics_set_resource_cache_total_byte_limit :: (CSize) -> IO (CSize)
 -- | `sk_graphics_get_resource_cache_single_allocation_byte_limit`
-foreign import ccall "sk_graphics_get_resource_cache_single_allocation_byte_limit" skGraphicsGetResourceCacheSingleAllocationByteLimit :: IO (CSize)
+foreign import ccall "sk_graphics_get_resource_cache_single_allocation_byte_limit" sk_graphics_get_resource_cache_single_allocation_byte_limit :: IO (CSize)
 -- | `sk_graphics_set_resource_cache_single_allocation_byte_limit`
-foreign import ccall "sk_graphics_set_resource_cache_single_allocation_byte_limit" skGraphicsSetResourceCacheSingleAllocationByteLimit :: (CSize) -> IO (CSize)
+foreign import ccall "sk_graphics_set_resource_cache_single_allocation_byte_limit" sk_graphics_set_resource_cache_single_allocation_byte_limit :: (CSize) -> IO (CSize)
 -- | `sk_graphics_dump_memory_statistics`
-foreign import ccall "sk_graphics_dump_memory_statistics" skGraphicsDumpMemoryStatistics :: (Ptr (SkTraceMemoryDump)) -> IO (())
+foreign import ccall "sk_graphics_dump_memory_statistics" sk_graphics_dump_memory_statistics :: (Ptr (Sk_tracememorydump)) -> IO (())
 -- | `skottie_animation_make_from_string`
-foreign import ccall "skottie_animation_make_from_string" skottieAnimationMakeFromString :: (Ptr (CChar)) -> (CSize) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_make_from_string" skottie_animation_make_from_string :: (Ptr (CChar)) -> (CSize) -> IO (Ptr (Skottie_animation))
 -- | `skottie_animation_make_from_data`
-foreign import ccall "skottie_animation_make_from_data" skottieAnimationMakeFromData :: (Ptr (CChar)) -> (CSize) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_make_from_data" skottie_animation_make_from_data :: (Ptr (CChar)) -> (CSize) -> IO (Ptr (Skottie_animation))
 -- | `skottie_animation_make_from_stream`
-foreign import ccall "skottie_animation_make_from_stream" skottieAnimationMakeFromStream :: (Ptr (SkStream)) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_make_from_stream" skottie_animation_make_from_stream :: (Ptr (Sk_stream)) -> IO (Ptr (Skottie_animation))
 -- | `skottie_animation_make_from_file`
-foreign import ccall "skottie_animation_make_from_file" skottieAnimationMakeFromFile :: (Ptr (CChar)) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_make_from_file" skottie_animation_make_from_file :: (Ptr (CChar)) -> IO (Ptr (Skottie_animation))
 -- | `skottie_animation_ref`
-foreign import ccall "skottie_animation_ref" skottieAnimationRef :: (Ptr (SkottieAnimation)) -> IO (())
+foreign import ccall "skottie_animation_ref" skottie_animation_ref :: (Ptr (Skottie_animation)) -> IO (())
 -- | `skottie_animation_unref`
-foreign import ccall "skottie_animation_unref" skottieAnimationUnRef :: (Ptr (SkottieAnimation)) -> IO (())
+foreign import ccall "skottie_animation_unref" skottie_animation_unref :: (Ptr (Skottie_animation)) -> IO (())
 -- | `skottie_animation_delete`
-foreign import ccall "skottie_animation_delete" skottieAnimationDelete :: (Ptr (SkottieAnimation)) -> IO (())
+foreign import ccall "skottie_animation_delete" skottie_animation_delete :: (Ptr (Skottie_animation)) -> IO (())
 -- | `skottie_animation_render`
-foreign import ccall "skottie_animation_render" skottieAnimationRender :: (Ptr (SkottieAnimation)) -> (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "skottie_animation_render" skottie_animation_render :: (Ptr (Skottie_animation)) -> (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `skottie_animation_render_with_flags`
-foreign import ccall "skottie_animation_render_with_flags" skottieAnimationRenderWithFlags :: (Ptr (SkottieAnimation)) -> (Ptr (SkCanvas)) -> (Ptr (SkRect)) -> (SkottieAnimationRenderFlags) -> IO (())
+foreign import ccall "skottie_animation_render_with_flags" skottie_animation_render_with_flags :: (Ptr (Skottie_animation)) -> (Ptr (Sk_canvas)) -> (Ptr (Sk_rect)) -> (Skottie_animation_renderflags) -> IO (())
 -- | `skottie_animation_seek`
-foreign import ccall "skottie_animation_seek" skottieAnimationSeek :: (Ptr (SkottieAnimation)) -> (CFloat) -> (Ptr (SksgInvalidationController)) -> IO (())
+foreign import ccall "skottie_animation_seek" skottie_animation_seek :: (Ptr (Skottie_animation)) -> (CFloat) -> (Ptr (Sksg_invalidation_controller)) -> IO (())
 -- | `skottie_animation_seek_frame`
-foreign import ccall "skottie_animation_seek_frame" skottieAnimationSeekFrame :: (Ptr (SkottieAnimation)) -> (CFloat) -> (Ptr (SksgInvalidationController)) -> IO (())
+foreign import ccall "skottie_animation_seek_frame" skottie_animation_seek_frame :: (Ptr (Skottie_animation)) -> (CFloat) -> (Ptr (Sksg_invalidation_controller)) -> IO (())
 -- | `skottie_animation_seek_frame_time`
-foreign import ccall "skottie_animation_seek_frame_time" skottieAnimationSeekFrameTime :: (Ptr (SkottieAnimation)) -> (CFloat) -> (Ptr (SksgInvalidationController)) -> IO (())
+foreign import ccall "skottie_animation_seek_frame_time" skottie_animation_seek_frame_time :: (Ptr (Skottie_animation)) -> (CFloat) -> (Ptr (Sksg_invalidation_controller)) -> IO (())
 -- | `skottie_animation_get_duration`
-foreign import ccall "skottie_animation_get_duration" skottieAnimationGetDuration :: (Ptr (SkottieAnimation)) -> IO (CDouble)
+foreign import ccall "skottie_animation_get_duration" skottie_animation_get_duration :: (Ptr (Skottie_animation)) -> IO (CDouble)
 -- | `skottie_animation_get_fps`
-foreign import ccall "skottie_animation_get_fps" skottieAnimationGetFps :: (Ptr (SkottieAnimation)) -> IO (CDouble)
+foreign import ccall "skottie_animation_get_fps" skottie_animation_get_fps :: (Ptr (Skottie_animation)) -> IO (CDouble)
 -- | `skottie_animation_get_in_point`
-foreign import ccall "skottie_animation_get_in_point" skottieAnimationGetInPoint :: (Ptr (SkottieAnimation)) -> IO (CDouble)
+foreign import ccall "skottie_animation_get_in_point" skottie_animation_get_in_point :: (Ptr (Skottie_animation)) -> IO (CDouble)
 -- | `skottie_animation_get_out_point`
-foreign import ccall "skottie_animation_get_out_point" skottieAnimationGetOutPoint :: (Ptr (SkottieAnimation)) -> IO (CDouble)
+foreign import ccall "skottie_animation_get_out_point" skottie_animation_get_out_point :: (Ptr (Skottie_animation)) -> IO (CDouble)
 -- | `skottie_animation_get_version`
-foreign import ccall "skottie_animation_get_version" skottieAnimationGetVersion :: (Ptr (SkottieAnimation)) -> (Ptr (SkString)) -> IO (())
+foreign import ccall "skottie_animation_get_version" skottie_animation_get_version :: (Ptr (Skottie_animation)) -> (Ptr (Sk_string)) -> IO (())
 -- | `skottie_animation_get_size`
-foreign import ccall "skottie_animation_get_size" skottieAnimationGetSize :: (Ptr (SkottieAnimation)) -> (Ptr (SkSize)) -> IO (())
+foreign import ccall "skottie_animation_get_size" skottie_animation_get_size :: (Ptr (Skottie_animation)) -> (Ptr (Sk_size)) -> IO (())
 -- | `skottie_animation_builder_new`
-foreign import ccall "skottie_animation_builder_new" skottieAnimationBuilderNew :: (SkottieAnimationBuilderFlags) -> IO (Ptr (SkottieAnimationBuilder))
+foreign import ccall "skottie_animation_builder_new" skottie_animation_builder_new :: (Skottie_animation_builder_flags) -> IO (Ptr (Skottie_animation_builder))
 -- | `skottie_animation_builder_delete`
-foreign import ccall "skottie_animation_builder_delete" skottieAnimationBuilderDelete :: (Ptr (SkottieAnimationBuilder)) -> IO (())
+foreign import ccall "skottie_animation_builder_delete" skottie_animation_builder_delete :: (Ptr (Skottie_animation_builder)) -> IO (())
 -- | `skottie_animation_builder_get_stats`
-foreign import ccall "skottie_animation_builder_get_stats" skottieAnimationBuilderGetStats :: (Ptr (SkottieAnimationBuilder)) -> (Ptr (SkottieAnimationBuilderStats)) -> IO (())
+foreign import ccall "skottie_animation_builder_get_stats" skottie_animation_builder_get_stats :: (Ptr (Skottie_animation_builder)) -> (Ptr (Skottie_animation_builder_stats)) -> IO (())
 -- | `skottie_animation_builder_set_resource_provider`
-foreign import ccall "skottie_animation_builder_set_resource_provider" skottieAnimationBuilderSetResourceProvider :: (Ptr (SkottieAnimationBuilder)) -> (Ptr (SkottieResourceProvider)) -> IO (())
+foreign import ccall "skottie_animation_builder_set_resource_provider" skottie_animation_builder_set_resource_provider :: (Ptr (Skottie_animation_builder)) -> (Ptr (Skottie_resource_provider)) -> IO (())
 -- | `skottie_animation_builder_set_font_manager`
-foreign import ccall "skottie_animation_builder_set_font_manager" skottieAnimationBuilderSetFontManager :: (Ptr (SkottieAnimationBuilder)) -> (Ptr (SkFontMGr)) -> IO (())
+foreign import ccall "skottie_animation_builder_set_font_manager" skottie_animation_builder_set_font_manager :: (Ptr (Skottie_animation_builder)) -> (Ptr (Sk_fontmgr)) -> IO (())
 -- | `skottie_animation_builder_make_from_stream`
-foreign import ccall "skottie_animation_builder_make_from_stream" skottieAnimationBuilderMakeFromStream :: (Ptr (SkottieAnimationBuilder)) -> (Ptr (SkStream)) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_builder_make_from_stream" skottie_animation_builder_make_from_stream :: (Ptr (Skottie_animation_builder)) -> (Ptr (Sk_stream)) -> IO (Ptr (Skottie_animation))
 -- | `skottie_animation_builder_make_from_file`
-foreign import ccall "skottie_animation_builder_make_from_file" skottieAnimationBuilderMakeFromFile :: (Ptr (SkottieAnimationBuilder)) -> (Ptr (CChar)) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_builder_make_from_file" skottie_animation_builder_make_from_file :: (Ptr (Skottie_animation_builder)) -> (Ptr (CChar)) -> IO (Ptr (Skottie_animation))
 -- | `skottie_animation_builder_make_from_string`
-foreign import ccall "skottie_animation_builder_make_from_string" skottieAnimationBuilderMakeFromString :: (Ptr (SkottieAnimationBuilder)) -> (Ptr (CChar)) -> (CSize) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_builder_make_from_string" skottie_animation_builder_make_from_string :: (Ptr (Skottie_animation_builder)) -> (Ptr (CChar)) -> (CSize) -> IO (Ptr (Skottie_animation))
 -- | `skottie_animation_builder_make_from_data`
-foreign import ccall "skottie_animation_builder_make_from_data" skottieAnimationBuilderMakeFromData :: (Ptr (SkottieAnimationBuilder)) -> (Ptr (CChar)) -> (CSize) -> IO (Ptr (SkottieAnimation))
+foreign import ccall "skottie_animation_builder_make_from_data" skottie_animation_builder_make_from_data :: (Ptr (Skottie_animation_builder)) -> (Ptr (CChar)) -> (CSize) -> IO (Ptr (Skottie_animation))
 -- | `skresources_resource_provider_ref`
-foreign import ccall "skresources_resource_provider_ref" skResourcesResourceProviderRef :: (Ptr (SkResourcesResourceProvider)) -> IO (())
+foreign import ccall "skresources_resource_provider_ref" skresources_resource_provider_ref :: (Ptr (Skresources_resource_provider)) -> IO (())
 -- | `skresources_resource_provider_unref`
-foreign import ccall "skresources_resource_provider_unref" skResourcesResourceProviderUnRef :: (Ptr (SkResourcesResourceProvider)) -> IO (())
+foreign import ccall "skresources_resource_provider_unref" skresources_resource_provider_unref :: (Ptr (Skresources_resource_provider)) -> IO (())
 -- | `skresources_resource_provider_delete`
-foreign import ccall "skresources_resource_provider_delete" skResourcesResourceProviderDelete :: (Ptr (SkResourcesResourceProvider)) -> IO (())
+foreign import ccall "skresources_resource_provider_delete" skresources_resource_provider_delete :: (Ptr (Skresources_resource_provider)) -> IO (())
 -- | `skresources_resource_provider_load`
-foreign import ccall "skresources_resource_provider_load" skResourcesResourceProviderLoad :: (Ptr (SkResourcesResourceProvider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (SkData))
+foreign import ccall "skresources_resource_provider_load" skresources_resource_provider_load :: (Ptr (Skresources_resource_provider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (Sk_data))
 -- | `skresources_resource_provider_load_image_asset`
-foreign import ccall "skresources_resource_provider_load_image_asset" skResourcesResourceProviderLoadImageAsset :: (Ptr (SkResourcesResourceProvider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (SkResourcesImageAsset))
+foreign import ccall "skresources_resource_provider_load_image_asset" skresources_resource_provider_load_image_asset :: (Ptr (Skresources_resource_provider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (Skresources_image_asset))
 -- | `skresources_resource_provider_load_audio_asset`
-foreign import ccall "skresources_resource_provider_load_audio_asset" skResourcesResourceProviderLoadAudioAsset :: (Ptr (SkResourcesResourceProvider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (SkResourcesExternalTrackAsset))
+foreign import ccall "skresources_resource_provider_load_audio_asset" skresources_resource_provider_load_audio_asset :: (Ptr (Skresources_resource_provider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (Skresources_external_track_asset))
 -- | `skresources_resource_provider_load_typeface`
-foreign import ccall "skresources_resource_provider_load_typeface" skResourcesResourceProviderLoadTypeface :: (Ptr (SkResourcesResourceProvider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (SkTypeface))
+foreign import ccall "skresources_resource_provider_load_typeface" skresources_resource_provider_load_typeface :: (Ptr (Skresources_resource_provider)) -> (Ptr (CChar)) -> (Ptr (CChar)) -> IO (Ptr (Sk_typeface))
 -- | `skresources_file_resource_provider_make`
-foreign import ccall "skresources_file_resource_provider_make" skResourcesFileResourceProviderMake :: (Ptr (SkString)) -> (CBool) -> IO (Ptr (SkResourcesResourceProvider))
+foreign import ccall "skresources_file_resource_provider_make" skresources_file_resource_provider_make :: (Ptr (Sk_string)) -> (CBool) -> IO (Ptr (Skresources_resource_provider))
 -- | `skresources_caching_resource_provider_proxy_make`
-foreign import ccall "skresources_caching_resource_provider_proxy_make" skResourcesCachingResourceProviderProxyMake :: (Ptr (SkResourcesResourceProvider)) -> IO (Ptr (SkResourcesResourceProvider))
+foreign import ccall "skresources_caching_resource_provider_proxy_make" skresources_caching_resource_provider_proxy_make :: (Ptr (Skresources_resource_provider)) -> IO (Ptr (Skresources_resource_provider))
 -- | `skresources_data_uri_resource_provider_proxy_make`
-foreign import ccall "skresources_data_uri_resource_provider_proxy_make" skResourcesDataUriResourceProviderProxyMake :: (Ptr (SkResourcesResourceProvider)) -> (CBool) -> IO (Ptr (SkResourcesResourceProvider))
+foreign import ccall "skresources_data_uri_resource_provider_proxy_make" skresources_data_uri_resource_provider_proxy_make :: (Ptr (Skresources_resource_provider)) -> (CBool) -> IO (Ptr (Skresources_resource_provider))
 -- | `sk_svgcanvas_create_with_stream`
-foreign import ccall "sk_svgcanvas_create_with_stream" skSvgCanvasCreateWithStream :: (Ptr (SkRect)) -> (Ptr (SkWStream)) -> IO (Ptr (SkCanvas))
+foreign import ccall "sk_svgcanvas_create_with_stream" sk_svgcanvas_create_with_stream :: (Ptr (Sk_rect)) -> (Ptr (Sk_wstream)) -> IO (Ptr (Sk_canvas))
 -- | `sk_string_new_empty`
-foreign import ccall "sk_string_new_empty" skStringNewEmpty :: IO (Ptr (SkString))
+foreign import ccall "sk_string_new_empty" sk_string_new_empty :: IO (Ptr (Sk_string))
 -- | `sk_string_new_with_copy`
-foreign import ccall "sk_string_new_with_copy" skStringNewWithCopy :: (Ptr (CChar)) -> (CSize) -> IO (Ptr (SkString))
+foreign import ccall "sk_string_new_with_copy" sk_string_new_with_copy :: (Ptr (CChar)) -> (CSize) -> IO (Ptr (Sk_string))
 -- | `sk_string_destructor`
-foreign import ccall "sk_string_destructor" skStringDestructOr :: (Ptr (SkString)) -> IO (())
+foreign import ccall "sk_string_destructor" sk_string_destructor :: (Ptr (Sk_string)) -> IO (())
 -- | `sk_string_get_size`
-foreign import ccall "sk_string_get_size" skStringGetSize :: (Ptr (SkString)) -> IO (CSize)
+foreign import ccall "sk_string_get_size" sk_string_get_size :: (Ptr (Sk_string)) -> IO (CSize)
 -- | `sk_string_get_c_str`
-foreign import ccall "sk_string_get_c_str" skStringGetCStr :: (Ptr (SkString)) -> IO (Ptr (CChar))
+foreign import ccall "sk_string_get_c_str" sk_string_get_c_str :: (Ptr (Sk_string)) -> IO (Ptr (CChar))
 -- | `sk_linker_keep_alive`
-foreign import ccall "sk_linker_keep_alive" skLinkerKeepAlive :: IO (())
+foreign import ccall "sk_linker_keep_alive" sk_linker_keep_alive :: IO (())
 -- | `sk_path_effect_unref`
-foreign import ccall "sk_path_effect_unref" skPathEffectUnRef :: (Ptr (SkPathEffect)) -> IO (())
+foreign import ccall "sk_path_effect_unref" sk_path_effect_unref :: (Ptr (Sk_path_effect)) -> IO (())
 -- | `sk_path_effect_create_compose`
-foreign import ccall "sk_path_effect_create_compose" skPathEffectCreateCompose :: (Ptr (SkPathEffect)) -> (Ptr (SkPathEffect)) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_compose" sk_path_effect_create_compose :: (Ptr (Sk_path_effect)) -> (Ptr (Sk_path_effect)) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_sum`
-foreign import ccall "sk_path_effect_create_sum" skPathEffectCreateSum :: (Ptr (SkPathEffect)) -> (Ptr (SkPathEffect)) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_sum" sk_path_effect_create_sum :: (Ptr (Sk_path_effect)) -> (Ptr (Sk_path_effect)) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_discrete`
-foreign import ccall "sk_path_effect_create_discrete" skPathEffectCreateDiscrete :: (CFloat) -> (CFloat) -> (Word32) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_discrete" sk_path_effect_create_discrete :: (CFloat) -> (CFloat) -> (Word32) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_corner`
-foreign import ccall "sk_path_effect_create_corner" skPathEffectCreateCorner :: (CFloat) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_corner" sk_path_effect_create_corner :: (CFloat) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_1d_path`
-foreign import ccall "sk_path_effect_create_1d_path" skPathEffectCreate1dPath :: (Ptr (SkPath)) -> (CFloat) -> (CFloat) -> (SkPathEffect1dStyle) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_1d_path" sk_path_effect_create_1d_path :: (Ptr (Sk_path)) -> (CFloat) -> (CFloat) -> (Sk_path_effect_1d_style) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_2d_line`
-foreign import ccall "sk_path_effect_create_2d_line" skPathEffectCreate2dLine :: (CFloat) -> (Ptr (SkMatrix)) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_2d_line" sk_path_effect_create_2d_line :: (CFloat) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_2d_path`
-foreign import ccall "sk_path_effect_create_2d_path" skPathEffectCreate2dPath :: (Ptr (SkMatrix)) -> (Ptr (SkPath)) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_2d_path" sk_path_effect_create_2d_path :: (Ptr (Sk_matrix)) -> (Ptr (Sk_path)) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_dash`
-foreign import ccall "sk_path_effect_create_dash" skPathEffectCreateDash :: (Ptr (CFloat)) -> (CInt) -> (CFloat) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_dash" sk_path_effect_create_dash :: (Ptr (CFloat)) -> (CInt) -> (CFloat) -> IO (Ptr (Sk_path_effect))
 -- | `sk_path_effect_create_trim`
-foreign import ccall "sk_path_effect_create_trim" skPathEffectCreateTrim :: (CFloat) -> (CFloat) -> (SkPathEffectTrimMode) -> IO (Ptr (SkPathEffect))
+foreign import ccall "sk_path_effect_create_trim" sk_path_effect_create_trim :: (CFloat) -> (CFloat) -> (Sk_path_effect_trim_mode) -> IO (Ptr (Sk_path_effect))
 -- | `sk_vertices_unref`
-foreign import ccall "sk_vertices_unref" skVerticesUnRef :: (Ptr (SkVertices)) -> IO (())
+foreign import ccall "sk_vertices_unref" sk_vertices_unref :: (Ptr (Sk_vertices)) -> IO (())
 -- | `sk_vertices_ref`
-foreign import ccall "sk_vertices_ref" skVerticesRef :: (Ptr (SkVertices)) -> IO (())
+foreign import ccall "sk_vertices_ref" sk_vertices_ref :: (Ptr (Sk_vertices)) -> IO (())
 -- | `sk_vertices_make_copy`
-foreign import ccall "sk_vertices_make_copy" skVerticesMakeCopy :: (SkVerticesVertexMode) -> (CInt) -> (Ptr (SkPoint)) -> (Ptr (SkPoint)) -> (Ptr (SkColor)) -> (CInt) -> (Ptr (Word16)) -> IO (Ptr (SkVertices))
+foreign import ccall "sk_vertices_make_copy" sk_vertices_make_copy :: (Sk_vertices_vertex_mode) -> (CInt) -> (Ptr (Sk_point)) -> (Ptr (Sk_point)) -> (Ptr (Sk_color)) -> (CInt) -> (Ptr (Word16)) -> IO (Ptr (Sk_vertices))
 -- | `sk_font_new`
-foreign import ccall "sk_font_new" skFontNew :: IO (Ptr (SkFont))
+foreign import ccall "sk_font_new" sk_font_new :: IO (Ptr (Sk_font))
 -- | `sk_font_new_with_values`
-foreign import ccall "sk_font_new_with_values" skFontNewWithValues :: (Ptr (SkTypeface)) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (Ptr (SkFont))
+foreign import ccall "sk_font_new_with_values" sk_font_new_with_values :: (Ptr (Sk_typeface)) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (Ptr (Sk_font))
 -- | `sk_font_delete`
-foreign import ccall "sk_font_delete" skFontDelete :: (Ptr (SkFont)) -> IO (())
+foreign import ccall "sk_font_delete" sk_font_delete :: (Ptr (Sk_font)) -> IO (())
 -- | `sk_font_is_force_auto_hinting`
-foreign import ccall "sk_font_is_force_auto_hinting" skFontIsForceAutoHinting :: (Ptr (SkFont)) -> IO (CBool)
+foreign import ccall "sk_font_is_force_auto_hinting" sk_font_is_force_auto_hinting :: (Ptr (Sk_font)) -> IO (CBool)
 -- | `sk_font_set_force_auto_hinting`
-foreign import ccall "sk_font_set_force_auto_hinting" skFontSetForceAutoHinting :: (Ptr (SkFont)) -> (CBool) -> IO (())
+foreign import ccall "sk_font_set_force_auto_hinting" sk_font_set_force_auto_hinting :: (Ptr (Sk_font)) -> (CBool) -> IO (())
 -- | `sk_font_is_embedded_bitmaps`
-foreign import ccall "sk_font_is_embedded_bitmaps" skFontIsEmbeddedBitmapS :: (Ptr (SkFont)) -> IO (CBool)
+foreign import ccall "sk_font_is_embedded_bitmaps" sk_font_is_embedded_bitmaps :: (Ptr (Sk_font)) -> IO (CBool)
 -- | `sk_font_set_embedded_bitmaps`
-foreign import ccall "sk_font_set_embedded_bitmaps" skFontSetEmbeddedBitmapS :: (Ptr (SkFont)) -> (CBool) -> IO (())
+foreign import ccall "sk_font_set_embedded_bitmaps" sk_font_set_embedded_bitmaps :: (Ptr (Sk_font)) -> (CBool) -> IO (())
 -- | `sk_font_is_subpixel`
-foreign import ccall "sk_font_is_subpixel" skFontIsSubPixel :: (Ptr (SkFont)) -> IO (CBool)
+foreign import ccall "sk_font_is_subpixel" sk_font_is_subpixel :: (Ptr (Sk_font)) -> IO (CBool)
 -- | `sk_font_set_subpixel`
-foreign import ccall "sk_font_set_subpixel" skFontSetSubPixel :: (Ptr (SkFont)) -> (CBool) -> IO (())
+foreign import ccall "sk_font_set_subpixel" sk_font_set_subpixel :: (Ptr (Sk_font)) -> (CBool) -> IO (())
 -- | `sk_font_is_linear_metrics`
-foreign import ccall "sk_font_is_linear_metrics" skFontIsLinearMetrics :: (Ptr (SkFont)) -> IO (CBool)
+foreign import ccall "sk_font_is_linear_metrics" sk_font_is_linear_metrics :: (Ptr (Sk_font)) -> IO (CBool)
 -- | `sk_font_set_linear_metrics`
-foreign import ccall "sk_font_set_linear_metrics" skFontSetLinearMetrics :: (Ptr (SkFont)) -> (CBool) -> IO (())
+foreign import ccall "sk_font_set_linear_metrics" sk_font_set_linear_metrics :: (Ptr (Sk_font)) -> (CBool) -> IO (())
 -- | `sk_font_is_embolden`
-foreign import ccall "sk_font_is_embolden" skFontIsEmbolden :: (Ptr (SkFont)) -> IO (CBool)
+foreign import ccall "sk_font_is_embolden" sk_font_is_embolden :: (Ptr (Sk_font)) -> IO (CBool)
 -- | `sk_font_set_embolden`
-foreign import ccall "sk_font_set_embolden" skFontSetEmbolden :: (Ptr (SkFont)) -> (CBool) -> IO (())
+foreign import ccall "sk_font_set_embolden" sk_font_set_embolden :: (Ptr (Sk_font)) -> (CBool) -> IO (())
 -- | `sk_font_is_baseline_snap`
-foreign import ccall "sk_font_is_baseline_snap" skFontIsBaselineSnap :: (Ptr (SkFont)) -> IO (CBool)
+foreign import ccall "sk_font_is_baseline_snap" sk_font_is_baseline_snap :: (Ptr (Sk_font)) -> IO (CBool)
 -- | `sk_font_set_baseline_snap`
-foreign import ccall "sk_font_set_baseline_snap" skFontSetBaselineSnap :: (Ptr (SkFont)) -> (CBool) -> IO (())
+foreign import ccall "sk_font_set_baseline_snap" sk_font_set_baseline_snap :: (Ptr (Sk_font)) -> (CBool) -> IO (())
 -- | `sk_font_get_edging`
-foreign import ccall "sk_font_get_edging" skFontGetEdging :: (Ptr (SkFont)) -> IO (SkFontEdging)
+foreign import ccall "sk_font_get_edging" sk_font_get_edging :: (Ptr (Sk_font)) -> IO (Sk_font_edging)
 -- | `sk_font_set_edging`
-foreign import ccall "sk_font_set_edging" skFontSetEdging :: (Ptr (SkFont)) -> (SkFontEdging) -> IO (())
+foreign import ccall "sk_font_set_edging" sk_font_set_edging :: (Ptr (Sk_font)) -> (Sk_font_edging) -> IO (())
 -- | `sk_font_get_hinting`
-foreign import ccall "sk_font_get_hinting" skFontGetHinting :: (Ptr (SkFont)) -> IO (SkFontHinting)
+foreign import ccall "sk_font_get_hinting" sk_font_get_hinting :: (Ptr (Sk_font)) -> IO (Sk_font_hinting)
 -- | `sk_font_set_hinting`
-foreign import ccall "sk_font_set_hinting" skFontSetHinting :: (Ptr (SkFont)) -> (SkFontHinting) -> IO (())
+foreign import ccall "sk_font_set_hinting" sk_font_set_hinting :: (Ptr (Sk_font)) -> (Sk_font_hinting) -> IO (())
 -- | `sk_font_get_typeface`
-foreign import ccall "sk_font_get_typeface" skFontGetTypeface :: (Ptr (SkFont)) -> IO (Ptr (SkTypeface))
+foreign import ccall "sk_font_get_typeface" sk_font_get_typeface :: (Ptr (Sk_font)) -> IO (Ptr (Sk_typeface))
 -- | `sk_font_set_typeface`
-foreign import ccall "sk_font_set_typeface" skFontSetTypeface :: (Ptr (SkFont)) -> (Ptr (SkTypeface)) -> IO (())
+foreign import ccall "sk_font_set_typeface" sk_font_set_typeface :: (Ptr (Sk_font)) -> (Ptr (Sk_typeface)) -> IO (())
 -- | `sk_font_get_size`
-foreign import ccall "sk_font_get_size" skFontGetSize :: (Ptr (SkFont)) -> IO (CFloat)
+foreign import ccall "sk_font_get_size" sk_font_get_size :: (Ptr (Sk_font)) -> IO (CFloat)
 -- | `sk_font_set_size`
-foreign import ccall "sk_font_set_size" skFontSetSize :: (Ptr (SkFont)) -> (CFloat) -> IO (())
+foreign import ccall "sk_font_set_size" sk_font_set_size :: (Ptr (Sk_font)) -> (CFloat) -> IO (())
 -- | `sk_font_get_scale_x`
-foreign import ccall "sk_font_get_scale_x" skFontGetScaleX :: (Ptr (SkFont)) -> IO (CFloat)
+foreign import ccall "sk_font_get_scale_x" sk_font_get_scale_x :: (Ptr (Sk_font)) -> IO (CFloat)
 -- | `sk_font_set_scale_x`
-foreign import ccall "sk_font_set_scale_x" skFontSetScaleX :: (Ptr (SkFont)) -> (CFloat) -> IO (())
+foreign import ccall "sk_font_set_scale_x" sk_font_set_scale_x :: (Ptr (Sk_font)) -> (CFloat) -> IO (())
 -- | `sk_font_get_skew_x`
-foreign import ccall "sk_font_get_skew_x" skFontGetSkewX :: (Ptr (SkFont)) -> IO (CFloat)
+foreign import ccall "sk_font_get_skew_x" sk_font_get_skew_x :: (Ptr (Sk_font)) -> IO (CFloat)
 -- | `sk_font_set_skew_x`
-foreign import ccall "sk_font_set_skew_x" skFontSetSkewX :: (Ptr (SkFont)) -> (CFloat) -> IO (())
+foreign import ccall "sk_font_set_skew_x" sk_font_set_skew_x :: (Ptr (Sk_font)) -> (CFloat) -> IO (())
 -- | `sk_font_text_to_glyphs`
-foreign import ccall "sk_font_text_to_glyphs" skFontTextToGlyphs :: (Ptr (SkFont)) -> (Ptr (())) -> (CSize) -> (SkTextEncoding) -> (Ptr (Word16)) -> (CInt) -> IO (CInt)
+foreign import ccall "sk_font_text_to_glyphs" sk_font_text_to_glyphs :: (Ptr (Sk_font)) -> (Ptr (())) -> (CSize) -> (Sk_text_encoding) -> (Ptr (Word16)) -> (CInt) -> IO (CInt)
 -- | `sk_font_unichar_to_glyph`
-foreign import ccall "sk_font_unichar_to_glyph" skFontUniCharToGlyph :: (Ptr (SkFont)) -> (Int32) -> IO (Word16)
+foreign import ccall "sk_font_unichar_to_glyph" sk_font_unichar_to_glyph :: (Ptr (Sk_font)) -> (Int32) -> IO (Word16)
 -- | `sk_font_unichars_to_glyphs`
-foreign import ccall "sk_font_unichars_to_glyphs" skFontUniCharsToGlyphs :: (Ptr (SkFont)) -> (Ptr (Int32)) -> (CInt) -> (Ptr (Word16)) -> IO (())
+foreign import ccall "sk_font_unichars_to_glyphs" sk_font_unichars_to_glyphs :: (Ptr (Sk_font)) -> (Ptr (Int32)) -> (CInt) -> (Ptr (Word16)) -> IO (())
 -- | `sk_font_measure_text`
-foreign import ccall "sk_font_measure_text" skFontMeasureText :: (Ptr (SkFont)) -> (Ptr (())) -> (CSize) -> (SkTextEncoding) -> (Ptr (SkRect)) -> (Ptr (SkPaint)) -> IO (CFloat)
+foreign import ccall "sk_font_measure_text" sk_font_measure_text :: (Ptr (Sk_font)) -> (Ptr (())) -> (CSize) -> (Sk_text_encoding) -> (Ptr (Sk_rect)) -> (Ptr (Sk_paint)) -> IO (CFloat)
 -- | `sk_font_measure_text_no_return`
-foreign import ccall "sk_font_measure_text_no_return" skFontMeasureTextNoReturn :: (Ptr (SkFont)) -> (Ptr (())) -> (CSize) -> (SkTextEncoding) -> (Ptr (SkRect)) -> (Ptr (SkPaint)) -> (Ptr (CFloat)) -> IO (())
+foreign import ccall "sk_font_measure_text_no_return" sk_font_measure_text_no_return :: (Ptr (Sk_font)) -> (Ptr (())) -> (CSize) -> (Sk_text_encoding) -> (Ptr (Sk_rect)) -> (Ptr (Sk_paint)) -> (Ptr (CFloat)) -> IO (())
 -- | `sk_font_break_text`
-foreign import ccall "sk_font_break_text" skFontBreakText :: (Ptr (SkFont)) -> (Ptr (())) -> (CSize) -> (SkTextEncoding) -> (CFloat) -> (Ptr (CFloat)) -> (Ptr (SkPaint)) -> IO (CSize)
+foreign import ccall "sk_font_break_text" sk_font_break_text :: (Ptr (Sk_font)) -> (Ptr (())) -> (CSize) -> (Sk_text_encoding) -> (CFloat) -> (Ptr (CFloat)) -> (Ptr (Sk_paint)) -> IO (CSize)
 -- | `sk_font_get_widths_bounds`
-foreign import ccall "sk_font_get_widths_bounds" skFontGetWidthsBounds :: (Ptr (SkFont)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (CFloat)) -> (Ptr (SkRect)) -> (Ptr (SkPaint)) -> IO (())
+foreign import ccall "sk_font_get_widths_bounds" sk_font_get_widths_bounds :: (Ptr (Sk_font)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (CFloat)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_paint)) -> IO (())
 -- | `sk_font_get_pos`
-foreign import ccall "sk_font_get_pos" skFontGetPos :: (Ptr (SkFont)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (SkPoint)) -> (Ptr (SkPoint)) -> IO (())
+foreign import ccall "sk_font_get_pos" sk_font_get_pos :: (Ptr (Sk_font)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (Sk_point)) -> (Ptr (Sk_point)) -> IO (())
 -- | `sk_font_get_xpos`
-foreign import ccall "sk_font_get_xpos" skFontGetXPos :: (Ptr (SkFont)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (CFloat)) -> (CFloat) -> IO (())
+foreign import ccall "sk_font_get_xpos" sk_font_get_xpos :: (Ptr (Sk_font)) -> (Ptr (Word16)) -> (CInt) -> (Ptr (CFloat)) -> (CFloat) -> IO (())
 -- | `sk_font_get_path`
-foreign import ccall "sk_font_get_path" skFontGetPath :: (Ptr (SkFont)) -> (Word16) -> (Ptr (SkPath)) -> IO (CBool)
+foreign import ccall "sk_font_get_path" sk_font_get_path :: (Ptr (Sk_font)) -> (Word16) -> (Ptr (Sk_path)) -> IO (CBool)
 -- | `sk_font_get_paths`
-foreign import ccall "sk_font_get_paths" skFontGetPaths :: (Ptr (SkFont)) -> (Ptr (Word16)) -> (CInt) -> (FunPtr (SkGlyphPathProc)) -> (Ptr (())) -> IO (())
+foreign import ccall "sk_font_get_paths" sk_font_get_paths :: (Ptr (Sk_font)) -> (Ptr (Word16)) -> (CInt) -> (FunPtr (Sk_glyph_path_proc)) -> (Ptr (())) -> IO (())
 -- | `sk_font_get_metrics`
-foreign import ccall "sk_font_get_metrics" skFontGetMetrics :: (Ptr (SkFont)) -> (Ptr (SkFontMetrics)) -> IO (CFloat)
+foreign import ccall "sk_font_get_metrics" sk_font_get_metrics :: (Ptr (Sk_font)) -> (Ptr (Sk_fontmetrics)) -> IO (CFloat)
 -- | `sk_text_utils_get_path`
-foreign import ccall "sk_text_utils_get_path" skTextUtilsGetPath :: (Ptr (())) -> (CSize) -> (SkTextEncoding) -> (CFloat) -> (CFloat) -> (Ptr (SkFont)) -> (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_text_utils_get_path" sk_text_utils_get_path :: (Ptr (())) -> (CSize) -> (Sk_text_encoding) -> (CFloat) -> (CFloat) -> (Ptr (Sk_font)) -> (Ptr (Sk_path)) -> IO (())
 -- | `sk_text_utils_get_pos_path`
-foreign import ccall "sk_text_utils_get_pos_path" skTextUtilsGetPosPath :: (Ptr (())) -> (CSize) -> (SkTextEncoding) -> (Ptr (SkPoint)) -> (Ptr (SkFont)) -> (Ptr (SkPath)) -> IO (())
+foreign import ccall "sk_text_utils_get_pos_path" sk_text_utils_get_pos_path :: (Ptr (())) -> (CSize) -> (Sk_text_encoding) -> (Ptr (Sk_point)) -> (Ptr (Sk_font)) -> (Ptr (Sk_path)) -> IO (())
 -- | `sk_rrect_new`
-foreign import ccall "sk_rrect_new" skRRectNew :: IO (Ptr (SkRRect))
+foreign import ccall "sk_rrect_new" sk_rrect_new :: IO (Ptr (Sk_rrect))
 -- | `sk_rrect_new_copy`
-foreign import ccall "sk_rrect_new_copy" skRRectNewCopy :: (Ptr (SkRRect)) -> IO (Ptr (SkRRect))
+foreign import ccall "sk_rrect_new_copy" sk_rrect_new_copy :: (Ptr (Sk_rrect)) -> IO (Ptr (Sk_rrect))
 -- | `sk_rrect_delete`
-foreign import ccall "sk_rrect_delete" skRRectDelete :: (Ptr (SkRRect)) -> IO (())
+foreign import ccall "sk_rrect_delete" sk_rrect_delete :: (Ptr (Sk_rrect)) -> IO (())
 -- | `sk_rrect_get_type`
-foreign import ccall "sk_rrect_get_type" skRRectGetType :: (Ptr (SkRRect)) -> IO (SkRRectType)
+foreign import ccall "sk_rrect_get_type" sk_rrect_get_type :: (Ptr (Sk_rrect)) -> IO (Sk_rrect_type)
 -- | `sk_rrect_get_rect`
-foreign import ccall "sk_rrect_get_rect" skRRectGetRect :: (Ptr (SkRRect)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_rrect_get_rect" sk_rrect_get_rect :: (Ptr (Sk_rrect)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_rrect_get_radii`
-foreign import ccall "sk_rrect_get_radii" skRRectGetRadii :: (Ptr (SkRRect)) -> (SkRRectCorner) -> (Ptr (SkVector)) -> IO (())
+foreign import ccall "sk_rrect_get_radii" sk_rrect_get_radii :: (Ptr (Sk_rrect)) -> (Sk_rrect_corner) -> (Ptr (Sk_vector)) -> IO (())
 -- | `sk_rrect_get_width`
-foreign import ccall "sk_rrect_get_width" skRRectGetWidth :: (Ptr (SkRRect)) -> IO (CFloat)
+foreign import ccall "sk_rrect_get_width" sk_rrect_get_width :: (Ptr (Sk_rrect)) -> IO (CFloat)
 -- | `sk_rrect_get_height`
-foreign import ccall "sk_rrect_get_height" skRRectGetHeight :: (Ptr (SkRRect)) -> IO (CFloat)
+foreign import ccall "sk_rrect_get_height" sk_rrect_get_height :: (Ptr (Sk_rrect)) -> IO (CFloat)
 -- | `sk_rrect_set_empty`
-foreign import ccall "sk_rrect_set_empty" skRRectSetEmpty :: (Ptr (SkRRect)) -> IO (())
+foreign import ccall "sk_rrect_set_empty" sk_rrect_set_empty :: (Ptr (Sk_rrect)) -> IO (())
 -- | `sk_rrect_set_rect`
-foreign import ccall "sk_rrect_set_rect" skRRectSetRect :: (Ptr (SkRRect)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_rrect_set_rect" sk_rrect_set_rect :: (Ptr (Sk_rrect)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_rrect_set_oval`
-foreign import ccall "sk_rrect_set_oval" skRRectSetOval :: (Ptr (SkRRect)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_rrect_set_oval" sk_rrect_set_oval :: (Ptr (Sk_rrect)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_rrect_set_rect_xy`
-foreign import ccall "sk_rrect_set_rect_xy" skRRectSetRectXy :: (Ptr (SkRRect)) -> (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_rrect_set_rect_xy" sk_rrect_set_rect_xy :: (Ptr (Sk_rrect)) -> (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_rrect_set_nine_patch`
-foreign import ccall "sk_rrect_set_nine_patch" skRRectSetNinePatch :: (Ptr (SkRRect)) -> (Ptr (SkRect)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_rrect_set_nine_patch" sk_rrect_set_nine_patch :: (Ptr (Sk_rrect)) -> (Ptr (Sk_rect)) -> (CFloat) -> (CFloat) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_rrect_set_rect_radii`
-foreign import ccall "sk_rrect_set_rect_radii" skRRectSetRectRadii :: (Ptr (SkRRect)) -> (Ptr (SkRect)) -> (Ptr (SkVector)) -> IO (())
+foreign import ccall "sk_rrect_set_rect_radii" sk_rrect_set_rect_radii :: (Ptr (Sk_rrect)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_vector)) -> IO (())
 -- | `sk_rrect_inset`
-foreign import ccall "sk_rrect_inset" skRRectInset :: (Ptr (SkRRect)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_rrect_inset" sk_rrect_inset :: (Ptr (Sk_rrect)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_rrect_outset`
-foreign import ccall "sk_rrect_outset" skRRectOutset :: (Ptr (SkRRect)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_rrect_outset" sk_rrect_outset :: (Ptr (Sk_rrect)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_rrect_offset`
-foreign import ccall "sk_rrect_offset" skRRectOffset :: (Ptr (SkRRect)) -> (CFloat) -> (CFloat) -> IO (())
+foreign import ccall "sk_rrect_offset" sk_rrect_offset :: (Ptr (Sk_rrect)) -> (CFloat) -> (CFloat) -> IO (())
 -- | `sk_rrect_contains`
-foreign import ccall "sk_rrect_contains" skRRectContains :: (Ptr (SkRRect)) -> (Ptr (SkRect)) -> IO (CBool)
+foreign import ccall "sk_rrect_contains" sk_rrect_contains :: (Ptr (Sk_rrect)) -> (Ptr (Sk_rect)) -> IO (CBool)
 -- | `sk_rrect_is_valid`
-foreign import ccall "sk_rrect_is_valid" skRRectIsValid :: (Ptr (SkRRect)) -> IO (CBool)
+foreign import ccall "sk_rrect_is_valid" sk_rrect_is_valid :: (Ptr (Sk_rrect)) -> IO (CBool)
 -- | `sk_rrect_transform`
-foreign import ccall "sk_rrect_transform" skRRectTransform :: (Ptr (SkRRect)) -> (Ptr (SkMatrix)) -> (Ptr (SkRRect)) -> IO (CBool)
+foreign import ccall "sk_rrect_transform" sk_rrect_transform :: (Ptr (Sk_rrect)) -> (Ptr (Sk_matrix)) -> (Ptr (Sk_rrect)) -> IO (CBool)
 -- | `sk_matrix_try_invert`
-foreign import ccall "sk_matrix_try_invert" skMatrixTryInvert :: (Ptr (SkMatrix)) -> (Ptr (SkMatrix)) -> IO (CBool)
+foreign import ccall "sk_matrix_try_invert" sk_matrix_try_invert :: (Ptr (Sk_matrix)) -> (Ptr (Sk_matrix)) -> IO (CBool)
 -- | `sk_matrix_concat`
-foreign import ccall "sk_matrix_concat" skMatrixConCat :: (Ptr (SkMatrix)) -> (Ptr (SkMatrix)) -> (Ptr (SkMatrix)) -> IO (())
+foreign import ccall "sk_matrix_concat" sk_matrix_concat :: (Ptr (Sk_matrix)) -> (Ptr (Sk_matrix)) -> (Ptr (Sk_matrix)) -> IO (())
 -- | `sk_matrix_pre_concat`
-foreign import ccall "sk_matrix_pre_concat" skMatrixPreConCat :: (Ptr (SkMatrix)) -> (Ptr (SkMatrix)) -> IO (())
+foreign import ccall "sk_matrix_pre_concat" sk_matrix_pre_concat :: (Ptr (Sk_matrix)) -> (Ptr (Sk_matrix)) -> IO (())
 -- | `sk_matrix_post_concat`
-foreign import ccall "sk_matrix_post_concat" skMatrixPostConCat :: (Ptr (SkMatrix)) -> (Ptr (SkMatrix)) -> IO (())
+foreign import ccall "sk_matrix_post_concat" sk_matrix_post_concat :: (Ptr (Sk_matrix)) -> (Ptr (Sk_matrix)) -> IO (())
 -- | `sk_matrix_map_rect`
-foreign import ccall "sk_matrix_map_rect" skMatrixMapRect :: (Ptr (SkMatrix)) -> (Ptr (SkRect)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_matrix_map_rect" sk_matrix_map_rect :: (Ptr (Sk_matrix)) -> (Ptr (Sk_rect)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_matrix_map_points`
-foreign import ccall "sk_matrix_map_points" skMatrixMapPoints :: (Ptr (SkMatrix)) -> (Ptr (SkPoint)) -> (Ptr (SkPoint)) -> (CInt) -> IO (())
+foreign import ccall "sk_matrix_map_points" sk_matrix_map_points :: (Ptr (Sk_matrix)) -> (Ptr (Sk_point)) -> (Ptr (Sk_point)) -> (CInt) -> IO (())
 -- | `sk_matrix_map_vectors`
-foreign import ccall "sk_matrix_map_vectors" skMatrixMapVectors :: (Ptr (SkMatrix)) -> (Ptr (SkPoint)) -> (Ptr (SkPoint)) -> (CInt) -> IO (())
+foreign import ccall "sk_matrix_map_vectors" sk_matrix_map_vectors :: (Ptr (Sk_matrix)) -> (Ptr (Sk_point)) -> (Ptr (Sk_point)) -> (CInt) -> IO (())
 -- | `sk_matrix_map_xy`
-foreign import ccall "sk_matrix_map_xy" skMatrixMapXy :: (Ptr (SkMatrix)) -> (CFloat) -> (CFloat) -> (Ptr (SkPoint)) -> IO (())
+foreign import ccall "sk_matrix_map_xy" sk_matrix_map_xy :: (Ptr (Sk_matrix)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_point)) -> IO (())
 -- | `sk_matrix_map_vector`
-foreign import ccall "sk_matrix_map_vector" skMatrixMapVector :: (Ptr (SkMatrix)) -> (CFloat) -> (CFloat) -> (Ptr (SkPoint)) -> IO (())
+foreign import ccall "sk_matrix_map_vector" sk_matrix_map_vector :: (Ptr (Sk_matrix)) -> (CFloat) -> (CFloat) -> (Ptr (Sk_point)) -> IO (())
 -- | `sk_matrix_map_radius`
-foreign import ccall "sk_matrix_map_radius" skMatrixMapRadius :: (Ptr (SkMatrix)) -> (CFloat) -> IO (CFloat)
+foreign import ccall "sk_matrix_map_radius" sk_matrix_map_radius :: (Ptr (Sk_matrix)) -> (CFloat) -> IO (CFloat)
 -- | `sk_shader_ref`
-foreign import ccall "sk_shader_ref" skShaderRef :: (Ptr (SkShader)) -> IO (())
+foreign import ccall "sk_shader_ref" sk_shader_ref :: (Ptr (Sk_shader)) -> IO (())
 -- | `sk_shader_unref`
-foreign import ccall "sk_shader_unref" skShaderUnRef :: (Ptr (SkShader)) -> IO (())
+foreign import ccall "sk_shader_unref" sk_shader_unref :: (Ptr (Sk_shader)) -> IO (())
 -- | `sk_shader_with_local_matrix`
-foreign import ccall "sk_shader_with_local_matrix" skShaderWithLocalMatrix :: (Ptr (SkShader)) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_with_local_matrix" sk_shader_with_local_matrix :: (Ptr (Sk_shader)) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_with_color_filter`
-foreign import ccall "sk_shader_with_color_filter" skShaderWithColorFilter :: (Ptr (SkShader)) -> (Ptr (SkColorFilter)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_with_color_filter" sk_shader_with_color_filter :: (Ptr (Sk_shader)) -> (Ptr (Sk_colorfilter)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_empty`
-foreign import ccall "sk_shader_new_empty" skShaderNewEmpty :: IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_empty" sk_shader_new_empty :: IO (Ptr (Sk_shader))
 -- | `sk_shader_new_color`
-foreign import ccall "sk_shader_new_color" skShaderNewColor :: (SkColor) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_color" sk_shader_new_color :: (Sk_color) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_color4f`
-foreign import ccall "sk_shader_new_color4f" skShaderNewColor4F :: (Ptr (SkColor4F)) -> (Ptr (SkColorSpace)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_color4f" sk_shader_new_color4f :: (Ptr (Sk_color4f)) -> (Ptr (Sk_colorspace)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_blend`
-foreign import ccall "sk_shader_new_blend" skShaderNewBlend :: (SkBlendMode) -> (Ptr (SkShader)) -> (Ptr (SkShader)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_blend" sk_shader_new_blend :: (Sk_blendmode) -> (Ptr (Sk_shader)) -> (Ptr (Sk_shader)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_blender`
-foreign import ccall "sk_shader_new_blender" skShaderNewBlender :: (Ptr (SkBlender)) -> (Ptr (SkShader)) -> (Ptr (SkShader)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_blender" sk_shader_new_blender :: (Ptr (Sk_blender)) -> (Ptr (Sk_shader)) -> (Ptr (Sk_shader)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_linear_gradient`
-foreign import ccall "sk_shader_new_linear_gradient" skShaderNewLinearGradient :: (Ptr (SkPoint)) -> (Ptr (SkColor)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_linear_gradient" sk_shader_new_linear_gradient :: (Ptr (Sk_point)) -> (Ptr (Sk_color)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_linear_gradient_color4f`
-foreign import ccall "sk_shader_new_linear_gradient_color4f" skShaderNewLinearGradientColor4F :: (Ptr (SkPoint)) -> (Ptr (SkColor4F)) -> (Ptr (SkColorSpace)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_linear_gradient_color4f" sk_shader_new_linear_gradient_color4f :: (Ptr (Sk_point)) -> (Ptr (Sk_color4f)) -> (Ptr (Sk_colorspace)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_radial_gradient`
-foreign import ccall "sk_shader_new_radial_gradient" skShaderNewRadialGradient :: (Ptr (SkPoint)) -> (CFloat) -> (Ptr (SkColor)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_radial_gradient" sk_shader_new_radial_gradient :: (Ptr (Sk_point)) -> (CFloat) -> (Ptr (Sk_color)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_radial_gradient_color4f`
-foreign import ccall "sk_shader_new_radial_gradient_color4f" skShaderNewRadialGradientColor4F :: (Ptr (SkPoint)) -> (CFloat) -> (Ptr (SkColor4F)) -> (Ptr (SkColorSpace)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_radial_gradient_color4f" sk_shader_new_radial_gradient_color4f :: (Ptr (Sk_point)) -> (CFloat) -> (Ptr (Sk_color4f)) -> (Ptr (Sk_colorspace)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_sweep_gradient`
-foreign import ccall "sk_shader_new_sweep_gradient" skShaderNewSweepGradient :: (Ptr (SkPoint)) -> (Ptr (SkColor)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (CFloat) -> (CFloat) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_sweep_gradient" sk_shader_new_sweep_gradient :: (Ptr (Sk_point)) -> (Ptr (Sk_color)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (CFloat) -> (CFloat) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_sweep_gradient_color4f`
-foreign import ccall "sk_shader_new_sweep_gradient_color4f" skShaderNewSweepGradientColor4F :: (Ptr (SkPoint)) -> (Ptr (SkColor4F)) -> (Ptr (SkColorSpace)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (CFloat) -> (CFloat) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_sweep_gradient_color4f" sk_shader_new_sweep_gradient_color4f :: (Ptr (Sk_point)) -> (Ptr (Sk_color4f)) -> (Ptr (Sk_colorspace)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (CFloat) -> (CFloat) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_two_point_conical_gradient`
-foreign import ccall "sk_shader_new_two_point_conical_gradient" skShaderNewTwoPointConicalGradient :: (Ptr (SkPoint)) -> (CFloat) -> (Ptr (SkPoint)) -> (CFloat) -> (Ptr (SkColor)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_two_point_conical_gradient" sk_shader_new_two_point_conical_gradient :: (Ptr (Sk_point)) -> (CFloat) -> (Ptr (Sk_point)) -> (CFloat) -> (Ptr (Sk_color)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_two_point_conical_gradient_color4f`
-foreign import ccall "sk_shader_new_two_point_conical_gradient_color4f" skShaderNewTwoPointConicalGradientColor4F :: (Ptr (SkPoint)) -> (CFloat) -> (Ptr (SkPoint)) -> (CFloat) -> (Ptr (SkColor4F)) -> (Ptr (SkColorSpace)) -> (Ptr (CFloat)) -> (CInt) -> (SkShaderTileMode) -> (Ptr (SkMatrix)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_two_point_conical_gradient_color4f" sk_shader_new_two_point_conical_gradient_color4f :: (Ptr (Sk_point)) -> (CFloat) -> (Ptr (Sk_point)) -> (CFloat) -> (Ptr (Sk_color4f)) -> (Ptr (Sk_colorspace)) -> (Ptr (CFloat)) -> (CInt) -> (Sk_shader_tilemode) -> (Ptr (Sk_matrix)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_perlin_noise_fractal_noise`
-foreign import ccall "sk_shader_new_perlin_noise_fractal_noise" skShaderNewPerlInNoiseFractalNoise :: (CFloat) -> (CFloat) -> (CInt) -> (CFloat) -> (Ptr (SkISize)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_perlin_noise_fractal_noise" sk_shader_new_perlin_noise_fractal_noise :: (CFloat) -> (CFloat) -> (CInt) -> (CFloat) -> (Ptr (Sk_isize)) -> IO (Ptr (Sk_shader))
 -- | `sk_shader_new_perlin_noise_turbulence`
-foreign import ccall "sk_shader_new_perlin_noise_turbulence" skShaderNewPerlInNoiseTurbulence :: (CFloat) -> (CFloat) -> (CInt) -> (CFloat) -> (Ptr (SkISize)) -> IO (Ptr (SkShader))
+foreign import ccall "sk_shader_new_perlin_noise_turbulence" sk_shader_new_perlin_noise_turbulence :: (CFloat) -> (CFloat) -> (CInt) -> (CFloat) -> (Ptr (Sk_isize)) -> IO (Ptr (Sk_shader))
 -- | `gr_recording_context_unref`
-foreign import ccall "gr_recording_context_unref" grRecordingContextUnRef :: (Ptr (GrRecordingContext)) -> IO (())
+foreign import ccall "gr_recording_context_unref" gr_recording_context_unref :: (Ptr (Gr_recording_context)) -> IO (())
 -- | `gr_recording_context_get_max_surface_sample_count_for_color_type`
-foreign import ccall "gr_recording_context_get_max_surface_sample_count_for_color_type" grRecordingContextGetMaxSurfaceSampleCountForColorType :: (Ptr (GrRecordingContext)) -> (SkColorType) -> IO (CInt)
+foreign import ccall "gr_recording_context_get_max_surface_sample_count_for_color_type" gr_recording_context_get_max_surface_sample_count_for_color_type :: (Ptr (Gr_recording_context)) -> (Sk_colortype) -> IO (CInt)
 -- | `gr_recording_context_get_backend`
-foreign import ccall "gr_recording_context_get_backend" grRecordingContextGetBackend :: (Ptr (GrRecordingContext)) -> IO (GrBackend)
+foreign import ccall "gr_recording_context_get_backend" gr_recording_context_get_backend :: (Ptr (Gr_recording_context)) -> IO (Gr_backend)
 -- | `gr_recording_context_is_abandoned`
-foreign import ccall "gr_recording_context_is_abandoned" grRecordingContextIsAbandoned :: (Ptr (GrRecordingContext)) -> IO (CBool)
+foreign import ccall "gr_recording_context_is_abandoned" gr_recording_context_is_abandoned :: (Ptr (Gr_recording_context)) -> IO (CBool)
 -- | `gr_recording_context_max_texture_size`
-foreign import ccall "gr_recording_context_max_texture_size" grRecordingContextMaxTextureSize :: (Ptr (GrRecordingContext)) -> IO (CInt)
+foreign import ccall "gr_recording_context_max_texture_size" gr_recording_context_max_texture_size :: (Ptr (Gr_recording_context)) -> IO (CInt)
 -- | `gr_recording_context_max_render_target_size`
-foreign import ccall "gr_recording_context_max_render_target_size" grRecordingContextMaxRenderTargetSize :: (Ptr (GrRecordingContext)) -> IO (CInt)
+foreign import ccall "gr_recording_context_max_render_target_size" gr_recording_context_max_render_target_size :: (Ptr (Gr_recording_context)) -> IO (CInt)
 -- | `gr_recording_context_get_direct_context`
-foreign import ccall "gr_recording_context_get_direct_context" grRecordingContextGetDirectContext :: (Ptr (GrRecordingContext)) -> IO (Ptr (GrDirectContext))
+foreign import ccall "gr_recording_context_get_direct_context" gr_recording_context_get_direct_context :: (Ptr (Gr_recording_context)) -> IO (Ptr (Gr_direct_context))
 -- | `gr_direct_context_make_gl`
-foreign import ccall "gr_direct_context_make_gl" grDirectContextMakeGl :: (Ptr (GrGlInterface)) -> IO (Ptr (GrDirectContext))
+foreign import ccall "gr_direct_context_make_gl" gr_direct_context_make_gl :: (Ptr (Gr_glinterface)) -> IO (Ptr (Gr_direct_context))
 -- | `gr_direct_context_make_gl_with_options`
-foreign import ccall "gr_direct_context_make_gl_with_options" grDirectContextMakeGlWithOptions :: (Ptr (GrGlInterface)) -> (Ptr (GrContextOptions)) -> IO (Ptr (GrDirectContext))
+foreign import ccall "gr_direct_context_make_gl_with_options" gr_direct_context_make_gl_with_options :: (Ptr (Gr_glinterface)) -> (Ptr (Gr_context_options)) -> IO (Ptr (Gr_direct_context))
 -- | `gr_direct_context_make_metal`
-foreign import ccall "gr_direct_context_make_metal" grDirectContextMakeMetal :: (Ptr (())) -> (Ptr (())) -> IO (Ptr (GrDirectContext))
+foreign import ccall "gr_direct_context_make_metal" gr_direct_context_make_metal :: (Ptr (())) -> (Ptr (())) -> IO (Ptr (Gr_direct_context))
 -- | `gr_direct_context_make_metal_with_options`
-foreign import ccall "gr_direct_context_make_metal_with_options" grDirectContextMakeMetalWithOptions :: (Ptr (())) -> (Ptr (())) -> (Ptr (GrContextOptions)) -> IO (Ptr (GrDirectContext))
+foreign import ccall "gr_direct_context_make_metal_with_options" gr_direct_context_make_metal_with_options :: (Ptr (())) -> (Ptr (())) -> (Ptr (Gr_context_options)) -> IO (Ptr (Gr_direct_context))
 -- | `gr_direct_context_is_abandoned`
-foreign import ccall "gr_direct_context_is_abandoned" grDirectContextIsAbandoned :: (Ptr (GrDirectContext)) -> IO (CBool)
+foreign import ccall "gr_direct_context_is_abandoned" gr_direct_context_is_abandoned :: (Ptr (Gr_direct_context)) -> IO (CBool)
 -- | `gr_direct_context_abandon_context`
-foreign import ccall "gr_direct_context_abandon_context" grDirectContextAbandonContext :: (Ptr (GrDirectContext)) -> IO (())
+foreign import ccall "gr_direct_context_abandon_context" gr_direct_context_abandon_context :: (Ptr (Gr_direct_context)) -> IO (())
 -- | `gr_direct_context_release_resources_and_abandon_context`
-foreign import ccall "gr_direct_context_release_resources_and_abandon_context" grDirectContextReleaseResourcesAndAbandonContext :: (Ptr (GrDirectContext)) -> IO (())
+foreign import ccall "gr_direct_context_release_resources_and_abandon_context" gr_direct_context_release_resources_and_abandon_context :: (Ptr (Gr_direct_context)) -> IO (())
 -- | `gr_direct_context_get_resource_cache_limit`
-foreign import ccall "gr_direct_context_get_resource_cache_limit" grDirectContextGetResourceCacheLimit :: (Ptr (GrDirectContext)) -> IO (CSize)
+foreign import ccall "gr_direct_context_get_resource_cache_limit" gr_direct_context_get_resource_cache_limit :: (Ptr (Gr_direct_context)) -> IO (CSize)
 -- | `gr_direct_context_set_resource_cache_limit`
-foreign import ccall "gr_direct_context_set_resource_cache_limit" grDirectContextSetResourceCacheLimit :: (Ptr (GrDirectContext)) -> (CSize) -> IO (())
+foreign import ccall "gr_direct_context_set_resource_cache_limit" gr_direct_context_set_resource_cache_limit :: (Ptr (Gr_direct_context)) -> (CSize) -> IO (())
 -- | `gr_direct_context_get_resource_cache_usage`
-foreign import ccall "gr_direct_context_get_resource_cache_usage" grDirectContextGetResourceCacheUsage :: (Ptr (GrDirectContext)) -> (Ptr (CInt)) -> (Ptr (CSize)) -> IO (())
+foreign import ccall "gr_direct_context_get_resource_cache_usage" gr_direct_context_get_resource_cache_usage :: (Ptr (Gr_direct_context)) -> (Ptr (CInt)) -> (Ptr (CSize)) -> IO (())
 -- | `gr_direct_context_flush`
-foreign import ccall "gr_direct_context_flush" grDirectContextFlush :: (Ptr (GrDirectContext)) -> IO (())
+foreign import ccall "gr_direct_context_flush" gr_direct_context_flush :: (Ptr (Gr_direct_context)) -> IO (())
 -- | `gr_direct_context_submit`
-foreign import ccall "gr_direct_context_submit" grDirectContextSubmit :: (Ptr (GrDirectContext)) -> (CBool) -> IO (CBool)
+foreign import ccall "gr_direct_context_submit" gr_direct_context_submit :: (Ptr (Gr_direct_context)) -> (CBool) -> IO (CBool)
 -- | `gr_direct_context_flush_and_submit`
-foreign import ccall "gr_direct_context_flush_and_submit" grDirectContextFlushAndSubmit :: (Ptr (GrDirectContext)) -> (CBool) -> IO (())
+foreign import ccall "gr_direct_context_flush_and_submit" gr_direct_context_flush_and_submit :: (Ptr (Gr_direct_context)) -> (CBool) -> IO (())
 -- | `gr_direct_context_flush_image`
-foreign import ccall "gr_direct_context_flush_image" grDirectContextFlushImage :: (Ptr (GrDirectContext)) -> (Ptr (SkImage)) -> IO (())
+foreign import ccall "gr_direct_context_flush_image" gr_direct_context_flush_image :: (Ptr (Gr_direct_context)) -> (Ptr (Sk_image)) -> IO (())
 -- | `gr_direct_context_flush_surface`
-foreign import ccall "gr_direct_context_flush_surface" grDirectContextFlushSurface :: (Ptr (GrDirectContext)) -> (Ptr (SkSurface)) -> IO (())
+foreign import ccall "gr_direct_context_flush_surface" gr_direct_context_flush_surface :: (Ptr (Gr_direct_context)) -> (Ptr (Sk_surface)) -> IO (())
 -- | `gr_direct_context_reset_context`
-foreign import ccall "gr_direct_context_reset_context" grDirectContextResetContext :: (Ptr (GrDirectContext)) -> (Word32) -> IO (())
+foreign import ccall "gr_direct_context_reset_context" gr_direct_context_reset_context :: (Ptr (Gr_direct_context)) -> (Word32) -> IO (())
 -- | `gr_direct_context_dump_memory_statistics`
-foreign import ccall "gr_direct_context_dump_memory_statistics" grDirectContextDumpMemoryStatistics :: (Ptr (GrDirectContext)) -> (Ptr (SkTraceMemoryDump)) -> IO (())
+foreign import ccall "gr_direct_context_dump_memory_statistics" gr_direct_context_dump_memory_statistics :: (Ptr (Gr_direct_context)) -> (Ptr (Sk_tracememorydump)) -> IO (())
 -- | `gr_direct_context_free_gpu_resources`
-foreign import ccall "gr_direct_context_free_gpu_resources" grDirectContextFreeGpuResources :: (Ptr (GrDirectContext)) -> IO (())
+foreign import ccall "gr_direct_context_free_gpu_resources" gr_direct_context_free_gpu_resources :: (Ptr (Gr_direct_context)) -> IO (())
 -- | `gr_direct_context_perform_deferred_cleanup`
-foreign import ccall "gr_direct_context_perform_deferred_cleanup" grDirectContextPerformDeferredCleanup :: (Ptr (GrDirectContext)) -> (CLLong) -> IO (())
+foreign import ccall "gr_direct_context_perform_deferred_cleanup" gr_direct_context_perform_deferred_cleanup :: (Ptr (Gr_direct_context)) -> (CLLong) -> IO (())
 -- | `gr_direct_context_purge_unlocked_resources_bytes`
-foreign import ccall "gr_direct_context_purge_unlocked_resources_bytes" grDirectContextPurgeUnlockedResourcesBytes :: (Ptr (GrDirectContext)) -> (CSize) -> (CBool) -> IO (())
+foreign import ccall "gr_direct_context_purge_unlocked_resources_bytes" gr_direct_context_purge_unlocked_resources_bytes :: (Ptr (Gr_direct_context)) -> (CSize) -> (CBool) -> IO (())
 -- | `gr_direct_context_purge_unlocked_resources`
-foreign import ccall "gr_direct_context_purge_unlocked_resources" grDirectContextPurgeUnlockedResources :: (Ptr (GrDirectContext)) -> (CBool) -> IO (())
+foreign import ccall "gr_direct_context_purge_unlocked_resources" gr_direct_context_purge_unlocked_resources :: (Ptr (Gr_direct_context)) -> (CBool) -> IO (())
 -- | `gr_glinterface_create_native_interface`
-foreign import ccall "gr_glinterface_create_native_interface" grGlInterfaceCreateNativeInterface :: IO (Ptr (GrGlInterface))
+foreign import ccall "gr_glinterface_create_native_interface" gr_glinterface_create_native_interface :: IO (Ptr (Gr_glinterface))
 -- | `gr_glinterface_assemble_interface`
-foreign import ccall "gr_glinterface_assemble_interface" grGlInterfaceAssembleInterface :: (Ptr (())) -> (FunPtr (GrGlGetProc)) -> IO (Ptr (GrGlInterface))
+foreign import ccall "gr_glinterface_assemble_interface" gr_glinterface_assemble_interface :: (Ptr (())) -> (FunPtr (Gr_gl_get_proc)) -> IO (Ptr (Gr_glinterface))
 -- | `gr_glinterface_assemble_gl_interface`
-foreign import ccall "gr_glinterface_assemble_gl_interface" grGlInterfaceAssembleGlInterface :: (Ptr (())) -> (FunPtr (GrGlGetProc)) -> IO (Ptr (GrGlInterface))
+foreign import ccall "gr_glinterface_assemble_gl_interface" gr_glinterface_assemble_gl_interface :: (Ptr (())) -> (FunPtr (Gr_gl_get_proc)) -> IO (Ptr (Gr_glinterface))
 -- | `gr_glinterface_assemble_gles_interface`
-foreign import ccall "gr_glinterface_assemble_gles_interface" grGlInterfaceAssembleGLesInterface :: (Ptr (())) -> (FunPtr (GrGlGetProc)) -> IO (Ptr (GrGlInterface))
+foreign import ccall "gr_glinterface_assemble_gles_interface" gr_glinterface_assemble_gles_interface :: (Ptr (())) -> (FunPtr (Gr_gl_get_proc)) -> IO (Ptr (Gr_glinterface))
 -- | `gr_glinterface_assemble_webgl_interface`
-foreign import ccall "gr_glinterface_assemble_webgl_interface" grGlInterfaceAssembleWebGlInterface :: (Ptr (())) -> (FunPtr (GrGlGetProc)) -> IO (Ptr (GrGlInterface))
+foreign import ccall "gr_glinterface_assemble_webgl_interface" gr_glinterface_assemble_webgl_interface :: (Ptr (())) -> (FunPtr (Gr_gl_get_proc)) -> IO (Ptr (Gr_glinterface))
 -- | `gr_glinterface_unref`
-foreign import ccall "gr_glinterface_unref" grGlInterfaceUnRef :: (Ptr (GrGlInterface)) -> IO (())
+foreign import ccall "gr_glinterface_unref" gr_glinterface_unref :: (Ptr (Gr_glinterface)) -> IO (())
 -- | `gr_glinterface_validate`
-foreign import ccall "gr_glinterface_validate" grGlInterfaceValidate :: (Ptr (GrGlInterface)) -> IO (CBool)
+foreign import ccall "gr_glinterface_validate" gr_glinterface_validate :: (Ptr (Gr_glinterface)) -> IO (CBool)
 -- | `gr_glinterface_has_extension`
-foreign import ccall "gr_glinterface_has_extension" grGlInterfaceHasExtension :: (Ptr (GrGlInterface)) -> (Ptr (CChar)) -> IO (CBool)
+foreign import ccall "gr_glinterface_has_extension" gr_glinterface_has_extension :: (Ptr (Gr_glinterface)) -> (Ptr (CChar)) -> IO (CBool)
 -- | `gr_vk_extensions_new`
-foreign import ccall "gr_vk_extensions_new" grVkExtensionsNew :: IO (Ptr (GrVkExtensions))
+foreign import ccall "gr_vk_extensions_new" gr_vk_extensions_new :: IO (Ptr (Gr_vk_extensions))
 -- | `gr_vk_extensions_delete`
-foreign import ccall "gr_vk_extensions_delete" grVkExtensionsDelete :: (Ptr (GrVkExtensions)) -> IO (())
+foreign import ccall "gr_vk_extensions_delete" gr_vk_extensions_delete :: (Ptr (Gr_vk_extensions)) -> IO (())
 -- | `gr_vk_extensions_init`
-foreign import ccall "gr_vk_extensions_init" grVkExtensionsInit :: (Ptr (GrVkExtensions)) -> (FunPtr (GrVkGetProc)) -> (Ptr (())) -> (Ptr (VkInstance)) -> (Ptr (VkPhysicalDevice)) -> (Word32) -> (Ptr (Ptr (CChar))) -> (Word32) -> (Ptr (Ptr (CChar))) -> IO (())
+foreign import ccall "gr_vk_extensions_init" gr_vk_extensions_init :: (Ptr (Gr_vk_extensions)) -> (FunPtr (Gr_vk_get_proc)) -> (Ptr (())) -> (Ptr (Vk_instance)) -> (Ptr (Vk_physical_device)) -> (Word32) -> (Ptr (Ptr (CChar))) -> (Word32) -> (Ptr (Ptr (CChar))) -> IO (())
 -- | `gr_vk_extensions_has_extension`
-foreign import ccall "gr_vk_extensions_has_extension" grVkExtensionsHasExtension :: (Ptr (GrVkExtensions)) -> (Ptr (CChar)) -> (Word32) -> IO (CBool)
+foreign import ccall "gr_vk_extensions_has_extension" gr_vk_extensions_has_extension :: (Ptr (Gr_vk_extensions)) -> (Ptr (CChar)) -> (Word32) -> IO (CBool)
 -- | `gr_backendtexture_new_gl`
-foreign import ccall "gr_backendtexture_new_gl" grBackendTextureNewGl :: (CInt) -> (CInt) -> (CBool) -> (Ptr (GrGlTextureInfo)) -> IO (Ptr (GrBackendTexture))
+foreign import ccall "gr_backendtexture_new_gl" gr_backendtexture_new_gl :: (CInt) -> (CInt) -> (CBool) -> (Ptr (Gr_gl_textureinfo)) -> IO (Ptr (Gr_backendtexture))
 -- | `gr_backendtexture_new_vulkan`
-foreign import ccall "gr_backendtexture_new_vulkan" grBackendTextureNewVuLkAn :: (CInt) -> (CInt) -> (Ptr (GrVkImageInfo)) -> IO (Ptr (GrBackendTexture))
+foreign import ccall "gr_backendtexture_new_vulkan" gr_backendtexture_new_vulkan :: (CInt) -> (CInt) -> (Ptr (Gr_vk_imageinfo)) -> IO (Ptr (Gr_backendtexture))
 -- | `gr_backendtexture_new_metal`
-foreign import ccall "gr_backendtexture_new_metal" grBackendTextureNewMetal :: (CInt) -> (CInt) -> (CBool) -> (Ptr (GrMtLTextureInfo)) -> IO (Ptr (GrBackendTexture))
+foreign import ccall "gr_backendtexture_new_metal" gr_backendtexture_new_metal :: (CInt) -> (CInt) -> (CBool) -> (Ptr (Gr_mtl_textureinfo)) -> IO (Ptr (Gr_backendtexture))
 -- | `gr_backendtexture_new_direct3d`
-foreign import ccall "gr_backendtexture_new_direct3d" grBackendTextureNewDirect3D :: (CInt) -> (CInt) -> (Ptr (GrD3dTextureResourceInfo)) -> IO (Ptr (GrBackendTexture))
+foreign import ccall "gr_backendtexture_new_direct3d" gr_backendtexture_new_direct3d :: (CInt) -> (CInt) -> (Ptr (Gr_d3d_textureresourceinfo)) -> IO (Ptr (Gr_backendtexture))
 -- | `gr_backendtexture_delete`
-foreign import ccall "gr_backendtexture_delete" grBackendTextureDelete :: (Ptr (GrBackendTexture)) -> IO (())
+foreign import ccall "gr_backendtexture_delete" gr_backendtexture_delete :: (Ptr (Gr_backendtexture)) -> IO (())
 -- | `gr_backendtexture_is_valid`
-foreign import ccall "gr_backendtexture_is_valid" grBackendTextureIsValid :: (Ptr (GrBackendTexture)) -> IO (CBool)
+foreign import ccall "gr_backendtexture_is_valid" gr_backendtexture_is_valid :: (Ptr (Gr_backendtexture)) -> IO (CBool)
 -- | `gr_backendtexture_get_width`
-foreign import ccall "gr_backendtexture_get_width" grBackendTextureGetWidth :: (Ptr (GrBackendTexture)) -> IO (CInt)
+foreign import ccall "gr_backendtexture_get_width" gr_backendtexture_get_width :: (Ptr (Gr_backendtexture)) -> IO (CInt)
 -- | `gr_backendtexture_get_height`
-foreign import ccall "gr_backendtexture_get_height" grBackendTextureGetHeight :: (Ptr (GrBackendTexture)) -> IO (CInt)
+foreign import ccall "gr_backendtexture_get_height" gr_backendtexture_get_height :: (Ptr (Gr_backendtexture)) -> IO (CInt)
 -- | `gr_backendtexture_has_mipmaps`
-foreign import ccall "gr_backendtexture_has_mipmaps" grBackendTextureHasMIpMaps :: (Ptr (GrBackendTexture)) -> IO (CBool)
+foreign import ccall "gr_backendtexture_has_mipmaps" gr_backendtexture_has_mipmaps :: (Ptr (Gr_backendtexture)) -> IO (CBool)
 -- | `gr_backendtexture_get_backend`
-foreign import ccall "gr_backendtexture_get_backend" grBackendTextureGetBackend :: (Ptr (GrBackendTexture)) -> IO (GrBackend)
+foreign import ccall "gr_backendtexture_get_backend" gr_backendtexture_get_backend :: (Ptr (Gr_backendtexture)) -> IO (Gr_backend)
 -- | `gr_backendtexture_get_gl_textureinfo`
-foreign import ccall "gr_backendtexture_get_gl_textureinfo" grBackendTextureGetGlTextureInfo :: (Ptr (GrBackendTexture)) -> (Ptr (GrGlTextureInfo)) -> IO (CBool)
+foreign import ccall "gr_backendtexture_get_gl_textureinfo" gr_backendtexture_get_gl_textureinfo :: (Ptr (Gr_backendtexture)) -> (Ptr (Gr_gl_textureinfo)) -> IO (CBool)
 -- | `gr_backendrendertarget_new_gl`
-foreign import ccall "gr_backendrendertarget_new_gl" grBackendRenderTargetNewGl :: (CInt) -> (CInt) -> (CInt) -> (CInt) -> (Ptr (GrGlFrameBufferInfo)) -> IO (Ptr (GrBackendRenderTarget))
+foreign import ccall "gr_backendrendertarget_new_gl" gr_backendrendertarget_new_gl :: (CInt) -> (CInt) -> (CInt) -> (CInt) -> (Ptr (Gr_gl_framebufferinfo)) -> IO (Ptr (Gr_backendrendertarget))
 -- | `gr_backendrendertarget_new_vulkan`
-foreign import ccall "gr_backendrendertarget_new_vulkan" grBackendRenderTargetNewVuLkAn :: (CInt) -> (CInt) -> (Ptr (GrVkImageInfo)) -> IO (Ptr (GrBackendRenderTarget))
+foreign import ccall "gr_backendrendertarget_new_vulkan" gr_backendrendertarget_new_vulkan :: (CInt) -> (CInt) -> (Ptr (Gr_vk_imageinfo)) -> IO (Ptr (Gr_backendrendertarget))
 -- | `gr_backendrendertarget_new_metal`
-foreign import ccall "gr_backendrendertarget_new_metal" grBackendRenderTargetNewMetal :: (CInt) -> (CInt) -> (Ptr (GrMtLTextureInfo)) -> IO (Ptr (GrBackendRenderTarget))
+foreign import ccall "gr_backendrendertarget_new_metal" gr_backendrendertarget_new_metal :: (CInt) -> (CInt) -> (Ptr (Gr_mtl_textureinfo)) -> IO (Ptr (Gr_backendrendertarget))
 -- | `gr_backendrendertarget_new_direct3d`
-foreign import ccall "gr_backendrendertarget_new_direct3d" grBackendRenderTargetNewDirect3D :: (CInt) -> (CInt) -> (Ptr (GrD3dTextureResourceInfo)) -> IO (Ptr (GrBackendRenderTarget))
+foreign import ccall "gr_backendrendertarget_new_direct3d" gr_backendrendertarget_new_direct3d :: (CInt) -> (CInt) -> (Ptr (Gr_d3d_textureresourceinfo)) -> IO (Ptr (Gr_backendrendertarget))
 -- | `gr_backendrendertarget_delete`
-foreign import ccall "gr_backendrendertarget_delete" grBackendRenderTargetDelete :: (Ptr (GrBackendRenderTarget)) -> IO (())
+foreign import ccall "gr_backendrendertarget_delete" gr_backendrendertarget_delete :: (Ptr (Gr_backendrendertarget)) -> IO (())
 -- | `gr_backendrendertarget_is_valid`
-foreign import ccall "gr_backendrendertarget_is_valid" grBackendRenderTargetIsValid :: (Ptr (GrBackendRenderTarget)) -> IO (CBool)
+foreign import ccall "gr_backendrendertarget_is_valid" gr_backendrendertarget_is_valid :: (Ptr (Gr_backendrendertarget)) -> IO (CBool)
 -- | `gr_backendrendertarget_get_width`
-foreign import ccall "gr_backendrendertarget_get_width" grBackendRenderTargetGetWidth :: (Ptr (GrBackendRenderTarget)) -> IO (CInt)
+foreign import ccall "gr_backendrendertarget_get_width" gr_backendrendertarget_get_width :: (Ptr (Gr_backendrendertarget)) -> IO (CInt)
 -- | `gr_backendrendertarget_get_height`
-foreign import ccall "gr_backendrendertarget_get_height" grBackendRenderTargetGetHeight :: (Ptr (GrBackendRenderTarget)) -> IO (CInt)
+foreign import ccall "gr_backendrendertarget_get_height" gr_backendrendertarget_get_height :: (Ptr (Gr_backendrendertarget)) -> IO (CInt)
 -- | `gr_backendrendertarget_get_samples`
-foreign import ccall "gr_backendrendertarget_get_samples" grBackendRenderTargetGetSamples :: (Ptr (GrBackendRenderTarget)) -> IO (CInt)
+foreign import ccall "gr_backendrendertarget_get_samples" gr_backendrendertarget_get_samples :: (Ptr (Gr_backendrendertarget)) -> IO (CInt)
 -- | `gr_backendrendertarget_get_stencils`
-foreign import ccall "gr_backendrendertarget_get_stencils" grBackendRenderTargetGetStencils :: (Ptr (GrBackendRenderTarget)) -> IO (CInt)
+foreign import ccall "gr_backendrendertarget_get_stencils" gr_backendrendertarget_get_stencils :: (Ptr (Gr_backendrendertarget)) -> IO (CInt)
 -- | `gr_backendrendertarget_get_backend`
-foreign import ccall "gr_backendrendertarget_get_backend" grBackendRenderTargetGetBackend :: (Ptr (GrBackendRenderTarget)) -> IO (GrBackend)
+foreign import ccall "gr_backendrendertarget_get_backend" gr_backendrendertarget_get_backend :: (Ptr (Gr_backendrendertarget)) -> IO (Gr_backend)
 -- | `gr_backendrendertarget_get_gl_framebufferinfo`
-foreign import ccall "gr_backendrendertarget_get_gl_framebufferinfo" grBackendRenderTargetGetGlFrameBufferInfo :: (Ptr (GrBackendRenderTarget)) -> (Ptr (GrGlFrameBufferInfo)) -> IO (CBool)
+foreign import ccall "gr_backendrendertarget_get_gl_framebufferinfo" gr_backendrendertarget_get_gl_framebufferinfo :: (Ptr (Gr_backendrendertarget)) -> (Ptr (Gr_gl_framebufferinfo)) -> IO (CBool)
 -- | `sk_drawable_unref`
-foreign import ccall "sk_drawable_unref" skDrawAbleUnRef :: (Ptr (SkDrawAble)) -> IO (())
+foreign import ccall "sk_drawable_unref" sk_drawable_unref :: (Ptr (Sk_drawable)) -> IO (())
 -- | `sk_drawable_get_generation_id`
-foreign import ccall "sk_drawable_get_generation_id" skDrawAbleGetGenerationId :: (Ptr (SkDrawAble)) -> IO (Word32)
+foreign import ccall "sk_drawable_get_generation_id" sk_drawable_get_generation_id :: (Ptr (Sk_drawable)) -> IO (Word32)
 -- | `sk_drawable_get_bounds`
-foreign import ccall "sk_drawable_get_bounds" skDrawAbleGetBounds :: (Ptr (SkDrawAble)) -> (Ptr (SkRect)) -> IO (())
+foreign import ccall "sk_drawable_get_bounds" sk_drawable_get_bounds :: (Ptr (Sk_drawable)) -> (Ptr (Sk_rect)) -> IO (())
 -- | `sk_drawable_draw`
-foreign import ccall "sk_drawable_draw" skDrawAbleDraw :: (Ptr (SkDrawAble)) -> (Ptr (SkCanvas)) -> (Ptr (SkMatrix)) -> IO (())
+foreign import ccall "sk_drawable_draw" sk_drawable_draw :: (Ptr (Sk_drawable)) -> (Ptr (Sk_canvas)) -> (Ptr (Sk_matrix)) -> IO (())
 -- | `sk_drawable_new_picture_snapshot`
-foreign import ccall "sk_drawable_new_picture_snapshot" skDrawAbleNewPictureSnapshot :: (Ptr (SkDrawAble)) -> IO (Ptr (SkPicture))
+foreign import ccall "sk_drawable_new_picture_snapshot" sk_drawable_new_picture_snapshot :: (Ptr (Sk_drawable)) -> IO (Ptr (Sk_picture))
 -- | `sk_drawable_notify_drawing_changed`
-foreign import ccall "sk_drawable_notify_drawing_changed" skDrawAbleNotifyDrawingChanged :: (Ptr (SkDrawAble)) -> IO (())
+foreign import ccall "sk_drawable_notify_drawing_changed" sk_drawable_notify_drawing_changed :: (Ptr (Sk_drawable)) -> IO (())
 -- | `sk_drawable_approximate_bytes_used`
-foreign import ccall "sk_drawable_approximate_bytes_used" skDrawAbleApproximateBytesUsed :: (Ptr (SkDrawAble)) -> IO (CSize)
+foreign import ccall "sk_drawable_approximate_bytes_used" sk_drawable_approximate_bytes_used :: (Ptr (Sk_drawable)) -> IO (CSize)

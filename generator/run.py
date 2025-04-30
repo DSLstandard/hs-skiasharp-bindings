@@ -10,7 +10,6 @@ import pycparser
 import io
 import sys
 import tempfile
-import wordninja
 import itertools
 import logging
 import subprocess
@@ -188,161 +187,7 @@ def make_camel_case(words: list[str], *, capital: bool = False) -> str:
         return words[0] + "".join([upper_head(word) for word in words[1:]])
 
 
-class WordBreaker:
-    def __init__(self):
-        # Default wordninja (and even LLMs like Gemini 2.5 Pro) break words
-        # incorrectly, e.g.:
-        # - webpencoder -> web/p/encoder (We want web/encoder)
-        # - skottie -> s/kot/tie (We want skottie)
-        # - font -> font/m/gr (We want font/mgr)
-
-        # This is likely because wordninja's default word list is derived from
-        # contexts in normal English instead of Skia/Chromium/graphics/general
-        # programming.
-
-        # So special words are injected and priotized above all else.
-        special_words = [
-            # other terms
-            "cliperator",
-            "spanerator",
-            "pixmap",
-            "bbh",
-            "shader",
-            "sksg",
-            "skottie",
-            "rsx",
-            "webp",
-            "codec",
-            "icc",
-            "svg",
-            "vk",
-            "gl",
-            "utf",
-            "flattenable"
-            "allocator",
-            "allocation",
-            "allocate",
-            "alloc",
-            "premul",
-            "unpremul",
-            "src",
-            "dst",
-            # image formats
-            "bmp",
-            "gif",
-            "ico",
-            "jpeg",
-            "png",
-            "wbmp",
-            "webp",
-            "pkm",
-            "ktx",
-            "astc",
-            "dng",
-            "heif",
-            "avif",
-            "jpegxl",
-            # colors
-            "r8",
-            "g8",
-            "b8",
-            "a8",
-            "r16",
-            "g16",
-            "b16",
-            "a16",
-            "r32",
-            "g32",
-            "b32",
-            "a32",
-            "bgr",
-            "rgb",
-            "rgba",
-            "bgra",
-            "argb",
-            "srgb",
-            "srgba",
-        ]
-        words = []
-        words.extend(special_words)
-        with gzip.open("./wordninja_words.txt.gz") as f:
-            words.extend(f.read().decode().split())
-        self._model = wordninja.LanguageModel(words)
-
-        # Special breaks to further refine word-breaking algorithm.
-        special_breaks = {
-            "skottie": "skottie",
-            "skresources": "sk/resources",
-            "dxgi": "dxgi",
-            "d3d": "d3d",
-            "nway": "n/way",
-        }
-
-        self._special_breaks = {
-            key: value.split("/")
-            for key, value
-            in special_breaks.items()
-        }
-
-    def break_snake_case(self, text: str) -> list[str]:
-        """
-        Break mangled lowercase snake case inputs like "skresources_multi_frame_image_asset"
-        into ["sk", "resources", "multi", "frame", "image", "asset"].
-
-        This function is aware of Skia library specific words like "skottie" and
-        would not break them.
-        """
-        words = []
-        for w in text.split("_"):
-            words.extend(self.break_word(w))
-        return words
-
-    def break_screaming_snake_case(self, text: str) -> list[str]:
-        return self.break_snake_case(text.lower())
-
-    def break_word(self, word: str) -> list[str]:
-        if len(word) <= 2:
-            # Immediately forgive words like "sk", "gl", "rx", "ry", "rz", ...
-            return [word]
-        if word in self._special_breaks:
-            return self._special_breaks[word]
-        else:
-            return self._model.split(word)
-
-
-class TestWordBreaker:
-    def test_breaker(self):
-        breaker = WordBreaker()
-
-        def test(input_text: str, answer_text: str):
-            assert breaker.break_word(input_text) == answer_text.split("/")
-
-        def test_snake(input_text: str, answer_text: str):
-            assert breaker.break_snake_case(
-                input_text) == answer_text.split("/")
-
-        test("skottie", "skottie")
-        test("codecanimation", "codec/animation")
-        test("webpencoder", "webp/encoder")
-        test("jpegencoder", "jpeg/encoder")
-        test("runtimeeffect", "runtime/effect")
-        test("dynamicstreamwriter", "dynamic/stream/writer")
-        test("rawiterator", "raw/iterator")
-        test("wstream", "w/stream")
-        test("streamrewindable", "stream/rewindable")
-        test("dxgi", "dxgi")
-        test("nway", "n/way")
-        test("overdraw", "overdraw")
-        test("glinterface", "gl/interface")
-        test("vkinterface", "vk/interface")
-        test_snake("gr_vk_backendmemory", "gr/vk/backend/memory")
-        test_snake("svgcanvas", "svg/canvas")
-
-
 class NameTranslator:
-    def __init__(self, breaker: WordBreaker):
-        self._breaker = breaker
-
     def c_type_to_hs(
         self,
         name: str, *,
@@ -352,7 +197,7 @@ class NameTranslator:
         """
         Converts a C type name to Haskell.
 
-        e.g., sk_runtimeeffect_uniform_flags_t -> SkRuntimeEffectUniformFlags
+        e.g., sk_runtimeeffect_uniform_flags_t -> Sk_runtimeeffect_uniform_flags
         """
 
         if has_t_suffix:
@@ -361,96 +206,34 @@ class NameTranslator:
                     f"{name=} does not have suffix '_t'. You sure this is a C type name?")
             name = name[:-2]  # Strip '_t'
 
-        words = self._breaker.break_screaming_snake_case(name)
-        if return_words:
-            return words
-        else:
-            return make_camel_case(words, capital=True)
+        return upper_head(name)
 
     def c_normal_enum_value_to_hs(self, name: str, ty_name: str) -> str:
         """
-        Converts a C normal enum value name to Haskell.
+        Translates a C normal enum value name to Haskell.
 
-        e.g., HUE_SK_BLENDMODE (ty_name="sk_blendmode_t") -> SkBlendMode'Hue
+        e.g., HUE_SK_BLENDMODE (ty_name="sk_blendmode_t") -> sk_blendmode'HUE_SK_BLENDMODE
         """
-        name_words = self._breaker.break_screaming_snake_case(name)
-
-        # Process name words
-        if ty_name.endswith("sk_encoded_image_format_t"):
-            # sk_encoded_image_format_t is an exception
-            # its values' names's suffixes are mistyped(?).
-            name_words = name_words[:-3]  # r-strip "SK_ENCODED_FORMAT"
-        else:
-            # r-strip type-name suffixed value names
-            ty_words = self.c_type_to_hs(ty_name, return_words=True)
-            if name_words[-len(ty_words):] == ty_words:
-                name_words = name_words[:-len(ty_words)]
-
-        return lower_head(self.c_type_to_hs(ty_name)) + "'" + make_camel_case(name_words, capital=True)
+        # NOTE: ty_name[:-2] removes the suffix "_t"
+        return ty_name[:-2] + "'" + name
 
     def c_fn_name_to_hs(self, name: str) -> str:
         """
-        Converts a C function name to Haskell
+        Translates a C function name to Haskell
 
-        e.g., sk_picture_get_recording_canvas -> skPictureGetRecordingCanvas
+        e.g., sk_picture_get_recording_canvas -> sk_picture_get_recording_canvas
         """
-        words = self._breaker.break_snake_case(name)
-        return make_camel_case(words)
+        # NOTE: There is no change.
+        return name
 
     def c_struct_field_to_hs(self, name: str) -> str:
         """
         Converts a C struct field name to Haskell.
 
-        e.g., fGlyphCacheTextureMaximumBytes -> glyphCacheTextureMaximumBytes
-        e.g., fICCProfileDescription -> iccProfileDescription
-        e.g., fInstance -> instance_ (underscore is added to prevent Haskell syntax errors)
+        e.g., fICCProfile -> fICCProfile
         """
-
-        def make_field_name():
-            def lower_head_word(word):
-                # ICCProfileDescription -> iccProfileDescription
-                # AlphaOption -> alphaOption
-
-                if word[0].islower():
-                    # got a word like "xmpMetadata"
-                    # no need for processing
-                    return word
-                elif word.isupper():
-                    # got a word that is entirely uppercase
-                    # like "PDFA" or "R"/"G"/"B"
-                    return word.lower()
-                elif word[1].islower():
-                    # word is like "AlphaOption"
-                    return lower_head(word)
-                else:
-                    # word is special, like "ICCProfileDescription"
-                    # we need to turn it into "iccProfileDescription"
-
-                    for i in range(len(word)):
-                        if word[i].islower():
-                            break
-
-                    # 'i' is now the index of the first lowercase letter
-
-                    return word[:(i-1)].lower() + word[(i-1):]
-
-            if name[0] == "f" and name[1].isupper():
-                return lower_head_word(name[1:])
-            elif name.startswith("_private_"):
-                # "_private_fUsesSystemHeap" of "gr_vk_alloc_t" is an exception
-                return lower_head_word(name[len("_private_"):])
-            else:
-                # handle other field names like "xmpMetadata"
-                return lower_head_word(name)
-
-        field_name = make_field_name()
-        # NOTE: field_name might be illegal; e.g.; "instance", which is a
-        # Haskell keyword. We need to take care of them.
-
-        if field_name in HASKELL_KEYWORDS:
-            return field_name + "_"  # Pad an underscore
-        else:
-            return field_name
+        # NOTE: There is no change.
+        return name
 
 
 class TypeContext:
@@ -613,10 +396,7 @@ class TypeContext:
 class MonoSkiaVisitor(c_ast.NodeVisitor):
     def __init__(self, output: io.StringIO) -> None:
         self._output = output
-
-        word_breaker = WordBreaker()
-        self._translator = NameTranslator(word_breaker)
-
+        self._translator = NameTranslator()
         self._tyctx = TypeContext(translator=self._translator)
 
     def write_line(self, line: str) -> None:

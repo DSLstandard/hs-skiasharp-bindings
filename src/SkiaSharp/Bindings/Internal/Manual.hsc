@@ -47,13 +47,13 @@ C.include "<c/sksg_invalidation_controller.h>"
 -- TODO: Learn how to use inline-c properly for passing C structure values.
 
 -- | `gr_direct_context_make_direct3d`
-grDirectContextMakeDirect3d :: GrD3dBackendContext -> IO (Ptr GrDirectContext)
-grDirectContextMakeDirect3d ctx = do
-    let adapter = castPtr ctx.adapter
-    let device = castPtr ctx.device
-    let queue = castPtr ctx.queue
-    let memoryAllocator = castPtr ctx.memoryAllocator
-    let protectedContext = ctx.protectedContext
+gr_direct_context_make_direct3d :: Gr_d3d_backendcontext -> IO (Ptr Gr_direct_context)
+gr_direct_context_make_direct3d ctx = do
+    let adapter = castPtr ctx.fAdapter
+    let device = castPtr ctx.fDevice
+    let queue = castPtr ctx.fQueue
+    let memoryAllocator = castPtr ctx.fMemoryAllocator
+    let protectedContext = ctx.fProtectedContext
 
     ptr <- [C.block|void* {
         gr_d3d_backendcontext_t in;
@@ -68,13 +68,13 @@ grDirectContextMakeDirect3d ctx = do
     pure (castPtr ptr)
 
 -- | `gr_direct_context_make_direct3d_with_options`
-grDirectContextMakeDirect3dWithOptions :: GrD3dBackendContext -> Ptr GrContextOptions -> IO (Ptr GrDirectContext)
-grDirectContextMakeDirect3dWithOptions ctx inOptions = do
-    let adapter = castPtr ctx.adapter
-    let device = castPtr ctx.device
-    let queue = castPtr ctx.queue
-    let memoryAllocator = castPtr ctx.memoryAllocator
-    let protectedContext = ctx.protectedContext
+gr_direct_context_make_direct3d_with_options :: Gr_d3d_backendcontext -> Ptr Gr_context_options -> IO (Ptr Gr_direct_context)
+gr_direct_context_make_direct3d_with_options ctx inOptions = do
+    let adapter = castPtr ctx.fAdapter
+    let device = castPtr ctx.fDevice
+    let queue = castPtr ctx.fQueue
+    let memoryAllocator = castPtr ctx.fMemoryAllocator
+    let protectedContext = ctx.fProtectedContext
 
     let options = castPtr inOptions
 
@@ -91,125 +91,125 @@ grDirectContextMakeDirect3dWithOptions ctx inOptions = do
     pure (castPtr ptr)
 
 -- | `gr_direct_context_make_vulkan`
-grDirectContextMakeVulkan :: GrVkBackendContext -> IO (Ptr GrDirectContext)
-grDirectContextMakeVulkan ctx = do
-    let instancePtr' = castPtr ctx.instance_
-    let physicalDevice' = castPtr ctx.physicalDevice
-    let device' = castPtr ctx.device
-    let queue' = castPtr ctx.queue
-    let graphicsQueueIndex' = ctx.graphicsQueueIndex
-    let minAPIVersion' = ctx.minAPIVersion
-    let instanceVersion' = ctx.instanceVersion
-    let maxAPIVersion' = ctx.maxAPIVersion
-    let extensions' = ctx.extensions
-    let vkExtensions' = castPtr ctx.vkExtensions
-    let features' = ctx.features
-    let deviceFeatures' = castPtr ctx.deviceFeatures
-    let deviceFeatures2' = castPtr ctx.deviceFeatures2
-    let memoryAllocator' = castPtr ctx.memoryAllocator
-    let getProc' :: Ptr () = castFunPtrToPtr ctx.getProc
-    let getProcUserData' = castPtr ctx.getProcUserData
-    let ownsInstanceAndDevice' = ctx.ownsInstanceAndDevice
-    let protectedContext' = ctx.protectedContext
+gr_direct_context_make_vulkan :: Gr_vk_backendcontext -> IO (Ptr Gr_direct_context)
+gr_direct_context_make_vulkan ctx = do
+    let instancePtr = castPtr ctx.fInstance
+    let physicalDevice = castPtr ctx.fPhysicalDevice
+    let device = castPtr ctx.fDevice
+    let queue = castPtr ctx.fQueue
+    let graphicsQueueIndex = ctx.fGraphicsQueueIndex
+    let minAPIVersion = ctx.fMinAPIVersion
+    let instanceVersion = ctx.fInstanceVersion
+    let maxAPIVersion = ctx.fMaxAPIVersion
+    let extensions = ctx.fExtensions
+    let vkExtensions = castPtr ctx.fVkExtensions
+    let features = ctx.fFeatures
+    let deviceFeatures = castPtr ctx.fDeviceFeatures
+    let deviceFeatures2 = castPtr ctx.fDeviceFeatures2
+    let memoryAllocator = castPtr ctx.fMemoryAllocator
+    let getProc :: Ptr () = castFunPtrToPtr ctx.fGetProc
+    let getProcUserData = castPtr ctx.fGetProcUserData
+    let ownsInstanceAndDevice = ctx.fOwnsInstanceAndDevice
+    let protectedContext = ctx.fProtectedContext
 
     ptr <- [C.block|void* {
         gr_vk_backendcontext_t in;
-        in.fInstance = $(void* instancePtr');
-        in.fPhysicalDevice = $(void* physicalDevice');
-        in.fDevice = $(void* device');
-        in.fQueue = $(void* queue');
-        in.fGraphicsQueueIndex = $(uint32_t graphicsQueueIndex');
-        in.fMinAPIVersion = $(uint32_t minAPIVersion');
-        in.fInstanceVersion = $(uint32_t instanceVersion');
-        in.fMaxAPIVersion = $(uint32_t maxAPIVersion');
-        in.fExtensions = $(uint32_t extensions');
-        in.fVkExtensions = $(void* vkExtensions');
-        in.fFeatures = $(uint32_t features');
-        in.fDeviceFeatures = $(void* deviceFeatures');
-        in.fDeviceFeatures2 = $(void* deviceFeatures2');
-        in.fMemoryAllocator = $(void* memoryAllocator');
-        in.fGetProc = $(void* getProc');
-        in.fGetProcUserData = $(void* getProcUserData');
-        in.fOwnsInstanceAndDevice = $(bool ownsInstanceAndDevice');
-        in.fProtectedContext = $(bool protectedContext');
+        in.fInstance = $(void* instancePtr);
+        in.fPhysicalDevice = $(void* physicalDevice);
+        in.fDevice = $(void* device);
+        in.fQueue = $(void* queue);
+        in.fGraphicsQueueIndex = $(uint32_t graphicsQueueIndex);
+        in.fMinAPIVersion = $(uint32_t minAPIVersion);
+        in.fInstanceVersion = $(uint32_t instanceVersion);
+        in.fMaxAPIVersion = $(uint32_t maxAPIVersion);
+        in.fExtensions = $(uint32_t extensions);
+        in.fVkExtensions = $(void* vkExtensions);
+        in.fFeatures = $(uint32_t features);
+        in.fDeviceFeatures = $(void* deviceFeatures);
+        in.fDeviceFeatures2 = $(void* deviceFeatures2);
+        in.fMemoryAllocator = $(void* memoryAllocator);
+        in.fGetProc = $(void* getProc);
+        in.fGetProcUserData = $(void* getProcUserData);
+        in.fOwnsInstanceAndDevice = $(bool ownsInstanceAndDevice);
+        in.fProtectedContext = $(bool protectedContext);
 
         return gr_direct_context_make_vulkan(in);
     }|]
     pure (castPtr ptr)
 
 -- | `gr_direct_context_make_vulkan_with_options`
-grDirectContextMakeVulkanWithOptions :: GrVkBackendContext -> Ptr GrContextOptions -> IO (Ptr GrDirectContext)
-grDirectContextMakeVulkanWithOptions ctx inOptions = do
-    let instancePtr' = castPtr ctx.instance_
-    let physicalDevice' = castPtr ctx.physicalDevice
-    let device' = castPtr ctx.device
-    let queue' = castPtr ctx.queue
-    let graphicsQueueIndex' = ctx.graphicsQueueIndex
-    let minAPIVersion' = ctx.minAPIVersion
-    let instanceVersion' = ctx.instanceVersion
-    let maxAPIVersion' = ctx.maxAPIVersion
-    let extensions' = ctx.extensions
-    let vkExtensions' = castPtr ctx.vkExtensions
-    let features' = ctx.features
-    let deviceFeatures' = castPtr ctx.deviceFeatures
-    let deviceFeatures2' = castPtr ctx.deviceFeatures2
-    let memoryAllocator' = castPtr ctx.memoryAllocator
-    let getProc' :: Ptr () = castFunPtrToPtr ctx.getProc
-    let getProcUserData' = castPtr ctx.getProcUserData
-    let ownsInstanceAndDevice' = ctx.ownsInstanceAndDevice
-    let protectedContext' = ctx.protectedContext
+gr_direct_context_make_vulkan_with_options :: Gr_vk_backendcontext -> Ptr Gr_context_options -> IO (Ptr Gr_direct_context)
+gr_direct_context_make_vulkan_with_options ctx inOptions = do
+    let instancePtr = castPtr ctx.fInstance
+    let physicalDevice = castPtr ctx.fPhysicalDevice
+    let device = castPtr ctx.fDevice
+    let queue = castPtr ctx.fQueue
+    let graphicsQueueIndex = ctx.fGraphicsQueueIndex
+    let minAPIVersion = ctx.fMinAPIVersion
+    let instanceVersion = ctx.fInstanceVersion
+    let maxAPIVersion = ctx.fMaxAPIVersion
+    let extensions = ctx.fExtensions
+    let vkExtensions = castPtr ctx.fVkExtensions
+    let features = ctx.fFeatures
+    let deviceFeatures = castPtr ctx.fDeviceFeatures
+    let deviceFeatures2 = castPtr ctx.fDeviceFeatures2
+    let memoryAllocator = castPtr ctx.fMemoryAllocator
+    let getProc :: Ptr () = castFunPtrToPtr ctx.fGetProc
+    let getProcUserData = castPtr ctx.fGetProcUserData
+    let ownsInstanceAndDevice = ctx.fOwnsInstanceAndDevice
+    let protectedContext = ctx.fProtectedContext
 
     let options = castPtr inOptions
 
     ptr <- [C.block|void* {
         gr_vk_backendcontext_t in;
-        in.fInstance = $(void* instancePtr');
-        in.fPhysicalDevice = $(void* physicalDevice');
-        in.fDevice = $(void* device');
-        in.fQueue = $(void* queue');
-        in.fGraphicsQueueIndex = $(uint32_t graphicsQueueIndex');
-        in.fMinAPIVersion = $(uint32_t minAPIVersion');
-        in.fInstanceVersion = $(uint32_t instanceVersion');
-        in.fMaxAPIVersion = $(uint32_t maxAPIVersion');
-        in.fExtensions = $(uint32_t extensions');
-        in.fVkExtensions = $(void* vkExtensions');
-        in.fFeatures = $(uint32_t features');
-        in.fDeviceFeatures = $(void* deviceFeatures');
-        in.fDeviceFeatures2 = $(void* deviceFeatures2');
-        in.fMemoryAllocator = $(void* memoryAllocator');
-        in.fGetProc = $(void* getProc');
-        in.fGetProcUserData = $(void* getProcUserData');
-        in.fOwnsInstanceAndDevice = $(bool ownsInstanceAndDevice');
-        in.fProtectedContext = $(bool protectedContext');
+        in.fInstance = $(void* instancePtr);
+        in.fPhysicalDevice = $(void* physicalDevice);
+        in.fDevice = $(void* device);
+        in.fQueue = $(void* queue);
+        in.fGraphicsQueueIndex = $(uint32_t graphicsQueueIndex);
+        in.fMinAPIVersion = $(uint32_t minAPIVersion);
+        in.fInstanceVersion = $(uint32_t instanceVersion);
+        in.fMaxAPIVersion = $(uint32_t maxAPIVersion);
+        in.fExtensions = $(uint32_t extensions);
+        in.fVkExtensions = $(void* vkExtensions);
+        in.fFeatures = $(uint32_t features);
+        in.fDeviceFeatures = $(void* deviceFeatures);
+        in.fDeviceFeatures2 = $(void* deviceFeatures2);
+        in.fMemoryAllocator = $(void* memoryAllocator);
+        in.fGetProc = $(void* getProc);
+        in.fGetProcUserData = $(void* getProcUserData);
+        in.fOwnsInstanceAndDevice = $(bool ownsInstanceAndDevice);
+        in.fProtectedContext = $(bool protectedContext);
 
         return gr_direct_context_make_vulkan_with_options(in, $(void* options));
     }|]
     pure (castPtr ptr)
 
 -- | `sk_canvas_clear_color4f`
-skCanvasClearColor4f :: Ptr SkCanvas -> SkColor4F -> IO ()
-skCanvasClearColor4f inCanvas SkColor4F{r, g, b, a}  = do
+sk_canvas_clear_color4f :: Ptr Sk_canvas -> Sk_color4f -> IO ()
+sk_canvas_clear_color4f inCanvas Sk_color4f{fR, fG, fB, fA}  = do
     let canvas = castPtr inCanvas
     [C.block|void {
-        sk_color4f_t color = {$(float r), $(float g), $(float b), $(float a)};
+        sk_color4f_t color = {$(float fR), $(float fG), $(float fB), $(float fA)};
         sk_canvas_clear_color4f($(void* canvas), color);
     }|]
 
 -- | `sk_canvas_draw_color4f`
-skCanvasDrawColor4f :: Ptr SkCanvas -> SkColor4F -> SkBlendMode -> IO ()
-skCanvasDrawColor4f inCanvas SkColor4F{r, g, b, a} (SkBlendMode blendMode) = do
+sk_canvas_draw_color4f :: Ptr Sk_canvas -> Sk_color4f -> Sk_blendmode -> IO ()
+sk_canvas_draw_color4f inCanvas Sk_color4f{fR, fG, fB, fA} (Sk_blendmode blendMode) = do
     let canvas = castPtr inCanvas
     [C.block|void {
-        sk_color4f_t color = {$(float r), $(float g), $(float b), $(float a)};
+        sk_color4f_t color = {$(float fR), $(float fG), $(float fB), $(float fA)};
         sk_canvas_draw_color4f($(void* canvas), color, $(uint32_t blendMode));
     }|]
 
 -- | Taken from include/encode/SkPngEncoder.h
-defaultSkPngEncoderOptions :: SkPngEncoderOptions
-defaultSkPngEncoderOptions = SkPngEncoderOptions
-    { filterFlags = skPngEncoderFilterFlags'All
-    , zLibLevel = 6
-    , comments = nullPtr
-    , iccProfile = nullPtr
-    , iccProfileDescription = nullPtr
+defaultSkPngEncoderOptions :: Sk_pngencoder_options
+defaultSkPngEncoderOptions = Sk_pngencoder_options
+    { fFilterFlags = sk_pngencoder_filterflags'ALL_SK_PNGENCODER_FILTER_FLAGS
+    , fZLibLevel = 6
+    , fComments = nullPtr
+    , fICCProfile = nullPtr
+    , fICCProfileDescription = nullPtr
     }
