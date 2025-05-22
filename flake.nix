@@ -11,6 +11,10 @@
         hPkgs = pkgs.haskell.packages."ghc966";
 
         devDeps = [
+          # Apparently without this, entering a nix shell breaks your VSCode terminal's bash's PS1.
+          # See https://discourse.nixos.org/t/tmux-bash-prompt-breaks-inside-of-flakes/60925/4
+          pkgs.bashInteractive
+
           pkgs.pkg-config
 
           hPkgs.cabal-install
