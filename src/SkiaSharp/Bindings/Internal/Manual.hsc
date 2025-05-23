@@ -204,12 +204,3 @@ sk_canvas_draw_color4f inCanvas Sk_color4f{fR, fG, fB, fA} (Sk_blendmode blendMo
         sk_canvas_draw_color4f($(void* canvas), color, $(uint32_t blendMode));
     }|]
 
--- | Taken from include/encode/SkPngEncoder.h
-defaultSkPngEncoderOptions :: Sk_pngencoder_options
-defaultSkPngEncoderOptions = Sk_pngencoder_options
-    { fFilterFlags = sk_pngencoder_filterflags'ALL_SK_PNGENCODER_FILTER_FLAGS
-    , fZLibLevel = 6
-    , fComments = nullPtr
-    , fICCProfile = nullPtr
-    , fICCProfileDescription = nullPtr
-    }
