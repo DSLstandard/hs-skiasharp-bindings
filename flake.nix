@@ -21,6 +21,7 @@
           hPkgs.ghc
           hPkgs.fourmolu
           hPkgs.haskell-language-server
+          hPkgs.hpack
         ];
 
         libDeps = with pkgs; [
