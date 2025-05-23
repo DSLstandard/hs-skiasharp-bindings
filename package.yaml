@@ -67,9 +67,9 @@ library:
 
 executables:
   demo-raster-example:
-    sourec-dirs: demos/
+    source-dirs: demos/
     main: demos/RasterExample.hs
-    exposed-modules: []
+    other-modules: []
     dependencies:
       - base
       - skiasharp-bindings
