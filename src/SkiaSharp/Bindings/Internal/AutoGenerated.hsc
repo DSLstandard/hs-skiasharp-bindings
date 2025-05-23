@@ -26,22 +26,52 @@ import Foreign.Storable.Offset
 
 #include "c/sk_types.h"
 
--- | Opaque C struct @sk_refcnt_t@
+
+{- | Opaque C struct: @"sk_refcnt_t"@
+-}
 data Sk_refcnt = Sk_refcnt
--- | Opaque C struct @sk_nvrefcnt_t@
+
+{- | Opaque C struct: @"sk_nvrefcnt_t"@
+-}
 data Sk_nvrefcnt = Sk_nvrefcnt
--- | Opaque C struct @sk_flattenable_t@
+
+{- | Opaque C struct: @"sk_flattenable_t"@
+-}
 data Sk_flattenable = Sk_flattenable
--- | C type alias: @typedef uint32_t sk_color_t@
+
+{- | C type alias: @sk_color_t@
+
+@
+typedef uint32_t sk_color_t
+@
+-}
 type Sk_color = Word32
--- | C type alias: @typedef uint32_t sk_pmcolor_t@
+
+{- | C type alias: @sk_pmcolor_t@
+
+@
+typedef uint32_t sk_pmcolor_t
+@
+-}
 type Sk_pmcolor = Word32
--- | C struct name: @sk_color4f_t@
+
+{- | C struct: @"sk_color4f_t"@
+
+@
+typedef struct sk_color4f_t
+{
+  float fR;
+  float fG;
+  float fB;
+  float fA;
+} sk_color4f_t
+@
+-}
 data Sk_color4f = Sk_color4f
-  { fR :: CFloat -- ^ C field: @float fR@
-  , fG :: CFloat -- ^ C field: @float fG@
-  , fB :: CFloat -- ^ C field: @float fB@
-  , fA :: CFloat -- ^ C field: @float fA@
+  { fR :: CFloat -- ^ C field: @"float fR"@
+  , fG :: CFloat -- ^ C field: @"float fG"@
+  , fB :: CFloat -- ^ C field: @"float fB"@
+  , fA :: CFloat -- ^ C field: @"float fA"@
   }
 instance Foreign.Storable.Offset.Offset "fR" Sk_color4f where
   rawOffset = (#offset sk_color4f_t, fR)
@@ -65,136 +95,256 @@ instance Foreign.Storable.Storable Sk_color4f where
     (#poke sk_color4f_t, fG) p' fG
     (#poke sk_color4f_t, fB) p' fB
     (#poke sk_color4f_t, fA) p' fA
--- | C enum: @sk_colortype_t@
+
+{- | C enum: @"sk_colortype_t"@
+
+@
+typedef enum 
+{
+  UNKNOWN_SK_COLORTYPE = 0,
+  ALPHA_8_SK_COLORTYPE,
+  RGB_565_SK_COLORTYPE,
+  ARGB_4444_SK_COLORTYPE,
+  RGBA_8888_SK_COLORTYPE,
+  RGB_888X_SK_COLORTYPE,
+  BGRA_8888_SK_COLORTYPE,
+  RGBA_1010102_SK_COLORTYPE,
+  BGRA_1010102_SK_COLORTYPE,
+  RGB_101010X_SK_COLORTYPE,
+  BGR_101010X_SK_COLORTYPE,
+  BGR_101010X_XR_SK_COLORTYPE,
+  RGBA_10X6_SK_COLORTYPE,
+  GRAY_8_SK_COLORTYPE,
+  RGBA_F16_NORM_SK_COLORTYPE,
+  RGBA_F16_SK_COLORTYPE,
+  RGBA_F32_SK_COLORTYPE,
+  R8G8_UNORM_SK_COLORTYPE,
+  A16_FLOAT_SK_COLORTYPE,
+  R16G16_FLOAT_SK_COLORTYPE,
+  A16_UNORM_SK_COLORTYPE,
+  R16G16_UNORM_SK_COLORTYPE,
+  R16G16B16A16_UNORM_SK_COLORTYPE,
+  SRGBA_8888_SK_COLORTYPE,
+  R8_UNORM_SK_COLORTYPE
+} sk_colortype_t
+@
+
+-}
 newtype Sk_colortype = Sk_colortype (#type sk_colortype_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_colortype_t@ value (1/25): @UNKNOWN_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (1/25): @"UNKNOWN_SK_COLORTYPE"@
 pattern UNKNOWN_SK_COLORTYPE :: Sk_colortype
 pattern UNKNOWN_SK_COLORTYPE = (#const UNKNOWN_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (2/25): @ALPHA_8_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (2/25): @"ALPHA_8_SK_COLORTYPE"@
 pattern ALPHA_8_SK_COLORTYPE :: Sk_colortype
 pattern ALPHA_8_SK_COLORTYPE = (#const ALPHA_8_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (3/25): @RGB_565_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (3/25): @"RGB_565_SK_COLORTYPE"@
 pattern RGB_565_SK_COLORTYPE :: Sk_colortype
 pattern RGB_565_SK_COLORTYPE = (#const RGB_565_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (4/25): @ARGB_4444_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (4/25): @"ARGB_4444_SK_COLORTYPE"@
 pattern ARGB_4444_SK_COLORTYPE :: Sk_colortype
 pattern ARGB_4444_SK_COLORTYPE = (#const ARGB_4444_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (5/25): @RGBA_8888_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (5/25): @"RGBA_8888_SK_COLORTYPE"@
 pattern RGBA_8888_SK_COLORTYPE :: Sk_colortype
 pattern RGBA_8888_SK_COLORTYPE = (#const RGBA_8888_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (6/25): @RGB_888X_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (6/25): @"RGB_888X_SK_COLORTYPE"@
 pattern RGB_888X_SK_COLORTYPE :: Sk_colortype
 pattern RGB_888X_SK_COLORTYPE = (#const RGB_888X_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (7/25): @BGRA_8888_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (7/25): @"BGRA_8888_SK_COLORTYPE"@
 pattern BGRA_8888_SK_COLORTYPE :: Sk_colortype
 pattern BGRA_8888_SK_COLORTYPE = (#const BGRA_8888_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (8/25): @RGBA_1010102_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (8/25): @"RGBA_1010102_SK_COLORTYPE"@
 pattern RGBA_1010102_SK_COLORTYPE :: Sk_colortype
 pattern RGBA_1010102_SK_COLORTYPE = (#const RGBA_1010102_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (9/25): @BGRA_1010102_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (9/25): @"BGRA_1010102_SK_COLORTYPE"@
 pattern BGRA_1010102_SK_COLORTYPE :: Sk_colortype
 pattern BGRA_1010102_SK_COLORTYPE = (#const BGRA_1010102_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (10/25): @RGB_101010X_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (10/25): @"RGB_101010X_SK_COLORTYPE"@
 pattern RGB_101010X_SK_COLORTYPE :: Sk_colortype
 pattern RGB_101010X_SK_COLORTYPE = (#const RGB_101010X_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (11/25): @BGR_101010X_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (11/25): @"BGR_101010X_SK_COLORTYPE"@
 pattern BGR_101010X_SK_COLORTYPE :: Sk_colortype
 pattern BGR_101010X_SK_COLORTYPE = (#const BGR_101010X_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (12/25): @BGR_101010X_XR_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (12/25): @"BGR_101010X_XR_SK_COLORTYPE"@
 pattern BGR_101010X_XR_SK_COLORTYPE :: Sk_colortype
 pattern BGR_101010X_XR_SK_COLORTYPE = (#const BGR_101010X_XR_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (13/25): @RGBA_10X6_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (13/25): @"RGBA_10X6_SK_COLORTYPE"@
 pattern RGBA_10X6_SK_COLORTYPE :: Sk_colortype
 pattern RGBA_10X6_SK_COLORTYPE = (#const RGBA_10X6_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (14/25): @GRAY_8_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (14/25): @"GRAY_8_SK_COLORTYPE"@
 pattern GRAY_8_SK_COLORTYPE :: Sk_colortype
 pattern GRAY_8_SK_COLORTYPE = (#const GRAY_8_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (15/25): @RGBA_F16_NORM_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (15/25): @"RGBA_F16_NORM_SK_COLORTYPE"@
 pattern RGBA_F16_NORM_SK_COLORTYPE :: Sk_colortype
 pattern RGBA_F16_NORM_SK_COLORTYPE = (#const RGBA_F16_NORM_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (16/25): @RGBA_F16_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (16/25): @"RGBA_F16_SK_COLORTYPE"@
 pattern RGBA_F16_SK_COLORTYPE :: Sk_colortype
 pattern RGBA_F16_SK_COLORTYPE = (#const RGBA_F16_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (17/25): @RGBA_F32_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (17/25): @"RGBA_F32_SK_COLORTYPE"@
 pattern RGBA_F32_SK_COLORTYPE :: Sk_colortype
 pattern RGBA_F32_SK_COLORTYPE = (#const RGBA_F32_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (18/25): @R8G8_UNORM_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (18/25): @"R8G8_UNORM_SK_COLORTYPE"@
 pattern R8G8_UNORM_SK_COLORTYPE :: Sk_colortype
 pattern R8G8_UNORM_SK_COLORTYPE = (#const R8G8_UNORM_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (19/25): @A16_FLOAT_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (19/25): @"A16_FLOAT_SK_COLORTYPE"@
 pattern A16_FLOAT_SK_COLORTYPE :: Sk_colortype
 pattern A16_FLOAT_SK_COLORTYPE = (#const A16_FLOAT_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (20/25): @R16G16_FLOAT_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (20/25): @"R16G16_FLOAT_SK_COLORTYPE"@
 pattern R16G16_FLOAT_SK_COLORTYPE :: Sk_colortype
 pattern R16G16_FLOAT_SK_COLORTYPE = (#const R16G16_FLOAT_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (21/25): @A16_UNORM_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (21/25): @"A16_UNORM_SK_COLORTYPE"@
 pattern A16_UNORM_SK_COLORTYPE :: Sk_colortype
 pattern A16_UNORM_SK_COLORTYPE = (#const A16_UNORM_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (22/25): @R16G16_UNORM_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (22/25): @"R16G16_UNORM_SK_COLORTYPE"@
 pattern R16G16_UNORM_SK_COLORTYPE :: Sk_colortype
 pattern R16G16_UNORM_SK_COLORTYPE = (#const R16G16_UNORM_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (23/25): @R16G16B16A16_UNORM_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (23/25): @"R16G16B16A16_UNORM_SK_COLORTYPE"@
 pattern R16G16B16A16_UNORM_SK_COLORTYPE :: Sk_colortype
 pattern R16G16B16A16_UNORM_SK_COLORTYPE = (#const R16G16B16A16_UNORM_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (24/25): @SRGBA_8888_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (24/25): @"SRGBA_8888_SK_COLORTYPE"@
 pattern SRGBA_8888_SK_COLORTYPE :: Sk_colortype
 pattern SRGBA_8888_SK_COLORTYPE = (#const SRGBA_8888_SK_COLORTYPE)
--- | C enum @sk_colortype_t@ value (25/25): @R8_UNORM_SK_COLORTYPE@
+
+-- | C enum @"sk_colortype_t"@ value (25/25): @"R8_UNORM_SK_COLORTYPE"@
 pattern R8_UNORM_SK_COLORTYPE :: Sk_colortype
 pattern R8_UNORM_SK_COLORTYPE = (#const R8_UNORM_SK_COLORTYPE)
--- | C enum: @sk_alphatype_t@
+
+{- | C enum: @"sk_alphatype_t"@
+
+@
+typedef enum 
+{
+  UNKNOWN_SK_ALPHATYPE,
+  OPAQUE_SK_ALPHATYPE,
+  PREMUL_SK_ALPHATYPE,
+  UNPREMUL_SK_ALPHATYPE
+} sk_alphatype_t
+@
+
+-}
 newtype Sk_alphatype = Sk_alphatype (#type sk_alphatype_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_alphatype_t@ value (1/4): @UNKNOWN_SK_ALPHATYPE@
+
+-- | C enum @"sk_alphatype_t"@ value (1/4): @"UNKNOWN_SK_ALPHATYPE"@
 pattern UNKNOWN_SK_ALPHATYPE :: Sk_alphatype
 pattern UNKNOWN_SK_ALPHATYPE = (#const UNKNOWN_SK_ALPHATYPE)
--- | C enum @sk_alphatype_t@ value (2/4): @OPAQUE_SK_ALPHATYPE@
+
+-- | C enum @"sk_alphatype_t"@ value (2/4): @"OPAQUE_SK_ALPHATYPE"@
 pattern OPAQUE_SK_ALPHATYPE :: Sk_alphatype
 pattern OPAQUE_SK_ALPHATYPE = (#const OPAQUE_SK_ALPHATYPE)
--- | C enum @sk_alphatype_t@ value (3/4): @PREMUL_SK_ALPHATYPE@
+
+-- | C enum @"sk_alphatype_t"@ value (3/4): @"PREMUL_SK_ALPHATYPE"@
 pattern PREMUL_SK_ALPHATYPE :: Sk_alphatype
 pattern PREMUL_SK_ALPHATYPE = (#const PREMUL_SK_ALPHATYPE)
--- | C enum @sk_alphatype_t@ value (4/4): @UNPREMUL_SK_ALPHATYPE@
+
+-- | C enum @"sk_alphatype_t"@ value (4/4): @"UNPREMUL_SK_ALPHATYPE"@
 pattern UNPREMUL_SK_ALPHATYPE :: Sk_alphatype
 pattern UNPREMUL_SK_ALPHATYPE = (#const UNPREMUL_SK_ALPHATYPE)
--- | C enum: @sk_pixelgeometry_t@
+
+{- | C enum: @"sk_pixelgeometry_t"@
+
+@
+typedef enum 
+{
+  UNKNOWN_SK_PIXELGEOMETRY,
+  RGB_H_SK_PIXELGEOMETRY,
+  BGR_H_SK_PIXELGEOMETRY,
+  RGB_V_SK_PIXELGEOMETRY,
+  BGR_V_SK_PIXELGEOMETRY
+} sk_pixelgeometry_t
+@
+
+-}
 newtype Sk_pixelgeometry = Sk_pixelgeometry (#type sk_pixelgeometry_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_pixelgeometry_t@ value (1/5): @UNKNOWN_SK_PIXELGEOMETRY@
+
+-- | C enum @"sk_pixelgeometry_t"@ value (1/5): @"UNKNOWN_SK_PIXELGEOMETRY"@
 pattern UNKNOWN_SK_PIXELGEOMETRY :: Sk_pixelgeometry
 pattern UNKNOWN_SK_PIXELGEOMETRY = (#const UNKNOWN_SK_PIXELGEOMETRY)
--- | C enum @sk_pixelgeometry_t@ value (2/5): @RGB_H_SK_PIXELGEOMETRY@
+
+-- | C enum @"sk_pixelgeometry_t"@ value (2/5): @"RGB_H_SK_PIXELGEOMETRY"@
 pattern RGB_H_SK_PIXELGEOMETRY :: Sk_pixelgeometry
 pattern RGB_H_SK_PIXELGEOMETRY = (#const RGB_H_SK_PIXELGEOMETRY)
--- | C enum @sk_pixelgeometry_t@ value (3/5): @BGR_H_SK_PIXELGEOMETRY@
+
+-- | C enum @"sk_pixelgeometry_t"@ value (3/5): @"BGR_H_SK_PIXELGEOMETRY"@
 pattern BGR_H_SK_PIXELGEOMETRY :: Sk_pixelgeometry
 pattern BGR_H_SK_PIXELGEOMETRY = (#const BGR_H_SK_PIXELGEOMETRY)
--- | C enum @sk_pixelgeometry_t@ value (4/5): @RGB_V_SK_PIXELGEOMETRY@
+
+-- | C enum @"sk_pixelgeometry_t"@ value (4/5): @"RGB_V_SK_PIXELGEOMETRY"@
 pattern RGB_V_SK_PIXELGEOMETRY :: Sk_pixelgeometry
 pattern RGB_V_SK_PIXELGEOMETRY = (#const RGB_V_SK_PIXELGEOMETRY)
--- | C enum @sk_pixelgeometry_t@ value (5/5): @BGR_V_SK_PIXELGEOMETRY@
+
+-- | C enum @"sk_pixelgeometry_t"@ value (5/5): @"BGR_V_SK_PIXELGEOMETRY"@
 pattern BGR_V_SK_PIXELGEOMETRY :: Sk_pixelgeometry
 pattern BGR_V_SK_PIXELGEOMETRY = (#const BGR_V_SK_PIXELGEOMETRY)
--- | C enum: @sk_surfaceprops_flags_t@
+
+{- | C enum: @"sk_surfaceprops_flags_t"@
+
+@
+typedef enum 
+{
+  NONE_SK_SURFACE_PROPS_FLAGS = 0,
+  USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS = 1 << 0
+} sk_surfaceprops_flags_t
+@
+
+-}
 newtype Sk_surfaceprops_flags = Sk_surfaceprops_flags (#type sk_surfaceprops_flags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_surfaceprops_flags_t@ value (1/2): @NONE_SK_SURFACE_PROPS_FLAGS@
+
+-- | C enum @"sk_surfaceprops_flags_t"@ value (1/2): @"NONE_SK_SURFACE_PROPS_FLAGS"@
 pattern NONE_SK_SURFACE_PROPS_FLAGS :: Sk_surfaceprops_flags
 pattern NONE_SK_SURFACE_PROPS_FLAGS = (#const NONE_SK_SURFACE_PROPS_FLAGS)
--- | C enum @sk_surfaceprops_flags_t@ value (2/2): @USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS@
+
+-- | C enum @"sk_surfaceprops_flags_t"@ value (2/2): @"USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS"@
 pattern USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS :: Sk_surfaceprops_flags
 pattern USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS = (#const USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS)
--- | Opaque C struct @sk_surfaceprops_t@
+
+{- | Opaque C struct: @"sk_surfaceprops_t"@
+-}
 data Sk_surfaceprops = Sk_surfaceprops
--- | C struct name: @sk_point_t@
+
+{- | C struct: @"sk_point_t"@
+
+@
+typedef struct 
+{
+  float x;
+  float y;
+} sk_point_t
+@
+-}
 data Sk_point = Sk_point
-  { x :: CFloat -- ^ C field: @float x@
-  , y :: CFloat -- ^ C field: @float y@
+  { x :: CFloat -- ^ C field: @"float x"@
+  , y :: CFloat -- ^ C field: @"float y"@
   }
 instance Foreign.Storable.Offset.Offset "x" Sk_point where
   rawOffset = (#offset sk_point_t, x)
@@ -210,14 +360,32 @@ instance Foreign.Storable.Storable Sk_point where
   poke p' Sk_point{..} = do
     (#poke sk_point_t, x) p' x
     (#poke sk_point_t, y) p' y
--- | C type alias: @typedef sk_point_t sk_vector_t@
+
+{- | C type alias: @sk_vector_t@
+
+@
+typedef sk_point_t sk_vector_t
+@
+-}
 type Sk_vector = Sk_point
--- | C struct name: @sk_irect_t@
+
+{- | C struct: @"sk_irect_t"@
+
+@
+typedef struct 
+{
+  int32_t left;
+  int32_t top;
+  int32_t right;
+  int32_t bottom;
+} sk_irect_t
+@
+-}
 data Sk_irect = Sk_irect
-  { left :: Int32 -- ^ C field: @int32_t left@
-  , top :: Int32 -- ^ C field: @int32_t top@
-  , right :: Int32 -- ^ C field: @int32_t right@
-  , bottom :: Int32 -- ^ C field: @int32_t bottom@
+  { left :: Int32 -- ^ C field: @"int32_t left"@
+  , top :: Int32 -- ^ C field: @"int32_t top"@
+  , right :: Int32 -- ^ C field: @"int32_t right"@
+  , bottom :: Int32 -- ^ C field: @"int32_t bottom"@
   }
 instance Foreign.Storable.Offset.Offset "left" Sk_irect where
   rawOffset = (#offset sk_irect_t, left)
@@ -241,12 +409,24 @@ instance Foreign.Storable.Storable Sk_irect where
     (#poke sk_irect_t, top) p' top
     (#poke sk_irect_t, right) p' right
     (#poke sk_irect_t, bottom) p' bottom
--- | C struct name: @sk_rect_t@
+
+{- | C struct: @"sk_rect_t"@
+
+@
+typedef struct 
+{
+  float left;
+  float top;
+  float right;
+  float bottom;
+} sk_rect_t
+@
+-}
 data Sk_rect = Sk_rect
-  { left :: CFloat -- ^ C field: @float left@
-  , top :: CFloat -- ^ C field: @float top@
-  , right :: CFloat -- ^ C field: @float right@
-  , bottom :: CFloat -- ^ C field: @float bottom@
+  { left :: CFloat -- ^ C field: @"float left"@
+  , top :: CFloat -- ^ C field: @"float top"@
+  , right :: CFloat -- ^ C field: @"float right"@
+  , bottom :: CFloat -- ^ C field: @"float bottom"@
   }
 instance Foreign.Storable.Offset.Offset "left" Sk_rect where
   rawOffset = (#offset sk_rect_t, left)
@@ -270,17 +450,34 @@ instance Foreign.Storable.Storable Sk_rect where
     (#poke sk_rect_t, top) p' top
     (#poke sk_rect_t, right) p' right
     (#poke sk_rect_t, bottom) p' bottom
--- | C struct name: @sk_matrix_t@
+
+{- | C struct: @"sk_matrix_t"@
+
+@
+typedef struct 
+{
+  float scaleX;
+  float skewX;
+  float transX;
+  float skewY;
+  float scaleY;
+  float transY;
+  float persp0;
+  float persp1;
+  float persp2;
+} sk_matrix_t
+@
+-}
 data Sk_matrix = Sk_matrix
-  { scaleX :: CFloat -- ^ C field: @float scaleX@
-  , skewX :: CFloat -- ^ C field: @float skewX@
-  , transX :: CFloat -- ^ C field: @float transX@
-  , skewY :: CFloat -- ^ C field: @float skewY@
-  , scaleY :: CFloat -- ^ C field: @float scaleY@
-  , transY :: CFloat -- ^ C field: @float transY@
-  , persp0 :: CFloat -- ^ C field: @float persp0@
-  , persp1 :: CFloat -- ^ C field: @float persp1@
-  , persp2 :: CFloat -- ^ C field: @float persp2@
+  { scaleX :: CFloat -- ^ C field: @"float scaleX"@
+  , skewX :: CFloat -- ^ C field: @"float skewX"@
+  , transX :: CFloat -- ^ C field: @"float transX"@
+  , skewY :: CFloat -- ^ C field: @"float skewY"@
+  , scaleY :: CFloat -- ^ C field: @"float scaleY"@
+  , transY :: CFloat -- ^ C field: @"float transY"@
+  , persp0 :: CFloat -- ^ C field: @"float persp0"@
+  , persp1 :: CFloat -- ^ C field: @"float persp1"@
+  , persp2 :: CFloat -- ^ C field: @"float persp2"@
   }
 instance Foreign.Storable.Offset.Offset "scaleX" Sk_matrix where
   rawOffset = (#offset sk_matrix_t, scaleX)
@@ -324,24 +521,48 @@ instance Foreign.Storable.Storable Sk_matrix where
     (#poke sk_matrix_t, persp0) p' persp0
     (#poke sk_matrix_t, persp1) p' persp1
     (#poke sk_matrix_t, persp2) p' persp2
--- | C struct name: @sk_matrix44_t@
+
+{- | C struct: @"sk_matrix44_t"@
+
+@
+typedef struct 
+{
+  float m00;
+  float m01;
+  float m02;
+  float m03;
+  float m10;
+  float m11;
+  float m12;
+  float m13;
+  float m20;
+  float m21;
+  float m22;
+  float m23;
+  float m30;
+  float m31;
+  float m32;
+  float m33;
+} sk_matrix44_t
+@
+-}
 data Sk_matrix44 = Sk_matrix44
-  { m00 :: CFloat -- ^ C field: @float m00@
-  , m01 :: CFloat -- ^ C field: @float m01@
-  , m02 :: CFloat -- ^ C field: @float m02@
-  , m03 :: CFloat -- ^ C field: @float m03@
-  , m10 :: CFloat -- ^ C field: @float m10@
-  , m11 :: CFloat -- ^ C field: @float m11@
-  , m12 :: CFloat -- ^ C field: @float m12@
-  , m13 :: CFloat -- ^ C field: @float m13@
-  , m20 :: CFloat -- ^ C field: @float m20@
-  , m21 :: CFloat -- ^ C field: @float m21@
-  , m22 :: CFloat -- ^ C field: @float m22@
-  , m23 :: CFloat -- ^ C field: @float m23@
-  , m30 :: CFloat -- ^ C field: @float m30@
-  , m31 :: CFloat -- ^ C field: @float m31@
-  , m32 :: CFloat -- ^ C field: @float m32@
-  , m33 :: CFloat -- ^ C field: @float m33@
+  { m00 :: CFloat -- ^ C field: @"float m00"@
+  , m01 :: CFloat -- ^ C field: @"float m01"@
+  , m02 :: CFloat -- ^ C field: @"float m02"@
+  , m03 :: CFloat -- ^ C field: @"float m03"@
+  , m10 :: CFloat -- ^ C field: @"float m10"@
+  , m11 :: CFloat -- ^ C field: @"float m11"@
+  , m12 :: CFloat -- ^ C field: @"float m12"@
+  , m13 :: CFloat -- ^ C field: @"float m13"@
+  , m20 :: CFloat -- ^ C field: @"float m20"@
+  , m21 :: CFloat -- ^ C field: @"float m21"@
+  , m22 :: CFloat -- ^ C field: @"float m22"@
+  , m23 :: CFloat -- ^ C field: @"float m23"@
+  , m30 :: CFloat -- ^ C field: @"float m30"@
+  , m31 :: CFloat -- ^ C field: @"float m31"@
+  , m32 :: CFloat -- ^ C field: @"float m32"@
+  , m33 :: CFloat -- ^ C field: @"float m33"@
   }
 instance Foreign.Storable.Offset.Offset "m00" Sk_matrix44 where
   rawOffset = (#offset sk_matrix44_t, m00)
@@ -413,144 +634,264 @@ instance Foreign.Storable.Storable Sk_matrix44 where
     (#poke sk_matrix44_t, m31) p' m31
     (#poke sk_matrix44_t, m32) p' m32
     (#poke sk_matrix44_t, m33) p' m33
--- | Opaque C struct @sk_canvas_t@
+
+{- | Opaque C struct: @"sk_canvas_t"@
+-}
 data Sk_canvas = Sk_canvas
--- | Opaque C struct @sk_nodraw_canvas_t@
+
+{- | Opaque C struct: @"sk_nodraw_canvas_t"@
+-}
 data Sk_nodraw_canvas = Sk_nodraw_canvas
--- | Opaque C struct @sk_nway_canvas_t@
+
+{- | Opaque C struct: @"sk_nway_canvas_t"@
+-}
 data Sk_nway_canvas = Sk_nway_canvas
--- | Opaque C struct @sk_overdraw_canvas_t@
+
+{- | Opaque C struct: @"sk_overdraw_canvas_t"@
+-}
 data Sk_overdraw_canvas = Sk_overdraw_canvas
--- | Opaque C struct @sk_data_t@
+
+{- | Opaque C struct: @"sk_data_t"@
+-}
 data Sk_data = Sk_data
--- | Opaque C struct @sk_drawable_t@
+
+{- | Opaque C struct: @"sk_drawable_t"@
+-}
 data Sk_drawable = Sk_drawable
--- | Opaque C struct @sk_image_t@
+
+{- | Opaque C struct: @"sk_image_t"@
+-}
 data Sk_image = Sk_image
--- | Opaque C struct @sk_maskfilter_t@
+
+{- | Opaque C struct: @"sk_maskfilter_t"@
+-}
 data Sk_maskfilter = Sk_maskfilter
--- | Opaque C struct @sk_paint_t@
+
+{- | Opaque C struct: @"sk_paint_t"@
+-}
 data Sk_paint = Sk_paint
--- | Opaque C struct @sk_font_t@
+
+{- | Opaque C struct: @"sk_font_t"@
+-}
 data Sk_font = Sk_font
--- | Opaque C struct @sk_path_t@
+
+{- | Opaque C struct: @"sk_path_t"@
+-}
 data Sk_path = Sk_path
--- | Opaque C struct @sk_picture_t@
+
+{- | Opaque C struct: @"sk_picture_t"@
+-}
 data Sk_picture = Sk_picture
--- | Opaque C struct @sk_picture_recorder_t@
+
+{- | Opaque C struct: @"sk_picture_recorder_t"@
+-}
 data Sk_picture_recorder = Sk_picture_recorder
--- | Opaque C struct @sk_bbh_factory_t@
+
+{- | Opaque C struct: @"sk_bbh_factory_t"@
+-}
 data Sk_bbh_factory = Sk_bbh_factory
--- | Opaque C struct @sk_rtree_factory_t@
+
+{- | Opaque C struct: @"sk_rtree_factory_t"@
+-}
 data Sk_rtree_factory = Sk_rtree_factory
--- | Opaque C struct @sk_shader_t@
+
+{- | Opaque C struct: @"sk_shader_t"@
+-}
 data Sk_shader = Sk_shader
--- | Opaque C struct @sk_surface_t@
+
+{- | Opaque C struct: @"sk_surface_t"@
+-}
 data Sk_surface = Sk_surface
--- | Opaque C struct @sk_region_t@
+
+{- | Opaque C struct: @"sk_region_t"@
+-}
 data Sk_region = Sk_region
--- | Opaque C struct @sk_region_iterator_t@
+
+{- | Opaque C struct: @"sk_region_iterator_t"@
+-}
 data Sk_region_iterator = Sk_region_iterator
--- | Opaque C struct @sk_region_cliperator_t@
+
+{- | Opaque C struct: @"sk_region_cliperator_t"@
+-}
 data Sk_region_cliperator = Sk_region_cliperator
--- | Opaque C struct @sk_region_spanerator_t@
+
+{- | Opaque C struct: @"sk_region_spanerator_t"@
+-}
 data Sk_region_spanerator = Sk_region_spanerator
--- | C enum: @sk_blendmode_t@
+
+{- | C enum: @"sk_blendmode_t"@
+
+@
+typedef enum 
+{
+  CLEAR_SK_BLENDMODE,
+  SRC_SK_BLENDMODE,
+  DST_SK_BLENDMODE,
+  SRCOVER_SK_BLENDMODE,
+  DSTOVER_SK_BLENDMODE,
+  SRCIN_SK_BLENDMODE,
+  DSTIN_SK_BLENDMODE,
+  SRCOUT_SK_BLENDMODE,
+  DSTOUT_SK_BLENDMODE,
+  SRCATOP_SK_BLENDMODE,
+  DSTATOP_SK_BLENDMODE,
+  XOR_SK_BLENDMODE,
+  PLUS_SK_BLENDMODE,
+  MODULATE_SK_BLENDMODE,
+  SCREEN_SK_BLENDMODE,
+  OVERLAY_SK_BLENDMODE,
+  DARKEN_SK_BLENDMODE,
+  LIGHTEN_SK_BLENDMODE,
+  COLORDODGE_SK_BLENDMODE,
+  COLORBURN_SK_BLENDMODE,
+  HARDLIGHT_SK_BLENDMODE,
+  SOFTLIGHT_SK_BLENDMODE,
+  DIFFERENCE_SK_BLENDMODE,
+  EXCLUSION_SK_BLENDMODE,
+  MULTIPLY_SK_BLENDMODE,
+  HUE_SK_BLENDMODE,
+  SATURATION_SK_BLENDMODE,
+  COLOR_SK_BLENDMODE,
+  LUMINOSITY_SK_BLENDMODE
+} sk_blendmode_t
+@
+
+-}
 newtype Sk_blendmode = Sk_blendmode (#type sk_blendmode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_blendmode_t@ value (1/29): @CLEAR_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (1/29): @"CLEAR_SK_BLENDMODE"@
 pattern CLEAR_SK_BLENDMODE :: Sk_blendmode
 pattern CLEAR_SK_BLENDMODE = (#const CLEAR_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (2/29): @SRC_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (2/29): @"SRC_SK_BLENDMODE"@
 pattern SRC_SK_BLENDMODE :: Sk_blendmode
 pattern SRC_SK_BLENDMODE = (#const SRC_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (3/29): @DST_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (3/29): @"DST_SK_BLENDMODE"@
 pattern DST_SK_BLENDMODE :: Sk_blendmode
 pattern DST_SK_BLENDMODE = (#const DST_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (4/29): @SRCOVER_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (4/29): @"SRCOVER_SK_BLENDMODE"@
 pattern SRCOVER_SK_BLENDMODE :: Sk_blendmode
 pattern SRCOVER_SK_BLENDMODE = (#const SRCOVER_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (5/29): @DSTOVER_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (5/29): @"DSTOVER_SK_BLENDMODE"@
 pattern DSTOVER_SK_BLENDMODE :: Sk_blendmode
 pattern DSTOVER_SK_BLENDMODE = (#const DSTOVER_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (6/29): @SRCIN_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (6/29): @"SRCIN_SK_BLENDMODE"@
 pattern SRCIN_SK_BLENDMODE :: Sk_blendmode
 pattern SRCIN_SK_BLENDMODE = (#const SRCIN_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (7/29): @DSTIN_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (7/29): @"DSTIN_SK_BLENDMODE"@
 pattern DSTIN_SK_BLENDMODE :: Sk_blendmode
 pattern DSTIN_SK_BLENDMODE = (#const DSTIN_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (8/29): @SRCOUT_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (8/29): @"SRCOUT_SK_BLENDMODE"@
 pattern SRCOUT_SK_BLENDMODE :: Sk_blendmode
 pattern SRCOUT_SK_BLENDMODE = (#const SRCOUT_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (9/29): @DSTOUT_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (9/29): @"DSTOUT_SK_BLENDMODE"@
 pattern DSTOUT_SK_BLENDMODE :: Sk_blendmode
 pattern DSTOUT_SK_BLENDMODE = (#const DSTOUT_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (10/29): @SRCATOP_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (10/29): @"SRCATOP_SK_BLENDMODE"@
 pattern SRCATOP_SK_BLENDMODE :: Sk_blendmode
 pattern SRCATOP_SK_BLENDMODE = (#const SRCATOP_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (11/29): @DSTATOP_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (11/29): @"DSTATOP_SK_BLENDMODE"@
 pattern DSTATOP_SK_BLENDMODE :: Sk_blendmode
 pattern DSTATOP_SK_BLENDMODE = (#const DSTATOP_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (12/29): @XOR_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (12/29): @"XOR_SK_BLENDMODE"@
 pattern XOR_SK_BLENDMODE :: Sk_blendmode
 pattern XOR_SK_BLENDMODE = (#const XOR_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (13/29): @PLUS_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (13/29): @"PLUS_SK_BLENDMODE"@
 pattern PLUS_SK_BLENDMODE :: Sk_blendmode
 pattern PLUS_SK_BLENDMODE = (#const PLUS_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (14/29): @MODULATE_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (14/29): @"MODULATE_SK_BLENDMODE"@
 pattern MODULATE_SK_BLENDMODE :: Sk_blendmode
 pattern MODULATE_SK_BLENDMODE = (#const MODULATE_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (15/29): @SCREEN_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (15/29): @"SCREEN_SK_BLENDMODE"@
 pattern SCREEN_SK_BLENDMODE :: Sk_blendmode
 pattern SCREEN_SK_BLENDMODE = (#const SCREEN_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (16/29): @OVERLAY_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (16/29): @"OVERLAY_SK_BLENDMODE"@
 pattern OVERLAY_SK_BLENDMODE :: Sk_blendmode
 pattern OVERLAY_SK_BLENDMODE = (#const OVERLAY_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (17/29): @DARKEN_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (17/29): @"DARKEN_SK_BLENDMODE"@
 pattern DARKEN_SK_BLENDMODE :: Sk_blendmode
 pattern DARKEN_SK_BLENDMODE = (#const DARKEN_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (18/29): @LIGHTEN_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (18/29): @"LIGHTEN_SK_BLENDMODE"@
 pattern LIGHTEN_SK_BLENDMODE :: Sk_blendmode
 pattern LIGHTEN_SK_BLENDMODE = (#const LIGHTEN_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (19/29): @COLORDODGE_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (19/29): @"COLORDODGE_SK_BLENDMODE"@
 pattern COLORDODGE_SK_BLENDMODE :: Sk_blendmode
 pattern COLORDODGE_SK_BLENDMODE = (#const COLORDODGE_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (20/29): @COLORBURN_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (20/29): @"COLORBURN_SK_BLENDMODE"@
 pattern COLORBURN_SK_BLENDMODE :: Sk_blendmode
 pattern COLORBURN_SK_BLENDMODE = (#const COLORBURN_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (21/29): @HARDLIGHT_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (21/29): @"HARDLIGHT_SK_BLENDMODE"@
 pattern HARDLIGHT_SK_BLENDMODE :: Sk_blendmode
 pattern HARDLIGHT_SK_BLENDMODE = (#const HARDLIGHT_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (22/29): @SOFTLIGHT_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (22/29): @"SOFTLIGHT_SK_BLENDMODE"@
 pattern SOFTLIGHT_SK_BLENDMODE :: Sk_blendmode
 pattern SOFTLIGHT_SK_BLENDMODE = (#const SOFTLIGHT_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (23/29): @DIFFERENCE_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (23/29): @"DIFFERENCE_SK_BLENDMODE"@
 pattern DIFFERENCE_SK_BLENDMODE :: Sk_blendmode
 pattern DIFFERENCE_SK_BLENDMODE = (#const DIFFERENCE_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (24/29): @EXCLUSION_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (24/29): @"EXCLUSION_SK_BLENDMODE"@
 pattern EXCLUSION_SK_BLENDMODE :: Sk_blendmode
 pattern EXCLUSION_SK_BLENDMODE = (#const EXCLUSION_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (25/29): @MULTIPLY_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (25/29): @"MULTIPLY_SK_BLENDMODE"@
 pattern MULTIPLY_SK_BLENDMODE :: Sk_blendmode
 pattern MULTIPLY_SK_BLENDMODE = (#const MULTIPLY_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (26/29): @HUE_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (26/29): @"HUE_SK_BLENDMODE"@
 pattern HUE_SK_BLENDMODE :: Sk_blendmode
 pattern HUE_SK_BLENDMODE = (#const HUE_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (27/29): @SATURATION_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (27/29): @"SATURATION_SK_BLENDMODE"@
 pattern SATURATION_SK_BLENDMODE :: Sk_blendmode
 pattern SATURATION_SK_BLENDMODE = (#const SATURATION_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (28/29): @COLOR_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (28/29): @"COLOR_SK_BLENDMODE"@
 pattern COLOR_SK_BLENDMODE :: Sk_blendmode
 pattern COLOR_SK_BLENDMODE = (#const COLOR_SK_BLENDMODE)
--- | C enum @sk_blendmode_t@ value (29/29): @LUMINOSITY_SK_BLENDMODE@
+
+-- | C enum @"sk_blendmode_t"@ value (29/29): @"LUMINOSITY_SK_BLENDMODE"@
 pattern LUMINOSITY_SK_BLENDMODE :: Sk_blendmode
 pattern LUMINOSITY_SK_BLENDMODE = (#const LUMINOSITY_SK_BLENDMODE)
--- | C struct name: @sk_point3_t@
+
+{- | C struct: @"sk_point3_t"@
+
+@
+typedef struct 
+{
+  float x;
+  float y;
+  float z;
+} sk_point3_t
+@
+-}
 data Sk_point3 = Sk_point3
-  { x :: CFloat -- ^ C field: @float x@
-  , y :: CFloat -- ^ C field: @float y@
-  , z :: CFloat -- ^ C field: @float z@
+  { x :: CFloat -- ^ C field: @"float x"@
+  , y :: CFloat -- ^ C field: @"float y"@
+  , z :: CFloat -- ^ C field: @"float z"@
   }
 instance Foreign.Storable.Offset.Offset "x" Sk_point3 where
   rawOffset = (#offset sk_point3_t, x)
@@ -570,10 +911,20 @@ instance Foreign.Storable.Storable Sk_point3 where
     (#poke sk_point3_t, x) p' x
     (#poke sk_point3_t, y) p' y
     (#poke sk_point3_t, z) p' z
--- | C struct name: @sk_ipoint_t@
+
+{- | C struct: @"sk_ipoint_t"@
+
+@
+typedef struct 
+{
+  int32_t x;
+  int32_t y;
+} sk_ipoint_t
+@
+-}
 data Sk_ipoint = Sk_ipoint
-  { x :: Int32 -- ^ C field: @int32_t x@
-  , y :: Int32 -- ^ C field: @int32_t y@
+  { x :: Int32 -- ^ C field: @"int32_t x"@
+  , y :: Int32 -- ^ C field: @"int32_t y"@
   }
 instance Foreign.Storable.Offset.Offset "x" Sk_ipoint where
   rawOffset = (#offset sk_ipoint_t, x)
@@ -589,10 +940,20 @@ instance Foreign.Storable.Storable Sk_ipoint where
   poke p' Sk_ipoint{..} = do
     (#poke sk_ipoint_t, x) p' x
     (#poke sk_ipoint_t, y) p' y
--- | C struct name: @sk_size_t@
+
+{- | C struct: @"sk_size_t"@
+
+@
+typedef struct 
+{
+  float w;
+  float h;
+} sk_size_t
+@
+-}
 data Sk_size = Sk_size
-  { w :: CFloat -- ^ C field: @float w@
-  , h :: CFloat -- ^ C field: @float h@
+  { w :: CFloat -- ^ C field: @"float w"@
+  , h :: CFloat -- ^ C field: @"float h"@
   }
 instance Foreign.Storable.Offset.Offset "w" Sk_size where
   rawOffset = (#offset sk_size_t, w)
@@ -608,10 +969,20 @@ instance Foreign.Storable.Storable Sk_size where
   poke p' Sk_size{..} = do
     (#poke sk_size_t, w) p' w
     (#poke sk_size_t, h) p' h
--- | C struct name: @sk_isize_t@
+
+{- | C struct: @"sk_isize_t"@
+
+@
+typedef struct 
+{
+  int32_t w;
+  int32_t h;
+} sk_isize_t
+@
+-}
 data Sk_isize = Sk_isize
-  { w :: Int32 -- ^ C field: @int32_t w@
-  , h :: Int32 -- ^ C field: @int32_t h@
+  { w :: Int32 -- ^ C field: @"int32_t w"@
+  , h :: Int32 -- ^ C field: @"int32_t h"@
   }
 instance Foreign.Storable.Offset.Offset "w" Sk_isize where
   rawOffset = (#offset sk_isize_t, w)
@@ -627,24 +998,48 @@ instance Foreign.Storable.Storable Sk_isize where
   poke p' Sk_isize{..} = do
     (#poke sk_isize_t, w) p' w
     (#poke sk_isize_t, h) p' h
--- | C struct name: @sk_fontmetrics_t@
+
+{- | C struct: @"sk_fontmetrics_t"@
+
+@
+typedef struct 
+{
+  uint32_t fFlags;
+  float fTop;
+  float fAscent;
+  float fDescent;
+  float fBottom;
+  float fLeading;
+  float fAvgCharWidth;
+  float fMaxCharWidth;
+  float fXMin;
+  float fXMax;
+  float fXHeight;
+  float fCapHeight;
+  float fUnderlineThickness;
+  float fUnderlinePosition;
+  float fStrikeoutThickness;
+  float fStrikeoutPosition;
+} sk_fontmetrics_t
+@
+-}
 data Sk_fontmetrics = Sk_fontmetrics
-  { fFlags :: Word32 -- ^ C field: @uint32_t fFlags@
-  , fTop :: CFloat -- ^ C field: @float fTop@
-  , fAscent :: CFloat -- ^ C field: @float fAscent@
-  , fDescent :: CFloat -- ^ C field: @float fDescent@
-  , fBottom :: CFloat -- ^ C field: @float fBottom@
-  , fLeading :: CFloat -- ^ C field: @float fLeading@
-  , fAvgCharWidth :: CFloat -- ^ C field: @float fAvgCharWidth@
-  , fMaxCharWidth :: CFloat -- ^ C field: @float fMaxCharWidth@
-  , fXMin :: CFloat -- ^ C field: @float fXMin@
-  , fXMax :: CFloat -- ^ C field: @float fXMax@
-  , fXHeight :: CFloat -- ^ C field: @float fXHeight@
-  , fCapHeight :: CFloat -- ^ C field: @float fCapHeight@
-  , fUnderlineThickness :: CFloat -- ^ C field: @float fUnderlineThickness@
-  , fUnderlinePosition :: CFloat -- ^ C field: @float fUnderlinePosition@
-  , fStrikeoutThickness :: CFloat -- ^ C field: @float fStrikeoutThickness@
-  , fStrikeoutPosition :: CFloat -- ^ C field: @float fStrikeoutPosition@
+  { fFlags :: Word32 -- ^ C field: @"uint32_t fFlags"@
+  , fTop :: CFloat -- ^ C field: @"float fTop"@
+  , fAscent :: CFloat -- ^ C field: @"float fAscent"@
+  , fDescent :: CFloat -- ^ C field: @"float fDescent"@
+  , fBottom :: CFloat -- ^ C field: @"float fBottom"@
+  , fLeading :: CFloat -- ^ C field: @"float fLeading"@
+  , fAvgCharWidth :: CFloat -- ^ C field: @"float fAvgCharWidth"@
+  , fMaxCharWidth :: CFloat -- ^ C field: @"float fMaxCharWidth"@
+  , fXMin :: CFloat -- ^ C field: @"float fXMin"@
+  , fXMax :: CFloat -- ^ C field: @"float fXMax"@
+  , fXHeight :: CFloat -- ^ C field: @"float fXHeight"@
+  , fCapHeight :: CFloat -- ^ C field: @"float fCapHeight"@
+  , fUnderlineThickness :: CFloat -- ^ C field: @"float fUnderlineThickness"@
+  , fUnderlinePosition :: CFloat -- ^ C field: @"float fUnderlinePosition"@
+  , fStrikeoutThickness :: CFloat -- ^ C field: @"float fStrikeoutThickness"@
+  , fStrikeoutPosition :: CFloat -- ^ C field: @"float fStrikeoutPosition"@
   }
 instance Foreign.Storable.Offset.Offset "fFlags" Sk_fontmetrics where
   rawOffset = (#offset sk_fontmetrics_t, fFlags)
@@ -716,296 +1111,592 @@ instance Foreign.Storable.Storable Sk_fontmetrics where
     (#poke sk_fontmetrics_t, fUnderlinePosition) p' fUnderlinePosition
     (#poke sk_fontmetrics_t, fStrikeoutThickness) p' fStrikeoutThickness
     (#poke sk_fontmetrics_t, fStrikeoutPosition) p' fStrikeoutPosition
--- | Opaque C struct @sk_string_t@
+
+{- | Opaque C struct: @"sk_string_t"@
+-}
 data Sk_string = Sk_string
--- | Opaque C struct @sk_bitmap_t@
+
+{- | Opaque C struct: @"sk_bitmap_t"@
+-}
 data Sk_bitmap = Sk_bitmap
--- | Opaque C struct @sk_pixmap_t@
+
+{- | Opaque C struct: @"sk_pixmap_t"@
+-}
 data Sk_pixmap = Sk_pixmap
--- | Opaque C struct @sk_colorfilter_t@
+
+{- | Opaque C struct: @"sk_colorfilter_t"@
+-}
 data Sk_colorfilter = Sk_colorfilter
--- | Opaque C struct @sk_imagefilter_t@
+
+{- | Opaque C struct: @"sk_imagefilter_t"@
+-}
 data Sk_imagefilter = Sk_imagefilter
--- | Opaque C struct @sk_blender_t@
+
+{- | Opaque C struct: @"sk_blender_t"@
+-}
 data Sk_blender = Sk_blender
--- | Opaque C struct @sk_typeface_t@
+
+{- | Opaque C struct: @"sk_typeface_t"@
+-}
 data Sk_typeface = Sk_typeface
--- | C type alias: @typedef uint32_t sk_font_table_tag_t@
+
+{- | C type alias: @sk_font_table_tag_t@
+
+@
+typedef uint32_t sk_font_table_tag_t
+@
+-}
 type Sk_font_table_tag = Word32
--- | Opaque C struct @sk_fontmgr_t@
+
+{- | Opaque C struct: @"sk_fontmgr_t"@
+-}
 data Sk_fontmgr = Sk_fontmgr
--- | Opaque C struct @sk_fontstyle_t@
+
+{- | Opaque C struct: @"sk_fontstyle_t"@
+-}
 data Sk_fontstyle = Sk_fontstyle
--- | Opaque C struct @sk_fontstyleset_t@
+
+{- | Opaque C struct: @"sk_fontstyleset_t"@
+-}
 data Sk_fontstyleset = Sk_fontstyleset
--- | Opaque C struct @sk_codec_t@
+
+{- | Opaque C struct: @"sk_codec_t"@
+-}
 data Sk_codec = Sk_codec
--- | Opaque C struct @sk_colorspace_t@
+
+{- | Opaque C struct: @"sk_colorspace_t"@
+-}
 data Sk_colorspace = Sk_colorspace
--- | Opaque C struct @sk_stream_t@
+
+{- | Opaque C struct: @"sk_stream_t"@
+-}
 data Sk_stream = Sk_stream
--- | Opaque C struct @sk_stream_filestream_t@
+
+{- | Opaque C struct: @"sk_stream_filestream_t"@
+-}
 data Sk_stream_filestream = Sk_stream_filestream
--- | Opaque C struct @sk_stream_asset_t@
+
+{- | Opaque C struct: @"sk_stream_asset_t"@
+-}
 data Sk_stream_asset = Sk_stream_asset
--- | Opaque C struct @sk_stream_memorystream_t@
+
+{- | Opaque C struct: @"sk_stream_memorystream_t"@
+-}
 data Sk_stream_memorystream = Sk_stream_memorystream
--- | Opaque C struct @sk_stream_streamrewindable_t@
+
+{- | Opaque C struct: @"sk_stream_streamrewindable_t"@
+-}
 data Sk_stream_streamrewindable = Sk_stream_streamrewindable
--- | Opaque C struct @sk_wstream_t@
+
+{- | Opaque C struct: @"sk_wstream_t"@
+-}
 data Sk_wstream = Sk_wstream
--- | Opaque C struct @sk_wstream_filestream_t@
+
+{- | Opaque C struct: @"sk_wstream_filestream_t"@
+-}
 data Sk_wstream_filestream = Sk_wstream_filestream
--- | Opaque C struct @sk_wstream_dynamicmemorystream_t@
+
+{- | Opaque C struct: @"sk_wstream_dynamicmemorystream_t"@
+-}
 data Sk_wstream_dynamicmemorystream = Sk_wstream_dynamicmemorystream
--- | Opaque C struct @sk_document_t@
+
+{- | Opaque C struct: @"sk_document_t"@
+-}
 data Sk_document = Sk_document
--- | C enum: @sk_point_mode_t@
+
+{- | C enum: @"sk_point_mode_t"@
+
+@
+typedef enum 
+{
+  POINTS_SK_POINT_MODE,
+  LINES_SK_POINT_MODE,
+  POLYGON_SK_POINT_MODE
+} sk_point_mode_t
+@
+
+-}
 newtype Sk_point_mode = Sk_point_mode (#type sk_point_mode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_point_mode_t@ value (1/3): @POINTS_SK_POINT_MODE@
+
+-- | C enum @"sk_point_mode_t"@ value (1/3): @"POINTS_SK_POINT_MODE"@
 pattern POINTS_SK_POINT_MODE :: Sk_point_mode
 pattern POINTS_SK_POINT_MODE = (#const POINTS_SK_POINT_MODE)
--- | C enum @sk_point_mode_t@ value (2/3): @LINES_SK_POINT_MODE@
+
+-- | C enum @"sk_point_mode_t"@ value (2/3): @"LINES_SK_POINT_MODE"@
 pattern LINES_SK_POINT_MODE :: Sk_point_mode
 pattern LINES_SK_POINT_MODE = (#const LINES_SK_POINT_MODE)
--- | C enum @sk_point_mode_t@ value (3/3): @POLYGON_SK_POINT_MODE@
+
+-- | C enum @"sk_point_mode_t"@ value (3/3): @"POLYGON_SK_POINT_MODE"@
 pattern POLYGON_SK_POINT_MODE :: Sk_point_mode
 pattern POLYGON_SK_POINT_MODE = (#const POLYGON_SK_POINT_MODE)
--- | C enum: @sk_text_align_t@
+
+{- | C enum: @"sk_text_align_t"@
+
+@
+typedef enum 
+{
+  LEFT_SK_TEXT_ALIGN,
+  CENTER_SK_TEXT_ALIGN,
+  RIGHT_SK_TEXT_ALIGN
+} sk_text_align_t
+@
+
+-}
 newtype Sk_text_align = Sk_text_align (#type sk_text_align_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_text_align_t@ value (1/3): @LEFT_SK_TEXT_ALIGN@
+
+-- | C enum @"sk_text_align_t"@ value (1/3): @"LEFT_SK_TEXT_ALIGN"@
 pattern LEFT_SK_TEXT_ALIGN :: Sk_text_align
 pattern LEFT_SK_TEXT_ALIGN = (#const LEFT_SK_TEXT_ALIGN)
--- | C enum @sk_text_align_t@ value (2/3): @CENTER_SK_TEXT_ALIGN@
+
+-- | C enum @"sk_text_align_t"@ value (2/3): @"CENTER_SK_TEXT_ALIGN"@
 pattern CENTER_SK_TEXT_ALIGN :: Sk_text_align
 pattern CENTER_SK_TEXT_ALIGN = (#const CENTER_SK_TEXT_ALIGN)
--- | C enum @sk_text_align_t@ value (3/3): @RIGHT_SK_TEXT_ALIGN@
+
+-- | C enum @"sk_text_align_t"@ value (3/3): @"RIGHT_SK_TEXT_ALIGN"@
 pattern RIGHT_SK_TEXT_ALIGN :: Sk_text_align
 pattern RIGHT_SK_TEXT_ALIGN = (#const RIGHT_SK_TEXT_ALIGN)
--- | C enum: @sk_text_encoding_t@
+
+{- | C enum: @"sk_text_encoding_t"@
+
+@
+typedef enum 
+{
+  UTF8_SK_TEXT_ENCODING,
+  UTF16_SK_TEXT_ENCODING,
+  UTF32_SK_TEXT_ENCODING,
+  GLYPH_ID_SK_TEXT_ENCODING
+} sk_text_encoding_t
+@
+
+-}
 newtype Sk_text_encoding = Sk_text_encoding (#type sk_text_encoding_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_text_encoding_t@ value (1/4): @UTF8_SK_TEXT_ENCODING@
+
+-- | C enum @"sk_text_encoding_t"@ value (1/4): @"UTF8_SK_TEXT_ENCODING"@
 pattern UTF8_SK_TEXT_ENCODING :: Sk_text_encoding
 pattern UTF8_SK_TEXT_ENCODING = (#const UTF8_SK_TEXT_ENCODING)
--- | C enum @sk_text_encoding_t@ value (2/4): @UTF16_SK_TEXT_ENCODING@
+
+-- | C enum @"sk_text_encoding_t"@ value (2/4): @"UTF16_SK_TEXT_ENCODING"@
 pattern UTF16_SK_TEXT_ENCODING :: Sk_text_encoding
 pattern UTF16_SK_TEXT_ENCODING = (#const UTF16_SK_TEXT_ENCODING)
--- | C enum @sk_text_encoding_t@ value (3/4): @UTF32_SK_TEXT_ENCODING@
+
+-- | C enum @"sk_text_encoding_t"@ value (3/4): @"UTF32_SK_TEXT_ENCODING"@
 pattern UTF32_SK_TEXT_ENCODING :: Sk_text_encoding
 pattern UTF32_SK_TEXT_ENCODING = (#const UTF32_SK_TEXT_ENCODING)
--- | C enum @sk_text_encoding_t@ value (4/4): @GLYPH_ID_SK_TEXT_ENCODING@
+
+-- | C enum @"sk_text_encoding_t"@ value (4/4): @"GLYPH_ID_SK_TEXT_ENCODING"@
 pattern GLYPH_ID_SK_TEXT_ENCODING :: Sk_text_encoding
 pattern GLYPH_ID_SK_TEXT_ENCODING = (#const GLYPH_ID_SK_TEXT_ENCODING)
--- | C enum: @sk_path_filltype_t@
+
+{- | C enum: @"sk_path_filltype_t"@
+
+@
+typedef enum 
+{
+  WINDING_SK_PATH_FILLTYPE,
+  EVENODD_SK_PATH_FILLTYPE,
+  INVERSE_WINDING_SK_PATH_FILLTYPE,
+  INVERSE_EVENODD_SK_PATH_FILLTYPE
+} sk_path_filltype_t
+@
+
+-}
 newtype Sk_path_filltype = Sk_path_filltype (#type sk_path_filltype_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_filltype_t@ value (1/4): @WINDING_SK_PATH_FILLTYPE@
+
+-- | C enum @"sk_path_filltype_t"@ value (1/4): @"WINDING_SK_PATH_FILLTYPE"@
 pattern WINDING_SK_PATH_FILLTYPE :: Sk_path_filltype
 pattern WINDING_SK_PATH_FILLTYPE = (#const WINDING_SK_PATH_FILLTYPE)
--- | C enum @sk_path_filltype_t@ value (2/4): @EVENODD_SK_PATH_FILLTYPE@
+
+-- | C enum @"sk_path_filltype_t"@ value (2/4): @"EVENODD_SK_PATH_FILLTYPE"@
 pattern EVENODD_SK_PATH_FILLTYPE :: Sk_path_filltype
 pattern EVENODD_SK_PATH_FILLTYPE = (#const EVENODD_SK_PATH_FILLTYPE)
--- | C enum @sk_path_filltype_t@ value (3/4): @INVERSE_WINDING_SK_PATH_FILLTYPE@
+
+-- | C enum @"sk_path_filltype_t"@ value (3/4): @"INVERSE_WINDING_SK_PATH_FILLTYPE"@
 pattern INVERSE_WINDING_SK_PATH_FILLTYPE :: Sk_path_filltype
 pattern INVERSE_WINDING_SK_PATH_FILLTYPE = (#const INVERSE_WINDING_SK_PATH_FILLTYPE)
--- | C enum @sk_path_filltype_t@ value (4/4): @INVERSE_EVENODD_SK_PATH_FILLTYPE@
+
+-- | C enum @"sk_path_filltype_t"@ value (4/4): @"INVERSE_EVENODD_SK_PATH_FILLTYPE"@
 pattern INVERSE_EVENODD_SK_PATH_FILLTYPE :: Sk_path_filltype
 pattern INVERSE_EVENODD_SK_PATH_FILLTYPE = (#const INVERSE_EVENODD_SK_PATH_FILLTYPE)
--- | C enum: @sk_font_style_slant_t@
+
+{- | C enum: @"sk_font_style_slant_t"@
+
+@
+typedef enum 
+{
+  UPRIGHT_SK_FONT_STYLE_SLANT = 0,
+  ITALIC_SK_FONT_STYLE_SLANT = 1,
+  OBLIQUE_SK_FONT_STYLE_SLANT = 2
+} sk_font_style_slant_t
+@
+
+-}
 newtype Sk_font_style_slant = Sk_font_style_slant (#type sk_font_style_slant_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_font_style_slant_t@ value (1/3): @UPRIGHT_SK_FONT_STYLE_SLANT@
+
+-- | C enum @"sk_font_style_slant_t"@ value (1/3): @"UPRIGHT_SK_FONT_STYLE_SLANT"@
 pattern UPRIGHT_SK_FONT_STYLE_SLANT :: Sk_font_style_slant
 pattern UPRIGHT_SK_FONT_STYLE_SLANT = (#const UPRIGHT_SK_FONT_STYLE_SLANT)
--- | C enum @sk_font_style_slant_t@ value (2/3): @ITALIC_SK_FONT_STYLE_SLANT@
+
+-- | C enum @"sk_font_style_slant_t"@ value (2/3): @"ITALIC_SK_FONT_STYLE_SLANT"@
 pattern ITALIC_SK_FONT_STYLE_SLANT :: Sk_font_style_slant
 pattern ITALIC_SK_FONT_STYLE_SLANT = (#const ITALIC_SK_FONT_STYLE_SLANT)
--- | C enum @sk_font_style_slant_t@ value (3/3): @OBLIQUE_SK_FONT_STYLE_SLANT@
+
+-- | C enum @"sk_font_style_slant_t"@ value (3/3): @"OBLIQUE_SK_FONT_STYLE_SLANT"@
 pattern OBLIQUE_SK_FONT_STYLE_SLANT :: Sk_font_style_slant
 pattern OBLIQUE_SK_FONT_STYLE_SLANT = (#const OBLIQUE_SK_FONT_STYLE_SLANT)
--- | C enum: @sk_color_channel_t@
+
+{- | C enum: @"sk_color_channel_t"@
+
+@
+typedef enum 
+{
+  R_SK_COLOR_CHANNEL,
+  G_SK_COLOR_CHANNEL,
+  B_SK_COLOR_CHANNEL,
+  A_SK_COLOR_CHANNEL
+} sk_color_channel_t
+@
+
+-}
 newtype Sk_color_channel = Sk_color_channel (#type sk_color_channel_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_color_channel_t@ value (1/4): @R_SK_COLOR_CHANNEL@
+
+-- | C enum @"sk_color_channel_t"@ value (1/4): @"R_SK_COLOR_CHANNEL"@
 pattern R_SK_COLOR_CHANNEL :: Sk_color_channel
 pattern R_SK_COLOR_CHANNEL = (#const R_SK_COLOR_CHANNEL)
--- | C enum @sk_color_channel_t@ value (2/4): @G_SK_COLOR_CHANNEL@
+
+-- | C enum @"sk_color_channel_t"@ value (2/4): @"G_SK_COLOR_CHANNEL"@
 pattern G_SK_COLOR_CHANNEL :: Sk_color_channel
 pattern G_SK_COLOR_CHANNEL = (#const G_SK_COLOR_CHANNEL)
--- | C enum @sk_color_channel_t@ value (3/4): @B_SK_COLOR_CHANNEL@
+
+-- | C enum @"sk_color_channel_t"@ value (3/4): @"B_SK_COLOR_CHANNEL"@
 pattern B_SK_COLOR_CHANNEL :: Sk_color_channel
 pattern B_SK_COLOR_CHANNEL = (#const B_SK_COLOR_CHANNEL)
--- | C enum @sk_color_channel_t@ value (4/4): @A_SK_COLOR_CHANNEL@
+
+-- | C enum @"sk_color_channel_t"@ value (4/4): @"A_SK_COLOR_CHANNEL"@
 pattern A_SK_COLOR_CHANNEL :: Sk_color_channel
 pattern A_SK_COLOR_CHANNEL = (#const A_SK_COLOR_CHANNEL)
--- | C enum: @sk_region_op_t@
+
+{- | C enum: @"sk_region_op_t"@
+
+@
+typedef enum 
+{
+  DIFFERENCE_SK_REGION_OP,
+  INTERSECT_SK_REGION_OP,
+  UNION_SK_REGION_OP,
+  XOR_SK_REGION_OP,
+  REVERSE_DIFFERENCE_SK_REGION_OP,
+  REPLACE_SK_REGION_OP
+} sk_region_op_t
+@
+
+-}
 newtype Sk_region_op = Sk_region_op (#type sk_region_op_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_region_op_t@ value (1/6): @DIFFERENCE_SK_REGION_OP@
+
+-- | C enum @"sk_region_op_t"@ value (1/6): @"DIFFERENCE_SK_REGION_OP"@
 pattern DIFFERENCE_SK_REGION_OP :: Sk_region_op
 pattern DIFFERENCE_SK_REGION_OP = (#const DIFFERENCE_SK_REGION_OP)
--- | C enum @sk_region_op_t@ value (2/6): @INTERSECT_SK_REGION_OP@
+
+-- | C enum @"sk_region_op_t"@ value (2/6): @"INTERSECT_SK_REGION_OP"@
 pattern INTERSECT_SK_REGION_OP :: Sk_region_op
 pattern INTERSECT_SK_REGION_OP = (#const INTERSECT_SK_REGION_OP)
--- | C enum @sk_region_op_t@ value (3/6): @UNION_SK_REGION_OP@
+
+-- | C enum @"sk_region_op_t"@ value (3/6): @"UNION_SK_REGION_OP"@
 pattern UNION_SK_REGION_OP :: Sk_region_op
 pattern UNION_SK_REGION_OP = (#const UNION_SK_REGION_OP)
--- | C enum @sk_region_op_t@ value (4/6): @XOR_SK_REGION_OP@
+
+-- | C enum @"sk_region_op_t"@ value (4/6): @"XOR_SK_REGION_OP"@
 pattern XOR_SK_REGION_OP :: Sk_region_op
 pattern XOR_SK_REGION_OP = (#const XOR_SK_REGION_OP)
--- | C enum @sk_region_op_t@ value (5/6): @REVERSE_DIFFERENCE_SK_REGION_OP@
+
+-- | C enum @"sk_region_op_t"@ value (5/6): @"REVERSE_DIFFERENCE_SK_REGION_OP"@
 pattern REVERSE_DIFFERENCE_SK_REGION_OP :: Sk_region_op
 pattern REVERSE_DIFFERENCE_SK_REGION_OP = (#const REVERSE_DIFFERENCE_SK_REGION_OP)
--- | C enum @sk_region_op_t@ value (6/6): @REPLACE_SK_REGION_OP@
+
+-- | C enum @"sk_region_op_t"@ value (6/6): @"REPLACE_SK_REGION_OP"@
 pattern REPLACE_SK_REGION_OP :: Sk_region_op
 pattern REPLACE_SK_REGION_OP = (#const REPLACE_SK_REGION_OP)
--- | C enum: @sk_clipop_t@
+
+{- | C enum: @"sk_clipop_t"@
+
+@
+typedef enum 
+{
+  DIFFERENCE_SK_CLIPOP,
+  INTERSECT_SK_CLIPOP
+} sk_clipop_t
+@
+
+-}
 newtype Sk_clipop = Sk_clipop (#type sk_clipop_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_clipop_t@ value (1/2): @DIFFERENCE_SK_CLIPOP@
+
+-- | C enum @"sk_clipop_t"@ value (1/2): @"DIFFERENCE_SK_CLIPOP"@
 pattern DIFFERENCE_SK_CLIPOP :: Sk_clipop
 pattern DIFFERENCE_SK_CLIPOP = (#const DIFFERENCE_SK_CLIPOP)
--- | C enum @sk_clipop_t@ value (2/2): @INTERSECT_SK_CLIPOP@
+
+-- | C enum @"sk_clipop_t"@ value (2/2): @"INTERSECT_SK_CLIPOP"@
 pattern INTERSECT_SK_CLIPOP :: Sk_clipop
 pattern INTERSECT_SK_CLIPOP = (#const INTERSECT_SK_CLIPOP)
--- | C enum: @sk_encoded_image_format_t@
+
+{- | C enum: @"sk_encoded_image_format_t"@
+
+@
+typedef enum 
+{
+  BMP_SK_ENCODED_FORMAT,
+  GIF_SK_ENCODED_FORMAT,
+  ICO_SK_ENCODED_FORMAT,
+  JPEG_SK_ENCODED_FORMAT,
+  PNG_SK_ENCODED_FORMAT,
+  WBMP_SK_ENCODED_FORMAT,
+  WEBP_SK_ENCODED_FORMAT,
+  PKM_SK_ENCODED_FORMAT,
+  KTX_SK_ENCODED_FORMAT,
+  ASTC_SK_ENCODED_FORMAT,
+  DNG_SK_ENCODED_FORMAT,
+  HEIF_SK_ENCODED_FORMAT,
+  AVIF_SK_ENCODED_FORMAT,
+  JPEGXL_SK_ENCODED_FORMAT
+} sk_encoded_image_format_t
+@
+
+-}
 newtype Sk_encoded_image_format = Sk_encoded_image_format (#type sk_encoded_image_format_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_encoded_image_format_t@ value (1/14): @BMP_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (1/14): @"BMP_SK_ENCODED_FORMAT"@
 pattern BMP_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern BMP_SK_ENCODED_FORMAT = (#const BMP_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (2/14): @GIF_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (2/14): @"GIF_SK_ENCODED_FORMAT"@
 pattern GIF_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern GIF_SK_ENCODED_FORMAT = (#const GIF_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (3/14): @ICO_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (3/14): @"ICO_SK_ENCODED_FORMAT"@
 pattern ICO_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern ICO_SK_ENCODED_FORMAT = (#const ICO_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (4/14): @JPEG_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (4/14): @"JPEG_SK_ENCODED_FORMAT"@
 pattern JPEG_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern JPEG_SK_ENCODED_FORMAT = (#const JPEG_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (5/14): @PNG_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (5/14): @"PNG_SK_ENCODED_FORMAT"@
 pattern PNG_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern PNG_SK_ENCODED_FORMAT = (#const PNG_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (6/14): @WBMP_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (6/14): @"WBMP_SK_ENCODED_FORMAT"@
 pattern WBMP_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern WBMP_SK_ENCODED_FORMAT = (#const WBMP_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (7/14): @WEBP_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (7/14): @"WEBP_SK_ENCODED_FORMAT"@
 pattern WEBP_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern WEBP_SK_ENCODED_FORMAT = (#const WEBP_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (8/14): @PKM_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (8/14): @"PKM_SK_ENCODED_FORMAT"@
 pattern PKM_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern PKM_SK_ENCODED_FORMAT = (#const PKM_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (9/14): @KTX_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (9/14): @"KTX_SK_ENCODED_FORMAT"@
 pattern KTX_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern KTX_SK_ENCODED_FORMAT = (#const KTX_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (10/14): @ASTC_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (10/14): @"ASTC_SK_ENCODED_FORMAT"@
 pattern ASTC_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern ASTC_SK_ENCODED_FORMAT = (#const ASTC_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (11/14): @DNG_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (11/14): @"DNG_SK_ENCODED_FORMAT"@
 pattern DNG_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern DNG_SK_ENCODED_FORMAT = (#const DNG_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (12/14): @HEIF_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (12/14): @"HEIF_SK_ENCODED_FORMAT"@
 pattern HEIF_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern HEIF_SK_ENCODED_FORMAT = (#const HEIF_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (13/14): @AVIF_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (13/14): @"AVIF_SK_ENCODED_FORMAT"@
 pattern AVIF_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern AVIF_SK_ENCODED_FORMAT = (#const AVIF_SK_ENCODED_FORMAT)
--- | C enum @sk_encoded_image_format_t@ value (14/14): @JPEGXL_SK_ENCODED_FORMAT@
+
+-- | C enum @"sk_encoded_image_format_t"@ value (14/14): @"JPEGXL_SK_ENCODED_FORMAT"@
 pattern JPEGXL_SK_ENCODED_FORMAT :: Sk_encoded_image_format
 pattern JPEGXL_SK_ENCODED_FORMAT = (#const JPEGXL_SK_ENCODED_FORMAT)
--- | C enum: @sk_encodedorigin_t@
+
+{- | C enum: @"sk_encodedorigin_t"@
+
+@
+typedef enum 
+{
+  TOP_LEFT_SK_ENCODED_ORIGIN = 1,
+  TOP_RIGHT_SK_ENCODED_ORIGIN = 2,
+  BOTTOM_RIGHT_SK_ENCODED_ORIGIN = 3,
+  BOTTOM_LEFT_SK_ENCODED_ORIGIN = 4,
+  LEFT_TOP_SK_ENCODED_ORIGIN = 5,
+  RIGHT_TOP_SK_ENCODED_ORIGIN = 6,
+  RIGHT_BOTTOM_SK_ENCODED_ORIGIN = 7,
+  LEFT_BOTTOM_SK_ENCODED_ORIGIN = 8,
+  DEFAULT_SK_ENCODED_ORIGIN = TOP_LEFT_SK_ENCODED_ORIGIN
+} sk_encodedorigin_t
+@
+
+-}
 newtype Sk_encodedorigin = Sk_encodedorigin (#type sk_encodedorigin_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_encodedorigin_t@ value (1/9): @TOP_LEFT_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (1/9): @"TOP_LEFT_SK_ENCODED_ORIGIN"@
 pattern TOP_LEFT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern TOP_LEFT_SK_ENCODED_ORIGIN = (#const TOP_LEFT_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (2/9): @TOP_RIGHT_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (2/9): @"TOP_RIGHT_SK_ENCODED_ORIGIN"@
 pattern TOP_RIGHT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern TOP_RIGHT_SK_ENCODED_ORIGIN = (#const TOP_RIGHT_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (3/9): @BOTTOM_RIGHT_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (3/9): @"BOTTOM_RIGHT_SK_ENCODED_ORIGIN"@
 pattern BOTTOM_RIGHT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern BOTTOM_RIGHT_SK_ENCODED_ORIGIN = (#const BOTTOM_RIGHT_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (4/9): @BOTTOM_LEFT_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (4/9): @"BOTTOM_LEFT_SK_ENCODED_ORIGIN"@
 pattern BOTTOM_LEFT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern BOTTOM_LEFT_SK_ENCODED_ORIGIN = (#const BOTTOM_LEFT_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (5/9): @LEFT_TOP_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (5/9): @"LEFT_TOP_SK_ENCODED_ORIGIN"@
 pattern LEFT_TOP_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern LEFT_TOP_SK_ENCODED_ORIGIN = (#const LEFT_TOP_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (6/9): @RIGHT_TOP_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (6/9): @"RIGHT_TOP_SK_ENCODED_ORIGIN"@
 pattern RIGHT_TOP_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern RIGHT_TOP_SK_ENCODED_ORIGIN = (#const RIGHT_TOP_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (7/9): @RIGHT_BOTTOM_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (7/9): @"RIGHT_BOTTOM_SK_ENCODED_ORIGIN"@
 pattern RIGHT_BOTTOM_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern RIGHT_BOTTOM_SK_ENCODED_ORIGIN = (#const RIGHT_BOTTOM_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (8/9): @LEFT_BOTTOM_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (8/9): @"LEFT_BOTTOM_SK_ENCODED_ORIGIN"@
 pattern LEFT_BOTTOM_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern LEFT_BOTTOM_SK_ENCODED_ORIGIN = (#const LEFT_BOTTOM_SK_ENCODED_ORIGIN)
--- | C enum @sk_encodedorigin_t@ value (9/9): @DEFAULT_SK_ENCODED_ORIGIN@
+
+-- | C enum @"sk_encodedorigin_t"@ value (9/9): @"DEFAULT_SK_ENCODED_ORIGIN"@
 pattern DEFAULT_SK_ENCODED_ORIGIN :: Sk_encodedorigin
 pattern DEFAULT_SK_ENCODED_ORIGIN = (#const DEFAULT_SK_ENCODED_ORIGIN)
--- | C enum: @sk_codec_result_t@
+
+{- | C enum: @"sk_codec_result_t"@
+
+@
+typedef enum 
+{
+  SUCCESS_SK_CODEC_RESULT,
+  INCOMPLETE_INPUT_SK_CODEC_RESULT,
+  ERROR_IN_INPUT_SK_CODEC_RESULT,
+  INVALID_CONVERSION_SK_CODEC_RESULT,
+  INVALID_SCALE_SK_CODEC_RESULT,
+  INVALID_PARAMETERS_SK_CODEC_RESULT,
+  INVALID_INPUT_SK_CODEC_RESULT,
+  COULD_NOT_REWIND_SK_CODEC_RESULT,
+  INTERNAL_ERROR_SK_CODEC_RESULT,
+  UNIMPLEMENTED_SK_CODEC_RESULT
+} sk_codec_result_t
+@
+
+-}
 newtype Sk_codec_result = Sk_codec_result (#type sk_codec_result_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_codec_result_t@ value (1/10): @SUCCESS_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (1/10): @"SUCCESS_SK_CODEC_RESULT"@
 pattern SUCCESS_SK_CODEC_RESULT :: Sk_codec_result
 pattern SUCCESS_SK_CODEC_RESULT = (#const SUCCESS_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (2/10): @INCOMPLETE_INPUT_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (2/10): @"INCOMPLETE_INPUT_SK_CODEC_RESULT"@
 pattern INCOMPLETE_INPUT_SK_CODEC_RESULT :: Sk_codec_result
 pattern INCOMPLETE_INPUT_SK_CODEC_RESULT = (#const INCOMPLETE_INPUT_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (3/10): @ERROR_IN_INPUT_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (3/10): @"ERROR_IN_INPUT_SK_CODEC_RESULT"@
 pattern ERROR_IN_INPUT_SK_CODEC_RESULT :: Sk_codec_result
 pattern ERROR_IN_INPUT_SK_CODEC_RESULT = (#const ERROR_IN_INPUT_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (4/10): @INVALID_CONVERSION_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (4/10): @"INVALID_CONVERSION_SK_CODEC_RESULT"@
 pattern INVALID_CONVERSION_SK_CODEC_RESULT :: Sk_codec_result
 pattern INVALID_CONVERSION_SK_CODEC_RESULT = (#const INVALID_CONVERSION_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (5/10): @INVALID_SCALE_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (5/10): @"INVALID_SCALE_SK_CODEC_RESULT"@
 pattern INVALID_SCALE_SK_CODEC_RESULT :: Sk_codec_result
 pattern INVALID_SCALE_SK_CODEC_RESULT = (#const INVALID_SCALE_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (6/10): @INVALID_PARAMETERS_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (6/10): @"INVALID_PARAMETERS_SK_CODEC_RESULT"@
 pattern INVALID_PARAMETERS_SK_CODEC_RESULT :: Sk_codec_result
 pattern INVALID_PARAMETERS_SK_CODEC_RESULT = (#const INVALID_PARAMETERS_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (7/10): @INVALID_INPUT_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (7/10): @"INVALID_INPUT_SK_CODEC_RESULT"@
 pattern INVALID_INPUT_SK_CODEC_RESULT :: Sk_codec_result
 pattern INVALID_INPUT_SK_CODEC_RESULT = (#const INVALID_INPUT_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (8/10): @COULD_NOT_REWIND_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (8/10): @"COULD_NOT_REWIND_SK_CODEC_RESULT"@
 pattern COULD_NOT_REWIND_SK_CODEC_RESULT :: Sk_codec_result
 pattern COULD_NOT_REWIND_SK_CODEC_RESULT = (#const COULD_NOT_REWIND_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (9/10): @INTERNAL_ERROR_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (9/10): @"INTERNAL_ERROR_SK_CODEC_RESULT"@
 pattern INTERNAL_ERROR_SK_CODEC_RESULT :: Sk_codec_result
 pattern INTERNAL_ERROR_SK_CODEC_RESULT = (#const INTERNAL_ERROR_SK_CODEC_RESULT)
--- | C enum @sk_codec_result_t@ value (10/10): @UNIMPLEMENTED_SK_CODEC_RESULT@
+
+-- | C enum @"sk_codec_result_t"@ value (10/10): @"UNIMPLEMENTED_SK_CODEC_RESULT"@
 pattern UNIMPLEMENTED_SK_CODEC_RESULT :: Sk_codec_result
 pattern UNIMPLEMENTED_SK_CODEC_RESULT = (#const UNIMPLEMENTED_SK_CODEC_RESULT)
--- | C enum: @sk_codec_zero_initialized_t@
+
+{- | C enum: @"sk_codec_zero_initialized_t"@
+
+@
+typedef enum 
+{
+  YES_SK_CODEC_ZERO_INITIALIZED,
+  NO_SK_CODEC_ZERO_INITIALIZED
+} sk_codec_zero_initialized_t
+@
+
+-}
 newtype Sk_codec_zero_initialized = Sk_codec_zero_initialized (#type sk_codec_zero_initialized_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_codec_zero_initialized_t@ value (1/2): @YES_SK_CODEC_ZERO_INITIALIZED@
+
+-- | C enum @"sk_codec_zero_initialized_t"@ value (1/2): @"YES_SK_CODEC_ZERO_INITIALIZED"@
 pattern YES_SK_CODEC_ZERO_INITIALIZED :: Sk_codec_zero_initialized
 pattern YES_SK_CODEC_ZERO_INITIALIZED = (#const YES_SK_CODEC_ZERO_INITIALIZED)
--- | C enum @sk_codec_zero_initialized_t@ value (2/2): @NO_SK_CODEC_ZERO_INITIALIZED@
+
+-- | C enum @"sk_codec_zero_initialized_t"@ value (2/2): @"NO_SK_CODEC_ZERO_INITIALIZED"@
 pattern NO_SK_CODEC_ZERO_INITIALIZED :: Sk_codec_zero_initialized
 pattern NO_SK_CODEC_ZERO_INITIALIZED = (#const NO_SK_CODEC_ZERO_INITIALIZED)
--- | C struct name: @sk_codec_options_t@
+
+{- | C struct: @"sk_codec_options_t"@
+
+@
+typedef struct 
+{
+  sk_codec_zero_initialized_t fZeroInitialized;
+  sk_irect_t *fSubset;
+  int fFrameIndex;
+  int fPriorFrame;
+} sk_codec_options_t
+@
+-}
 data Sk_codec_options = Sk_codec_options
-  { fZeroInitialized :: Sk_codec_zero_initialized -- ^ C field: @sk_codec_zero_initialized_t fZeroInitialized@
-  , fSubset :: Ptr (Sk_irect) -- ^ C field: @sk_irect_t *fSubset@
-  , fFrameIndex :: CInt -- ^ C field: @int fFrameIndex@
-  , fPriorFrame :: CInt -- ^ C field: @int fPriorFrame@
+  { fZeroInitialized :: Sk_codec_zero_initialized -- ^ C field: @"sk_codec_zero_initialized_t fZeroInitialized"@
+  , fSubset :: Ptr (Sk_irect) -- ^ C field: @"sk_irect_t *fSubset"@
+  , fFrameIndex :: CInt -- ^ C field: @"int fFrameIndex"@
+  , fPriorFrame :: CInt -- ^ C field: @"int fPriorFrame"@
   }
 instance Foreign.Storable.Offset.Offset "fZeroInitialized" Sk_codec_options where
   rawOffset = (#offset sk_codec_options_t, fZeroInitialized)
@@ -1029,236 +1720,502 @@ instance Foreign.Storable.Storable Sk_codec_options where
     (#poke sk_codec_options_t, fSubset) p' fSubset
     (#poke sk_codec_options_t, fFrameIndex) p' fFrameIndex
     (#poke sk_codec_options_t, fPriorFrame) p' fPriorFrame
--- | C enum: @sk_codec_scanline_order_t@
+
+{- | C enum: @"sk_codec_scanline_order_t"@
+
+@
+typedef enum 
+{
+  TOP_DOWN_SK_CODEC_SCANLINE_ORDER,
+  BOTTOM_UP_SK_CODEC_SCANLINE_ORDER
+} sk_codec_scanline_order_t
+@
+
+-}
 newtype Sk_codec_scanline_order = Sk_codec_scanline_order (#type sk_codec_scanline_order_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_codec_scanline_order_t@ value (1/2): @TOP_DOWN_SK_CODEC_SCANLINE_ORDER@
+
+-- | C enum @"sk_codec_scanline_order_t"@ value (1/2): @"TOP_DOWN_SK_CODEC_SCANLINE_ORDER"@
 pattern TOP_DOWN_SK_CODEC_SCANLINE_ORDER :: Sk_codec_scanline_order
 pattern TOP_DOWN_SK_CODEC_SCANLINE_ORDER = (#const TOP_DOWN_SK_CODEC_SCANLINE_ORDER)
--- | C enum @sk_codec_scanline_order_t@ value (2/2): @BOTTOM_UP_SK_CODEC_SCANLINE_ORDER@
+
+-- | C enum @"sk_codec_scanline_order_t"@ value (2/2): @"BOTTOM_UP_SK_CODEC_SCANLINE_ORDER"@
 pattern BOTTOM_UP_SK_CODEC_SCANLINE_ORDER :: Sk_codec_scanline_order
 pattern BOTTOM_UP_SK_CODEC_SCANLINE_ORDER = (#const BOTTOM_UP_SK_CODEC_SCANLINE_ORDER)
--- | C enum: @sk_path_verb_t@
+
+{- | C enum: @"sk_path_verb_t"@
+
+@
+typedef enum 
+{
+  MOVE_SK_PATH_VERB,
+  LINE_SK_PATH_VERB,
+  QUAD_SK_PATH_VERB,
+  CONIC_SK_PATH_VERB,
+  CUBIC_SK_PATH_VERB,
+  CLOSE_SK_PATH_VERB,
+  DONE_SK_PATH_VERB
+} sk_path_verb_t
+@
+
+-}
 newtype Sk_path_verb = Sk_path_verb (#type sk_path_verb_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_verb_t@ value (1/7): @MOVE_SK_PATH_VERB@
+
+-- | C enum @"sk_path_verb_t"@ value (1/7): @"MOVE_SK_PATH_VERB"@
 pattern MOVE_SK_PATH_VERB :: Sk_path_verb
 pattern MOVE_SK_PATH_VERB = (#const MOVE_SK_PATH_VERB)
--- | C enum @sk_path_verb_t@ value (2/7): @LINE_SK_PATH_VERB@
+
+-- | C enum @"sk_path_verb_t"@ value (2/7): @"LINE_SK_PATH_VERB"@
 pattern LINE_SK_PATH_VERB :: Sk_path_verb
 pattern LINE_SK_PATH_VERB = (#const LINE_SK_PATH_VERB)
--- | C enum @sk_path_verb_t@ value (3/7): @QUAD_SK_PATH_VERB@
+
+-- | C enum @"sk_path_verb_t"@ value (3/7): @"QUAD_SK_PATH_VERB"@
 pattern QUAD_SK_PATH_VERB :: Sk_path_verb
 pattern QUAD_SK_PATH_VERB = (#const QUAD_SK_PATH_VERB)
--- | C enum @sk_path_verb_t@ value (4/7): @CONIC_SK_PATH_VERB@
+
+-- | C enum @"sk_path_verb_t"@ value (4/7): @"CONIC_SK_PATH_VERB"@
 pattern CONIC_SK_PATH_VERB :: Sk_path_verb
 pattern CONIC_SK_PATH_VERB = (#const CONIC_SK_PATH_VERB)
--- | C enum @sk_path_verb_t@ value (5/7): @CUBIC_SK_PATH_VERB@
+
+-- | C enum @"sk_path_verb_t"@ value (5/7): @"CUBIC_SK_PATH_VERB"@
 pattern CUBIC_SK_PATH_VERB :: Sk_path_verb
 pattern CUBIC_SK_PATH_VERB = (#const CUBIC_SK_PATH_VERB)
--- | C enum @sk_path_verb_t@ value (6/7): @CLOSE_SK_PATH_VERB@
+
+-- | C enum @"sk_path_verb_t"@ value (6/7): @"CLOSE_SK_PATH_VERB"@
 pattern CLOSE_SK_PATH_VERB :: Sk_path_verb
 pattern CLOSE_SK_PATH_VERB = (#const CLOSE_SK_PATH_VERB)
--- | C enum @sk_path_verb_t@ value (7/7): @DONE_SK_PATH_VERB@
+
+-- | C enum @"sk_path_verb_t"@ value (7/7): @"DONE_SK_PATH_VERB"@
 pattern DONE_SK_PATH_VERB :: Sk_path_verb
 pattern DONE_SK_PATH_VERB = (#const DONE_SK_PATH_VERB)
--- | Opaque C struct @sk_path_iterator_t@
+
+{- | Opaque C struct: @"sk_path_iterator_t"@
+-}
 data Sk_path_iterator = Sk_path_iterator
--- | Opaque C struct @sk_path_rawiterator_t@
+
+{- | Opaque C struct: @"sk_path_rawiterator_t"@
+-}
 data Sk_path_rawiterator = Sk_path_rawiterator
--- | C enum: @sk_path_add_mode_t@
+
+{- | C enum: @"sk_path_add_mode_t"@
+
+@
+typedef enum 
+{
+  APPEND_SK_PATH_ADD_MODE,
+  EXTEND_SK_PATH_ADD_MODE
+} sk_path_add_mode_t
+@
+
+-}
 newtype Sk_path_add_mode = Sk_path_add_mode (#type sk_path_add_mode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_add_mode_t@ value (1/2): @APPEND_SK_PATH_ADD_MODE@
+
+-- | C enum @"sk_path_add_mode_t"@ value (1/2): @"APPEND_SK_PATH_ADD_MODE"@
 pattern APPEND_SK_PATH_ADD_MODE :: Sk_path_add_mode
 pattern APPEND_SK_PATH_ADD_MODE = (#const APPEND_SK_PATH_ADD_MODE)
--- | C enum @sk_path_add_mode_t@ value (2/2): @EXTEND_SK_PATH_ADD_MODE@
+
+-- | C enum @"sk_path_add_mode_t"@ value (2/2): @"EXTEND_SK_PATH_ADD_MODE"@
 pattern EXTEND_SK_PATH_ADD_MODE :: Sk_path_add_mode
 pattern EXTEND_SK_PATH_ADD_MODE = (#const EXTEND_SK_PATH_ADD_MODE)
--- | C enum: @sk_path_segment_mask_t@
+
+{- | C enum: @"sk_path_segment_mask_t"@
+
+@
+typedef enum 
+{
+  LINE_SK_PATH_SEGMENT_MASK = 1 << 0,
+  QUAD_SK_PATH_SEGMENT_MASK = 1 << 1,
+  CONIC_SK_PATH_SEGMENT_MASK = 1 << 2,
+  CUBIC_SK_PATH_SEGMENT_MASK = 1 << 3
+} sk_path_segment_mask_t
+@
+
+-}
 newtype Sk_path_segment_mask = Sk_path_segment_mask (#type sk_path_segment_mask_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_segment_mask_t@ value (1/4): @LINE_SK_PATH_SEGMENT_MASK@
+
+-- | C enum @"sk_path_segment_mask_t"@ value (1/4): @"LINE_SK_PATH_SEGMENT_MASK"@
 pattern LINE_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
 pattern LINE_SK_PATH_SEGMENT_MASK = (#const LINE_SK_PATH_SEGMENT_MASK)
--- | C enum @sk_path_segment_mask_t@ value (2/4): @QUAD_SK_PATH_SEGMENT_MASK@
+
+-- | C enum @"sk_path_segment_mask_t"@ value (2/4): @"QUAD_SK_PATH_SEGMENT_MASK"@
 pattern QUAD_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
 pattern QUAD_SK_PATH_SEGMENT_MASK = (#const QUAD_SK_PATH_SEGMENT_MASK)
--- | C enum @sk_path_segment_mask_t@ value (3/4): @CONIC_SK_PATH_SEGMENT_MASK@
+
+-- | C enum @"sk_path_segment_mask_t"@ value (3/4): @"CONIC_SK_PATH_SEGMENT_MASK"@
 pattern CONIC_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
 pattern CONIC_SK_PATH_SEGMENT_MASK = (#const CONIC_SK_PATH_SEGMENT_MASK)
--- | C enum @sk_path_segment_mask_t@ value (4/4): @CUBIC_SK_PATH_SEGMENT_MASK@
+
+-- | C enum @"sk_path_segment_mask_t"@ value (4/4): @"CUBIC_SK_PATH_SEGMENT_MASK"@
 pattern CUBIC_SK_PATH_SEGMENT_MASK :: Sk_path_segment_mask
 pattern CUBIC_SK_PATH_SEGMENT_MASK = (#const CUBIC_SK_PATH_SEGMENT_MASK)
--- | C enum: @sk_path_effect_1d_style_t@
+
+{- | C enum: @"sk_path_effect_1d_style_t"@
+
+@
+typedef enum 
+{
+  TRANSLATE_SK_PATH_EFFECT_1D_STYLE,
+  ROTATE_SK_PATH_EFFECT_1D_STYLE,
+  MORPH_SK_PATH_EFFECT_1D_STYLE
+} sk_path_effect_1d_style_t
+@
+
+-}
 newtype Sk_path_effect_1d_style = Sk_path_effect_1d_style (#type sk_path_effect_1d_style_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_effect_1d_style_t@ value (1/3): @TRANSLATE_SK_PATH_EFFECT_1D_STYLE@
+
+-- | C enum @"sk_path_effect_1d_style_t"@ value (1/3): @"TRANSLATE_SK_PATH_EFFECT_1D_STYLE"@
 pattern TRANSLATE_SK_PATH_EFFECT_1D_STYLE :: Sk_path_effect_1d_style
 pattern TRANSLATE_SK_PATH_EFFECT_1D_STYLE = (#const TRANSLATE_SK_PATH_EFFECT_1D_STYLE)
--- | C enum @sk_path_effect_1d_style_t@ value (2/3): @ROTATE_SK_PATH_EFFECT_1D_STYLE@
+
+-- | C enum @"sk_path_effect_1d_style_t"@ value (2/3): @"ROTATE_SK_PATH_EFFECT_1D_STYLE"@
 pattern ROTATE_SK_PATH_EFFECT_1D_STYLE :: Sk_path_effect_1d_style
 pattern ROTATE_SK_PATH_EFFECT_1D_STYLE = (#const ROTATE_SK_PATH_EFFECT_1D_STYLE)
--- | C enum @sk_path_effect_1d_style_t@ value (3/3): @MORPH_SK_PATH_EFFECT_1D_STYLE@
+
+-- | C enum @"sk_path_effect_1d_style_t"@ value (3/3): @"MORPH_SK_PATH_EFFECT_1D_STYLE"@
 pattern MORPH_SK_PATH_EFFECT_1D_STYLE :: Sk_path_effect_1d_style
 pattern MORPH_SK_PATH_EFFECT_1D_STYLE = (#const MORPH_SK_PATH_EFFECT_1D_STYLE)
--- | C enum: @sk_path_effect_trim_mode_t@
+
+{- | C enum: @"sk_path_effect_trim_mode_t"@
+
+@
+typedef enum 
+{
+  NORMAL_SK_PATH_EFFECT_TRIM_MODE,
+  INVERTED_SK_PATH_EFFECT_TRIM_MODE
+} sk_path_effect_trim_mode_t
+@
+
+-}
 newtype Sk_path_effect_trim_mode = Sk_path_effect_trim_mode (#type sk_path_effect_trim_mode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_effect_trim_mode_t@ value (1/2): @NORMAL_SK_PATH_EFFECT_TRIM_MODE@
+
+-- | C enum @"sk_path_effect_trim_mode_t"@ value (1/2): @"NORMAL_SK_PATH_EFFECT_TRIM_MODE"@
 pattern NORMAL_SK_PATH_EFFECT_TRIM_MODE :: Sk_path_effect_trim_mode
 pattern NORMAL_SK_PATH_EFFECT_TRIM_MODE = (#const NORMAL_SK_PATH_EFFECT_TRIM_MODE)
--- | C enum @sk_path_effect_trim_mode_t@ value (2/2): @INVERTED_SK_PATH_EFFECT_TRIM_MODE@
+
+-- | C enum @"sk_path_effect_trim_mode_t"@ value (2/2): @"INVERTED_SK_PATH_EFFECT_TRIM_MODE"@
 pattern INVERTED_SK_PATH_EFFECT_TRIM_MODE :: Sk_path_effect_trim_mode
 pattern INVERTED_SK_PATH_EFFECT_TRIM_MODE = (#const INVERTED_SK_PATH_EFFECT_TRIM_MODE)
--- | Opaque C struct @sk_path_effect_t@
+
+{- | Opaque C struct: @"sk_path_effect_t"@
+-}
 data Sk_path_effect = Sk_path_effect
--- | C enum: @sk_stroke_cap_t@
+
+{- | C enum: @"sk_stroke_cap_t"@
+
+@
+typedef enum 
+{
+  BUTT_SK_STROKE_CAP,
+  ROUND_SK_STROKE_CAP,
+  SQUARE_SK_STROKE_CAP
+} sk_stroke_cap_t
+@
+
+-}
 newtype Sk_stroke_cap = Sk_stroke_cap (#type sk_stroke_cap_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_stroke_cap_t@ value (1/3): @BUTT_SK_STROKE_CAP@
+
+-- | C enum @"sk_stroke_cap_t"@ value (1/3): @"BUTT_SK_STROKE_CAP"@
 pattern BUTT_SK_STROKE_CAP :: Sk_stroke_cap
 pattern BUTT_SK_STROKE_CAP = (#const BUTT_SK_STROKE_CAP)
--- | C enum @sk_stroke_cap_t@ value (2/3): @ROUND_SK_STROKE_CAP@
+
+-- | C enum @"sk_stroke_cap_t"@ value (2/3): @"ROUND_SK_STROKE_CAP"@
 pattern ROUND_SK_STROKE_CAP :: Sk_stroke_cap
 pattern ROUND_SK_STROKE_CAP = (#const ROUND_SK_STROKE_CAP)
--- | C enum @sk_stroke_cap_t@ value (3/3): @SQUARE_SK_STROKE_CAP@
+
+-- | C enum @"sk_stroke_cap_t"@ value (3/3): @"SQUARE_SK_STROKE_CAP"@
 pattern SQUARE_SK_STROKE_CAP :: Sk_stroke_cap
 pattern SQUARE_SK_STROKE_CAP = (#const SQUARE_SK_STROKE_CAP)
--- | C enum: @sk_stroke_join_t@
+
+{- | C enum: @"sk_stroke_join_t"@
+
+@
+typedef enum 
+{
+  MITER_SK_STROKE_JOIN,
+  ROUND_SK_STROKE_JOIN,
+  BEVEL_SK_STROKE_JOIN
+} sk_stroke_join_t
+@
+
+-}
 newtype Sk_stroke_join = Sk_stroke_join (#type sk_stroke_join_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_stroke_join_t@ value (1/3): @MITER_SK_STROKE_JOIN@
+
+-- | C enum @"sk_stroke_join_t"@ value (1/3): @"MITER_SK_STROKE_JOIN"@
 pattern MITER_SK_STROKE_JOIN :: Sk_stroke_join
 pattern MITER_SK_STROKE_JOIN = (#const MITER_SK_STROKE_JOIN)
--- | C enum @sk_stroke_join_t@ value (2/3): @ROUND_SK_STROKE_JOIN@
+
+-- | C enum @"sk_stroke_join_t"@ value (2/3): @"ROUND_SK_STROKE_JOIN"@
 pattern ROUND_SK_STROKE_JOIN :: Sk_stroke_join
 pattern ROUND_SK_STROKE_JOIN = (#const ROUND_SK_STROKE_JOIN)
--- | C enum @sk_stroke_join_t@ value (3/3): @BEVEL_SK_STROKE_JOIN@
+
+-- | C enum @"sk_stroke_join_t"@ value (3/3): @"BEVEL_SK_STROKE_JOIN"@
 pattern BEVEL_SK_STROKE_JOIN :: Sk_stroke_join
 pattern BEVEL_SK_STROKE_JOIN = (#const BEVEL_SK_STROKE_JOIN)
--- | C enum: @sk_shader_tilemode_t@
+
+{- | C enum: @"sk_shader_tilemode_t"@
+
+@
+typedef enum 
+{
+  CLAMP_SK_SHADER_TILEMODE,
+  REPEAT_SK_SHADER_TILEMODE,
+  MIRROR_SK_SHADER_TILEMODE,
+  DECAL_SK_SHADER_TILEMODE
+} sk_shader_tilemode_t
+@
+
+-}
 newtype Sk_shader_tilemode = Sk_shader_tilemode (#type sk_shader_tilemode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_shader_tilemode_t@ value (1/4): @CLAMP_SK_SHADER_TILEMODE@
+
+-- | C enum @"sk_shader_tilemode_t"@ value (1/4): @"CLAMP_SK_SHADER_TILEMODE"@
 pattern CLAMP_SK_SHADER_TILEMODE :: Sk_shader_tilemode
 pattern CLAMP_SK_SHADER_TILEMODE = (#const CLAMP_SK_SHADER_TILEMODE)
--- | C enum @sk_shader_tilemode_t@ value (2/4): @REPEAT_SK_SHADER_TILEMODE@
+
+-- | C enum @"sk_shader_tilemode_t"@ value (2/4): @"REPEAT_SK_SHADER_TILEMODE"@
 pattern REPEAT_SK_SHADER_TILEMODE :: Sk_shader_tilemode
 pattern REPEAT_SK_SHADER_TILEMODE = (#const REPEAT_SK_SHADER_TILEMODE)
--- | C enum @sk_shader_tilemode_t@ value (3/4): @MIRROR_SK_SHADER_TILEMODE@
+
+-- | C enum @"sk_shader_tilemode_t"@ value (3/4): @"MIRROR_SK_SHADER_TILEMODE"@
 pattern MIRROR_SK_SHADER_TILEMODE :: Sk_shader_tilemode
 pattern MIRROR_SK_SHADER_TILEMODE = (#const MIRROR_SK_SHADER_TILEMODE)
--- | C enum @sk_shader_tilemode_t@ value (4/4): @DECAL_SK_SHADER_TILEMODE@
+
+-- | C enum @"sk_shader_tilemode_t"@ value (4/4): @"DECAL_SK_SHADER_TILEMODE"@
 pattern DECAL_SK_SHADER_TILEMODE :: Sk_shader_tilemode
 pattern DECAL_SK_SHADER_TILEMODE = (#const DECAL_SK_SHADER_TILEMODE)
--- | C enum: @sk_blurstyle_t@
+
+{- | C enum: @"sk_blurstyle_t"@
+
+@
+typedef enum 
+{
+  NORMAL_SK_BLUR_STYLE,
+  SOLID_SK_BLUR_STYLE,
+  OUTER_SK_BLUR_STYLE,
+  INNER_SK_BLUR_STYLE
+} sk_blurstyle_t
+@
+
+-}
 newtype Sk_blurstyle = Sk_blurstyle (#type sk_blurstyle_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_blurstyle_t@ value (1/4): @NORMAL_SK_BLUR_STYLE@
+
+-- | C enum @"sk_blurstyle_t"@ value (1/4): @"NORMAL_SK_BLUR_STYLE"@
 pattern NORMAL_SK_BLUR_STYLE :: Sk_blurstyle
 pattern NORMAL_SK_BLUR_STYLE = (#const NORMAL_SK_BLUR_STYLE)
--- | C enum @sk_blurstyle_t@ value (2/4): @SOLID_SK_BLUR_STYLE@
+
+-- | C enum @"sk_blurstyle_t"@ value (2/4): @"SOLID_SK_BLUR_STYLE"@
 pattern SOLID_SK_BLUR_STYLE :: Sk_blurstyle
 pattern SOLID_SK_BLUR_STYLE = (#const SOLID_SK_BLUR_STYLE)
--- | C enum @sk_blurstyle_t@ value (3/4): @OUTER_SK_BLUR_STYLE@
+
+-- | C enum @"sk_blurstyle_t"@ value (3/4): @"OUTER_SK_BLUR_STYLE"@
 pattern OUTER_SK_BLUR_STYLE :: Sk_blurstyle
 pattern OUTER_SK_BLUR_STYLE = (#const OUTER_SK_BLUR_STYLE)
--- | C enum @sk_blurstyle_t@ value (4/4): @INNER_SK_BLUR_STYLE@
+
+-- | C enum @"sk_blurstyle_t"@ value (4/4): @"INNER_SK_BLUR_STYLE"@
 pattern INNER_SK_BLUR_STYLE :: Sk_blurstyle
 pattern INNER_SK_BLUR_STYLE = (#const INNER_SK_BLUR_STYLE)
--- | C enum: @sk_path_direction_t@
+
+{- | C enum: @"sk_path_direction_t"@
+
+@
+typedef enum 
+{
+  CW_SK_PATH_DIRECTION,
+  CCW_SK_PATH_DIRECTION
+} sk_path_direction_t
+@
+
+-}
 newtype Sk_path_direction = Sk_path_direction (#type sk_path_direction_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_direction_t@ value (1/2): @CW_SK_PATH_DIRECTION@
+
+-- | C enum @"sk_path_direction_t"@ value (1/2): @"CW_SK_PATH_DIRECTION"@
 pattern CW_SK_PATH_DIRECTION :: Sk_path_direction
 pattern CW_SK_PATH_DIRECTION = (#const CW_SK_PATH_DIRECTION)
--- | C enum @sk_path_direction_t@ value (2/2): @CCW_SK_PATH_DIRECTION@
+
+-- | C enum @"sk_path_direction_t"@ value (2/2): @"CCW_SK_PATH_DIRECTION"@
 pattern CCW_SK_PATH_DIRECTION :: Sk_path_direction
 pattern CCW_SK_PATH_DIRECTION = (#const CCW_SK_PATH_DIRECTION)
--- | C enum: @sk_path_arc_size_t@
+
+{- | C enum: @"sk_path_arc_size_t"@
+
+@
+typedef enum 
+{
+  SMALL_SK_PATH_ARC_SIZE,
+  LARGE_SK_PATH_ARC_SIZE
+} sk_path_arc_size_t
+@
+
+-}
 newtype Sk_path_arc_size = Sk_path_arc_size (#type sk_path_arc_size_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_path_arc_size_t@ value (1/2): @SMALL_SK_PATH_ARC_SIZE@
+
+-- | C enum @"sk_path_arc_size_t"@ value (1/2): @"SMALL_SK_PATH_ARC_SIZE"@
 pattern SMALL_SK_PATH_ARC_SIZE :: Sk_path_arc_size
 pattern SMALL_SK_PATH_ARC_SIZE = (#const SMALL_SK_PATH_ARC_SIZE)
--- | C enum @sk_path_arc_size_t@ value (2/2): @LARGE_SK_PATH_ARC_SIZE@
+
+-- | C enum @"sk_path_arc_size_t"@ value (2/2): @"LARGE_SK_PATH_ARC_SIZE"@
 pattern LARGE_SK_PATH_ARC_SIZE :: Sk_path_arc_size
 pattern LARGE_SK_PATH_ARC_SIZE = (#const LARGE_SK_PATH_ARC_SIZE)
--- | C enum: @sk_paint_style_t@
+
+{- | C enum: @"sk_paint_style_t"@
+
+@
+typedef enum 
+{
+  FILL_SK_PAINT_STYLE,
+  STROKE_SK_PAINT_STYLE,
+  STROKE_AND_FILL_SK_PAINT_STYLE
+} sk_paint_style_t
+@
+
+-}
 newtype Sk_paint_style = Sk_paint_style (#type sk_paint_style_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_paint_style_t@ value (1/3): @FILL_SK_PAINT_STYLE@
+
+-- | C enum @"sk_paint_style_t"@ value (1/3): @"FILL_SK_PAINT_STYLE"@
 pattern FILL_SK_PAINT_STYLE :: Sk_paint_style
 pattern FILL_SK_PAINT_STYLE = (#const FILL_SK_PAINT_STYLE)
--- | C enum @sk_paint_style_t@ value (2/3): @STROKE_SK_PAINT_STYLE@
+
+-- | C enum @"sk_paint_style_t"@ value (2/3): @"STROKE_SK_PAINT_STYLE"@
 pattern STROKE_SK_PAINT_STYLE :: Sk_paint_style
 pattern STROKE_SK_PAINT_STYLE = (#const STROKE_SK_PAINT_STYLE)
--- | C enum @sk_paint_style_t@ value (3/3): @STROKE_AND_FILL_SK_PAINT_STYLE@
+
+-- | C enum @"sk_paint_style_t"@ value (3/3): @"STROKE_AND_FILL_SK_PAINT_STYLE"@
 pattern STROKE_AND_FILL_SK_PAINT_STYLE :: Sk_paint_style
 pattern STROKE_AND_FILL_SK_PAINT_STYLE = (#const STROKE_AND_FILL_SK_PAINT_STYLE)
--- | C enum: @sk_font_hinting_t@
+
+{- | C enum: @"sk_font_hinting_t"@
+
+@
+typedef enum 
+{
+  NONE_SK_FONT_HINTING,
+  SLIGHT_SK_FONT_HINTING,
+  NORMAL_SK_FONT_HINTING,
+  FULL_SK_FONT_HINTING
+} sk_font_hinting_t
+@
+
+-}
 newtype Sk_font_hinting = Sk_font_hinting (#type sk_font_hinting_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_font_hinting_t@ value (1/4): @NONE_SK_FONT_HINTING@
+
+-- | C enum @"sk_font_hinting_t"@ value (1/4): @"NONE_SK_FONT_HINTING"@
 pattern NONE_SK_FONT_HINTING :: Sk_font_hinting
 pattern NONE_SK_FONT_HINTING = (#const NONE_SK_FONT_HINTING)
--- | C enum @sk_font_hinting_t@ value (2/4): @SLIGHT_SK_FONT_HINTING@
+
+-- | C enum @"sk_font_hinting_t"@ value (2/4): @"SLIGHT_SK_FONT_HINTING"@
 pattern SLIGHT_SK_FONT_HINTING :: Sk_font_hinting
 pattern SLIGHT_SK_FONT_HINTING = (#const SLIGHT_SK_FONT_HINTING)
--- | C enum @sk_font_hinting_t@ value (3/4): @NORMAL_SK_FONT_HINTING@
+
+-- | C enum @"sk_font_hinting_t"@ value (3/4): @"NORMAL_SK_FONT_HINTING"@
 pattern NORMAL_SK_FONT_HINTING :: Sk_font_hinting
 pattern NORMAL_SK_FONT_HINTING = (#const NORMAL_SK_FONT_HINTING)
--- | C enum @sk_font_hinting_t@ value (4/4): @FULL_SK_FONT_HINTING@
+
+-- | C enum @"sk_font_hinting_t"@ value (4/4): @"FULL_SK_FONT_HINTING"@
 pattern FULL_SK_FONT_HINTING :: Sk_font_hinting
 pattern FULL_SK_FONT_HINTING = (#const FULL_SK_FONT_HINTING)
--- | C enum: @sk_font_edging_t@
+
+{- | C enum: @"sk_font_edging_t"@
+
+@
+typedef enum 
+{
+  ALIAS_SK_FONT_EDGING,
+  ANTIALIAS_SK_FONT_EDGING,
+  SUBPIXEL_ANTIALIAS_SK_FONT_EDGING
+} sk_font_edging_t
+@
+
+-}
 newtype Sk_font_edging = Sk_font_edging (#type sk_font_edging_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_font_edging_t@ value (1/3): @ALIAS_SK_FONT_EDGING@
+
+-- | C enum @"sk_font_edging_t"@ value (1/3): @"ALIAS_SK_FONT_EDGING"@
 pattern ALIAS_SK_FONT_EDGING :: Sk_font_edging
 pattern ALIAS_SK_FONT_EDGING = (#const ALIAS_SK_FONT_EDGING)
--- | C enum @sk_font_edging_t@ value (2/3): @ANTIALIAS_SK_FONT_EDGING@
+
+-- | C enum @"sk_font_edging_t"@ value (2/3): @"ANTIALIAS_SK_FONT_EDGING"@
 pattern ANTIALIAS_SK_FONT_EDGING :: Sk_font_edging
 pattern ANTIALIAS_SK_FONT_EDGING = (#const ANTIALIAS_SK_FONT_EDGING)
--- | C enum @sk_font_edging_t@ value (3/3): @SUBPIXEL_ANTIALIAS_SK_FONT_EDGING@
+
+-- | C enum @"sk_font_edging_t"@ value (3/3): @"SUBPIXEL_ANTIALIAS_SK_FONT_EDGING"@
 pattern SUBPIXEL_ANTIALIAS_SK_FONT_EDGING :: Sk_font_edging
 pattern SUBPIXEL_ANTIALIAS_SK_FONT_EDGING = (#const SUBPIXEL_ANTIALIAS_SK_FONT_EDGING)
--- | Opaque C struct @sk_pixelref_factory_t@
+
+{- | Opaque C struct: @"sk_pixelref_factory_t"@
+-}
 data Sk_pixelref_factory = Sk_pixelref_factory
--- | C enum: @gr_surfaceorigin_t@
+
+{- | C enum: @"gr_surfaceorigin_t"@
+
+@
+typedef enum 
+{
+  TOP_LEFT_GR_SURFACE_ORIGIN,
+  BOTTOM_LEFT_GR_SURFACE_ORIGIN
+} gr_surfaceorigin_t
+@
+
+-}
 newtype Gr_surfaceorigin = Gr_surfaceorigin (#type gr_surfaceorigin_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @gr_surfaceorigin_t@ value (1/2): @TOP_LEFT_GR_SURFACE_ORIGIN@
+
+-- | C enum @"gr_surfaceorigin_t"@ value (1/2): @"TOP_LEFT_GR_SURFACE_ORIGIN"@
 pattern TOP_LEFT_GR_SURFACE_ORIGIN :: Gr_surfaceorigin
 pattern TOP_LEFT_GR_SURFACE_ORIGIN = (#const TOP_LEFT_GR_SURFACE_ORIGIN)
--- | C enum @gr_surfaceorigin_t@ value (2/2): @BOTTOM_LEFT_GR_SURFACE_ORIGIN@
+
+-- | C enum @"gr_surfaceorigin_t"@ value (2/2): @"BOTTOM_LEFT_GR_SURFACE_ORIGIN"@
 pattern BOTTOM_LEFT_GR_SURFACE_ORIGIN :: Gr_surfaceorigin
 pattern BOTTOM_LEFT_GR_SURFACE_ORIGIN = (#const BOTTOM_LEFT_GR_SURFACE_ORIGIN)
--- | C struct name: @gr_context_options_t@
+
+{- | C struct: @"gr_context_options_t"@
+
+@
+typedef struct 
+{
+  _Bool fAvoidStencilBuffers;
+  int fRuntimeProgramCacheSize;
+  size_t fGlyphCacheTextureMaximumBytes;
+  _Bool fAllowPathMaskCaching;
+  _Bool fDoManualMipmapping;
+  int fBufferMapThreshold;
+} gr_context_options_t
+@
+-}
 data Gr_context_options = Gr_context_options
-  { fAvoidStencilBuffers :: CBool -- ^ C field: @_Bool fAvoidStencilBuffers@
-  , fRuntimeProgramCacheSize :: CInt -- ^ C field: @int fRuntimeProgramCacheSize@
-  , fGlyphCacheTextureMaximumBytes :: CSize -- ^ C field: @size_t fGlyphCacheTextureMaximumBytes@
-  , fAllowPathMaskCaching :: CBool -- ^ C field: @_Bool fAllowPathMaskCaching@
-  , fDoManualMipmapping :: CBool -- ^ C field: @_Bool fDoManualMipmapping@
-  , fBufferMapThreshold :: CInt -- ^ C field: @int fBufferMapThreshold@
+  { fAvoidStencilBuffers :: CBool -- ^ C field: @"_Bool fAvoidStencilBuffers"@
+  , fRuntimeProgramCacheSize :: CInt -- ^ C field: @"int fRuntimeProgramCacheSize"@
+  , fGlyphCacheTextureMaximumBytes :: CSize -- ^ C field: @"size_t fGlyphCacheTextureMaximumBytes"@
+  , fAllowPathMaskCaching :: CBool -- ^ C field: @"_Bool fAllowPathMaskCaching"@
+  , fDoManualMipmapping :: CBool -- ^ C field: @"_Bool fDoManualMipmapping"@
+  , fBufferMapThreshold :: CInt -- ^ C field: @"int fBufferMapThreshold"@
   }
 instance Foreign.Storable.Offset.Offset "fAvoidStencilBuffers" Gr_context_options where
   rawOffset = (#offset gr_context_options_t, fAvoidStencilBuffers)
@@ -1290,49 +2247,102 @@ instance Foreign.Storable.Storable Gr_context_options where
     (#poke gr_context_options_t, fAllowPathMaskCaching) p' fAllowPathMaskCaching
     (#poke gr_context_options_t, fDoManualMipmapping) p' fDoManualMipmapping
     (#poke gr_context_options_t, fBufferMapThreshold) p' fBufferMapThreshold
--- | C type alias: @typedef intptr_t gr_backendobject_t@
+
+{- | C type alias: @gr_backendobject_t@
+
+@
+typedef intptr_t gr_backendobject_t
+@
+-}
 type Gr_backendobject = CIntPtr
--- | Opaque C struct @gr_backendrendertarget_t@
+
+{- | Opaque C struct: @"gr_backendrendertarget_t"@
+-}
 data Gr_backendrendertarget = Gr_backendrendertarget
--- | Opaque C struct @gr_backendtexture_t@
+
+{- | Opaque C struct: @"gr_backendtexture_t"@
+-}
 data Gr_backendtexture = Gr_backendtexture
--- | Opaque C struct @gr_direct_context_t@
+
+{- | Opaque C struct: @"gr_direct_context_t"@
+-}
 data Gr_direct_context = Gr_direct_context
--- | Opaque C struct @gr_recording_context_t@
+
+{- | Opaque C struct: @"gr_recording_context_t"@
+-}
 data Gr_recording_context = Gr_recording_context
--- | C enum: @gr_backend_t@
+
+{- | C enum: @"gr_backend_t"@
+
+@
+typedef enum 
+{
+  OPENGL_GR_BACKEND = 0,
+  VULKAN_GR_BACKEND = 1,
+  METAL_GR_BACKEND = 2,
+  DIRECT3D_GR_BACKEND = 3,
+  UNSUPPORTED_GR_BACKEND = 5
+} gr_backend_t
+@
+
+-}
 newtype Gr_backend = Gr_backend (#type gr_backend_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @gr_backend_t@ value (1/5): @OPENGL_GR_BACKEND@
+
+-- | C enum @"gr_backend_t"@ value (1/5): @"OPENGL_GR_BACKEND"@
 pattern OPENGL_GR_BACKEND :: Gr_backend
 pattern OPENGL_GR_BACKEND = (#const OPENGL_GR_BACKEND)
--- | C enum @gr_backend_t@ value (2/5): @VULKAN_GR_BACKEND@
+
+-- | C enum @"gr_backend_t"@ value (2/5): @"VULKAN_GR_BACKEND"@
 pattern VULKAN_GR_BACKEND :: Gr_backend
 pattern VULKAN_GR_BACKEND = (#const VULKAN_GR_BACKEND)
--- | C enum @gr_backend_t@ value (3/5): @METAL_GR_BACKEND@
+
+-- | C enum @"gr_backend_t"@ value (3/5): @"METAL_GR_BACKEND"@
 pattern METAL_GR_BACKEND :: Gr_backend
 pattern METAL_GR_BACKEND = (#const METAL_GR_BACKEND)
--- | C enum @gr_backend_t@ value (4/5): @DIRECT3D_GR_BACKEND@
+
+-- | C enum @"gr_backend_t"@ value (4/5): @"DIRECT3D_GR_BACKEND"@
 pattern DIRECT3D_GR_BACKEND :: Gr_backend
 pattern DIRECT3D_GR_BACKEND = (#const DIRECT3D_GR_BACKEND)
--- | C enum @gr_backend_t@ value (5/5): @UNSUPPORTED_GR_BACKEND@
+
+-- | C enum @"gr_backend_t"@ value (5/5): @"UNSUPPORTED_GR_BACKEND"@
 pattern UNSUPPORTED_GR_BACKEND :: Gr_backend
 pattern UNSUPPORTED_GR_BACKEND = (#const UNSUPPORTED_GR_BACKEND)
--- | C type alias: @typedef intptr_t gr_backendcontext_t@
+
+{- | C type alias: @gr_backendcontext_t@
+
+@
+typedef intptr_t gr_backendcontext_t
+@
+-}
 type Gr_backendcontext = CIntPtr
--- | Opaque C struct @gr_glinterface_t@
+
+{- | Opaque C struct: @"gr_glinterface_t"@
+-}
 data Gr_glinterface = Gr_glinterface
 -- | C function pointer type: @typedef void (*gr_gl_func_ptr)(void)@
 type Gr_gl_func_ptr = IO (())
 -- | C function pointer type: @typedef gr_gl_func_ptr (*gr_gl_get_proc)(void *ctx, const char *name)@
 type Gr_gl_get_proc = Ptr (()) -> Ptr (CChar) -> IO (FunPtr Gr_gl_func_ptr)
--- | C struct name: @gr_gl_textureinfo_t@
+
+{- | C struct: @"gr_gl_textureinfo_t"@
+
+@
+typedef struct 
+{
+  unsigned int fTarget;
+  unsigned int fID;
+  unsigned int fFormat;
+  _Bool fProtected;
+} gr_gl_textureinfo_t
+@
+-}
 data Gr_gl_textureinfo = Gr_gl_textureinfo
-  { fTarget :: CUInt -- ^ C field: @unsigned int fTarget@
-  , fID :: CUInt -- ^ C field: @unsigned int fID@
-  , fFormat :: CUInt -- ^ C field: @unsigned int fFormat@
-  , fProtected :: CBool -- ^ C field: @_Bool fProtected@
+  { fTarget :: CUInt -- ^ C field: @"unsigned int fTarget"@
+  , fID :: CUInt -- ^ C field: @"unsigned int fID"@
+  , fFormat :: CUInt -- ^ C field: @"unsigned int fFormat"@
+  , fProtected :: CBool -- ^ C field: @"_Bool fProtected"@
   }
 instance Foreign.Storable.Offset.Offset "fTarget" Gr_gl_textureinfo where
   rawOffset = (#offset gr_gl_textureinfo_t, fTarget)
@@ -1356,11 +2366,22 @@ instance Foreign.Storable.Storable Gr_gl_textureinfo where
     (#poke gr_gl_textureinfo_t, fID) p' fID
     (#poke gr_gl_textureinfo_t, fFormat) p' fFormat
     (#poke gr_gl_textureinfo_t, fProtected) p' fProtected
--- | C struct name: @gr_gl_framebufferinfo_t@
+
+{- | C struct: @"gr_gl_framebufferinfo_t"@
+
+@
+typedef struct 
+{
+  unsigned int fFBOID;
+  unsigned int fFormat;
+  _Bool fProtected;
+} gr_gl_framebufferinfo_t
+@
+-}
 data Gr_gl_framebufferinfo = Gr_gl_framebufferinfo
-  { fFBOID :: CUInt -- ^ C field: @unsigned int fFBOID@
-  , fFormat :: CUInt -- ^ C field: @unsigned int fFormat@
-  , fProtected :: CBool -- ^ C field: @_Bool fProtected@
+  { fFBOID :: CUInt -- ^ C field: @"unsigned int fFBOID"@
+  , fFormat :: CUInt -- ^ C field: @"unsigned int fFormat"@
+  , fProtected :: CBool -- ^ C field: @"_Bool fProtected"@
   }
 instance Foreign.Storable.Offset.Offset "fFBOID" Gr_gl_framebufferinfo where
   rawOffset = (#offset gr_gl_framebufferinfo_t, fFBOID)
@@ -1380,48 +2401,92 @@ instance Foreign.Storable.Storable Gr_gl_framebufferinfo where
     (#poke gr_gl_framebufferinfo_t, fFBOID) p' fFBOID
     (#poke gr_gl_framebufferinfo_t, fFormat) p' fFormat
     (#poke gr_gl_framebufferinfo_t, fProtected) p' fProtected
--- | Opaque C struct @vk_instance_t@
+
+{- | Opaque C struct: @"vk_instance_t"@
+-}
 data Vk_instance = Vk_instance
--- | Opaque C struct @gr_vkinterface_t@
+
+{- | Opaque C struct: @"gr_vkinterface_t"@
+-}
 data Gr_vkinterface = Gr_vkinterface
--- | Opaque C struct @vk_physical_device_t@
+
+{- | Opaque C struct: @"vk_physical_device_t"@
+-}
 data Vk_physical_device = Vk_physical_device
--- | Opaque C struct @vk_physical_device_features_t@
+
+{- | Opaque C struct: @"vk_physical_device_features_t"@
+-}
 data Vk_physical_device_features = Vk_physical_device_features
--- | Opaque C struct @vk_physical_device_features_2_t@
+
+{- | Opaque C struct: @"vk_physical_device_features_2_t"@
+-}
 data Vk_physical_device_features_2 = Vk_physical_device_features_2
--- | Opaque C struct @vk_device_t@
+
+{- | Opaque C struct: @"vk_device_t"@
+-}
 data Vk_device = Vk_device
--- | Opaque C struct @vk_queue_t@
+
+{- | Opaque C struct: @"vk_queue_t"@
+-}
 data Vk_queue = Vk_queue
--- | Opaque C struct @gr_vk_extensions_t@
+
+{- | Opaque C struct: @"gr_vk_extensions_t"@
+-}
 data Gr_vk_extensions = Gr_vk_extensions
--- | Opaque C struct @gr_vk_memory_allocator_t@
+
+{- | Opaque C struct: @"gr_vk_memory_allocator_t"@
+-}
 data Gr_vk_memory_allocator = Gr_vk_memory_allocator
 -- | C function pointer type: @typedef void (*gr_vk_func_ptr)(void)@
 type Gr_vk_func_ptr = IO (())
 -- | C function pointer type: @typedef gr_vk_func_ptr (*gr_vk_get_proc)(void *ctx, const char *name, vk_instance_t *instance, vk_device_t *device)@
 type Gr_vk_get_proc = Ptr (()) -> Ptr (CChar) -> Ptr (Vk_instance) -> Ptr (Vk_device) -> IO (FunPtr Gr_vk_func_ptr)
--- | C struct name: @gr_vk_backendcontext_t@
+
+{- | C struct: @"gr_vk_backendcontext_t"@
+
+@
+typedef struct 
+{
+  vk_instance_t *fInstance;
+  vk_physical_device_t *fPhysicalDevice;
+  vk_device_t *fDevice;
+  vk_queue_t *fQueue;
+  uint32_t fGraphicsQueueIndex;
+  uint32_t fMinAPIVersion;
+  uint32_t fInstanceVersion;
+  uint32_t fMaxAPIVersion;
+  uint32_t fExtensions;
+  const gr_vk_extensions_t *fVkExtensions;
+  uint32_t fFeatures;
+  const vk_physical_device_features_t *fDeviceFeatures;
+  const vk_physical_device_features_2_t *fDeviceFeatures2;
+  gr_vk_memory_allocator_t *fMemoryAllocator;
+  gr_vk_get_proc fGetProc;
+  void *fGetProcUserData;
+  _Bool fOwnsInstanceAndDevice;
+  _Bool fProtectedContext;
+} gr_vk_backendcontext_t
+@
+-}
 data Gr_vk_backendcontext = Gr_vk_backendcontext
-  { fInstance :: Ptr (Vk_instance) -- ^ C field: @vk_instance_t *fInstance@
-  , fPhysicalDevice :: Ptr (Vk_physical_device) -- ^ C field: @vk_physical_device_t *fPhysicalDevice@
-  , fDevice :: Ptr (Vk_device) -- ^ C field: @vk_device_t *fDevice@
-  , fQueue :: Ptr (Vk_queue) -- ^ C field: @vk_queue_t *fQueue@
-  , fGraphicsQueueIndex :: Word32 -- ^ C field: @uint32_t fGraphicsQueueIndex@
-  , fMinAPIVersion :: Word32 -- ^ C field: @uint32_t fMinAPIVersion@
-  , fInstanceVersion :: Word32 -- ^ C field: @uint32_t fInstanceVersion@
-  , fMaxAPIVersion :: Word32 -- ^ C field: @uint32_t fMaxAPIVersion@
-  , fExtensions :: Word32 -- ^ C field: @uint32_t fExtensions@
-  , fVkExtensions :: Ptr (Gr_vk_extensions) -- ^ C field: @const gr_vk_extensions_t *fVkExtensions@
-  , fFeatures :: Word32 -- ^ C field: @uint32_t fFeatures@
-  , fDeviceFeatures :: Ptr (Vk_physical_device_features) -- ^ C field: @const vk_physical_device_features_t *fDeviceFeatures@
-  , fDeviceFeatures2 :: Ptr (Vk_physical_device_features_2) -- ^ C field: @const vk_physical_device_features_2_t *fDeviceFeatures2@
-  , fMemoryAllocator :: Ptr (Gr_vk_memory_allocator) -- ^ C field: @gr_vk_memory_allocator_t *fMemoryAllocator@
-  , fGetProc :: FunPtr Gr_vk_get_proc -- ^ C field: @gr_vk_get_proc fGetProc@
-  , fGetProcUserData :: Ptr (()) -- ^ C field: @void *fGetProcUserData@
-  , fOwnsInstanceAndDevice :: CBool -- ^ C field: @_Bool fOwnsInstanceAndDevice@
-  , fProtectedContext :: CBool -- ^ C field: @_Bool fProtectedContext@
+  { fInstance :: Ptr (Vk_instance) -- ^ C field: @"vk_instance_t *fInstance"@
+  , fPhysicalDevice :: Ptr (Vk_physical_device) -- ^ C field: @"vk_physical_device_t *fPhysicalDevice"@
+  , fDevice :: Ptr (Vk_device) -- ^ C field: @"vk_device_t *fDevice"@
+  , fQueue :: Ptr (Vk_queue) -- ^ C field: @"vk_queue_t *fQueue"@
+  , fGraphicsQueueIndex :: Word32 -- ^ C field: @"uint32_t fGraphicsQueueIndex"@
+  , fMinAPIVersion :: Word32 -- ^ C field: @"uint32_t fMinAPIVersion"@
+  , fInstanceVersion :: Word32 -- ^ C field: @"uint32_t fInstanceVersion"@
+  , fMaxAPIVersion :: Word32 -- ^ C field: @"uint32_t fMaxAPIVersion"@
+  , fExtensions :: Word32 -- ^ C field: @"uint32_t fExtensions"@
+  , fVkExtensions :: Ptr (Gr_vk_extensions) -- ^ C field: @"const gr_vk_extensions_t *fVkExtensions"@
+  , fFeatures :: Word32 -- ^ C field: @"uint32_t fFeatures"@
+  , fDeviceFeatures :: Ptr (Vk_physical_device_features) -- ^ C field: @"const vk_physical_device_features_t *fDeviceFeatures"@
+  , fDeviceFeatures2 :: Ptr (Vk_physical_device_features_2) -- ^ C field: @"const vk_physical_device_features_2_t *fDeviceFeatures2"@
+  , fMemoryAllocator :: Ptr (Gr_vk_memory_allocator) -- ^ C field: @"gr_vk_memory_allocator_t *fMemoryAllocator"@
+  , fGetProc :: FunPtr Gr_vk_get_proc -- ^ C field: @"gr_vk_get_proc fGetProc"@
+  , fGetProcUserData :: Ptr (()) -- ^ C field: @"void *fGetProcUserData"@
+  , fOwnsInstanceAndDevice :: CBool -- ^ C field: @"_Bool fOwnsInstanceAndDevice"@
+  , fProtectedContext :: CBool -- ^ C field: @"_Bool fProtectedContext"@
   }
 instance Foreign.Storable.Offset.Offset "fInstance" Gr_vk_backendcontext where
   rawOffset = (#offset gr_vk_backendcontext_t, fInstance)
@@ -1501,16 +2566,36 @@ instance Foreign.Storable.Storable Gr_vk_backendcontext where
     (#poke gr_vk_backendcontext_t, fGetProcUserData) p' fGetProcUserData
     (#poke gr_vk_backendcontext_t, fOwnsInstanceAndDevice) p' fOwnsInstanceAndDevice
     (#poke gr_vk_backendcontext_t, fProtectedContext) p' fProtectedContext
--- | C type alias: @typedef intptr_t gr_vk_backendmemory_t@
+
+{- | C type alias: @gr_vk_backendmemory_t@
+
+@
+typedef intptr_t gr_vk_backendmemory_t
+@
+-}
 type Gr_vk_backendmemory = CIntPtr
--- | C struct name: @gr_vk_alloc_t@
+
+{- | C struct: @"gr_vk_alloc_t"@
+
+@
+typedef struct 
+{
+  uint64_t fMemory;
+  uint64_t fOffset;
+  uint64_t fSize;
+  uint32_t fFlags;
+  gr_vk_backendmemory_t fBackendMemory;
+  _Bool _private_fUsesSystemHeap;
+} gr_vk_alloc_t
+@
+-}
 data Gr_vk_alloc = Gr_vk_alloc
-  { fMemory :: Word64 -- ^ C field: @uint64_t fMemory@
-  , fOffset :: Word64 -- ^ C field: @uint64_t fOffset@
-  , fSize :: Word64 -- ^ C field: @uint64_t fSize@
-  , fFlags :: Word32 -- ^ C field: @uint32_t fFlags@
-  , fBackendMemory :: Gr_vk_backendmemory -- ^ C field: @gr_vk_backendmemory_t fBackendMemory@
-  , _private_fUsesSystemHeap :: CBool -- ^ C field: @_Bool _private_fUsesSystemHeap@
+  { fMemory :: Word64 -- ^ C field: @"uint64_t fMemory"@
+  , fOffset :: Word64 -- ^ C field: @"uint64_t fOffset"@
+  , fSize :: Word64 -- ^ C field: @"uint64_t fSize"@
+  , fFlags :: Word32 -- ^ C field: @"uint32_t fFlags"@
+  , fBackendMemory :: Gr_vk_backendmemory -- ^ C field: @"gr_vk_backendmemory_t fBackendMemory"@
+  , _private_fUsesSystemHeap :: CBool -- ^ C field: @"_Bool _private_fUsesSystemHeap"@
   }
 instance Foreign.Storable.Offset.Offset "fMemory" Gr_vk_alloc where
   rawOffset = (#offset gr_vk_alloc_t, fMemory)
@@ -1542,17 +2627,34 @@ instance Foreign.Storable.Storable Gr_vk_alloc where
     (#poke gr_vk_alloc_t, fFlags) p' fFlags
     (#poke gr_vk_alloc_t, fBackendMemory) p' fBackendMemory
     (#poke gr_vk_alloc_t, _private_fUsesSystemHeap) p' _private_fUsesSystemHeap
--- | C struct name: @gr_vk_ycbcrconversioninfo_t@
+
+{- | C struct: @"gr_vk_ycbcrconversioninfo_t"@
+
+@
+typedef struct 
+{
+  uint32_t fFormat;
+  uint64_t fExternalFormat;
+  uint32_t fYcbcrModel;
+  uint32_t fYcbcrRange;
+  uint32_t fXChromaOffset;
+  uint32_t fYChromaOffset;
+  uint32_t fChromaFilter;
+  uint32_t fForceExplicitReconstruction;
+  uint32_t fFormatFeatures;
+} gr_vk_ycbcrconversioninfo_t
+@
+-}
 data Gr_vk_ycbcrconversioninfo = Gr_vk_ycbcrconversioninfo
-  { fFormat :: Word32 -- ^ C field: @uint32_t fFormat@
-  , fExternalFormat :: Word64 -- ^ C field: @uint64_t fExternalFormat@
-  , fYcbcrModel :: Word32 -- ^ C field: @uint32_t fYcbcrModel@
-  , fYcbcrRange :: Word32 -- ^ C field: @uint32_t fYcbcrRange@
-  , fXChromaOffset :: Word32 -- ^ C field: @uint32_t fXChromaOffset@
-  , fYChromaOffset :: Word32 -- ^ C field: @uint32_t fYChromaOffset@
-  , fChromaFilter :: Word32 -- ^ C field: @uint32_t fChromaFilter@
-  , fForceExplicitReconstruction :: Word32 -- ^ C field: @uint32_t fForceExplicitReconstruction@
-  , fFormatFeatures :: Word32 -- ^ C field: @uint32_t fFormatFeatures@
+  { fFormat :: Word32 -- ^ C field: @"uint32_t fFormat"@
+  , fExternalFormat :: Word64 -- ^ C field: @"uint64_t fExternalFormat"@
+  , fYcbcrModel :: Word32 -- ^ C field: @"uint32_t fYcbcrModel"@
+  , fYcbcrRange :: Word32 -- ^ C field: @"uint32_t fYcbcrRange"@
+  , fXChromaOffset :: Word32 -- ^ C field: @"uint32_t fXChromaOffset"@
+  , fYChromaOffset :: Word32 -- ^ C field: @"uint32_t fYChromaOffset"@
+  , fChromaFilter :: Word32 -- ^ C field: @"uint32_t fChromaFilter"@
+  , fForceExplicitReconstruction :: Word32 -- ^ C field: @"uint32_t fForceExplicitReconstruction"@
+  , fFormatFeatures :: Word32 -- ^ C field: @"uint32_t fFormatFeatures"@
   }
 instance Foreign.Storable.Offset.Offset "fFormat" Gr_vk_ycbcrconversioninfo where
   rawOffset = (#offset gr_vk_ycbcrconversioninfo_t, fFormat)
@@ -1596,20 +2698,40 @@ instance Foreign.Storable.Storable Gr_vk_ycbcrconversioninfo where
     (#poke gr_vk_ycbcrconversioninfo_t, fChromaFilter) p' fChromaFilter
     (#poke gr_vk_ycbcrconversioninfo_t, fForceExplicitReconstruction) p' fForceExplicitReconstruction
     (#poke gr_vk_ycbcrconversioninfo_t, fFormatFeatures) p' fFormatFeatures
--- | C struct name: @gr_vk_imageinfo_t@
+
+{- | C struct: @"gr_vk_imageinfo_t"@
+
+@
+typedef struct 
+{
+  uint64_t fImage;
+  gr_vk_alloc_t fAlloc;
+  uint32_t fImageTiling;
+  uint32_t fImageLayout;
+  uint32_t fFormat;
+  uint32_t fImageUsageFlags;
+  uint32_t fSampleCount;
+  uint32_t fLevelCount;
+  uint32_t fCurrentQueueFamily;
+  _Bool fProtected;
+  gr_vk_ycbcrconversioninfo_t fYcbcrConversionInfo;
+  uint32_t fSharingMode;
+} gr_vk_imageinfo_t
+@
+-}
 data Gr_vk_imageinfo = Gr_vk_imageinfo
-  { fImage :: Word64 -- ^ C field: @uint64_t fImage@
-  , fAlloc :: Gr_vk_alloc -- ^ C field: @gr_vk_alloc_t fAlloc@
-  , fImageTiling :: Word32 -- ^ C field: @uint32_t fImageTiling@
-  , fImageLayout :: Word32 -- ^ C field: @uint32_t fImageLayout@
-  , fFormat :: Word32 -- ^ C field: @uint32_t fFormat@
-  , fImageUsageFlags :: Word32 -- ^ C field: @uint32_t fImageUsageFlags@
-  , fSampleCount :: Word32 -- ^ C field: @uint32_t fSampleCount@
-  , fLevelCount :: Word32 -- ^ C field: @uint32_t fLevelCount@
-  , fCurrentQueueFamily :: Word32 -- ^ C field: @uint32_t fCurrentQueueFamily@
-  , fProtected :: CBool -- ^ C field: @_Bool fProtected@
-  , fYcbcrConversionInfo :: Gr_vk_ycbcrconversioninfo -- ^ C field: @gr_vk_ycbcrconversioninfo_t fYcbcrConversionInfo@
-  , fSharingMode :: Word32 -- ^ C field: @uint32_t fSharingMode@
+  { fImage :: Word64 -- ^ C field: @"uint64_t fImage"@
+  , fAlloc :: Gr_vk_alloc -- ^ C field: @"gr_vk_alloc_t fAlloc"@
+  , fImageTiling :: Word32 -- ^ C field: @"uint32_t fImageTiling"@
+  , fImageLayout :: Word32 -- ^ C field: @"uint32_t fImageLayout"@
+  , fFormat :: Word32 -- ^ C field: @"uint32_t fFormat"@
+  , fImageUsageFlags :: Word32 -- ^ C field: @"uint32_t fImageUsageFlags"@
+  , fSampleCount :: Word32 -- ^ C field: @"uint32_t fSampleCount"@
+  , fLevelCount :: Word32 -- ^ C field: @"uint32_t fLevelCount"@
+  , fCurrentQueueFamily :: Word32 -- ^ C field: @"uint32_t fCurrentQueueFamily"@
+  , fProtected :: CBool -- ^ C field: @"_Bool fProtected"@
+  , fYcbcrConversionInfo :: Gr_vk_ycbcrconversioninfo -- ^ C field: @"gr_vk_ycbcrconversioninfo_t fYcbcrConversionInfo"@
+  , fSharingMode :: Word32 -- ^ C field: @"uint32_t fSharingMode"@
   }
 instance Foreign.Storable.Offset.Offset "fImage" Gr_vk_imageinfo where
   rawOffset = (#offset gr_vk_imageinfo_t, fImage)
@@ -1665,9 +2787,18 @@ instance Foreign.Storable.Storable Gr_vk_imageinfo where
     (#poke gr_vk_imageinfo_t, fProtected) p' fProtected
     (#poke gr_vk_imageinfo_t, fYcbcrConversionInfo) p' fYcbcrConversionInfo
     (#poke gr_vk_imageinfo_t, fSharingMode) p' fSharingMode
--- | C struct name: @gr_mtl_textureinfo_t@
+
+{- | C struct: @"gr_mtl_textureinfo_t"@
+
+@
+typedef struct 
+{
+  const void *fTexture;
+} gr_mtl_textureinfo_t
+@
+-}
 data Gr_mtl_textureinfo = Gr_mtl_textureinfo
-  { fTexture :: Ptr (()) -- ^ C field: @const void *fTexture@
+  { fTexture :: Ptr (()) -- ^ C field: @"const void *fTexture"@
   }
 instance Foreign.Storable.Offset.Offset "fTexture" Gr_mtl_textureinfo where
   rawOffset = (#offset gr_mtl_textureinfo_t, fTexture)
@@ -1679,49 +2810,100 @@ instance Foreign.Storable.Storable Gr_mtl_textureinfo where
     pure Gr_mtl_textureinfo{..}
   poke p' Gr_mtl_textureinfo{..} = do
     (#poke gr_mtl_textureinfo_t, fTexture) p' fTexture
--- | C enum: @sk_pathop_t@
+
+{- | C enum: @"sk_pathop_t"@
+
+@
+typedef enum 
+{
+  DIFFERENCE_SK_PATHOP,
+  INTERSECT_SK_PATHOP,
+  UNION_SK_PATHOP,
+  XOR_SK_PATHOP,
+  REVERSE_DIFFERENCE_SK_PATHOP
+} sk_pathop_t
+@
+
+-}
 newtype Sk_pathop = Sk_pathop (#type sk_pathop_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_pathop_t@ value (1/5): @DIFFERENCE_SK_PATHOP@
+
+-- | C enum @"sk_pathop_t"@ value (1/5): @"DIFFERENCE_SK_PATHOP"@
 pattern DIFFERENCE_SK_PATHOP :: Sk_pathop
 pattern DIFFERENCE_SK_PATHOP = (#const DIFFERENCE_SK_PATHOP)
--- | C enum @sk_pathop_t@ value (2/5): @INTERSECT_SK_PATHOP@
+
+-- | C enum @"sk_pathop_t"@ value (2/5): @"INTERSECT_SK_PATHOP"@
 pattern INTERSECT_SK_PATHOP :: Sk_pathop
 pattern INTERSECT_SK_PATHOP = (#const INTERSECT_SK_PATHOP)
--- | C enum @sk_pathop_t@ value (3/5): @UNION_SK_PATHOP@
+
+-- | C enum @"sk_pathop_t"@ value (3/5): @"UNION_SK_PATHOP"@
 pattern UNION_SK_PATHOP :: Sk_pathop
 pattern UNION_SK_PATHOP = (#const UNION_SK_PATHOP)
--- | C enum @sk_pathop_t@ value (4/5): @XOR_SK_PATHOP@
+
+-- | C enum @"sk_pathop_t"@ value (4/5): @"XOR_SK_PATHOP"@
 pattern XOR_SK_PATHOP :: Sk_pathop
 pattern XOR_SK_PATHOP = (#const XOR_SK_PATHOP)
--- | C enum @sk_pathop_t@ value (5/5): @REVERSE_DIFFERENCE_SK_PATHOP@
+
+-- | C enum @"sk_pathop_t"@ value (5/5): @"REVERSE_DIFFERENCE_SK_PATHOP"@
 pattern REVERSE_DIFFERENCE_SK_PATHOP :: Sk_pathop
 pattern REVERSE_DIFFERENCE_SK_PATHOP = (#const REVERSE_DIFFERENCE_SK_PATHOP)
--- | Opaque C struct @sk_opbuilder_t@
+
+{- | Opaque C struct: @"sk_opbuilder_t"@
+-}
 data Sk_opbuilder = Sk_opbuilder
--- | C enum: @sk_lattice_recttype_t@
+
+{- | C enum: @"sk_lattice_recttype_t"@
+
+@
+typedef enum 
+{
+  DEFAULT_SK_LATTICE_RECT_TYPE,
+  TRANSPARENT_SK_LATTICE_RECT_TYPE,
+  FIXED_COLOR_SK_LATTICE_RECT_TYPE
+} sk_lattice_recttype_t
+@
+
+-}
 newtype Sk_lattice_recttype = Sk_lattice_recttype (#type sk_lattice_recttype_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_lattice_recttype_t@ value (1/3): @DEFAULT_SK_LATTICE_RECT_TYPE@
+
+-- | C enum @"sk_lattice_recttype_t"@ value (1/3): @"DEFAULT_SK_LATTICE_RECT_TYPE"@
 pattern DEFAULT_SK_LATTICE_RECT_TYPE :: Sk_lattice_recttype
 pattern DEFAULT_SK_LATTICE_RECT_TYPE = (#const DEFAULT_SK_LATTICE_RECT_TYPE)
--- | C enum @sk_lattice_recttype_t@ value (2/3): @TRANSPARENT_SK_LATTICE_RECT_TYPE@
+
+-- | C enum @"sk_lattice_recttype_t"@ value (2/3): @"TRANSPARENT_SK_LATTICE_RECT_TYPE"@
 pattern TRANSPARENT_SK_LATTICE_RECT_TYPE :: Sk_lattice_recttype
 pattern TRANSPARENT_SK_LATTICE_RECT_TYPE = (#const TRANSPARENT_SK_LATTICE_RECT_TYPE)
--- | C enum @sk_lattice_recttype_t@ value (3/3): @FIXED_COLOR_SK_LATTICE_RECT_TYPE@
+
+-- | C enum @"sk_lattice_recttype_t"@ value (3/3): @"FIXED_COLOR_SK_LATTICE_RECT_TYPE"@
 pattern FIXED_COLOR_SK_LATTICE_RECT_TYPE :: Sk_lattice_recttype
 pattern FIXED_COLOR_SK_LATTICE_RECT_TYPE = (#const FIXED_COLOR_SK_LATTICE_RECT_TYPE)
--- | C struct name: @sk_lattice_t@
+
+{- | C struct: @"sk_lattice_t"@
+
+@
+typedef struct 
+{
+  const int *fXDivs;
+  const int *fYDivs;
+  const sk_lattice_recttype_t *fRectTypes;
+  int fXCount;
+  int fYCount;
+  const sk_irect_t *fBounds;
+  const sk_color_t *fColors;
+} sk_lattice_t
+@
+-}
 data Sk_lattice = Sk_lattice
-  { fXDivs :: Ptr (CInt) -- ^ C field: @const int *fXDivs@
-  , fYDivs :: Ptr (CInt) -- ^ C field: @const int *fYDivs@
-  , fRectTypes :: Ptr (Sk_lattice_recttype) -- ^ C field: @const sk_lattice_recttype_t *fRectTypes@
-  , fXCount :: CInt -- ^ C field: @int fXCount@
-  , fYCount :: CInt -- ^ C field: @int fYCount@
-  , fBounds :: Ptr (Sk_irect) -- ^ C field: @const sk_irect_t *fBounds@
-  , fColors :: Ptr (Sk_color) -- ^ C field: @const sk_color_t *fColors@
+  { fXDivs :: Ptr (CInt) -- ^ C field: @"const int *fXDivs"@
+  , fYDivs :: Ptr (CInt) -- ^ C field: @"const int *fYDivs"@
+  , fRectTypes :: Ptr (Sk_lattice_recttype) -- ^ C field: @"const sk_lattice_recttype_t *fRectTypes"@
+  , fXCount :: CInt -- ^ C field: @"int fXCount"@
+  , fYCount :: CInt -- ^ C field: @"int fYCount"@
+  , fBounds :: Ptr (Sk_irect) -- ^ C field: @"const sk_irect_t *fBounds"@
+  , fColors :: Ptr (Sk_color) -- ^ C field: @"const sk_color_t *fColors"@
   }
 instance Foreign.Storable.Offset.Offset "fXDivs" Sk_lattice where
   rawOffset = (#offset sk_lattice_t, fXDivs)
@@ -1757,19 +2939,36 @@ instance Foreign.Storable.Storable Sk_lattice where
     (#poke sk_lattice_t, fYCount) p' fYCount
     (#poke sk_lattice_t, fBounds) p' fBounds
     (#poke sk_lattice_t, fColors) p' fColors
--- | Opaque C struct @sk_pathmeasure_t@
+
+{- | Opaque C struct: @"sk_pathmeasure_t"@
+-}
 data Sk_pathmeasure = Sk_pathmeasure
--- | C enum: @sk_pathmeasure_matrixflags_t@
+
+{- | C enum: @"sk_pathmeasure_matrixflags_t"@
+
+@
+typedef enum 
+{
+  GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS = 0x01,
+  GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS = 0x02,
+  GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS = GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS | GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS
+} sk_pathmeasure_matrixflags_t
+@
+
+-}
 newtype Sk_pathmeasure_matrixflags = Sk_pathmeasure_matrixflags (#type sk_pathmeasure_matrixflags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_pathmeasure_matrixflags_t@ value (1/3): @GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS@
+
+-- | C enum @"sk_pathmeasure_matrixflags_t"@ value (1/3): @"GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS"@
 pattern GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS :: Sk_pathmeasure_matrixflags
 pattern GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS = (#const GET_POSITION_SK_PATHMEASURE_MATRIXFLAGS)
--- | C enum @sk_pathmeasure_matrixflags_t@ value (2/3): @GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS@
+
+-- | C enum @"sk_pathmeasure_matrixflags_t"@ value (2/3): @"GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS"@
 pattern GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS :: Sk_pathmeasure_matrixflags
 pattern GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS = (#const GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS)
--- | C enum @sk_pathmeasure_matrixflags_t@ value (3/3): @GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS@
+
+-- | C enum @"sk_pathmeasure_matrixflags_t"@ value (3/3): @"GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS"@
 pattern GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS :: Sk_pathmeasure_matrixflags
 pattern GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS = (#const GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS)
 -- | C function pointer type: @typedef void (*sk_bitmap_release_proc)(void *addr, void *context)@
@@ -1784,36 +2983,78 @@ type Sk_image_texture_release_proc = Ptr (()) -> IO (())
 type Sk_surface_raster_release_proc = Ptr (()) -> Ptr (()) -> IO (())
 -- | C function pointer type: @typedef void (*sk_glyph_path_proc)(const sk_path_t *pathOrNull, const sk_matrix_t *matrix, void *context)@
 type Sk_glyph_path_proc = Ptr (Sk_path) -> Ptr (Sk_matrix) -> Ptr (()) -> IO (())
--- | C enum: @sk_image_caching_hint_t@
+
+{- | C enum: @"sk_image_caching_hint_t"@
+
+@
+typedef enum 
+{
+  ALLOW_SK_IMAGE_CACHING_HINT,
+  DISALLOW_SK_IMAGE_CACHING_HINT
+} sk_image_caching_hint_t
+@
+
+-}
 newtype Sk_image_caching_hint = Sk_image_caching_hint (#type sk_image_caching_hint_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_image_caching_hint_t@ value (1/2): @ALLOW_SK_IMAGE_CACHING_HINT@
+
+-- | C enum @"sk_image_caching_hint_t"@ value (1/2): @"ALLOW_SK_IMAGE_CACHING_HINT"@
 pattern ALLOW_SK_IMAGE_CACHING_HINT :: Sk_image_caching_hint
 pattern ALLOW_SK_IMAGE_CACHING_HINT = (#const ALLOW_SK_IMAGE_CACHING_HINT)
--- | C enum @sk_image_caching_hint_t@ value (2/2): @DISALLOW_SK_IMAGE_CACHING_HINT@
+
+-- | C enum @"sk_image_caching_hint_t"@ value (2/2): @"DISALLOW_SK_IMAGE_CACHING_HINT"@
 pattern DISALLOW_SK_IMAGE_CACHING_HINT :: Sk_image_caching_hint
 pattern DISALLOW_SK_IMAGE_CACHING_HINT = (#const DISALLOW_SK_IMAGE_CACHING_HINT)
--- | C enum: @sk_bitmap_allocflags_t@
+
+{- | C enum: @"sk_bitmap_allocflags_t"@
+
+@
+typedef enum 
+{
+  NONE_SK_BITMAP_ALLOC_FLAGS = 0,
+  ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS = 1 << 0
+} sk_bitmap_allocflags_t
+@
+
+-}
 newtype Sk_bitmap_allocflags = Sk_bitmap_allocflags (#type sk_bitmap_allocflags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_bitmap_allocflags_t@ value (1/2): @NONE_SK_BITMAP_ALLOC_FLAGS@
+
+-- | C enum @"sk_bitmap_allocflags_t"@ value (1/2): @"NONE_SK_BITMAP_ALLOC_FLAGS"@
 pattern NONE_SK_BITMAP_ALLOC_FLAGS :: Sk_bitmap_allocflags
 pattern NONE_SK_BITMAP_ALLOC_FLAGS = (#const NONE_SK_BITMAP_ALLOC_FLAGS)
--- | C enum @sk_bitmap_allocflags_t@ value (2/2): @ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS@
+
+-- | C enum @"sk_bitmap_allocflags_t"@ value (2/2): @"ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS"@
 pattern ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS :: Sk_bitmap_allocflags
 pattern ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS = (#const ZERO_PIXELS_SK_BITMAP_ALLOC_FLAGS)
--- | C struct name: @sk_document_pdf_datetime_t@
+
+{- | C struct: @"sk_document_pdf_datetime_t"@
+
+@
+typedef struct 
+{
+  int16_t fTimeZoneMinutes;
+  uint16_t fYear;
+  uint8_t fMonth;
+  uint8_t fDayOfWeek;
+  uint8_t fDay;
+  uint8_t fHour;
+  uint8_t fMinute;
+  uint8_t fSecond;
+} sk_document_pdf_datetime_t
+@
+-}
 data Sk_document_pdf_datetime = Sk_document_pdf_datetime
-  { fTimeZoneMinutes :: Int16 -- ^ C field: @int16_t fTimeZoneMinutes@
-  , fYear :: Word16 -- ^ C field: @uint16_t fYear@
-  , fMonth :: Word8 -- ^ C field: @uint8_t fMonth@
-  , fDayOfWeek :: Word8 -- ^ C field: @uint8_t fDayOfWeek@
-  , fDay :: Word8 -- ^ C field: @uint8_t fDay@
-  , fHour :: Word8 -- ^ C field: @uint8_t fHour@
-  , fMinute :: Word8 -- ^ C field: @uint8_t fMinute@
-  , fSecond :: Word8 -- ^ C field: @uint8_t fSecond@
+  { fTimeZoneMinutes :: Int16 -- ^ C field: @"int16_t fTimeZoneMinutes"@
+  , fYear :: Word16 -- ^ C field: @"uint16_t fYear"@
+  , fMonth :: Word8 -- ^ C field: @"uint8_t fMonth"@
+  , fDayOfWeek :: Word8 -- ^ C field: @"uint8_t fDayOfWeek"@
+  , fDay :: Word8 -- ^ C field: @"uint8_t fDay"@
+  , fHour :: Word8 -- ^ C field: @"uint8_t fHour"@
+  , fMinute :: Word8 -- ^ C field: @"uint8_t fMinute"@
+  , fSecond :: Word8 -- ^ C field: @"uint8_t fSecond"@
   }
 instance Foreign.Storable.Offset.Offset "fTimeZoneMinutes" Sk_document_pdf_datetime where
   rawOffset = (#offset sk_document_pdf_datetime_t, fTimeZoneMinutes)
@@ -1853,19 +3094,38 @@ instance Foreign.Storable.Storable Sk_document_pdf_datetime where
     (#poke sk_document_pdf_datetime_t, fHour) p' fHour
     (#poke sk_document_pdf_datetime_t, fMinute) p' fMinute
     (#poke sk_document_pdf_datetime_t, fSecond) p' fSecond
--- | C struct name: @sk_document_pdf_metadata_t@
+
+{- | C struct: @"sk_document_pdf_metadata_t"@
+
+@
+typedef struct 
+{
+  sk_string_t *fTitle;
+  sk_string_t *fAuthor;
+  sk_string_t *fSubject;
+  sk_string_t *fKeywords;
+  sk_string_t *fCreator;
+  sk_string_t *fProducer;
+  sk_document_pdf_datetime_t *fCreation;
+  sk_document_pdf_datetime_t *fModified;
+  float fRasterDPI;
+  _Bool fPDFA;
+  int fEncodingQuality;
+} sk_document_pdf_metadata_t
+@
+-}
 data Sk_document_pdf_metadata = Sk_document_pdf_metadata
-  { fTitle :: Ptr (Sk_string) -- ^ C field: @sk_string_t *fTitle@
-  , fAuthor :: Ptr (Sk_string) -- ^ C field: @sk_string_t *fAuthor@
-  , fSubject :: Ptr (Sk_string) -- ^ C field: @sk_string_t *fSubject@
-  , fKeywords :: Ptr (Sk_string) -- ^ C field: @sk_string_t *fKeywords@
-  , fCreator :: Ptr (Sk_string) -- ^ C field: @sk_string_t *fCreator@
-  , fProducer :: Ptr (Sk_string) -- ^ C field: @sk_string_t *fProducer@
-  , fCreation :: Ptr (Sk_document_pdf_datetime) -- ^ C field: @sk_document_pdf_datetime_t *fCreation@
-  , fModified :: Ptr (Sk_document_pdf_datetime) -- ^ C field: @sk_document_pdf_datetime_t *fModified@
-  , fRasterDPI :: CFloat -- ^ C field: @float fRasterDPI@
-  , fPDFA :: CBool -- ^ C field: @_Bool fPDFA@
-  , fEncodingQuality :: CInt -- ^ C field: @int fEncodingQuality@
+  { fTitle :: Ptr (Sk_string) -- ^ C field: @"sk_string_t *fTitle"@
+  , fAuthor :: Ptr (Sk_string) -- ^ C field: @"sk_string_t *fAuthor"@
+  , fSubject :: Ptr (Sk_string) -- ^ C field: @"sk_string_t *fSubject"@
+  , fKeywords :: Ptr (Sk_string) -- ^ C field: @"sk_string_t *fKeywords"@
+  , fCreator :: Ptr (Sk_string) -- ^ C field: @"sk_string_t *fCreator"@
+  , fProducer :: Ptr (Sk_string) -- ^ C field: @"sk_string_t *fProducer"@
+  , fCreation :: Ptr (Sk_document_pdf_datetime) -- ^ C field: @"sk_document_pdf_datetime_t *fCreation"@
+  , fModified :: Ptr (Sk_document_pdf_datetime) -- ^ C field: @"sk_document_pdf_datetime_t *fModified"@
+  , fRasterDPI :: CFloat -- ^ C field: @"float fRasterDPI"@
+  , fPDFA :: CBool -- ^ C field: @"_Bool fPDFA"@
+  , fEncodingQuality :: CInt -- ^ C field: @"int fEncodingQuality"@
   }
 instance Foreign.Storable.Offset.Offset "fTitle" Sk_document_pdf_metadata where
   rawOffset = (#offset sk_document_pdf_metadata_t, fTitle)
@@ -1917,13 +3177,26 @@ instance Foreign.Storable.Storable Sk_document_pdf_metadata where
     (#poke sk_document_pdf_metadata_t, fRasterDPI) p' fRasterDPI
     (#poke sk_document_pdf_metadata_t, fPDFA) p' fPDFA
     (#poke sk_document_pdf_metadata_t, fEncodingQuality) p' fEncodingQuality
--- | C struct name: @sk_imageinfo_t@
+
+{- | C struct: @"sk_imageinfo_t"@
+
+@
+typedef struct 
+{
+  sk_colorspace_t *colorspace;
+  int32_t width;
+  int32_t height;
+  sk_colortype_t colorType;
+  sk_alphatype_t alphaType;
+} sk_imageinfo_t
+@
+-}
 data Sk_imageinfo = Sk_imageinfo
-  { colorspace :: Ptr (Sk_colorspace) -- ^ C field: @sk_colorspace_t *colorspace@
-  , width :: Int32 -- ^ C field: @int32_t width@
-  , height :: Int32 -- ^ C field: @int32_t height@
-  , colorType :: Sk_colortype -- ^ C field: @sk_colortype_t colorType@
-  , alphaType :: Sk_alphatype -- ^ C field: @sk_alphatype_t alphaType@
+  { colorspace :: Ptr (Sk_colorspace) -- ^ C field: @"sk_colorspace_t *colorspace"@
+  , width :: Int32 -- ^ C field: @"int32_t width"@
+  , height :: Int32 -- ^ C field: @"int32_t height"@
+  , colorType :: Sk_colortype -- ^ C field: @"sk_colortype_t colorType"@
+  , alphaType :: Sk_alphatype -- ^ C field: @"sk_alphatype_t alphaType"@
   }
 instance Foreign.Storable.Offset.Offset "colorspace" Sk_imageinfo where
   rawOffset = (#offset sk_imageinfo_t, colorspace)
@@ -1951,39 +3224,83 @@ instance Foreign.Storable.Storable Sk_imageinfo where
     (#poke sk_imageinfo_t, height) p' height
     (#poke sk_imageinfo_t, colorType) p' colorType
     (#poke sk_imageinfo_t, alphaType) p' alphaType
--- | C enum: @sk_codecanimation_disposalmethod_t@
+
+{- | C enum: @"sk_codecanimation_disposalmethod_t"@
+
+@
+typedef enum 
+{
+  KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD = 1,
+  RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD = 2,
+  RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD = 3
+} sk_codecanimation_disposalmethod_t
+@
+
+-}
 newtype Sk_codecanimation_disposalmethod = Sk_codecanimation_disposalmethod (#type sk_codecanimation_disposalmethod_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_codecanimation_disposalmethod_t@ value (1/3): @KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD@
+
+-- | C enum @"sk_codecanimation_disposalmethod_t"@ value (1/3): @"KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD"@
 pattern KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD :: Sk_codecanimation_disposalmethod
 pattern KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD = (#const KEEP_SK_CODEC_ANIMATION_DISPOSAL_METHOD)
--- | C enum @sk_codecanimation_disposalmethod_t@ value (2/3): @RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD@
+
+-- | C enum @"sk_codecanimation_disposalmethod_t"@ value (2/3): @"RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD"@
 pattern RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD :: Sk_codecanimation_disposalmethod
 pattern RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD = (#const RESTORE_BG_COLOR_SK_CODEC_ANIMATION_DISPOSAL_METHOD)
--- | C enum @sk_codecanimation_disposalmethod_t@ value (3/3): @RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD@
+
+-- | C enum @"sk_codecanimation_disposalmethod_t"@ value (3/3): @"RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD"@
 pattern RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD :: Sk_codecanimation_disposalmethod
 pattern RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD = (#const RESTORE_PREVIOUS_SK_CODEC_ANIMATION_DISPOSAL_METHOD)
--- | C enum: @sk_codecanimation_blend_t@
+
+{- | C enum: @"sk_codecanimation_blend_t"@
+
+@
+typedef enum 
+{
+  SRC_OVER_SK_CODEC_ANIMATION_BLEND = 0,
+  SRC_SK_CODEC_ANIMATION_BLEND = 1
+} sk_codecanimation_blend_t
+@
+
+-}
 newtype Sk_codecanimation_blend = Sk_codecanimation_blend (#type sk_codecanimation_blend_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_codecanimation_blend_t@ value (1/2): @SRC_OVER_SK_CODEC_ANIMATION_BLEND@
+
+-- | C enum @"sk_codecanimation_blend_t"@ value (1/2): @"SRC_OVER_SK_CODEC_ANIMATION_BLEND"@
 pattern SRC_OVER_SK_CODEC_ANIMATION_BLEND :: Sk_codecanimation_blend
 pattern SRC_OVER_SK_CODEC_ANIMATION_BLEND = (#const SRC_OVER_SK_CODEC_ANIMATION_BLEND)
--- | C enum @sk_codecanimation_blend_t@ value (2/2): @SRC_SK_CODEC_ANIMATION_BLEND@
+
+-- | C enum @"sk_codecanimation_blend_t"@ value (2/2): @"SRC_SK_CODEC_ANIMATION_BLEND"@
 pattern SRC_SK_CODEC_ANIMATION_BLEND :: Sk_codecanimation_blend
 pattern SRC_SK_CODEC_ANIMATION_BLEND = (#const SRC_SK_CODEC_ANIMATION_BLEND)
--- | C struct name: @sk_codec_frameinfo_t@
+
+{- | C struct: @"sk_codec_frameinfo_t"@
+
+@
+typedef struct 
+{
+  int fRequiredFrame;
+  int fDuration;
+  _Bool fFullyReceived;
+  sk_alphatype_t fAlphaType;
+  _Bool fHasAlphaWithinBounds;
+  sk_codecanimation_disposalmethod_t fDisposalMethod;
+  sk_codecanimation_blend_t fBlend;
+  sk_irect_t fFrameRect;
+} sk_codec_frameinfo_t
+@
+-}
 data Sk_codec_frameinfo = Sk_codec_frameinfo
-  { fRequiredFrame :: CInt -- ^ C field: @int fRequiredFrame@
-  , fDuration :: CInt -- ^ C field: @int fDuration@
-  , fFullyReceived :: CBool -- ^ C field: @_Bool fFullyReceived@
-  , fAlphaType :: Sk_alphatype -- ^ C field: @sk_alphatype_t fAlphaType@
-  , fHasAlphaWithinBounds :: CBool -- ^ C field: @_Bool fHasAlphaWithinBounds@
-  , fDisposalMethod :: Sk_codecanimation_disposalmethod -- ^ C field: @sk_codecanimation_disposalmethod_t fDisposalMethod@
-  , fBlend :: Sk_codecanimation_blend -- ^ C field: @sk_codecanimation_blend_t fBlend@
-  , fFrameRect :: Sk_irect -- ^ C field: @sk_irect_t fFrameRect@
+  { fRequiredFrame :: CInt -- ^ C field: @"int fRequiredFrame"@
+  , fDuration :: CInt -- ^ C field: @"int fDuration"@
+  , fFullyReceived :: CBool -- ^ C field: @"_Bool fFullyReceived"@
+  , fAlphaType :: Sk_alphatype -- ^ C field: @"sk_alphatype_t fAlphaType"@
+  , fHasAlphaWithinBounds :: CBool -- ^ C field: @"_Bool fHasAlphaWithinBounds"@
+  , fDisposalMethod :: Sk_codecanimation_disposalmethod -- ^ C field: @"sk_codecanimation_disposalmethod_t fDisposalMethod"@
+  , fBlend :: Sk_codecanimation_blend -- ^ C field: @"sk_codecanimation_blend_t fBlend"@
+  , fFrameRect :: Sk_irect -- ^ C field: @"sk_irect_t fFrameRect"@
   }
 instance Foreign.Storable.Offset.Offset "fRequiredFrame" Sk_codec_frameinfo where
   rawOffset = (#offset sk_codec_frameinfo_t, fRequiredFrame)
@@ -2023,32 +3340,66 @@ instance Foreign.Storable.Storable Sk_codec_frameinfo where
     (#poke sk_codec_frameinfo_t, fDisposalMethod) p' fDisposalMethod
     (#poke sk_codec_frameinfo_t, fBlend) p' fBlend
     (#poke sk_codec_frameinfo_t, fFrameRect) p' fFrameRect
--- | Opaque C struct @sk_svgcanvas_t@
+
+{- | Opaque C struct: @"sk_svgcanvas_t"@
+-}
 data Sk_svgcanvas = Sk_svgcanvas
--- | C enum: @sk_vertices_vertex_mode_t@
+
+{- | C enum: @"sk_vertices_vertex_mode_t"@
+
+@
+typedef enum 
+{
+  TRIANGLES_SK_VERTICES_VERTEX_MODE,
+  TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE,
+  TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE
+} sk_vertices_vertex_mode_t
+@
+
+-}
 newtype Sk_vertices_vertex_mode = Sk_vertices_vertex_mode (#type sk_vertices_vertex_mode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_vertices_vertex_mode_t@ value (1/3): @TRIANGLES_SK_VERTICES_VERTEX_MODE@
+
+-- | C enum @"sk_vertices_vertex_mode_t"@ value (1/3): @"TRIANGLES_SK_VERTICES_VERTEX_MODE"@
 pattern TRIANGLES_SK_VERTICES_VERTEX_MODE :: Sk_vertices_vertex_mode
 pattern TRIANGLES_SK_VERTICES_VERTEX_MODE = (#const TRIANGLES_SK_VERTICES_VERTEX_MODE)
--- | C enum @sk_vertices_vertex_mode_t@ value (2/3): @TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE@
+
+-- | C enum @"sk_vertices_vertex_mode_t"@ value (2/3): @"TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE"@
 pattern TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE :: Sk_vertices_vertex_mode
 pattern TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE = (#const TRIANGLE_STRIP_SK_VERTICES_VERTEX_MODE)
--- | C enum @sk_vertices_vertex_mode_t@ value (3/3): @TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE@
+
+-- | C enum @"sk_vertices_vertex_mode_t"@ value (3/3): @"TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE"@
 pattern TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE :: Sk_vertices_vertex_mode
 pattern TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE = (#const TRIANGLE_FAN_SK_VERTICES_VERTEX_MODE)
--- | Opaque C struct @sk_vertices_t@
+
+{- | Opaque C struct: @"sk_vertices_t"@
+-}
 data Sk_vertices = Sk_vertices
--- | C struct name: @sk_colorspace_transfer_fn_t@
+
+{- | C struct: @"sk_colorspace_transfer_fn_t"@
+
+@
+typedef struct sk_colorspace_transfer_fn_t
+{
+  float fG;
+  float fA;
+  float fB;
+  float fC;
+  float fD;
+  float fE;
+  float fF;
+} sk_colorspace_transfer_fn_t
+@
+-}
 data Sk_colorspace_transfer_fn = Sk_colorspace_transfer_fn
-  { fG :: CFloat -- ^ C field: @float fG@
-  , fA :: CFloat -- ^ C field: @float fA@
-  , fB :: CFloat -- ^ C field: @float fB@
-  , fC :: CFloat -- ^ C field: @float fC@
-  , fD :: CFloat -- ^ C field: @float fD@
-  , fE :: CFloat -- ^ C field: @float fE@
-  , fF :: CFloat -- ^ C field: @float fF@
+  { fG :: CFloat -- ^ C field: @"float fG"@
+  , fA :: CFloat -- ^ C field: @"float fA"@
+  , fB :: CFloat -- ^ C field: @"float fB"@
+  , fC :: CFloat -- ^ C field: @"float fC"@
+  , fD :: CFloat -- ^ C field: @"float fD"@
+  , fE :: CFloat -- ^ C field: @"float fE"@
+  , fF :: CFloat -- ^ C field: @"float fF"@
   }
 instance Foreign.Storable.Offset.Offset "fG" Sk_colorspace_transfer_fn where
   rawOffset = (#offset sk_colorspace_transfer_fn_t, fG)
@@ -2084,16 +3435,32 @@ instance Foreign.Storable.Storable Sk_colorspace_transfer_fn where
     (#poke sk_colorspace_transfer_fn_t, fD) p' fD
     (#poke sk_colorspace_transfer_fn_t, fE) p' fE
     (#poke sk_colorspace_transfer_fn_t, fF) p' fF
--- | C struct name: @sk_colorspace_primaries_t@
+
+{- | C struct: @"sk_colorspace_primaries_t"@
+
+@
+typedef struct sk_colorspace_primaries_t
+{
+  float fRX;
+  float fRY;
+  float fGX;
+  float fGY;
+  float fBX;
+  float fBY;
+  float fWX;
+  float fWY;
+} sk_colorspace_primaries_t
+@
+-}
 data Sk_colorspace_primaries = Sk_colorspace_primaries
-  { fRX :: CFloat -- ^ C field: @float fRX@
-  , fRY :: CFloat -- ^ C field: @float fRY@
-  , fGX :: CFloat -- ^ C field: @float fGX@
-  , fGY :: CFloat -- ^ C field: @float fGY@
-  , fBX :: CFloat -- ^ C field: @float fBX@
-  , fBY :: CFloat -- ^ C field: @float fBY@
-  , fWX :: CFloat -- ^ C field: @float fWX@
-  , fWY :: CFloat -- ^ C field: @float fWY@
+  { fRX :: CFloat -- ^ C field: @"float fRX"@
+  , fRY :: CFloat -- ^ C field: @"float fRY"@
+  , fGX :: CFloat -- ^ C field: @"float fGX"@
+  , fGY :: CFloat -- ^ C field: @"float fGY"@
+  , fBX :: CFloat -- ^ C field: @"float fBX"@
+  , fBY :: CFloat -- ^ C field: @"float fBY"@
+  , fWX :: CFloat -- ^ C field: @"float fWX"@
+  , fWY :: CFloat -- ^ C field: @"float fWY"@
   }
 instance Foreign.Storable.Offset.Offset "fRX" Sk_colorspace_primaries where
   rawOffset = (#offset sk_colorspace_primaries_t, fRX)
@@ -2133,17 +3500,34 @@ instance Foreign.Storable.Storable Sk_colorspace_primaries where
     (#poke sk_colorspace_primaries_t, fBY) p' fBY
     (#poke sk_colorspace_primaries_t, fWX) p' fWX
     (#poke sk_colorspace_primaries_t, fWY) p' fWY
--- | C struct name: @sk_colorspace_xyz_t@
+
+{- | C struct: @"sk_colorspace_xyz_t"@
+
+@
+typedef struct sk_colorspace_xyz_t
+{
+  float fM00;
+  float fM01;
+  float fM02;
+  float fM10;
+  float fM11;
+  float fM12;
+  float fM20;
+  float fM21;
+  float fM22;
+} sk_colorspace_xyz_t
+@
+-}
 data Sk_colorspace_xyz = Sk_colorspace_xyz
-  { fM00 :: CFloat -- ^ C field: @float fM00@
-  , fM01 :: CFloat -- ^ C field: @float fM01@
-  , fM02 :: CFloat -- ^ C field: @float fM02@
-  , fM10 :: CFloat -- ^ C field: @float fM10@
-  , fM11 :: CFloat -- ^ C field: @float fM11@
-  , fM12 :: CFloat -- ^ C field: @float fM12@
-  , fM20 :: CFloat -- ^ C field: @float fM20@
-  , fM21 :: CFloat -- ^ C field: @float fM21@
-  , fM22 :: CFloat -- ^ C field: @float fM22@
+  { fM00 :: CFloat -- ^ C field: @"float fM00"@
+  , fM01 :: CFloat -- ^ C field: @"float fM01"@
+  , fM02 :: CFloat -- ^ C field: @"float fM02"@
+  , fM10 :: CFloat -- ^ C field: @"float fM10"@
+  , fM11 :: CFloat -- ^ C field: @"float fM11"@
+  , fM12 :: CFloat -- ^ C field: @"float fM12"@
+  , fM20 :: CFloat -- ^ C field: @"float fM20"@
+  , fM21 :: CFloat -- ^ C field: @"float fM21"@
+  , fM22 :: CFloat -- ^ C field: @"float fM22"@
   }
 instance Foreign.Storable.Offset.Offset "fM00" Sk_colorspace_xyz where
   rawOffset = (#offset sk_colorspace_xyz_t, fM00)
@@ -2187,26 +3571,54 @@ instance Foreign.Storable.Storable Sk_colorspace_xyz where
     (#poke sk_colorspace_xyz_t, fM20) p' fM20
     (#poke sk_colorspace_xyz_t, fM21) p' fM21
     (#poke sk_colorspace_xyz_t, fM22) p' fM22
--- | Opaque C struct @sk_colorspace_icc_profile_t@
+
+{- | Opaque C struct: @"sk_colorspace_icc_profile_t"@
+-}
 data Sk_colorspace_icc_profile = Sk_colorspace_icc_profile
--- | C enum: @sk_highcontrastconfig_invertstyle_t@
+
+{- | C enum: @"sk_highcontrastconfig_invertstyle_t"@
+
+@
+typedef enum 
+{
+  NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE,
+  INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE,
+  INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE
+} sk_highcontrastconfig_invertstyle_t
+@
+
+-}
 newtype Sk_highcontrastconfig_invertstyle = Sk_highcontrastconfig_invertstyle (#type sk_highcontrastconfig_invertstyle_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_highcontrastconfig_invertstyle_t@ value (1/3): @NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE@
+
+-- | C enum @"sk_highcontrastconfig_invertstyle_t"@ value (1/3): @"NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE"@
 pattern NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE :: Sk_highcontrastconfig_invertstyle
 pattern NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE = (#const NO_INVERT_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE)
--- | C enum @sk_highcontrastconfig_invertstyle_t@ value (2/3): @INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE@
+
+-- | C enum @"sk_highcontrastconfig_invertstyle_t"@ value (2/3): @"INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE"@
 pattern INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE :: Sk_highcontrastconfig_invertstyle
 pattern INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE = (#const INVERT_BRIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE)
--- | C enum @sk_highcontrastconfig_invertstyle_t@ value (3/3): @INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE@
+
+-- | C enum @"sk_highcontrastconfig_invertstyle_t"@ value (3/3): @"INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE"@
 pattern INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE :: Sk_highcontrastconfig_invertstyle
 pattern INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE = (#const INVERT_LIGHTNESS_SK_HIGH_CONTRAST_CONFIG_INVERT_STYLE)
--- | C struct name: @sk_highcontrastconfig_t@
+
+{- | C struct: @"sk_highcontrastconfig_t"@
+
+@
+typedef struct 
+{
+  _Bool fGrayscale;
+  sk_highcontrastconfig_invertstyle_t fInvertStyle;
+  float fContrast;
+} sk_highcontrastconfig_t
+@
+-}
 data Sk_highcontrastconfig = Sk_highcontrastconfig
-  { fGrayscale :: CBool -- ^ C field: @_Bool fGrayscale@
-  , fInvertStyle :: Sk_highcontrastconfig_invertstyle -- ^ C field: @sk_highcontrastconfig_invertstyle_t fInvertStyle@
-  , fContrast :: CFloat -- ^ C field: @float fContrast@
+  { fGrayscale :: CBool -- ^ C field: @"_Bool fGrayscale"@
+  , fInvertStyle :: Sk_highcontrastconfig_invertstyle -- ^ C field: @"sk_highcontrastconfig_invertstyle_t fInvertStyle"@
+  , fContrast :: CFloat -- ^ C field: @"float fContrast"@
   }
 instance Foreign.Storable.Offset.Offset "fGrayscale" Sk_highcontrastconfig where
   rawOffset = (#offset sk_highcontrastconfig_t, fGrayscale)
@@ -2226,38 +3638,74 @@ instance Foreign.Storable.Storable Sk_highcontrastconfig where
     (#poke sk_highcontrastconfig_t, fGrayscale) p' fGrayscale
     (#poke sk_highcontrastconfig_t, fInvertStyle) p' fInvertStyle
     (#poke sk_highcontrastconfig_t, fContrast) p' fContrast
--- | C enum: @sk_pngencoder_filterflags_t@
+
+{- | C enum: @"sk_pngencoder_filterflags_t"@
+
+@
+typedef enum 
+{
+  ZERO_SK_PNGENCODER_FILTER_FLAGS = 0x00,
+  NONE_SK_PNGENCODER_FILTER_FLAGS = 0x08,
+  SUB_SK_PNGENCODER_FILTER_FLAGS = 0x10,
+  UP_SK_PNGENCODER_FILTER_FLAGS = 0x20,
+  AVG_SK_PNGENCODER_FILTER_FLAGS = 0x40,
+  PAETH_SK_PNGENCODER_FILTER_FLAGS = 0x80,
+  ALL_SK_PNGENCODER_FILTER_FLAGS = (((NONE_SK_PNGENCODER_FILTER_FLAGS | SUB_SK_PNGENCODER_FILTER_FLAGS) | UP_SK_PNGENCODER_FILTER_FLAGS) | AVG_SK_PNGENCODER_FILTER_FLAGS) | PAETH_SK_PNGENCODER_FILTER_FLAGS
+} sk_pngencoder_filterflags_t
+@
+
+-}
 newtype Sk_pngencoder_filterflags = Sk_pngencoder_filterflags (#type sk_pngencoder_filterflags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_pngencoder_filterflags_t@ value (1/7): @ZERO_SK_PNGENCODER_FILTER_FLAGS@
+
+-- | C enum @"sk_pngencoder_filterflags_t"@ value (1/7): @"ZERO_SK_PNGENCODER_FILTER_FLAGS"@
 pattern ZERO_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
 pattern ZERO_SK_PNGENCODER_FILTER_FLAGS = (#const ZERO_SK_PNGENCODER_FILTER_FLAGS)
--- | C enum @sk_pngencoder_filterflags_t@ value (2/7): @NONE_SK_PNGENCODER_FILTER_FLAGS@
+
+-- | C enum @"sk_pngencoder_filterflags_t"@ value (2/7): @"NONE_SK_PNGENCODER_FILTER_FLAGS"@
 pattern NONE_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
 pattern NONE_SK_PNGENCODER_FILTER_FLAGS = (#const NONE_SK_PNGENCODER_FILTER_FLAGS)
--- | C enum @sk_pngencoder_filterflags_t@ value (3/7): @SUB_SK_PNGENCODER_FILTER_FLAGS@
+
+-- | C enum @"sk_pngencoder_filterflags_t"@ value (3/7): @"SUB_SK_PNGENCODER_FILTER_FLAGS"@
 pattern SUB_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
 pattern SUB_SK_PNGENCODER_FILTER_FLAGS = (#const SUB_SK_PNGENCODER_FILTER_FLAGS)
--- | C enum @sk_pngencoder_filterflags_t@ value (4/7): @UP_SK_PNGENCODER_FILTER_FLAGS@
+
+-- | C enum @"sk_pngencoder_filterflags_t"@ value (4/7): @"UP_SK_PNGENCODER_FILTER_FLAGS"@
 pattern UP_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
 pattern UP_SK_PNGENCODER_FILTER_FLAGS = (#const UP_SK_PNGENCODER_FILTER_FLAGS)
--- | C enum @sk_pngencoder_filterflags_t@ value (5/7): @AVG_SK_PNGENCODER_FILTER_FLAGS@
+
+-- | C enum @"sk_pngencoder_filterflags_t"@ value (5/7): @"AVG_SK_PNGENCODER_FILTER_FLAGS"@
 pattern AVG_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
 pattern AVG_SK_PNGENCODER_FILTER_FLAGS = (#const AVG_SK_PNGENCODER_FILTER_FLAGS)
--- | C enum @sk_pngencoder_filterflags_t@ value (6/7): @PAETH_SK_PNGENCODER_FILTER_FLAGS@
+
+-- | C enum @"sk_pngencoder_filterflags_t"@ value (6/7): @"PAETH_SK_PNGENCODER_FILTER_FLAGS"@
 pattern PAETH_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
 pattern PAETH_SK_PNGENCODER_FILTER_FLAGS = (#const PAETH_SK_PNGENCODER_FILTER_FLAGS)
--- | C enum @sk_pngencoder_filterflags_t@ value (7/7): @ALL_SK_PNGENCODER_FILTER_FLAGS@
+
+-- | C enum @"sk_pngencoder_filterflags_t"@ value (7/7): @"ALL_SK_PNGENCODER_FILTER_FLAGS"@
 pattern ALL_SK_PNGENCODER_FILTER_FLAGS :: Sk_pngencoder_filterflags
 pattern ALL_SK_PNGENCODER_FILTER_FLAGS = (#const ALL_SK_PNGENCODER_FILTER_FLAGS)
--- | C struct name: @sk_pngencoder_options_t@
+
+{- | C struct: @"sk_pngencoder_options_t"@
+
+@
+typedef struct 
+{
+  sk_pngencoder_filterflags_t fFilterFlags;
+  int fZLibLevel;
+  void *fComments;
+  const sk_colorspace_icc_profile_t *fICCProfile;
+  const char *fICCProfileDescription;
+} sk_pngencoder_options_t
+@
+-}
 data Sk_pngencoder_options = Sk_pngencoder_options
-  { fFilterFlags :: Sk_pngencoder_filterflags -- ^ C field: @sk_pngencoder_filterflags_t fFilterFlags@
-  , fZLibLevel :: CInt -- ^ C field: @int fZLibLevel@
-  , fComments :: Ptr (()) -- ^ C field: @void *fComments@
-  , fICCProfile :: Ptr (Sk_colorspace_icc_profile) -- ^ C field: @const sk_colorspace_icc_profile_t *fICCProfile@
-  , fICCProfileDescription :: Ptr (CChar) -- ^ C field: @const char *fICCProfileDescription@
+  { fFilterFlags :: Sk_pngencoder_filterflags -- ^ C field: @"sk_pngencoder_filterflags_t fFilterFlags"@
+  , fZLibLevel :: CInt -- ^ C field: @"int fZLibLevel"@
+  , fComments :: Ptr (()) -- ^ C field: @"void *fComments"@
+  , fICCProfile :: Ptr (Sk_colorspace_icc_profile) -- ^ C field: @"const sk_colorspace_icc_profile_t *fICCProfile"@
+  , fICCProfileDescription :: Ptr (CChar) -- ^ C field: @"const char *fICCProfileDescription"@
   }
 instance Foreign.Storable.Offset.Offset "fFilterFlags" Sk_pngencoder_options where
   rawOffset = (#offset sk_pngencoder_options_t, fFilterFlags)
@@ -2285,37 +3733,79 @@ instance Foreign.Storable.Storable Sk_pngencoder_options where
     (#poke sk_pngencoder_options_t, fComments) p' fComments
     (#poke sk_pngencoder_options_t, fICCProfile) p' fICCProfile
     (#poke sk_pngencoder_options_t, fICCProfileDescription) p' fICCProfileDescription
--- | C enum: @sk_jpegencoder_downsample_t@
+
+{- | C enum: @"sk_jpegencoder_downsample_t"@
+
+@
+typedef enum 
+{
+  DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE,
+  DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE,
+  DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE
+} sk_jpegencoder_downsample_t
+@
+
+-}
 newtype Sk_jpegencoder_downsample = Sk_jpegencoder_downsample (#type sk_jpegencoder_downsample_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_jpegencoder_downsample_t@ value (1/3): @DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE@
+
+-- | C enum @"sk_jpegencoder_downsample_t"@ value (1/3): @"DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE"@
 pattern DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE :: Sk_jpegencoder_downsample
 pattern DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE = (#const DOWNSAMPLE_420_SK_JPEGENCODER_DOWNSAMPLE)
--- | C enum @sk_jpegencoder_downsample_t@ value (2/3): @DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE@
+
+-- | C enum @"sk_jpegencoder_downsample_t"@ value (2/3): @"DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE"@
 pattern DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE :: Sk_jpegencoder_downsample
 pattern DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE = (#const DOWNSAMPLE_422_SK_JPEGENCODER_DOWNSAMPLE)
--- | C enum @sk_jpegencoder_downsample_t@ value (3/3): @DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE@
+
+-- | C enum @"sk_jpegencoder_downsample_t"@ value (3/3): @"DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE"@
 pattern DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE :: Sk_jpegencoder_downsample
 pattern DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE = (#const DOWNSAMPLE_444_SK_JPEGENCODER_DOWNSAMPLE)
--- | C enum: @sk_jpegencoder_alphaoption_t@
+
+{- | C enum: @"sk_jpegencoder_alphaoption_t"@
+
+@
+typedef enum 
+{
+  IGNORE_SK_JPEGENCODER_ALPHA_OPTION,
+  BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION
+} sk_jpegencoder_alphaoption_t
+@
+
+-}
 newtype Sk_jpegencoder_alphaoption = Sk_jpegencoder_alphaoption (#type sk_jpegencoder_alphaoption_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_jpegencoder_alphaoption_t@ value (1/2): @IGNORE_SK_JPEGENCODER_ALPHA_OPTION@
+
+-- | C enum @"sk_jpegencoder_alphaoption_t"@ value (1/2): @"IGNORE_SK_JPEGENCODER_ALPHA_OPTION"@
 pattern IGNORE_SK_JPEGENCODER_ALPHA_OPTION :: Sk_jpegencoder_alphaoption
 pattern IGNORE_SK_JPEGENCODER_ALPHA_OPTION = (#const IGNORE_SK_JPEGENCODER_ALPHA_OPTION)
--- | C enum @sk_jpegencoder_alphaoption_t@ value (2/2): @BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION@
+
+-- | C enum @"sk_jpegencoder_alphaoption_t"@ value (2/2): @"BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION"@
 pattern BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION :: Sk_jpegencoder_alphaoption
 pattern BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION = (#const BLEND_ON_BLACK_SK_JPEGENCODER_ALPHA_OPTION)
--- | C struct name: @sk_jpegencoder_options_t@
+
+{- | C struct: @"sk_jpegencoder_options_t"@
+
+@
+typedef struct 
+{
+  int fQuality;
+  sk_jpegencoder_downsample_t fDownsample;
+  sk_jpegencoder_alphaoption_t fAlphaOption;
+  const sk_data_t *xmpMetadata;
+  const sk_colorspace_icc_profile_t *fICCProfile;
+  const char *fICCProfileDescription;
+} sk_jpegencoder_options_t
+@
+-}
 data Sk_jpegencoder_options = Sk_jpegencoder_options
-  { fQuality :: CInt -- ^ C field: @int fQuality@
-  , fDownsample :: Sk_jpegencoder_downsample -- ^ C field: @sk_jpegencoder_downsample_t fDownsample@
-  , fAlphaOption :: Sk_jpegencoder_alphaoption -- ^ C field: @sk_jpegencoder_alphaoption_t fAlphaOption@
-  , xmpMetadata :: Ptr (Sk_data) -- ^ C field: @const sk_data_t *xmpMetadata@
-  , fICCProfile :: Ptr (Sk_colorspace_icc_profile) -- ^ C field: @const sk_colorspace_icc_profile_t *fICCProfile@
-  , fICCProfileDescription :: Ptr (CChar) -- ^ C field: @const char *fICCProfileDescription@
+  { fQuality :: CInt -- ^ C field: @"int fQuality"@
+  , fDownsample :: Sk_jpegencoder_downsample -- ^ C field: @"sk_jpegencoder_downsample_t fDownsample"@
+  , fAlphaOption :: Sk_jpegencoder_alphaoption -- ^ C field: @"sk_jpegencoder_alphaoption_t fAlphaOption"@
+  , xmpMetadata :: Ptr (Sk_data) -- ^ C field: @"const sk_data_t *xmpMetadata"@
+  , fICCProfile :: Ptr (Sk_colorspace_icc_profile) -- ^ C field: @"const sk_colorspace_icc_profile_t *fICCProfile"@
+  , fICCProfileDescription :: Ptr (CChar) -- ^ C field: @"const char *fICCProfileDescription"@
   }
 instance Foreign.Storable.Offset.Offset "fQuality" Sk_jpegencoder_options where
   rawOffset = (#offset sk_jpegencoder_options_t, fQuality)
@@ -2347,22 +3837,47 @@ instance Foreign.Storable.Storable Sk_jpegencoder_options where
     (#poke sk_jpegencoder_options_t, xmpMetadata) p' xmpMetadata
     (#poke sk_jpegencoder_options_t, fICCProfile) p' fICCProfile
     (#poke sk_jpegencoder_options_t, fICCProfileDescription) p' fICCProfileDescription
--- | C enum: @sk_webpencoder_compression_t@
+
+{- | C enum: @"sk_webpencoder_compression_t"@
+
+@
+typedef enum 
+{
+  LOSSY_SK_WEBPENCODER_COMPTRESSION,
+  LOSSLESS_SK_WEBPENCODER_COMPTRESSION
+} sk_webpencoder_compression_t
+@
+
+-}
 newtype Sk_webpencoder_compression = Sk_webpencoder_compression (#type sk_webpencoder_compression_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_webpencoder_compression_t@ value (1/2): @LOSSY_SK_WEBPENCODER_COMPTRESSION@
+
+-- | C enum @"sk_webpencoder_compression_t"@ value (1/2): @"LOSSY_SK_WEBPENCODER_COMPTRESSION"@
 pattern LOSSY_SK_WEBPENCODER_COMPTRESSION :: Sk_webpencoder_compression
 pattern LOSSY_SK_WEBPENCODER_COMPTRESSION = (#const LOSSY_SK_WEBPENCODER_COMPTRESSION)
--- | C enum @sk_webpencoder_compression_t@ value (2/2): @LOSSLESS_SK_WEBPENCODER_COMPTRESSION@
+
+-- | C enum @"sk_webpencoder_compression_t"@ value (2/2): @"LOSSLESS_SK_WEBPENCODER_COMPTRESSION"@
 pattern LOSSLESS_SK_WEBPENCODER_COMPTRESSION :: Sk_webpencoder_compression
 pattern LOSSLESS_SK_WEBPENCODER_COMPTRESSION = (#const LOSSLESS_SK_WEBPENCODER_COMPTRESSION)
--- | C struct name: @sk_webpencoder_options_t@
+
+{- | C struct: @"sk_webpencoder_options_t"@
+
+@
+typedef struct 
+{
+  sk_webpencoder_compression_t fCompression;
+  float fQuality;
+  const sk_colorspace_icc_profile_t *fICCProfile;
+  const char *fICCProfileDescription;
+} sk_webpencoder_options_t
+@
+-}
 data Sk_webpencoder_options = Sk_webpencoder_options
-  { fCompression :: Sk_webpencoder_compression -- ^ C field: @sk_webpencoder_compression_t fCompression@
-  , fQuality :: CFloat -- ^ C field: @float fQuality@
-  , fICCProfile :: Ptr (Sk_colorspace_icc_profile) -- ^ C field: @const sk_colorspace_icc_profile_t *fICCProfile@
-  , fICCProfileDescription :: Ptr (CChar) -- ^ C field: @const char *fICCProfileDescription@
+  { fCompression :: Sk_webpencoder_compression -- ^ C field: @"sk_webpencoder_compression_t fCompression"@
+  , fQuality :: CFloat -- ^ C field: @"float fQuality"@
+  , fICCProfile :: Ptr (Sk_colorspace_icc_profile) -- ^ C field: @"const sk_colorspace_icc_profile_t *fICCProfile"@
+  , fICCProfileDescription :: Ptr (CChar) -- ^ C field: @"const char *fICCProfileDescription"@
   }
 instance Foreign.Storable.Offset.Offset "fCompression" Sk_webpencoder_options where
   rawOffset = (#offset sk_webpencoder_options_t, fCompression)
@@ -2386,56 +3901,112 @@ instance Foreign.Storable.Storable Sk_webpencoder_options where
     (#poke sk_webpencoder_options_t, fQuality) p' fQuality
     (#poke sk_webpencoder_options_t, fICCProfile) p' fICCProfile
     (#poke sk_webpencoder_options_t, fICCProfileDescription) p' fICCProfileDescription
--- | Opaque C struct @sk_rrect_t@
+
+{- | Opaque C struct: @"sk_rrect_t"@
+-}
 data Sk_rrect = Sk_rrect
--- | C enum: @sk_rrect_type_t@
+
+{- | C enum: @"sk_rrect_type_t"@
+
+@
+typedef enum 
+{
+  EMPTY_SK_RRECT_TYPE,
+  RECT_SK_RRECT_TYPE,
+  OVAL_SK_RRECT_TYPE,
+  SIMPLE_SK_RRECT_TYPE,
+  NINE_PATCH_SK_RRECT_TYPE,
+  COMPLEX_SK_RRECT_TYPE
+} sk_rrect_type_t
+@
+
+-}
 newtype Sk_rrect_type = Sk_rrect_type (#type sk_rrect_type_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_rrect_type_t@ value (1/6): @EMPTY_SK_RRECT_TYPE@
+
+-- | C enum @"sk_rrect_type_t"@ value (1/6): @"EMPTY_SK_RRECT_TYPE"@
 pattern EMPTY_SK_RRECT_TYPE :: Sk_rrect_type
 pattern EMPTY_SK_RRECT_TYPE = (#const EMPTY_SK_RRECT_TYPE)
--- | C enum @sk_rrect_type_t@ value (2/6): @RECT_SK_RRECT_TYPE@
+
+-- | C enum @"sk_rrect_type_t"@ value (2/6): @"RECT_SK_RRECT_TYPE"@
 pattern RECT_SK_RRECT_TYPE :: Sk_rrect_type
 pattern RECT_SK_RRECT_TYPE = (#const RECT_SK_RRECT_TYPE)
--- | C enum @sk_rrect_type_t@ value (3/6): @OVAL_SK_RRECT_TYPE@
+
+-- | C enum @"sk_rrect_type_t"@ value (3/6): @"OVAL_SK_RRECT_TYPE"@
 pattern OVAL_SK_RRECT_TYPE :: Sk_rrect_type
 pattern OVAL_SK_RRECT_TYPE = (#const OVAL_SK_RRECT_TYPE)
--- | C enum @sk_rrect_type_t@ value (4/6): @SIMPLE_SK_RRECT_TYPE@
+
+-- | C enum @"sk_rrect_type_t"@ value (4/6): @"SIMPLE_SK_RRECT_TYPE"@
 pattern SIMPLE_SK_RRECT_TYPE :: Sk_rrect_type
 pattern SIMPLE_SK_RRECT_TYPE = (#const SIMPLE_SK_RRECT_TYPE)
--- | C enum @sk_rrect_type_t@ value (5/6): @NINE_PATCH_SK_RRECT_TYPE@
+
+-- | C enum @"sk_rrect_type_t"@ value (5/6): @"NINE_PATCH_SK_RRECT_TYPE"@
 pattern NINE_PATCH_SK_RRECT_TYPE :: Sk_rrect_type
 pattern NINE_PATCH_SK_RRECT_TYPE = (#const NINE_PATCH_SK_RRECT_TYPE)
--- | C enum @sk_rrect_type_t@ value (6/6): @COMPLEX_SK_RRECT_TYPE@
+
+-- | C enum @"sk_rrect_type_t"@ value (6/6): @"COMPLEX_SK_RRECT_TYPE"@
 pattern COMPLEX_SK_RRECT_TYPE :: Sk_rrect_type
 pattern COMPLEX_SK_RRECT_TYPE = (#const COMPLEX_SK_RRECT_TYPE)
--- | C enum: @sk_rrect_corner_t@
+
+{- | C enum: @"sk_rrect_corner_t"@
+
+@
+typedef enum 
+{
+  UPPER_LEFT_SK_RRECT_CORNER,
+  UPPER_RIGHT_SK_RRECT_CORNER,
+  LOWER_RIGHT_SK_RRECT_CORNER,
+  LOWER_LEFT_SK_RRECT_CORNER
+} sk_rrect_corner_t
+@
+
+-}
 newtype Sk_rrect_corner = Sk_rrect_corner (#type sk_rrect_corner_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_rrect_corner_t@ value (1/4): @UPPER_LEFT_SK_RRECT_CORNER@
+
+-- | C enum @"sk_rrect_corner_t"@ value (1/4): @"UPPER_LEFT_SK_RRECT_CORNER"@
 pattern UPPER_LEFT_SK_RRECT_CORNER :: Sk_rrect_corner
 pattern UPPER_LEFT_SK_RRECT_CORNER = (#const UPPER_LEFT_SK_RRECT_CORNER)
--- | C enum @sk_rrect_corner_t@ value (2/4): @UPPER_RIGHT_SK_RRECT_CORNER@
+
+-- | C enum @"sk_rrect_corner_t"@ value (2/4): @"UPPER_RIGHT_SK_RRECT_CORNER"@
 pattern UPPER_RIGHT_SK_RRECT_CORNER :: Sk_rrect_corner
 pattern UPPER_RIGHT_SK_RRECT_CORNER = (#const UPPER_RIGHT_SK_RRECT_CORNER)
--- | C enum @sk_rrect_corner_t@ value (3/4): @LOWER_RIGHT_SK_RRECT_CORNER@
+
+-- | C enum @"sk_rrect_corner_t"@ value (3/4): @"LOWER_RIGHT_SK_RRECT_CORNER"@
 pattern LOWER_RIGHT_SK_RRECT_CORNER :: Sk_rrect_corner
 pattern LOWER_RIGHT_SK_RRECT_CORNER = (#const LOWER_RIGHT_SK_RRECT_CORNER)
--- | C enum @sk_rrect_corner_t@ value (4/4): @LOWER_LEFT_SK_RRECT_CORNER@
+
+-- | C enum @"sk_rrect_corner_t"@ value (4/4): @"LOWER_LEFT_SK_RRECT_CORNER"@
 pattern LOWER_LEFT_SK_RRECT_CORNER :: Sk_rrect_corner
 pattern LOWER_LEFT_SK_RRECT_CORNER = (#const LOWER_LEFT_SK_RRECT_CORNER)
--- | Opaque C struct @sk_textblob_t@
+
+{- | Opaque C struct: @"sk_textblob_t"@
+-}
 data Sk_textblob = Sk_textblob
--- | Opaque C struct @sk_textblob_builder_t@
+
+{- | Opaque C struct: @"sk_textblob_builder_t"@
+-}
 data Sk_textblob_builder = Sk_textblob_builder
--- | C struct name: @sk_textblob_builder_runbuffer_t@
+
+{- | C struct: @"sk_textblob_builder_runbuffer_t"@
+
+@
+typedef struct 
+{
+  void *glyphs;
+  void *pos;
+  void *utf8text;
+  void *clusters;
+} sk_textblob_builder_runbuffer_t
+@
+-}
 data Sk_textblob_builder_runbuffer = Sk_textblob_builder_runbuffer
-  { glyphs :: Ptr (()) -- ^ C field: @void *glyphs@
-  , pos :: Ptr (()) -- ^ C field: @void *pos@
-  , utf8text :: Ptr (()) -- ^ C field: @void *utf8text@
-  , clusters :: Ptr (()) -- ^ C field: @void *clusters@
+  { glyphs :: Ptr (()) -- ^ C field: @"void *glyphs"@
+  , pos :: Ptr (()) -- ^ C field: @"void *pos"@
+  , utf8text :: Ptr (()) -- ^ C field: @"void *utf8text"@
+  , clusters :: Ptr (()) -- ^ C field: @"void *clusters"@
   }
 instance Foreign.Storable.Offset.Offset "glyphs" Sk_textblob_builder_runbuffer where
   rawOffset = (#offset sk_textblob_builder_runbuffer_t, glyphs)
@@ -2459,12 +4030,24 @@ instance Foreign.Storable.Storable Sk_textblob_builder_runbuffer where
     (#poke sk_textblob_builder_runbuffer_t, pos) p' pos
     (#poke sk_textblob_builder_runbuffer_t, utf8text) p' utf8text
     (#poke sk_textblob_builder_runbuffer_t, clusters) p' clusters
--- | C struct name: @sk_rsxform_t@
+
+{- | C struct: @"sk_rsxform_t"@
+
+@
+typedef struct 
+{
+  float fSCos;
+  float fSSin;
+  float fTX;
+  float fTY;
+} sk_rsxform_t
+@
+-}
 data Sk_rsxform = Sk_rsxform
-  { fSCos :: CFloat -- ^ C field: @float fSCos@
-  , fSSin :: CFloat -- ^ C field: @float fSSin@
-  , fTX :: CFloat -- ^ C field: @float fTX@
-  , fTY :: CFloat -- ^ C field: @float fTY@
+  { fSCos :: CFloat -- ^ C field: @"float fSCos"@
+  , fSSin :: CFloat -- ^ C field: @"float fSSin"@
+  , fTX :: CFloat -- ^ C field: @"float fTX"@
+  , fTY :: CFloat -- ^ C field: @"float fTY"@
   }
 instance Foreign.Storable.Offset.Offset "fSCos" Sk_rsxform where
   rawOffset = (#offset sk_rsxform_t, fSCos)
@@ -2488,90 +4071,175 @@ instance Foreign.Storable.Storable Sk_rsxform where
     (#poke sk_rsxform_t, fSSin) p' fSSin
     (#poke sk_rsxform_t, fTX) p' fTX
     (#poke sk_rsxform_t, fTY) p' fTY
--- | Opaque C struct @sk_tracememorydump_t@
+
+{- | Opaque C struct: @"sk_tracememorydump_t"@
+-}
 data Sk_tracememorydump = Sk_tracememorydump
--- | Opaque C struct @sk_runtimeeffect_t@
+
+{- | Opaque C struct: @"sk_runtimeeffect_t"@
+-}
 data Sk_runtimeeffect = Sk_runtimeeffect
--- | C enum: @sk_runtimeeffect_uniform_type_t@
+
+{- | C enum: @"sk_runtimeeffect_uniform_type_t"@
+
+@
+typedef enum 
+{
+  FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE,
+  INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE
+} sk_runtimeeffect_uniform_type_t
+@
+
+-}
 newtype Sk_runtimeeffect_uniform_type = Sk_runtimeeffect_uniform_type (#type sk_runtimeeffect_uniform_type_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (1/11): @FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (1/11): @"FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const FLOAT_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (2/11): @FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (2/11): @"FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const FLOAT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (3/11): @FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (3/11): @"FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const FLOAT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (4/11): @FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (4/11): @"FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const FLOAT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (5/11): @FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (5/11): @"FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const FLOAT2X2_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (6/11): @FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (6/11): @"FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const FLOAT3X3_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (7/11): @FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (7/11): @"FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const FLOAT4X4_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (8/11): @INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (8/11): @"INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const INT_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (9/11): @INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (9/11): @"INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const INT2_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (10/11): @INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (10/11): @"INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const INT3_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum @sk_runtimeeffect_uniform_type_t@ value (11/11): @INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE@
+
+-- | C enum @"sk_runtimeeffect_uniform_type_t"@ value (11/11): @"INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE"@
 pattern INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE :: Sk_runtimeeffect_uniform_type
 pattern INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE = (#const INT4_SK_RUNTIMEEFFECT_UNIFORM_TYPE)
--- | C enum: @sk_runtimeeffect_child_type_t@
+
+{- | C enum: @"sk_runtimeeffect_child_type_t"@
+
+@
+typedef enum 
+{
+  SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE,
+  COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE,
+  BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE
+} sk_runtimeeffect_child_type_t
+@
+
+-}
 newtype Sk_runtimeeffect_child_type = Sk_runtimeeffect_child_type (#type sk_runtimeeffect_child_type_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_runtimeeffect_child_type_t@ value (1/3): @SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE@
+
+-- | C enum @"sk_runtimeeffect_child_type_t"@ value (1/3): @"SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE"@
 pattern SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE :: Sk_runtimeeffect_child_type
 pattern SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE = (#const SHADER_SK_RUNTIMEEFFECT_CHILD_TYPE)
--- | C enum @sk_runtimeeffect_child_type_t@ value (2/3): @COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE@
+
+-- | C enum @"sk_runtimeeffect_child_type_t"@ value (2/3): @"COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE"@
 pattern COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE :: Sk_runtimeeffect_child_type
 pattern COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE = (#const COLOR_FILTER_SK_RUNTIMEEFFECT_CHILD_TYPE)
--- | C enum @sk_runtimeeffect_child_type_t@ value (3/3): @BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE@
+
+-- | C enum @"sk_runtimeeffect_child_type_t"@ value (3/3): @"BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE"@
 pattern BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE :: Sk_runtimeeffect_child_type
 pattern BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE = (#const BLENDER_SK_RUNTIMEEFFECT_CHILD_TYPE)
--- | C enum: @sk_runtimeeffect_uniform_flags_t@
+
+{- | C enum: @"sk_runtimeeffect_uniform_flags_t"@
+
+@
+typedef enum 
+{
+  NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = 0x00,
+  ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = 0x01,
+  COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = 0x02,
+  VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = 0x04,
+  FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = 0x08,
+  HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = 0x10
+} sk_runtimeeffect_uniform_flags_t
+@
+
+-}
 newtype Sk_runtimeeffect_uniform_flags = Sk_runtimeeffect_uniform_flags (#type sk_runtimeeffect_uniform_flags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_runtimeeffect_uniform_flags_t@ value (1/6): @NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS@
+
+-- | C enum @"sk_runtimeeffect_uniform_flags_t"@ value (1/6): @"NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS"@
 pattern NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
 pattern NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = (#const NONE_SK_RUNTIMEEFFECT_UNIFORM_FLAGS)
--- | C enum @sk_runtimeeffect_uniform_flags_t@ value (2/6): @ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS@
+
+-- | C enum @"sk_runtimeeffect_uniform_flags_t"@ value (2/6): @"ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS"@
 pattern ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
 pattern ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = (#const ARRAY_SK_RUNTIMEEFFECT_UNIFORM_FLAGS)
--- | C enum @sk_runtimeeffect_uniform_flags_t@ value (3/6): @COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS@
+
+-- | C enum @"sk_runtimeeffect_uniform_flags_t"@ value (3/6): @"COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS"@
 pattern COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
 pattern COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = (#const COLOR_SK_RUNTIMEEFFECT_UNIFORM_FLAGS)
--- | C enum @sk_runtimeeffect_uniform_flags_t@ value (4/6): @VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS@
+
+-- | C enum @"sk_runtimeeffect_uniform_flags_t"@ value (4/6): @"VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS"@
 pattern VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
 pattern VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = (#const VERTEX_SK_RUNTIMEEFFECT_UNIFORM_FLAGS)
--- | C enum @sk_runtimeeffect_uniform_flags_t@ value (5/6): @FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS@
+
+-- | C enum @"sk_runtimeeffect_uniform_flags_t"@ value (5/6): @"FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS"@
 pattern FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
 pattern FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = (#const FRAGMENT_SK_RUNTIMEEFFECT_UNIFORM_FLAGS)
--- | C enum @sk_runtimeeffect_uniform_flags_t@ value (6/6): @HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS@
+
+-- | C enum @"sk_runtimeeffect_uniform_flags_t"@ value (6/6): @"HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS"@
 pattern HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS :: Sk_runtimeeffect_uniform_flags
 pattern HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS = (#const HALF_PRECISION_SK_RUNTIMEEFFECT_UNIFORM_FLAGS)
--- | C struct name: @sk_runtimeeffect_uniform_t@
+
+{- | C struct: @"sk_runtimeeffect_uniform_t"@
+
+@
+typedef struct 
+{
+  const char *fName;
+  size_t fNameLength;
+  size_t fOffset;
+  sk_runtimeeffect_uniform_type_t fType;
+  int fCount;
+  sk_runtimeeffect_uniform_flags_t fFlags;
+} sk_runtimeeffect_uniform_t
+@
+-}
 data Sk_runtimeeffect_uniform = Sk_runtimeeffect_uniform
-  { fName :: Ptr (CChar) -- ^ C field: @const char *fName@
-  , fNameLength :: CSize -- ^ C field: @size_t fNameLength@
-  , fOffset :: CSize -- ^ C field: @size_t fOffset@
-  , fType :: Sk_runtimeeffect_uniform_type -- ^ C field: @sk_runtimeeffect_uniform_type_t fType@
-  , fCount :: CInt -- ^ C field: @int fCount@
-  , fFlags :: Sk_runtimeeffect_uniform_flags -- ^ C field: @sk_runtimeeffect_uniform_flags_t fFlags@
+  { fName :: Ptr (CChar) -- ^ C field: @"const char *fName"@
+  , fNameLength :: CSize -- ^ C field: @"size_t fNameLength"@
+  , fOffset :: CSize -- ^ C field: @"size_t fOffset"@
+  , fType :: Sk_runtimeeffect_uniform_type -- ^ C field: @"sk_runtimeeffect_uniform_type_t fType"@
+  , fCount :: CInt -- ^ C field: @"int fCount"@
+  , fFlags :: Sk_runtimeeffect_uniform_flags -- ^ C field: @"sk_runtimeeffect_uniform_flags_t fFlags"@
   }
 instance Foreign.Storable.Offset.Offset "fName" Sk_runtimeeffect_uniform where
   rawOffset = (#offset sk_runtimeeffect_uniform_t, fName)
@@ -2603,12 +4271,24 @@ instance Foreign.Storable.Storable Sk_runtimeeffect_uniform where
     (#poke sk_runtimeeffect_uniform_t, fType) p' fType
     (#poke sk_runtimeeffect_uniform_t, fCount) p' fCount
     (#poke sk_runtimeeffect_uniform_t, fFlags) p' fFlags
--- | C struct name: @sk_runtimeeffect_child_t@
+
+{- | C struct: @"sk_runtimeeffect_child_t"@
+
+@
+typedef struct 
+{
+  const char *fName;
+  size_t fNameLength;
+  sk_runtimeeffect_child_type_t fType;
+  int fIndex;
+} sk_runtimeeffect_child_t
+@
+-}
 data Sk_runtimeeffect_child = Sk_runtimeeffect_child
-  { fName :: Ptr (CChar) -- ^ C field: @const char *fName@
-  , fNameLength :: CSize -- ^ C field: @size_t fNameLength@
-  , fType :: Sk_runtimeeffect_child_type -- ^ C field: @sk_runtimeeffect_child_type_t fType@
-  , fIndex :: CInt -- ^ C field: @int fIndex@
+  { fName :: Ptr (CChar) -- ^ C field: @"const char *fName"@
+  , fNameLength :: CSize -- ^ C field: @"size_t fNameLength"@
+  , fType :: Sk_runtimeeffect_child_type -- ^ C field: @"sk_runtimeeffect_child_type_t fType"@
+  , fIndex :: CInt -- ^ C field: @"int fIndex"@
   }
 instance Foreign.Storable.Offset.Offset "fName" Sk_runtimeeffect_child where
   rawOffset = (#offset sk_runtimeeffect_child_t, fName)
@@ -2632,33 +4312,71 @@ instance Foreign.Storable.Storable Sk_runtimeeffect_child where
     (#poke sk_runtimeeffect_child_t, fNameLength) p' fNameLength
     (#poke sk_runtimeeffect_child_t, fType) p' fType
     (#poke sk_runtimeeffect_child_t, fIndex) p' fIndex
--- | C enum: @sk_filter_mode_t@
+
+{- | C enum: @"sk_filter_mode_t"@
+
+@
+typedef enum 
+{
+  NEAREST_SK_FILTER_MODE,
+  LINEAR_SK_FILTER_MODE
+} sk_filter_mode_t
+@
+
+-}
 newtype Sk_filter_mode = Sk_filter_mode (#type sk_filter_mode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_filter_mode_t@ value (1/2): @NEAREST_SK_FILTER_MODE@
+
+-- | C enum @"sk_filter_mode_t"@ value (1/2): @"NEAREST_SK_FILTER_MODE"@
 pattern NEAREST_SK_FILTER_MODE :: Sk_filter_mode
 pattern NEAREST_SK_FILTER_MODE = (#const NEAREST_SK_FILTER_MODE)
--- | C enum @sk_filter_mode_t@ value (2/2): @LINEAR_SK_FILTER_MODE@
+
+-- | C enum @"sk_filter_mode_t"@ value (2/2): @"LINEAR_SK_FILTER_MODE"@
 pattern LINEAR_SK_FILTER_MODE :: Sk_filter_mode
 pattern LINEAR_SK_FILTER_MODE = (#const LINEAR_SK_FILTER_MODE)
--- | C enum: @sk_mipmap_mode_t@
+
+{- | C enum: @"sk_mipmap_mode_t"@
+
+@
+typedef enum 
+{
+  NONE_SK_MIPMAP_MODE,
+  NEAREST_SK_MIPMAP_MODE,
+  LINEAR_SK_MIPMAP_MODE
+} sk_mipmap_mode_t
+@
+
+-}
 newtype Sk_mipmap_mode = Sk_mipmap_mode (#type sk_mipmap_mode_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_mipmap_mode_t@ value (1/3): @NONE_SK_MIPMAP_MODE@
+
+-- | C enum @"sk_mipmap_mode_t"@ value (1/3): @"NONE_SK_MIPMAP_MODE"@
 pattern NONE_SK_MIPMAP_MODE :: Sk_mipmap_mode
 pattern NONE_SK_MIPMAP_MODE = (#const NONE_SK_MIPMAP_MODE)
--- | C enum @sk_mipmap_mode_t@ value (2/3): @NEAREST_SK_MIPMAP_MODE@
+
+-- | C enum @"sk_mipmap_mode_t"@ value (2/3): @"NEAREST_SK_MIPMAP_MODE"@
 pattern NEAREST_SK_MIPMAP_MODE :: Sk_mipmap_mode
 pattern NEAREST_SK_MIPMAP_MODE = (#const NEAREST_SK_MIPMAP_MODE)
--- | C enum @sk_mipmap_mode_t@ value (3/3): @LINEAR_SK_MIPMAP_MODE@
+
+-- | C enum @"sk_mipmap_mode_t"@ value (3/3): @"LINEAR_SK_MIPMAP_MODE"@
 pattern LINEAR_SK_MIPMAP_MODE :: Sk_mipmap_mode
 pattern LINEAR_SK_MIPMAP_MODE = (#const LINEAR_SK_MIPMAP_MODE)
--- | C struct name: @sk_cubic_resampler_t@
+
+{- | C struct: @"sk_cubic_resampler_t"@
+
+@
+typedef struct 
+{
+  float fB;
+  float fC;
+} sk_cubic_resampler_t
+@
+-}
 data Sk_cubic_resampler = Sk_cubic_resampler
-  { fB :: CFloat -- ^ C field: @float fB@
-  , fC :: CFloat -- ^ C field: @float fC@
+  { fB :: CFloat -- ^ C field: @"float fB"@
+  , fC :: CFloat -- ^ C field: @"float fC"@
   }
 instance Foreign.Storable.Offset.Offset "fB" Sk_cubic_resampler where
   rawOffset = (#offset sk_cubic_resampler_t, fB)
@@ -2674,13 +4392,26 @@ instance Foreign.Storable.Storable Sk_cubic_resampler where
   poke p' Sk_cubic_resampler{..} = do
     (#poke sk_cubic_resampler_t, fB) p' fB
     (#poke sk_cubic_resampler_t, fC) p' fC
--- | C struct name: @sk_sampling_options_t@
+
+{- | C struct: @"sk_sampling_options_t"@
+
+@
+typedef struct 
+{
+  int fMaxAniso;
+  _Bool fUseCubic;
+  sk_cubic_resampler_t fCubic;
+  sk_filter_mode_t fFilter;
+  sk_mipmap_mode_t fMipmap;
+} sk_sampling_options_t
+@
+-}
 data Sk_sampling_options = Sk_sampling_options
-  { fMaxAniso :: CInt -- ^ C field: @int fMaxAniso@
-  , fUseCubic :: CBool -- ^ C field: @_Bool fUseCubic@
-  , fCubic :: Sk_cubic_resampler -- ^ C field: @sk_cubic_resampler_t fCubic@
-  , fFilter :: Sk_filter_mode -- ^ C field: @sk_filter_mode_t fFilter@
-  , fMipmap :: Sk_mipmap_mode -- ^ C field: @sk_mipmap_mode_t fMipmap@
+  { fMaxAniso :: CInt -- ^ C field: @"int fMaxAniso"@
+  , fUseCubic :: CBool -- ^ C field: @"_Bool fUseCubic"@
+  , fCubic :: Sk_cubic_resampler -- ^ C field: @"sk_cubic_resampler_t fCubic"@
+  , fFilter :: Sk_filter_mode -- ^ C field: @"sk_filter_mode_t fFilter"@
+  , fMipmap :: Sk_mipmap_mode -- ^ C field: @"sk_mipmap_mode_t fMipmap"@
   }
 instance Foreign.Storable.Offset.Offset "fMaxAniso" Sk_sampling_options where
   rawOffset = (#offset sk_sampling_options_t, fMaxAniso)
@@ -2708,28 +4439,57 @@ instance Foreign.Storable.Storable Sk_sampling_options where
     (#poke sk_sampling_options_t, fCubic) p' fCubic
     (#poke sk_sampling_options_t, fFilter) p' fFilter
     (#poke sk_sampling_options_t, fMipmap) p' fMipmap
--- | C enum: @sk_canvas_savelayerrec_flags_t@
+
+{- | C enum: @"sk_canvas_savelayerrec_flags_t"@
+
+@
+typedef enum 
+{
+  NONE_SK_CANVAS_SAVELAYERREC_FLAGS = 0,
+  PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS = 1 << 1,
+  INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS = 1 << 2,
+  F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS = 1 << 4
+} sk_canvas_savelayerrec_flags_t
+@
+
+-}
 newtype Sk_canvas_savelayerrec_flags = Sk_canvas_savelayerrec_flags (#type sk_canvas_savelayerrec_flags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @sk_canvas_savelayerrec_flags_t@ value (1/4): @NONE_SK_CANVAS_SAVELAYERREC_FLAGS@
+
+-- | C enum @"sk_canvas_savelayerrec_flags_t"@ value (1/4): @"NONE_SK_CANVAS_SAVELAYERREC_FLAGS"@
 pattern NONE_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
 pattern NONE_SK_CANVAS_SAVELAYERREC_FLAGS = (#const NONE_SK_CANVAS_SAVELAYERREC_FLAGS)
--- | C enum @sk_canvas_savelayerrec_flags_t@ value (2/4): @PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS@
+
+-- | C enum @"sk_canvas_savelayerrec_flags_t"@ value (2/4): @"PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS"@
 pattern PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
 pattern PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS = (#const PRESERVE_LCD_TEXT_SK_CANVAS_SAVELAYERREC_FLAGS)
--- | C enum @sk_canvas_savelayerrec_flags_t@ value (3/4): @INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS@
+
+-- | C enum @"sk_canvas_savelayerrec_flags_t"@ value (3/4): @"INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS"@
 pattern INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
 pattern INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS = (#const INITIALIZE_WITH_PREVIOUS_SK_CANVAS_SAVELAYERREC_FLAGS)
--- | C enum @sk_canvas_savelayerrec_flags_t@ value (4/4): @F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS@
+
+-- | C enum @"sk_canvas_savelayerrec_flags_t"@ value (4/4): @"F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS"@
 pattern F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS :: Sk_canvas_savelayerrec_flags
 pattern F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS = (#const F16_COLOR_TYPE_SK_CANVAS_SAVELAYERREC_FLAGS)
--- | C struct name: @sk_canvas_savelayerrec_t@
+
+{- | C struct: @"sk_canvas_savelayerrec_t"@
+
+@
+typedef struct 
+{
+  sk_rect_t *fBounds;
+  sk_paint_t *fPaint;
+  sk_imagefilter_t *fBackdrop;
+  sk_canvas_savelayerrec_flags_t fFlags;
+} sk_canvas_savelayerrec_t
+@
+-}
 data Sk_canvas_savelayerrec = Sk_canvas_savelayerrec
-  { fBounds :: Ptr (Sk_rect) -- ^ C field: @sk_rect_t *fBounds@
-  , fPaint :: Ptr (Sk_paint) -- ^ C field: @sk_paint_t *fPaint@
-  , fBackdrop :: Ptr (Sk_imagefilter) -- ^ C field: @sk_imagefilter_t *fBackdrop@
-  , fFlags :: Sk_canvas_savelayerrec_flags -- ^ C field: @sk_canvas_savelayerrec_flags_t fFlags@
+  { fBounds :: Ptr (Sk_rect) -- ^ C field: @"sk_rect_t *fBounds"@
+  , fPaint :: Ptr (Sk_paint) -- ^ C field: @"sk_paint_t *fPaint"@
+  , fBackdrop :: Ptr (Sk_imagefilter) -- ^ C field: @"sk_imagefilter_t *fBackdrop"@
+  , fFlags :: Sk_canvas_savelayerrec_flags -- ^ C field: @"sk_canvas_savelayerrec_flags_t fFlags"@
   }
 instance Foreign.Storable.Offset.Offset "fBounds" Sk_canvas_savelayerrec where
   rawOffset = (#offset sk_canvas_savelayerrec_t, fBounds)
@@ -2753,50 +4513,105 @@ instance Foreign.Storable.Storable Sk_canvas_savelayerrec where
     (#poke sk_canvas_savelayerrec_t, fPaint) p' fPaint
     (#poke sk_canvas_savelayerrec_t, fBackdrop) p' fBackdrop
     (#poke sk_canvas_savelayerrec_t, fFlags) p' fFlags
--- | Opaque C struct @skottie_animation_t@
+
+{- | Opaque C struct: @"skottie_animation_t"@
+-}
 data Skottie_animation = Skottie_animation
--- | Opaque C struct @skottie_animation_builder_t@
+
+{- | Opaque C struct: @"skottie_animation_builder_t"@
+-}
 data Skottie_animation_builder = Skottie_animation_builder
--- | Opaque C struct @skottie_resource_provider_t@
+
+{- | Opaque C struct: @"skottie_resource_provider_t"@
+-}
 data Skottie_resource_provider = Skottie_resource_provider
--- | Opaque C struct @skottie_property_observer_t@
+
+{- | Opaque C struct: @"skottie_property_observer_t"@
+-}
 data Skottie_property_observer = Skottie_property_observer
--- | Opaque C struct @skottie_logger_t@
+
+{- | Opaque C struct: @"skottie_logger_t"@
+-}
 data Skottie_logger = Skottie_logger
--- | Opaque C struct @skottie_marker_observer_t@
+
+{- | Opaque C struct: @"skottie_marker_observer_t"@
+-}
 data Skottie_marker_observer = Skottie_marker_observer
--- | Opaque C struct @sksg_invalidation_controller_t@
+
+{- | Opaque C struct: @"sksg_invalidation_controller_t"@
+-}
 data Sksg_invalidation_controller = Sksg_invalidation_controller
--- | C enum: @skottie_animation_renderflags_t@
+
+{- | C enum: @"skottie_animation_renderflags_t"@
+
+@
+typedef enum 
+{
+  SKIP_TOP_LEVEL_ISOLATION = 0x01,
+  DISABLE_TOP_LEVEL_CLIPPING = 0x02
+} skottie_animation_renderflags_t
+@
+
+-}
 newtype Skottie_animation_renderflags = Skottie_animation_renderflags (#type skottie_animation_renderflags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @skottie_animation_renderflags_t@ value (1/2): @SKIP_TOP_LEVEL_ISOLATION@
+
+-- | C enum @"skottie_animation_renderflags_t"@ value (1/2): @"SKIP_TOP_LEVEL_ISOLATION"@
 pattern SKIP_TOP_LEVEL_ISOLATION :: Skottie_animation_renderflags
 pattern SKIP_TOP_LEVEL_ISOLATION = (#const SKIP_TOP_LEVEL_ISOLATION)
--- | C enum @skottie_animation_renderflags_t@ value (2/2): @DISABLE_TOP_LEVEL_CLIPPING@
+
+-- | C enum @"skottie_animation_renderflags_t"@ value (2/2): @"DISABLE_TOP_LEVEL_CLIPPING"@
 pattern DISABLE_TOP_LEVEL_CLIPPING :: Skottie_animation_renderflags
 pattern DISABLE_TOP_LEVEL_CLIPPING = (#const DISABLE_TOP_LEVEL_CLIPPING)
--- | C enum: @skottie_animation_builder_flags_t@
+
+{- | C enum: @"skottie_animation_builder_flags_t"@
+
+@
+typedef enum 
+{
+  NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS = 0,
+  DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS = 0x01,
+  PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS = 0x02
+} skottie_animation_builder_flags_t
+@
+
+-}
 newtype Skottie_animation_builder_flags = Skottie_animation_builder_flags (#type skottie_animation_builder_flags_t)
   deriving stock (Show, Eq, Ord)
   deriving newtype (Num, Bits, Storable)
--- | C enum @skottie_animation_builder_flags_t@ value (1/3): @NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS@
+
+-- | C enum @"skottie_animation_builder_flags_t"@ value (1/3): @"NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS"@
 pattern NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS :: Skottie_animation_builder_flags
 pattern NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS = (#const NONE_SKOTTIE_ANIMATION_BUILDER_FLAGS)
--- | C enum @skottie_animation_builder_flags_t@ value (2/3): @DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS@
+
+-- | C enum @"skottie_animation_builder_flags_t"@ value (2/3): @"DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS"@
 pattern DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS :: Skottie_animation_builder_flags
 pattern DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS = (#const DEFER_IMAGE_LOADING_SKOTTIE_ANIMATION_BUILDER_FLAGS)
--- | C enum @skottie_animation_builder_flags_t@ value (3/3): @PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS@
+
+-- | C enum @"skottie_animation_builder_flags_t"@ value (3/3): @"PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS"@
 pattern PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS :: Skottie_animation_builder_flags
 pattern PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS = (#const PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS)
--- | C struct name: @skottie_animation_builder_stats_t@
+
+{- | C struct: @"skottie_animation_builder_stats_t"@
+
+@
+typedef struct 
+{
+  float fTotalLoadTimeMS;
+  float fJsonParseTimeMS;
+  float fSceneParseTimeMS;
+  size_t fJsonSize;
+  size_t fAnimatorCount;
+} skottie_animation_builder_stats_t
+@
+-}
 data Skottie_animation_builder_stats = Skottie_animation_builder_stats
-  { fTotalLoadTimeMS :: CFloat -- ^ C field: @float fTotalLoadTimeMS@
-  , fJsonParseTimeMS :: CFloat -- ^ C field: @float fJsonParseTimeMS@
-  , fSceneParseTimeMS :: CFloat -- ^ C field: @float fSceneParseTimeMS@
-  , fJsonSize :: CSize -- ^ C field: @size_t fJsonSize@
-  , fAnimatorCount :: CSize -- ^ C field: @size_t fAnimatorCount@
+  { fTotalLoadTimeMS :: CFloat -- ^ C field: @"float fTotalLoadTimeMS"@
+  , fJsonParseTimeMS :: CFloat -- ^ C field: @"float fJsonParseTimeMS"@
+  , fSceneParseTimeMS :: CFloat -- ^ C field: @"float fSceneParseTimeMS"@
+  , fJsonSize :: CSize -- ^ C field: @"size_t fJsonSize"@
+  , fAnimatorCount :: CSize -- ^ C field: @"size_t fAnimatorCount"@
   }
 instance Foreign.Storable.Offset.Offset "fTotalLoadTimeMS" Skottie_animation_builder_stats where
   rawOffset = (#offset skottie_animation_builder_stats_t, fTotalLoadTimeMS)
@@ -2824,29 +4639,58 @@ instance Foreign.Storable.Storable Skottie_animation_builder_stats where
     (#poke skottie_animation_builder_stats_t, fSceneParseTimeMS) p' fSceneParseTimeMS
     (#poke skottie_animation_builder_stats_t, fJsonSize) p' fJsonSize
     (#poke skottie_animation_builder_stats_t, fAnimatorCount) p' fAnimatorCount
--- | Opaque C struct @skresources_image_asset_t@
+
+{- | Opaque C struct: @"skresources_image_asset_t"@
+-}
 data Skresources_image_asset = Skresources_image_asset
--- | Opaque C struct @skresources_multi_frame_image_asset_t@
+
+{- | Opaque C struct: @"skresources_multi_frame_image_asset_t"@
+-}
 data Skresources_multi_frame_image_asset = Skresources_multi_frame_image_asset
--- | Opaque C struct @skresources_external_track_asset_t@
+
+{- | Opaque C struct: @"skresources_external_track_asset_t"@
+-}
 data Skresources_external_track_asset = Skresources_external_track_asset
--- | Opaque C struct @skresources_resource_provider_t@
+
+{- | Opaque C struct: @"skresources_resource_provider_t"@
+-}
 data Skresources_resource_provider = Skresources_resource_provider
--- | Opaque C struct @d3d_dxgi_adapter_t@
+
+{- | Opaque C struct: @"d3d_dxgi_adapter_t"@
+-}
 data D3d_dxgi_adapter = D3d_dxgi_adapter
--- | Opaque C struct @d3d_d12_device_t@
+
+{- | Opaque C struct: @"d3d_d12_device_t"@
+-}
 data D3d_d12_device = D3d_d12_device
--- | Opaque C struct @d3d_d12_command_queue_t@
+
+{- | Opaque C struct: @"d3d_d12_command_queue_t"@
+-}
 data D3d_d12_command_queue = D3d_d12_command_queue
--- | Opaque C struct @gr_d3d_memory_allocator_t@
+
+{- | Opaque C struct: @"gr_d3d_memory_allocator_t"@
+-}
 data Gr_d3d_memory_allocator = Gr_d3d_memory_allocator
--- | C struct name: @gr_d3d_backendcontext_t@
+
+{- | C struct: @"gr_d3d_backendcontext_t"@
+
+@
+typedef struct 
+{
+  d3d_dxgi_adapter_t *fAdapter;
+  d3d_d12_device_t *fDevice;
+  d3d_d12_command_queue_t *fQueue;
+  gr_d3d_memory_allocator_t *fMemoryAllocator;
+  _Bool fProtectedContext;
+} gr_d3d_backendcontext_t
+@
+-}
 data Gr_d3d_backendcontext = Gr_d3d_backendcontext
-  { fAdapter :: Ptr (D3d_dxgi_adapter) -- ^ C field: @d3d_dxgi_adapter_t *fAdapter@
-  , fDevice :: Ptr (D3d_d12_device) -- ^ C field: @d3d_d12_device_t *fDevice@
-  , fQueue :: Ptr (D3d_d12_command_queue) -- ^ C field: @d3d_d12_command_queue_t *fQueue@
-  , fMemoryAllocator :: Ptr (Gr_d3d_memory_allocator) -- ^ C field: @gr_d3d_memory_allocator_t *fMemoryAllocator@
-  , fProtectedContext :: CBool -- ^ C field: @_Bool fProtectedContext@
+  { fAdapter :: Ptr (D3d_dxgi_adapter) -- ^ C field: @"d3d_dxgi_adapter_t *fAdapter"@
+  , fDevice :: Ptr (D3d_d12_device) -- ^ C field: @"d3d_d12_device_t *fDevice"@
+  , fQueue :: Ptr (D3d_d12_command_queue) -- ^ C field: @"d3d_d12_command_queue_t *fQueue"@
+  , fMemoryAllocator :: Ptr (Gr_d3d_memory_allocator) -- ^ C field: @"gr_d3d_memory_allocator_t *fMemoryAllocator"@
+  , fProtectedContext :: CBool -- ^ C field: @"_Bool fProtectedContext"@
   }
 instance Foreign.Storable.Offset.Offset "fAdapter" Gr_d3d_backendcontext where
   rawOffset = (#offset gr_d3d_backendcontext_t, fAdapter)
@@ -2874,20 +4718,40 @@ instance Foreign.Storable.Storable Gr_d3d_backendcontext where
     (#poke gr_d3d_backendcontext_t, fQueue) p' fQueue
     (#poke gr_d3d_backendcontext_t, fMemoryAllocator) p' fMemoryAllocator
     (#poke gr_d3d_backendcontext_t, fProtectedContext) p' fProtectedContext
--- | Opaque C struct @d3d_d12_resource_t@
+
+{- | Opaque C struct: @"d3d_d12_resource_t"@
+-}
 data D3d_d12_resource = D3d_d12_resource
--- | Opaque C struct @d3d_alloc_t@
+
+{- | Opaque C struct: @"d3d_alloc_t"@
+-}
 data D3d_alloc = D3d_alloc
--- | C struct name: @gr_d3d_textureresourceinfo_t@
+
+{- | C struct: @"gr_d3d_textureresourceinfo_t"@
+
+@
+typedef struct 
+{
+  d3d_d12_resource_t *fResource;
+  d3d_alloc_t *fAlloc;
+  uint32_t fResourceState;
+  uint32_t fFormat;
+  uint32_t fSampleCount;
+  uint32_t fLevelCount;
+  unsigned int fSampleQualityPattern;
+  _Bool fProtected;
+} gr_d3d_textureresourceinfo_t
+@
+-}
 data Gr_d3d_textureresourceinfo = Gr_d3d_textureresourceinfo
-  { fResource :: Ptr (D3d_d12_resource) -- ^ C field: @d3d_d12_resource_t *fResource@
-  , fAlloc :: Ptr (D3d_alloc) -- ^ C field: @d3d_alloc_t *fAlloc@
-  , fResourceState :: Word32 -- ^ C field: @uint32_t fResourceState@
-  , fFormat :: Word32 -- ^ C field: @uint32_t fFormat@
-  , fSampleCount :: Word32 -- ^ C field: @uint32_t fSampleCount@
-  , fLevelCount :: Word32 -- ^ C field: @uint32_t fLevelCount@
-  , fSampleQualityPattern :: CUInt -- ^ C field: @unsigned int fSampleQualityPattern@
-  , fProtected :: CBool -- ^ C field: @_Bool fProtected@
+  { fResource :: Ptr (D3d_d12_resource) -- ^ C field: @"d3d_d12_resource_t *fResource"@
+  , fAlloc :: Ptr (D3d_alloc) -- ^ C field: @"d3d_alloc_t *fAlloc"@
+  , fResourceState :: Word32 -- ^ C field: @"uint32_t fResourceState"@
+  , fFormat :: Word32 -- ^ C field: @"uint32_t fFormat"@
+  , fSampleCount :: Word32 -- ^ C field: @"uint32_t fSampleCount"@
+  , fLevelCount :: Word32 -- ^ C field: @"uint32_t fLevelCount"@
+  , fSampleQualityPattern :: CUInt -- ^ C field: @"unsigned int fSampleQualityPattern"@
+  , fProtected :: CBool -- ^ C field: @"_Bool fProtected"@
   }
 instance Foreign.Storable.Offset.Offset "fResource" Gr_d3d_textureresourceinfo where
   rawOffset = (#offset gr_d3d_textureresourceinfo_t, fResource)
@@ -2927,4694 +4791,10016 @@ instance Foreign.Storable.Storable Gr_d3d_textureresourceinfo where
     (#poke gr_d3d_textureresourceinfo_t, fLevelCount) p' fLevelCount
     (#poke gr_d3d_textureresourceinfo_t, fSampleQualityPattern) p' fSampleQualityPattern
     (#poke gr_d3d_textureresourceinfo_t, fProtected) p' fProtected
--- | C function: @void sk_colorfilter_unref(sk_colorfilter_t *filter)@
+
+{- | C function signature:
+
+@
+void sk_colorfilter_unref(sk_colorfilter_t *filter)
+@
+-}
 foreign import ccall "sk_colorfilter_unref" sk_colorfilter_unref ::
-  Ptr (Sk_colorfilter) -- ^ C argument @"filter"@ of type @sk_colorfilter_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_mode(sk_color_t c, sk_blendmode_t mode)@
+  Ptr (Sk_colorfilter) -- ^ C argument @"sk_colorfilter_t * filter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_mode(sk_color_t c, sk_blendmode_t mode)
+@
+-}
 foreign import ccall "sk_colorfilter_new_mode" sk_colorfilter_new_mode ::
-  Sk_color -- ^ C argument @"c"@ of type @sk_color_t@
-  -> Sk_blendmode -- ^ C argument @"mode"@ of type @sk_blendmode_t@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_lighting(sk_color_t mul, sk_color_t add)@
+  Sk_color -- ^ C argument @"sk_color_t c"@
+  -> Sk_blendmode -- ^ C argument @"sk_blendmode_t mode"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_lighting(sk_color_t mul, sk_color_t add)
+@
+-}
 foreign import ccall "sk_colorfilter_new_lighting" sk_colorfilter_new_lighting ::
-  Sk_color -- ^ C argument @"mul"@ of type @sk_color_t@
-  -> Sk_color -- ^ C argument @"add"@ of type @sk_color_t@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_compose(sk_colorfilter_t *outer, sk_colorfilter_t *inner)@
+  Sk_color -- ^ C argument @"sk_color_t mul"@
+  -> Sk_color -- ^ C argument @"sk_color_t add"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_compose(sk_colorfilter_t *outer, sk_colorfilter_t *inner)
+@
+-}
 foreign import ccall "sk_colorfilter_new_compose" sk_colorfilter_new_compose ::
-  Ptr (Sk_colorfilter) -- ^ C argument @"outer"@ of type @sk_colorfilter_t *@
-  -> Ptr (Sk_colorfilter) -- ^ C argument @"inner"@ of type @sk_colorfilter_t *@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_color_matrix(const float array[20])@
+  Ptr (Sk_colorfilter) -- ^ C argument @"sk_colorfilter_t * outer"@
+  -> Ptr (Sk_colorfilter) -- ^ C argument @"sk_colorfilter_t * inner"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_color_matrix(const float array[20])
+@
+-}
 foreign import ccall "sk_colorfilter_new_color_matrix" sk_colorfilter_new_color_matrix ::
-  Ptr (CFloat) -- ^ C argument @"array"@ of type @const float [20]@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_hsla_matrix(const float array[20])@
+  Ptr (CFloat) -- ^ C argument @"const float [20] array"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_hsla_matrix(const float array[20])
+@
+-}
 foreign import ccall "sk_colorfilter_new_hsla_matrix" sk_colorfilter_new_hsla_matrix ::
-  Ptr (CFloat) -- ^ C argument @"array"@ of type @const float [20]@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_linear_to_srgb_gamma(void)@
+  Ptr (CFloat) -- ^ C argument @"const float [20] array"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_linear_to_srgb_gamma(void)
+@
+-}
 foreign import ccall "sk_colorfilter_new_linear_to_srgb_gamma" sk_colorfilter_new_linear_to_srgb_gamma ::
-  IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_srgb_to_linear_gamma(void)@
+  IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_srgb_to_linear_gamma(void)
+@
+-}
 foreign import ccall "sk_colorfilter_new_srgb_to_linear_gamma" sk_colorfilter_new_srgb_to_linear_gamma ::
-  IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_lerp(float weight, sk_colorfilter_t *filter0, sk_colorfilter_t *filter1)@
+  IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_lerp(float weight, sk_colorfilter_t *filter0, sk_colorfilter_t *filter1)
+@
+-}
 foreign import ccall "sk_colorfilter_new_lerp" sk_colorfilter_new_lerp ::
-  CFloat -- ^ C argument @"weight"@ of type @float@
-  -> Ptr (Sk_colorfilter) -- ^ C argument @"filter0"@ of type @sk_colorfilter_t *@
-  -> Ptr (Sk_colorfilter) -- ^ C argument @"filter1"@ of type @sk_colorfilter_t *@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_luma_color(void)@
+  CFloat -- ^ C argument @"float weight"@
+  -> Ptr (Sk_colorfilter) -- ^ C argument @"sk_colorfilter_t * filter0"@
+  -> Ptr (Sk_colorfilter) -- ^ C argument @"sk_colorfilter_t * filter1"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_luma_color(void)
+@
+-}
 foreign import ccall "sk_colorfilter_new_luma_color" sk_colorfilter_new_luma_color ::
-  IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_high_contrast(const sk_highcontrastconfig_t *config)@
+  IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_high_contrast(const sk_highcontrastconfig_t *config)
+@
+-}
 foreign import ccall "sk_colorfilter_new_high_contrast" sk_colorfilter_new_high_contrast ::
-  Ptr (Sk_highcontrastconfig) -- ^ C argument @"config"@ of type @const sk_highcontrastconfig_t *@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_table(const uint8_t table[256])@
+  Ptr (Sk_highcontrastconfig) -- ^ C argument @"const sk_highcontrastconfig_t * config"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_table(const uint8_t table[256])
+@
+-}
 foreign import ccall "sk_colorfilter_new_table" sk_colorfilter_new_table ::
-  Ptr (Word8) -- ^ C argument @"table"@ of type @const uint8_t [256]@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_colorfilter_t *sk_colorfilter_new_table_argb(const uint8_t tableA[256], const uint8_t tableR[256], const uint8_t tableG[256], const uint8_t tableB[256])@
+  Ptr (Word8) -- ^ C argument @"const uint8_t [256] table"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_colorfilter_new_table_argb(const uint8_t tableA[256], const uint8_t tableR[256], const uint8_t tableG[256], const uint8_t tableB[256])
+@
+-}
 foreign import ccall "sk_colorfilter_new_table_argb" sk_colorfilter_new_table_argb ::
-  Ptr (Word8) -- ^ C argument @"tableA"@ of type @const uint8_t [256]@
-  -> Ptr (Word8) -- ^ C argument @"tableR"@ of type @const uint8_t [256]@
-  -> Ptr (Word8) -- ^ C argument @"tableG"@ of type @const uint8_t [256]@
-  -> Ptr (Word8) -- ^ C argument @"tableB"@ of type @const uint8_t [256]@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @void sk_typeface_unref(sk_typeface_t *typeface)@
+  Ptr (Word8) -- ^ C argument @"const uint8_t [256] tableA"@
+  -> Ptr (Word8) -- ^ C argument @"const uint8_t [256] tableR"@
+  -> Ptr (Word8) -- ^ C argument @"const uint8_t [256] tableG"@
+  -> Ptr (Word8) -- ^ C argument @"const uint8_t [256] tableB"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+void sk_typeface_unref(sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_unref" sk_typeface_unref ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @sk_typeface_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_fontstyle_t *sk_typeface_get_fontstyle(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"sk_typeface_t * typeface"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_fontstyle_t *sk_typeface_get_fontstyle(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_get_fontstyle" sk_typeface_get_fontstyle ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (Ptr (Sk_fontstyle)) -- ^ C return type: @sk_fontstyle_t *@
--- | C function: @int sk_typeface_get_font_weight(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (Ptr (Sk_fontstyle)) -- ^ C return type: @"sk_fontstyle_t *"@
+
+{- | C function signature:
+
+@
+int sk_typeface_get_font_weight(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_get_font_weight" sk_typeface_get_font_weight ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_typeface_get_font_width(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_typeface_get_font_width(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_get_font_width" sk_typeface_get_font_width ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @sk_font_style_slant_t sk_typeface_get_font_slant(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+sk_font_style_slant_t sk_typeface_get_font_slant(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_get_font_slant" sk_typeface_get_font_slant ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (Sk_font_style_slant) -- ^ C return type: @sk_font_style_slant_t@
--- | C function: @_Bool sk_typeface_is_fixed_pitch(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (Sk_font_style_slant) -- ^ C return type: @"sk_font_style_slant_t"@
+
+{- | C function signature:
+
+@
+_Bool sk_typeface_is_fixed_pitch(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_is_fixed_pitch" sk_typeface_is_fixed_pitch ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_typeface_t *sk_typeface_create_default(void)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_typeface_create_default(void)
+@
+-}
 foreign import ccall "sk_typeface_create_default" sk_typeface_create_default ::
-  IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_typeface_ref_default(void)@
+  IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_typeface_ref_default(void)
+@
+-}
 foreign import ccall "sk_typeface_ref_default" sk_typeface_ref_default ::
-  IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_typeface_create_from_name(const char *familyName, const sk_fontstyle_t *style)@
+  IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_typeface_create_from_name(const char *familyName, const sk_fontstyle_t *style)
+@
+-}
 foreign import ccall "sk_typeface_create_from_name" sk_typeface_create_from_name ::
-  Ptr (CChar) -- ^ C argument @"familyName"@ of type @const char *@
-  -> Ptr (Sk_fontstyle) -- ^ C argument @"style"@ of type @const sk_fontstyle_t *@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_typeface_create_from_file(const char *path, int index)@
+  Ptr (CChar) -- ^ C argument @"const char * familyName"@
+  -> Ptr (Sk_fontstyle) -- ^ C argument @"const sk_fontstyle_t * style"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_typeface_create_from_file(const char *path, int index)
+@
+-}
 foreign import ccall "sk_typeface_create_from_file" sk_typeface_create_from_file ::
-  Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_typeface_create_from_stream(sk_stream_asset_t *stream, int index)@
+  Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_typeface_create_from_stream(sk_stream_asset_t *stream, int index)
+@
+-}
 foreign import ccall "sk_typeface_create_from_stream" sk_typeface_create_from_stream ::
-  Ptr (Sk_stream_asset) -- ^ C argument @"stream"@ of type @sk_stream_asset_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_typeface_create_from_data(sk_data_t *data, int index)@
+  Ptr (Sk_stream_asset) -- ^ C argument @"sk_stream_asset_t * stream"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_typeface_create_from_data(sk_data_t *data, int index)
+@
+-}
 foreign import ccall "sk_typeface_create_from_data" sk_typeface_create_from_data ::
-  Ptr (Sk_data) -- ^ C argument @"data"@ of type @sk_data_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @void sk_typeface_unichars_to_glyphs(const sk_typeface_t *typeface, const int32_t unichars[], int count, uint16_t glyphs[])@
+  Ptr (Sk_data) -- ^ C argument @"sk_data_t * data"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+void sk_typeface_unichars_to_glyphs(const sk_typeface_t *typeface, const int32_t unichars[], int count, uint16_t glyphs[])
+@
+-}
 foreign import ccall "sk_typeface_unichars_to_glyphs" sk_typeface_unichars_to_glyphs ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Ptr (Int32) -- ^ C argument @"unichars"@ of type @const int32_t []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @uint16_t []@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @uint16_t sk_typeface_unichar_to_glyph(const sk_typeface_t *typeface, const int32_t unichar)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Ptr (Int32) -- ^ C argument @"const int32_t [] unichars"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (Word16) -- ^ C argument @"uint16_t [] glyphs"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+uint16_t sk_typeface_unichar_to_glyph(const sk_typeface_t *typeface, const int32_t unichar)
+@
+-}
 foreign import ccall "sk_typeface_unichar_to_glyph" sk_typeface_unichar_to_glyph ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Int32 -- ^ C argument @"unichar"@ of type @const int32_t@
-  -> IO (Word16) -- ^ C return type: @uint16_t@
--- | C function: @int sk_typeface_count_glyphs(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Int32 -- ^ C argument @"const int32_t unichar"@
+  -> IO (Word16) -- ^ C return type: @"uint16_t"@
+
+{- | C function signature:
+
+@
+int sk_typeface_count_glyphs(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_count_glyphs" sk_typeface_count_glyphs ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_typeface_count_tables(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_typeface_count_tables(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_count_tables" sk_typeface_count_tables ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_typeface_get_table_tags(const sk_typeface_t *typeface, sk_font_table_tag_t tags[])@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_typeface_get_table_tags(const sk_typeface_t *typeface, sk_font_table_tag_t tags[])
+@
+-}
 foreign import ccall "sk_typeface_get_table_tags" sk_typeface_get_table_tags ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Ptr (Sk_font_table_tag) -- ^ C argument @"tags"@ of type @sk_font_table_tag_t []@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @size_t sk_typeface_get_table_size(const sk_typeface_t *typeface, sk_font_table_tag_t tag)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Ptr (Sk_font_table_tag) -- ^ C argument @"sk_font_table_tag_t [] tags"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+size_t sk_typeface_get_table_size(const sk_typeface_t *typeface, sk_font_table_tag_t tag)
+@
+-}
 foreign import ccall "sk_typeface_get_table_size" sk_typeface_get_table_size ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Sk_font_table_tag -- ^ C argument @"tag"@ of type @sk_font_table_tag_t@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_typeface_get_table_data(const sk_typeface_t *typeface, sk_font_table_tag_t tag, size_t offset, size_t length, void *data)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Sk_font_table_tag -- ^ C argument @"sk_font_table_tag_t tag"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_typeface_get_table_data(const sk_typeface_t *typeface, sk_font_table_tag_t tag, size_t offset, size_t length, void *data)
+@
+-}
 foreign import ccall "sk_typeface_get_table_data" sk_typeface_get_table_data ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Sk_font_table_tag -- ^ C argument @"tag"@ of type @sk_font_table_tag_t@
-  -> CSize -- ^ C argument @"offset"@ of type @size_t@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> Ptr (()) -- ^ C argument @"data"@ of type @void *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @sk_data_t *sk_typeface_copy_table_data(const sk_typeface_t *typeface, sk_font_table_tag_t tag)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Sk_font_table_tag -- ^ C argument @"sk_font_table_tag_t tag"@
+  -> CSize -- ^ C argument @"size_t offset"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> Ptr (()) -- ^ C argument @"void * data"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_typeface_copy_table_data(const sk_typeface_t *typeface, sk_font_table_tag_t tag)
+@
+-}
 foreign import ccall "sk_typeface_copy_table_data" sk_typeface_copy_table_data ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Sk_font_table_tag -- ^ C argument @"tag"@ of type @sk_font_table_tag_t@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @int sk_typeface_get_units_per_em(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Sk_font_table_tag -- ^ C argument @"sk_font_table_tag_t tag"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+int sk_typeface_get_units_per_em(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_get_units_per_em" sk_typeface_get_units_per_em ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @_Bool sk_typeface_get_kerning_pair_adjustments(const sk_typeface_t *typeface, const uint16_t glyphs[], int count, int32_t adjustments[])@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+_Bool sk_typeface_get_kerning_pair_adjustments(const sk_typeface_t *typeface, const uint16_t glyphs[], int count, int32_t adjustments[])
+@
+-}
 foreign import ccall "sk_typeface_get_kerning_pair_adjustments" sk_typeface_get_kerning_pair_adjustments ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @const uint16_t []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (Int32) -- ^ C argument @"adjustments"@ of type @int32_t []@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_string_t *sk_typeface_get_family_name(const sk_typeface_t *typeface)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Ptr (Word16) -- ^ C argument @"const uint16_t [] glyphs"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (Int32) -- ^ C argument @"int32_t [] adjustments"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_string_t *sk_typeface_get_family_name(const sk_typeface_t *typeface)
+@
+-}
 foreign import ccall "sk_typeface_get_family_name" sk_typeface_get_family_name ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> IO (Ptr (Sk_string)) -- ^ C return type: @sk_string_t *@
--- | C function: @sk_stream_asset_t *sk_typeface_open_stream(const sk_typeface_t *typeface, int *ttcIndex)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> IO (Ptr (Sk_string)) -- ^ C return type: @"sk_string_t *"@
+
+{- | C function signature:
+
+@
+sk_stream_asset_t *sk_typeface_open_stream(const sk_typeface_t *typeface, int *ttcIndex)
+@
+-}
 foreign import ccall "sk_typeface_open_stream" sk_typeface_open_stream ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @const sk_typeface_t *@
-  -> Ptr (CInt) -- ^ C argument @"ttcIndex"@ of type @int *@
-  -> IO (Ptr (Sk_stream_asset)) -- ^ C return type: @sk_stream_asset_t *@
--- | C function: @sk_fontmgr_t *sk_fontmgr_create_default(void)@
+  Ptr (Sk_typeface) -- ^ C argument @"const sk_typeface_t * typeface"@
+  -> Ptr (CInt) -- ^ C argument @"int * ttcIndex"@
+  -> IO (Ptr (Sk_stream_asset)) -- ^ C return type: @"sk_stream_asset_t *"@
+
+{- | C function signature:
+
+@
+sk_fontmgr_t *sk_fontmgr_create_default(void)
+@
+-}
 foreign import ccall "sk_fontmgr_create_default" sk_fontmgr_create_default ::
-  IO (Ptr (Sk_fontmgr)) -- ^ C return type: @sk_fontmgr_t *@
--- | C function: @sk_fontmgr_t *sk_fontmgr_ref_default(void)@
+  IO (Ptr (Sk_fontmgr)) -- ^ C return type: @"sk_fontmgr_t *"@
+
+{- | C function signature:
+
+@
+sk_fontmgr_t *sk_fontmgr_ref_default(void)
+@
+-}
 foreign import ccall "sk_fontmgr_ref_default" sk_fontmgr_ref_default ::
-  IO (Ptr (Sk_fontmgr)) -- ^ C return type: @sk_fontmgr_t *@
--- | C function: @void sk_fontmgr_unref(sk_fontmgr_t *)@
+  IO (Ptr (Sk_fontmgr)) -- ^ C return type: @"sk_fontmgr_t *"@
+
+{- | C function signature:
+
+@
+void sk_fontmgr_unref(sk_fontmgr_t *)
+@
+-}
 foreign import ccall "sk_fontmgr_unref" sk_fontmgr_unref ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_fontmgr_count_families(sk_fontmgr_t *)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_fontmgr_count_families(sk_fontmgr_t *)
+@
+-}
 foreign import ccall "sk_fontmgr_count_families" sk_fontmgr_count_families ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_fontmgr_get_family_name(sk_fontmgr_t *, int index, sk_string_t *familyName)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_fontmgr_get_family_name(sk_fontmgr_t *, int index, sk_string_t *familyName)
+@
+-}
 foreign import ccall "sk_fontmgr_get_family_name" sk_fontmgr_get_family_name ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_string) -- ^ C argument @"familyName"@ of type @sk_string_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_fontstyleset_t *sk_fontmgr_create_styleset(sk_fontmgr_t *, int index)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * familyName"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_fontstyleset_t *sk_fontmgr_create_styleset(sk_fontmgr_t *, int index)
+@
+-}
 foreign import ccall "sk_fontmgr_create_styleset" sk_fontmgr_create_styleset ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_fontstyleset)) -- ^ C return type: @sk_fontstyleset_t *@
--- | C function: @sk_fontstyleset_t *sk_fontmgr_match_family(sk_fontmgr_t *, const char *familyName)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_fontstyleset)) -- ^ C return type: @"sk_fontstyleset_t *"@
+
+{- | C function signature:
+
+@
+sk_fontstyleset_t *sk_fontmgr_match_family(sk_fontmgr_t *, const char *familyName)
+@
+-}
 foreign import ccall "sk_fontmgr_match_family" sk_fontmgr_match_family ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> Ptr (CChar) -- ^ C argument @"familyName"@ of type @const char *@
-  -> IO (Ptr (Sk_fontstyleset)) -- ^ C return type: @sk_fontstyleset_t *@
--- | C function: @sk_typeface_t *sk_fontmgr_match_family_style(sk_fontmgr_t *, const char *familyName, sk_fontstyle_t *style)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> Ptr (CChar) -- ^ C argument @"const char * familyName"@
+  -> IO (Ptr (Sk_fontstyleset)) -- ^ C return type: @"sk_fontstyleset_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_fontmgr_match_family_style(sk_fontmgr_t *, const char *familyName, sk_fontstyle_t *style)
+@
+-}
 foreign import ccall "sk_fontmgr_match_family_style" sk_fontmgr_match_family_style ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> Ptr (CChar) -- ^ C argument @"familyName"@ of type @const char *@
-  -> Ptr (Sk_fontstyle) -- ^ C argument @"style"@ of type @sk_fontstyle_t *@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_fontmgr_match_family_style_character(sk_fontmgr_t *, const char *familyName, sk_fontstyle_t *style, const char **bcp47, int bcp47Count, int32_t character)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> Ptr (CChar) -- ^ C argument @"const char * familyName"@
+  -> Ptr (Sk_fontstyle) -- ^ C argument @"sk_fontstyle_t * style"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_fontmgr_match_family_style_character(sk_fontmgr_t *, const char *familyName, sk_fontstyle_t *style, const char **bcp47, int bcp47Count, int32_t character)
+@
+-}
 foreign import ccall "sk_fontmgr_match_family_style_character" sk_fontmgr_match_family_style_character ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> Ptr (CChar) -- ^ C argument @"familyName"@ of type @const char *@
-  -> Ptr (Sk_fontstyle) -- ^ C argument @"style"@ of type @sk_fontstyle_t *@
-  -> Ptr (Ptr (CChar)) -- ^ C argument @"bcp47"@ of type @const char **@
-  -> CInt -- ^ C argument @"bcp47Count"@ of type @int@
-  -> Int32 -- ^ C argument @"character"@ of type @int32_t@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_fontmgr_create_from_data(sk_fontmgr_t *, sk_data_t *data, int index)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> Ptr (CChar) -- ^ C argument @"const char * familyName"@
+  -> Ptr (Sk_fontstyle) -- ^ C argument @"sk_fontstyle_t * style"@
+  -> Ptr (Ptr (CChar)) -- ^ C argument @"const char ** bcp47"@
+  -> CInt -- ^ C argument @"int bcp47Count"@
+  -> Int32 -- ^ C argument @"int32_t character"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_fontmgr_create_from_data(sk_fontmgr_t *, sk_data_t *data, int index)
+@
+-}
 foreign import ccall "sk_fontmgr_create_from_data" sk_fontmgr_create_from_data ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"data"@ of type @sk_data_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_fontmgr_create_from_stream(sk_fontmgr_t *, sk_stream_asset_t *stream, int index)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * data"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_fontmgr_create_from_stream(sk_fontmgr_t *, sk_stream_asset_t *stream, int index)
+@
+-}
 foreign import ccall "sk_fontmgr_create_from_stream" sk_fontmgr_create_from_stream ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> Ptr (Sk_stream_asset) -- ^ C argument @"stream"@ of type @sk_stream_asset_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_fontmgr_create_from_file(sk_fontmgr_t *, const char *path, int index)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> Ptr (Sk_stream_asset) -- ^ C argument @"sk_stream_asset_t * stream"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_fontmgr_create_from_file(sk_fontmgr_t *, const char *path, int index)
+@
+-}
 foreign import ccall "sk_fontmgr_create_from_file" sk_fontmgr_create_from_file ::
-  Ptr (Sk_fontmgr) -- ^ C argument type: @sk_fontmgr_t *@
-  -> Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_fontstyle_t *sk_fontstyle_new(int weight, int width, sk_font_style_slant_t slant)@
+  Ptr (Sk_fontmgr) -- ^ C argument type: @"sk_fontmgr_t *"@
+  -> Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_fontstyle_t *sk_fontstyle_new(int weight, int width, sk_font_style_slant_t slant)
+@
+-}
 foreign import ccall "sk_fontstyle_new" sk_fontstyle_new ::
-  CInt -- ^ C argument @"weight"@ of type @int@
-  -> CInt -- ^ C argument @"width"@ of type @int@
-  -> Sk_font_style_slant -- ^ C argument @"slant"@ of type @sk_font_style_slant_t@
-  -> IO (Ptr (Sk_fontstyle)) -- ^ C return type: @sk_fontstyle_t *@
--- | C function: @void sk_fontstyle_delete(sk_fontstyle_t *fs)@
+  CInt -- ^ C argument @"int weight"@
+  -> CInt -- ^ C argument @"int width"@
+  -> Sk_font_style_slant -- ^ C argument @"sk_font_style_slant_t slant"@
+  -> IO (Ptr (Sk_fontstyle)) -- ^ C return type: @"sk_fontstyle_t *"@
+
+{- | C function signature:
+
+@
+void sk_fontstyle_delete(sk_fontstyle_t *fs)
+@
+-}
 foreign import ccall "sk_fontstyle_delete" sk_fontstyle_delete ::
-  Ptr (Sk_fontstyle) -- ^ C argument @"fs"@ of type @sk_fontstyle_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_fontstyle_get_weight(const sk_fontstyle_t *fs)@
+  Ptr (Sk_fontstyle) -- ^ C argument @"sk_fontstyle_t * fs"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_fontstyle_get_weight(const sk_fontstyle_t *fs)
+@
+-}
 foreign import ccall "sk_fontstyle_get_weight" sk_fontstyle_get_weight ::
-  Ptr (Sk_fontstyle) -- ^ C argument @"fs"@ of type @const sk_fontstyle_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_fontstyle_get_width(const sk_fontstyle_t *fs)@
+  Ptr (Sk_fontstyle) -- ^ C argument @"const sk_fontstyle_t * fs"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_fontstyle_get_width(const sk_fontstyle_t *fs)
+@
+-}
 foreign import ccall "sk_fontstyle_get_width" sk_fontstyle_get_width ::
-  Ptr (Sk_fontstyle) -- ^ C argument @"fs"@ of type @const sk_fontstyle_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @sk_font_style_slant_t sk_fontstyle_get_slant(const sk_fontstyle_t *fs)@
+  Ptr (Sk_fontstyle) -- ^ C argument @"const sk_fontstyle_t * fs"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+sk_font_style_slant_t sk_fontstyle_get_slant(const sk_fontstyle_t *fs)
+@
+-}
 foreign import ccall "sk_fontstyle_get_slant" sk_fontstyle_get_slant ::
-  Ptr (Sk_fontstyle) -- ^ C argument @"fs"@ of type @const sk_fontstyle_t *@
-  -> IO (Sk_font_style_slant) -- ^ C return type: @sk_font_style_slant_t@
--- | C function: @sk_fontstyleset_t *sk_fontstyleset_create_empty(void)@
+  Ptr (Sk_fontstyle) -- ^ C argument @"const sk_fontstyle_t * fs"@
+  -> IO (Sk_font_style_slant) -- ^ C return type: @"sk_font_style_slant_t"@
+
+{- | C function signature:
+
+@
+sk_fontstyleset_t *sk_fontstyleset_create_empty(void)
+@
+-}
 foreign import ccall "sk_fontstyleset_create_empty" sk_fontstyleset_create_empty ::
-  IO (Ptr (Sk_fontstyleset)) -- ^ C return type: @sk_fontstyleset_t *@
--- | C function: @void sk_fontstyleset_unref(sk_fontstyleset_t *fss)@
+  IO (Ptr (Sk_fontstyleset)) -- ^ C return type: @"sk_fontstyleset_t *"@
+
+{- | C function signature:
+
+@
+void sk_fontstyleset_unref(sk_fontstyleset_t *fss)
+@
+-}
 foreign import ccall "sk_fontstyleset_unref" sk_fontstyleset_unref ::
-  Ptr (Sk_fontstyleset) -- ^ C argument @"fss"@ of type @sk_fontstyleset_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_fontstyleset_get_count(sk_fontstyleset_t *fss)@
+  Ptr (Sk_fontstyleset) -- ^ C argument @"sk_fontstyleset_t * fss"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_fontstyleset_get_count(sk_fontstyleset_t *fss)
+@
+-}
 foreign import ccall "sk_fontstyleset_get_count" sk_fontstyleset_get_count ::
-  Ptr (Sk_fontstyleset) -- ^ C argument @"fss"@ of type @sk_fontstyleset_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_fontstyleset_get_style(sk_fontstyleset_t *fss, int index, sk_fontstyle_t *fs, sk_string_t *style)@
+  Ptr (Sk_fontstyleset) -- ^ C argument @"sk_fontstyleset_t * fss"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_fontstyleset_get_style(sk_fontstyleset_t *fss, int index, sk_fontstyle_t *fs, sk_string_t *style)
+@
+-}
 foreign import ccall "sk_fontstyleset_get_style" sk_fontstyleset_get_style ::
-  Ptr (Sk_fontstyleset) -- ^ C argument @"fss"@ of type @sk_fontstyleset_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_fontstyle) -- ^ C argument @"fs"@ of type @sk_fontstyle_t *@
-  -> Ptr (Sk_string) -- ^ C argument @"style"@ of type @sk_string_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_typeface_t *sk_fontstyleset_create_typeface(sk_fontstyleset_t *fss, int index)@
+  Ptr (Sk_fontstyleset) -- ^ C argument @"sk_fontstyleset_t * fss"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_fontstyle) -- ^ C argument @"sk_fontstyle_t * fs"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * style"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_fontstyleset_create_typeface(sk_fontstyleset_t *fss, int index)
+@
+-}
 foreign import ccall "sk_fontstyleset_create_typeface" sk_fontstyleset_create_typeface ::
-  Ptr (Sk_fontstyleset) -- ^ C argument @"fss"@ of type @sk_fontstyleset_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_typeface_t *sk_fontstyleset_match_style(sk_fontstyleset_t *fss, sk_fontstyle_t *style)@
+  Ptr (Sk_fontstyleset) -- ^ C argument @"sk_fontstyleset_t * fss"@
+  -> CInt -- ^ C argument @"int index"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_fontstyleset_match_style(sk_fontstyleset_t *fss, sk_fontstyle_t *style)
+@
+-}
 foreign import ccall "sk_fontstyleset_match_style" sk_fontstyleset_match_style ::
-  Ptr (Sk_fontstyleset) -- ^ C argument @"fss"@ of type @sk_fontstyleset_t *@
-  -> Ptr (Sk_fontstyle) -- ^ C argument @"style"@ of type @sk_fontstyle_t *@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @sk_picture_recorder_t *sk_picture_recorder_new(void)@
+  Ptr (Sk_fontstyleset) -- ^ C argument @"sk_fontstyleset_t * fss"@
+  -> Ptr (Sk_fontstyle) -- ^ C argument @"sk_fontstyle_t * style"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+sk_picture_recorder_t *sk_picture_recorder_new(void)
+@
+-}
 foreign import ccall "sk_picture_recorder_new" sk_picture_recorder_new ::
-  IO (Ptr (Sk_picture_recorder)) -- ^ C return type: @sk_picture_recorder_t *@
--- | C function: @void sk_picture_recorder_delete(sk_picture_recorder_t *)@
+  IO (Ptr (Sk_picture_recorder)) -- ^ C return type: @"sk_picture_recorder_t *"@
+
+{- | C function signature:
+
+@
+void sk_picture_recorder_delete(sk_picture_recorder_t *)
+@
+-}
 foreign import ccall "sk_picture_recorder_delete" sk_picture_recorder_delete ::
-  Ptr (Sk_picture_recorder) -- ^ C argument type: @sk_picture_recorder_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_canvas_t *sk_picture_recorder_begin_recording(sk_picture_recorder_t *, const sk_rect_t *)@
+  Ptr (Sk_picture_recorder) -- ^ C argument type: @"sk_picture_recorder_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_picture_recorder_begin_recording(sk_picture_recorder_t *, const sk_rect_t *)
+@
+-}
 foreign import ccall "sk_picture_recorder_begin_recording" sk_picture_recorder_begin_recording ::
-  Ptr (Sk_picture_recorder) -- ^ C argument type: @sk_picture_recorder_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @const sk_rect_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @sk_canvas_t *sk_picture_recorder_begin_recording_with_bbh_factory(sk_picture_recorder_t *, const sk_rect_t *, sk_bbh_factory_t *)@
+  Ptr (Sk_picture_recorder) -- ^ C argument type: @"sk_picture_recorder_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"const sk_rect_t *"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_picture_recorder_begin_recording_with_bbh_factory(sk_picture_recorder_t *, const sk_rect_t *, sk_bbh_factory_t *)
+@
+-}
 foreign import ccall "sk_picture_recorder_begin_recording_with_bbh_factory" sk_picture_recorder_begin_recording_with_bbh_factory ::
-  Ptr (Sk_picture_recorder) -- ^ C argument type: @sk_picture_recorder_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @const sk_rect_t *@
-  -> Ptr (Sk_bbh_factory) -- ^ C argument type: @sk_bbh_factory_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @sk_picture_t *sk_picture_recorder_end_recording(sk_picture_recorder_t *)@
+  Ptr (Sk_picture_recorder) -- ^ C argument type: @"sk_picture_recorder_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"const sk_rect_t *"@
+  -> Ptr (Sk_bbh_factory) -- ^ C argument type: @"sk_bbh_factory_t *"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+sk_picture_t *sk_picture_recorder_end_recording(sk_picture_recorder_t *)
+@
+-}
 foreign import ccall "sk_picture_recorder_end_recording" sk_picture_recorder_end_recording ::
-  Ptr (Sk_picture_recorder) -- ^ C argument type: @sk_picture_recorder_t *@
-  -> IO (Ptr (Sk_picture)) -- ^ C return type: @sk_picture_t *@
--- | C function: @sk_drawable_t *sk_picture_recorder_end_recording_as_drawable(sk_picture_recorder_t *)@
+  Ptr (Sk_picture_recorder) -- ^ C argument type: @"sk_picture_recorder_t *"@
+  -> IO (Ptr (Sk_picture)) -- ^ C return type: @"sk_picture_t *"@
+
+{- | C function signature:
+
+@
+sk_drawable_t *sk_picture_recorder_end_recording_as_drawable(sk_picture_recorder_t *)
+@
+-}
 foreign import ccall "sk_picture_recorder_end_recording_as_drawable" sk_picture_recorder_end_recording_as_drawable ::
-  Ptr (Sk_picture_recorder) -- ^ C argument type: @sk_picture_recorder_t *@
-  -> IO (Ptr (Sk_drawable)) -- ^ C return type: @sk_drawable_t *@
--- | C function: @sk_canvas_t *sk_picture_get_recording_canvas(sk_picture_recorder_t *crec)@
+  Ptr (Sk_picture_recorder) -- ^ C argument type: @"sk_picture_recorder_t *"@
+  -> IO (Ptr (Sk_drawable)) -- ^ C return type: @"sk_drawable_t *"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_picture_get_recording_canvas(sk_picture_recorder_t *crec)
+@
+-}
 foreign import ccall "sk_picture_get_recording_canvas" sk_picture_get_recording_canvas ::
-  Ptr (Sk_picture_recorder) -- ^ C argument @"crec"@ of type @sk_picture_recorder_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @void sk_picture_ref(sk_picture_t *)@
+  Ptr (Sk_picture_recorder) -- ^ C argument @"sk_picture_recorder_t * crec"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+void sk_picture_ref(sk_picture_t *)
+@
+-}
 foreign import ccall "sk_picture_ref" sk_picture_ref ::
-  Ptr (Sk_picture) -- ^ C argument type: @sk_picture_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_picture_unref(sk_picture_t *)@
+  Ptr (Sk_picture) -- ^ C argument type: @"sk_picture_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_picture_unref(sk_picture_t *)
+@
+-}
 foreign import ccall "sk_picture_unref" sk_picture_unref ::
-  Ptr (Sk_picture) -- ^ C argument type: @sk_picture_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @uint32_t sk_picture_get_unique_id(sk_picture_t *)@
+  Ptr (Sk_picture) -- ^ C argument type: @"sk_picture_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+uint32_t sk_picture_get_unique_id(sk_picture_t *)
+@
+-}
 foreign import ccall "sk_picture_get_unique_id" sk_picture_get_unique_id ::
-  Ptr (Sk_picture) -- ^ C argument type: @sk_picture_t *@
-  -> IO (Word32) -- ^ C return type: @uint32_t@
--- | C function: @void sk_picture_get_cull_rect(sk_picture_t *, sk_rect_t *)@
+  Ptr (Sk_picture) -- ^ C argument type: @"sk_picture_t *"@
+  -> IO (Word32) -- ^ C return type: @"uint32_t"@
+
+{- | C function signature:
+
+@
+void sk_picture_get_cull_rect(sk_picture_t *, sk_rect_t *)
+@
+-}
 foreign import ccall "sk_picture_get_cull_rect" sk_picture_get_cull_rect ::
-  Ptr (Sk_picture) -- ^ C argument type: @sk_picture_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_shader_t *sk_picture_make_shader(sk_picture_t *src, sk_shader_tilemode_t tmx, sk_shader_tilemode_t tmy, sk_filter_mode_t mode, const sk_matrix_t *localMatrix, const sk_rect_t *tile)@
+  Ptr (Sk_picture) -- ^ C argument type: @"sk_picture_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"sk_rect_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_picture_make_shader(sk_picture_t *src, sk_shader_tilemode_t tmx, sk_shader_tilemode_t tmy, sk_filter_mode_t mode, const sk_matrix_t *localMatrix, const sk_rect_t *tile)
+@
+-}
 foreign import ccall "sk_picture_make_shader" sk_picture_make_shader ::
-  Ptr (Sk_picture) -- ^ C argument @"src"@ of type @sk_picture_t *@
-  -> Sk_shader_tilemode -- ^ C argument @"tmx"@ of type @sk_shader_tilemode_t@
-  -> Sk_shader_tilemode -- ^ C argument @"tmy"@ of type @sk_shader_tilemode_t@
-  -> Sk_filter_mode -- ^ C argument @"mode"@ of type @sk_filter_mode_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"tile"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_data_t *sk_picture_serialize_to_data(const sk_picture_t *picture)@
+  Ptr (Sk_picture) -- ^ C argument @"sk_picture_t * src"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tmx"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tmy"@
+  -> Sk_filter_mode -- ^ C argument @"sk_filter_mode_t mode"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * tile"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_picture_serialize_to_data(const sk_picture_t *picture)
+@
+-}
 foreign import ccall "sk_picture_serialize_to_data" sk_picture_serialize_to_data ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @const sk_picture_t *@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @void sk_picture_serialize_to_stream(const sk_picture_t *picture, sk_wstream_t *stream)@
+  Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * picture"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+void sk_picture_serialize_to_stream(const sk_picture_t *picture, sk_wstream_t *stream)
+@
+-}
 foreign import ccall "sk_picture_serialize_to_stream" sk_picture_serialize_to_stream ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @const sk_picture_t *@
-  -> Ptr (Sk_wstream) -- ^ C argument @"stream"@ of type @sk_wstream_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_picture_t *sk_picture_deserialize_from_stream(sk_stream_t *stream)@
+  Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * picture"@
+  -> Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * stream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_picture_t *sk_picture_deserialize_from_stream(sk_stream_t *stream)
+@
+-}
 foreign import ccall "sk_picture_deserialize_from_stream" sk_picture_deserialize_from_stream ::
-  Ptr (Sk_stream) -- ^ C argument @"stream"@ of type @sk_stream_t *@
-  -> IO (Ptr (Sk_picture)) -- ^ C return type: @sk_picture_t *@
--- | C function: @sk_picture_t *sk_picture_deserialize_from_data(sk_data_t *data)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * stream"@
+  -> IO (Ptr (Sk_picture)) -- ^ C return type: @"sk_picture_t *"@
+
+{- | C function signature:
+
+@
+sk_picture_t *sk_picture_deserialize_from_data(sk_data_t *data)
+@
+-}
 foreign import ccall "sk_picture_deserialize_from_data" sk_picture_deserialize_from_data ::
-  Ptr (Sk_data) -- ^ C argument @"data"@ of type @sk_data_t *@
-  -> IO (Ptr (Sk_picture)) -- ^ C return type: @sk_picture_t *@
--- | C function: @sk_picture_t *sk_picture_deserialize_from_memory(void *buffer, size_t length)@
+  Ptr (Sk_data) -- ^ C argument @"sk_data_t * data"@
+  -> IO (Ptr (Sk_picture)) -- ^ C return type: @"sk_picture_t *"@
+
+{- | C function signature:
+
+@
+sk_picture_t *sk_picture_deserialize_from_memory(void *buffer, size_t length)
+@
+-}
 foreign import ccall "sk_picture_deserialize_from_memory" sk_picture_deserialize_from_memory ::
-  Ptr (()) -- ^ C argument @"buffer"@ of type @void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Sk_picture)) -- ^ C return type: @sk_picture_t *@
--- | C function: @void sk_picture_playback(const sk_picture_t *picture, sk_canvas_t *canvas)@
+  Ptr (()) -- ^ C argument @"void * buffer"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Sk_picture)) -- ^ C return type: @"sk_picture_t *"@
+
+{- | C function signature:
+
+@
+void sk_picture_playback(const sk_picture_t *picture, sk_canvas_t *canvas)
+@
+-}
 foreign import ccall "sk_picture_playback" sk_picture_playback ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @const sk_picture_t *@
-  -> Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_picture_approximate_op_count(const sk_picture_t *picture, _Bool nested)@
+  Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * picture"@
+  -> Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_picture_approximate_op_count(const sk_picture_t *picture, _Bool nested)
+@
+-}
 foreign import ccall "sk_picture_approximate_op_count" sk_picture_approximate_op_count ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @const sk_picture_t *@
-  -> CBool -- ^ C argument @"nested"@ of type @_Bool@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @size_t sk_picture_approximate_bytes_used(const sk_picture_t *picture)@
+  Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * picture"@
+  -> CBool -- ^ C argument @"_Bool nested"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+size_t sk_picture_approximate_bytes_used(const sk_picture_t *picture)
+@
+-}
 foreign import ccall "sk_picture_approximate_bytes_used" sk_picture_approximate_bytes_used ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @const sk_picture_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @sk_rtree_factory_t *sk_rtree_factory_new(void)@
+  Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * picture"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+sk_rtree_factory_t *sk_rtree_factory_new(void)
+@
+-}
 foreign import ccall "sk_rtree_factory_new" sk_rtree_factory_new ::
-  IO (Ptr (Sk_rtree_factory)) -- ^ C return type: @sk_rtree_factory_t *@
--- | C function: @void sk_rtree_factory_delete(sk_rtree_factory_t *)@
+  IO (Ptr (Sk_rtree_factory)) -- ^ C return type: @"sk_rtree_factory_t *"@
+
+{- | C function signature:
+
+@
+void sk_rtree_factory_delete(sk_rtree_factory_t *)
+@
+-}
 foreign import ccall "sk_rtree_factory_delete" sk_rtree_factory_delete ::
-  Ptr (Sk_rtree_factory) -- ^ C argument type: @sk_rtree_factory_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_surface_t *sk_surface_new_null(int width, int height)@
+  Ptr (Sk_rtree_factory) -- ^ C argument type: @"sk_rtree_factory_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_null(int width, int height)
+@
+-}
 foreign import ccall "sk_surface_new_null" sk_surface_new_null ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @sk_surface_t *sk_surface_new_raster(const sk_imageinfo_t *, size_t rowBytes, const sk_surfaceprops_t *)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_raster(const sk_imageinfo_t *, size_t rowBytes, const sk_surfaceprops_t *)
+@
+-}
 foreign import ccall "sk_surface_new_raster" sk_surface_new_raster ::
-  Ptr (Sk_imageinfo) -- ^ C argument type: @const sk_imageinfo_t *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument type: @const sk_surfaceprops_t *@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @sk_surface_t *sk_surface_new_raster_direct(const sk_imageinfo_t *, void *pixels, size_t rowBytes, const sk_surface_raster_release_proc releaseProc, void *context, const sk_surfaceprops_t *props)@
+  Ptr (Sk_imageinfo) -- ^ C argument type: @"const sk_imageinfo_t *"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument type: @"const sk_surfaceprops_t *"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_raster_direct(const sk_imageinfo_t *, void *pixels, size_t rowBytes, const sk_surface_raster_release_proc releaseProc, void *context, const sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_surface_new_raster_direct" sk_surface_new_raster_direct ::
-  Ptr (Sk_imageinfo) -- ^ C argument type: @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"pixels"@ of type @void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> FunPtr Sk_surface_raster_release_proc -- ^ C argument @"releaseProc"@ of type @const sk_surface_raster_release_proc@
-  -> Ptr (()) -- ^ C argument @"context"@ of type @void *@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @sk_surface_t *sk_surface_new_backend_texture(gr_recording_context_t *context, const gr_backendtexture_t *texture, gr_surfaceorigin_t origin, int samples, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props)@
+  Ptr (Sk_imageinfo) -- ^ C argument type: @"const sk_imageinfo_t *"@
+  -> Ptr (()) -- ^ C argument @"void * pixels"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> FunPtr Sk_surface_raster_release_proc -- ^ C argument @"const sk_surface_raster_release_proc releaseProc"@
+  -> Ptr (()) -- ^ C argument @"void * context"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_backend_texture(gr_recording_context_t *context, const gr_backendtexture_t *texture, gr_surfaceorigin_t origin, int samples, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_surface_new_backend_texture" sk_surface_new_backend_texture ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> Gr_surfaceorigin -- ^ C argument @"origin"@ of type @gr_surfaceorigin_t@
-  -> CInt -- ^ C argument @"samples"@ of type @int@
-  -> Sk_colortype -- ^ C argument @"colorType"@ of type @sk_colortype_t@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @sk_surface_t *sk_surface_new_backend_render_target(gr_recording_context_t *context, const gr_backendrendertarget_t *target, gr_surfaceorigin_t origin, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> Gr_surfaceorigin -- ^ C argument @"gr_surfaceorigin_t origin"@
+  -> CInt -- ^ C argument @"int samples"@
+  -> Sk_colortype -- ^ C argument @"sk_colortype_t colorType"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_backend_render_target(gr_recording_context_t *context, const gr_backendrendertarget_t *target, gr_surfaceorigin_t origin, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_surface_new_backend_render_target" sk_surface_new_backend_render_target ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Ptr (Gr_backendrendertarget) -- ^ C argument @"target"@ of type @const gr_backendrendertarget_t *@
-  -> Gr_surfaceorigin -- ^ C argument @"origin"@ of type @gr_surfaceorigin_t@
-  -> Sk_colortype -- ^ C argument @"colorType"@ of type @sk_colortype_t@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @sk_surface_t *sk_surface_new_render_target(gr_recording_context_t *context, _Bool budgeted, const sk_imageinfo_t *cinfo, int sampleCount, gr_surfaceorigin_t origin, const sk_surfaceprops_t *props, _Bool shouldCreateWithMips)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * target"@
+  -> Gr_surfaceorigin -- ^ C argument @"gr_surfaceorigin_t origin"@
+  -> Sk_colortype -- ^ C argument @"sk_colortype_t colorType"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_render_target(gr_recording_context_t *context, _Bool budgeted, const sk_imageinfo_t *cinfo, int sampleCount, gr_surfaceorigin_t origin, const sk_surfaceprops_t *props, _Bool shouldCreateWithMips)
+@
+-}
 foreign import ccall "sk_surface_new_render_target" sk_surface_new_render_target ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> CBool -- ^ C argument @"budgeted"@ of type @_Bool@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @const sk_imageinfo_t *@
-  -> CInt -- ^ C argument @"sampleCount"@ of type @int@
-  -> Gr_surfaceorigin -- ^ C argument @"origin"@ of type @gr_surfaceorigin_t@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> CBool -- ^ C argument @"shouldCreateWithMips"@ of type @_Bool@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @sk_surface_t *sk_surface_new_metal_layer(gr_recording_context_t *context, const void *layer, gr_surfaceorigin_t origin, int sampleCount, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props, const void **drawable)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> CBool -- ^ C argument @"_Bool budgeted"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * cinfo"@
+  -> CInt -- ^ C argument @"int sampleCount"@
+  -> Gr_surfaceorigin -- ^ C argument @"gr_surfaceorigin_t origin"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> CBool -- ^ C argument @"_Bool shouldCreateWithMips"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_metal_layer(gr_recording_context_t *context, const void *layer, gr_surfaceorigin_t origin, int sampleCount, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props, const void **drawable)
+@
+-}
 foreign import ccall "sk_surface_new_metal_layer" sk_surface_new_metal_layer ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Ptr (()) -- ^ C argument @"layer"@ of type @const void *@
-  -> Gr_surfaceorigin -- ^ C argument @"origin"@ of type @gr_surfaceorigin_t@
-  -> CInt -- ^ C argument @"sampleCount"@ of type @int@
-  -> Sk_colortype -- ^ C argument @"colorType"@ of type @sk_colortype_t@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> Ptr (Ptr (())) -- ^ C argument @"drawable"@ of type @const void **@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @sk_surface_t *sk_surface_new_metal_view(gr_recording_context_t *context, const void *mtkView, gr_surfaceorigin_t origin, int sampleCount, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Ptr (()) -- ^ C argument @"const void * layer"@
+  -> Gr_surfaceorigin -- ^ C argument @"gr_surfaceorigin_t origin"@
+  -> CInt -- ^ C argument @"int sampleCount"@
+  -> Sk_colortype -- ^ C argument @"sk_colortype_t colorType"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> Ptr (Ptr (())) -- ^ C argument @"const void ** drawable"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_surface_new_metal_view(gr_recording_context_t *context, const void *mtkView, gr_surfaceorigin_t origin, int sampleCount, sk_colortype_t colorType, sk_colorspace_t *colorspace, const sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_surface_new_metal_view" sk_surface_new_metal_view ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Ptr (()) -- ^ C argument @"mtkView"@ of type @const void *@
-  -> Gr_surfaceorigin -- ^ C argument @"origin"@ of type @gr_surfaceorigin_t@
-  -> CInt -- ^ C argument @"sampleCount"@ of type @int@
-  -> Sk_colortype -- ^ C argument @"colorType"@ of type @sk_colortype_t@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @void sk_surface_unref(sk_surface_t *)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Ptr (()) -- ^ C argument @"const void * mtkView"@
+  -> Gr_surfaceorigin -- ^ C argument @"gr_surfaceorigin_t origin"@
+  -> CInt -- ^ C argument @"int sampleCount"@
+  -> Sk_colortype -- ^ C argument @"sk_colortype_t colorType"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+void sk_surface_unref(sk_surface_t *)
+@
+-}
 foreign import ccall "sk_surface_unref" sk_surface_unref ::
-  Ptr (Sk_surface) -- ^ C argument type: @sk_surface_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_canvas_t *sk_surface_get_canvas(sk_surface_t *)@
+  Ptr (Sk_surface) -- ^ C argument type: @"sk_surface_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_surface_get_canvas(sk_surface_t *)
+@
+-}
 foreign import ccall "sk_surface_get_canvas" sk_surface_get_canvas ::
-  Ptr (Sk_surface) -- ^ C argument type: @sk_surface_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @sk_image_t *sk_surface_new_image_snapshot(sk_surface_t *)@
+  Ptr (Sk_surface) -- ^ C argument type: @"sk_surface_t *"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_surface_new_image_snapshot(sk_surface_t *)
+@
+-}
 foreign import ccall "sk_surface_new_image_snapshot" sk_surface_new_image_snapshot ::
-  Ptr (Sk_surface) -- ^ C argument type: @sk_surface_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_surface_new_image_snapshot_with_crop(sk_surface_t *surface, const sk_irect_t *bounds)@
+  Ptr (Sk_surface) -- ^ C argument type: @"sk_surface_t *"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_surface_new_image_snapshot_with_crop(sk_surface_t *surface, const sk_irect_t *bounds)
+@
+-}
 foreign import ccall "sk_surface_new_image_snapshot_with_crop" sk_surface_new_image_snapshot_with_crop ::
-  Ptr (Sk_surface) -- ^ C argument @"surface"@ of type @sk_surface_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"bounds"@ of type @const sk_irect_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @void sk_surface_draw(sk_surface_t *surface, sk_canvas_t *canvas, float x, float y, const sk_paint_t *paint)@
+  Ptr (Sk_surface) -- ^ C argument @"sk_surface_t * surface"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * bounds"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+void sk_surface_draw(sk_surface_t *surface, sk_canvas_t *canvas, float x, float y, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_surface_draw" sk_surface_draw ::
-  Ptr (Sk_surface) -- ^ C argument @"surface"@ of type @sk_surface_t *@
-  -> Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_surface_peek_pixels(sk_surface_t *surface, sk_pixmap_t *pixmap)@
+  Ptr (Sk_surface) -- ^ C argument @"sk_surface_t * surface"@
+  -> Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_surface_peek_pixels(sk_surface_t *surface, sk_pixmap_t *pixmap)
+@
+-}
 foreign import ccall "sk_surface_peek_pixels" sk_surface_peek_pixels ::
-  Ptr (Sk_surface) -- ^ C argument @"surface"@ of type @sk_surface_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"pixmap"@ of type @sk_pixmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_surface_read_pixels(sk_surface_t *surface, sk_imageinfo_t *dstInfo, void *dstPixels, size_t dstRowBytes, int srcX, int srcY)@
+  Ptr (Sk_surface) -- ^ C argument @"sk_surface_t * surface"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * pixmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_surface_read_pixels(sk_surface_t *surface, sk_imageinfo_t *dstInfo, void *dstPixels, size_t dstRowBytes, int srcX, int srcY)
+@
+-}
 foreign import ccall "sk_surface_read_pixels" sk_surface_read_pixels ::
-  Ptr (Sk_surface) -- ^ C argument @"surface"@ of type @sk_surface_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"dstInfo"@ of type @sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"dstPixels"@ of type @void *@
-  -> CSize -- ^ C argument @"dstRowBytes"@ of type @size_t@
-  -> CInt -- ^ C argument @"srcX"@ of type @int@
-  -> CInt -- ^ C argument @"srcY"@ of type @int@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @const sk_surfaceprops_t *sk_surface_get_props(sk_surface_t *surface)@
+  Ptr (Sk_surface) -- ^ C argument @"sk_surface_t * surface"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"sk_imageinfo_t * dstInfo"@
+  -> Ptr (()) -- ^ C argument @"void * dstPixels"@
+  -> CSize -- ^ C argument @"size_t dstRowBytes"@
+  -> CInt -- ^ C argument @"int srcX"@
+  -> CInt -- ^ C argument @"int srcY"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+const sk_surfaceprops_t *sk_surface_get_props(sk_surface_t *surface)
+@
+-}
 foreign import ccall "sk_surface_get_props" sk_surface_get_props ::
-  Ptr (Sk_surface) -- ^ C argument @"surface"@ of type @sk_surface_t *@
-  -> IO (Ptr (Sk_surfaceprops)) -- ^ C return type: @const sk_surfaceprops_t *@
--- | C function: @gr_recording_context_t *sk_surface_get_recording_context(sk_surface_t *surface)@
+  Ptr (Sk_surface) -- ^ C argument @"sk_surface_t * surface"@
+  -> IO (Ptr (Sk_surfaceprops)) -- ^ C return type: @"const sk_surfaceprops_t *"@
+
+{- | C function signature:
+
+@
+gr_recording_context_t *sk_surface_get_recording_context(sk_surface_t *surface)
+@
+-}
 foreign import ccall "sk_surface_get_recording_context" sk_surface_get_recording_context ::
-  Ptr (Sk_surface) -- ^ C argument @"surface"@ of type @sk_surface_t *@
-  -> IO (Ptr (Gr_recording_context)) -- ^ C return type: @gr_recording_context_t *@
--- | C function: @sk_surfaceprops_t *sk_surfaceprops_new(uint32_t flags, sk_pixelgeometry_t geometry)@
+  Ptr (Sk_surface) -- ^ C argument @"sk_surface_t * surface"@
+  -> IO (Ptr (Gr_recording_context)) -- ^ C return type: @"gr_recording_context_t *"@
+
+{- | C function signature:
+
+@
+sk_surfaceprops_t *sk_surfaceprops_new(uint32_t flags, sk_pixelgeometry_t geometry)
+@
+-}
 foreign import ccall "sk_surfaceprops_new" sk_surfaceprops_new ::
-  Word32 -- ^ C argument @"flags"@ of type @uint32_t@
-  -> Sk_pixelgeometry -- ^ C argument @"geometry"@ of type @sk_pixelgeometry_t@
-  -> IO (Ptr (Sk_surfaceprops)) -- ^ C return type: @sk_surfaceprops_t *@
--- | C function: @void sk_surfaceprops_delete(sk_surfaceprops_t *props)@
+  Word32 -- ^ C argument @"uint32_t flags"@
+  -> Sk_pixelgeometry -- ^ C argument @"sk_pixelgeometry_t geometry"@
+  -> IO (Ptr (Sk_surfaceprops)) -- ^ C return type: @"sk_surfaceprops_t *"@
+
+{- | C function signature:
+
+@
+void sk_surfaceprops_delete(sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_surfaceprops_delete" sk_surfaceprops_delete ::
-  Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @sk_surfaceprops_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @uint32_t sk_surfaceprops_get_flags(sk_surfaceprops_t *props)@
+  Ptr (Sk_surfaceprops) -- ^ C argument @"sk_surfaceprops_t * props"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+uint32_t sk_surfaceprops_get_flags(sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_surfaceprops_get_flags" sk_surfaceprops_get_flags ::
-  Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @sk_surfaceprops_t *@
-  -> IO (Word32) -- ^ C return type: @uint32_t@
--- | C function: @sk_pixelgeometry_t sk_surfaceprops_get_pixel_geometry(sk_surfaceprops_t *props)@
+  Ptr (Sk_surfaceprops) -- ^ C argument @"sk_surfaceprops_t * props"@
+  -> IO (Word32) -- ^ C return type: @"uint32_t"@
+
+{- | C function signature:
+
+@
+sk_pixelgeometry_t sk_surfaceprops_get_pixel_geometry(sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_surfaceprops_get_pixel_geometry" sk_surfaceprops_get_pixel_geometry ::
-  Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @sk_surfaceprops_t *@
-  -> IO (Sk_pixelgeometry) -- ^ C return type: @sk_pixelgeometry_t@
--- | C function: @void sk_pixmap_destructor(sk_pixmap_t *cpixmap)@
+  Ptr (Sk_surfaceprops) -- ^ C argument @"sk_surfaceprops_t * props"@
+  -> IO (Sk_pixelgeometry) -- ^ C return type: @"sk_pixelgeometry_t"@
+
+{- | C function signature:
+
+@
+void sk_pixmap_destructor(sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_pixmap_destructor" sk_pixmap_destructor ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @sk_pixmap_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_pixmap_t *sk_pixmap_new(void)@
+  Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * cpixmap"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_pixmap_t *sk_pixmap_new(void)
+@
+-}
 foreign import ccall "sk_pixmap_new" sk_pixmap_new ::
-  IO (Ptr (Sk_pixmap)) -- ^ C return type: @sk_pixmap_t *@
--- | C function: @sk_pixmap_t *sk_pixmap_new_with_params(const sk_imageinfo_t *cinfo, const void *addr, size_t rowBytes)@
+  IO (Ptr (Sk_pixmap)) -- ^ C return type: @"sk_pixmap_t *"@
+
+{- | C function signature:
+
+@
+sk_pixmap_t *sk_pixmap_new_with_params(const sk_imageinfo_t *cinfo, const void *addr, size_t rowBytes)
+@
+-}
 foreign import ccall "sk_pixmap_new_with_params" sk_pixmap_new_with_params ::
-  Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"addr"@ of type @const void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> IO (Ptr (Sk_pixmap)) -- ^ C return type: @sk_pixmap_t *@
--- | C function: @void sk_pixmap_reset(sk_pixmap_t *cpixmap)@
+  Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * cinfo"@
+  -> Ptr (()) -- ^ C argument @"const void * addr"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> IO (Ptr (Sk_pixmap)) -- ^ C return type: @"sk_pixmap_t *"@
+
+{- | C function signature:
+
+@
+void sk_pixmap_reset(sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_pixmap_reset" sk_pixmap_reset ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @sk_pixmap_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_pixmap_reset_with_params(sk_pixmap_t *cpixmap, const sk_imageinfo_t *cinfo, const void *addr, size_t rowBytes)@
+  Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * cpixmap"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_pixmap_reset_with_params(sk_pixmap_t *cpixmap, const sk_imageinfo_t *cinfo, const void *addr, size_t rowBytes)
+@
+-}
 foreign import ccall "sk_pixmap_reset_with_params" sk_pixmap_reset_with_params ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @sk_pixmap_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"addr"@ of type @const void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_pixmap_set_colorspace(sk_pixmap_t *cpixmap, sk_colorspace_t *colorspace)@
+  Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * cpixmap"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * cinfo"@
+  -> Ptr (()) -- ^ C argument @"const void * addr"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_pixmap_set_colorspace(sk_pixmap_t *cpixmap, sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_pixmap_set_colorspace" sk_pixmap_set_colorspace ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @sk_pixmap_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_pixmap_extract_subset(const sk_pixmap_t *cpixmap, sk_pixmap_t *result, const sk_irect_t *subset)@
+  Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * cpixmap"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_pixmap_extract_subset(const sk_pixmap_t *cpixmap, sk_pixmap_t *result, const sk_irect_t *subset)
+@
+-}
 foreign import ccall "sk_pixmap_extract_subset" sk_pixmap_extract_subset ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"result"@ of type @sk_pixmap_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_pixmap_get_info(const sk_pixmap_t *cpixmap, sk_imageinfo_t *cinfo)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * result"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * subset"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_pixmap_get_info(const sk_pixmap_t *cpixmap, sk_imageinfo_t *cinfo)
+@
+-}
 foreign import ccall "sk_pixmap_get_info" sk_pixmap_get_info ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @sk_imageinfo_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_pixmap_get_row_bytes(const sk_pixmap_t *cpixmap)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"sk_imageinfo_t * cinfo"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_pixmap_get_row_bytes(const sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_pixmap_get_row_bytes" sk_pixmap_get_row_bytes ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @sk_colorspace_t *sk_pixmap_get_colorspace(const sk_pixmap_t *cpixmap)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_pixmap_get_colorspace(const sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_pixmap_get_colorspace" sk_pixmap_get_colorspace ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @_Bool sk_pixmap_compute_is_opaque(const sk_pixmap_t *cpixmap)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+_Bool sk_pixmap_compute_is_opaque(const sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_pixmap_compute_is_opaque" sk_pixmap_compute_is_opaque ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_color_t sk_pixmap_get_pixel_color(const sk_pixmap_t *cpixmap, int x, int y)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_color_t sk_pixmap_get_pixel_color(const sk_pixmap_t *cpixmap, int x, int y)
+@
+-}
 foreign import ccall "sk_pixmap_get_pixel_color" sk_pixmap_get_pixel_color ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (Sk_color) -- ^ C return type: @sk_color_t@
--- | C function: @void sk_pixmap_get_pixel_color4f(const sk_pixmap_t *cpixmap, int x, int y, sk_color4f_t *color)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (Sk_color) -- ^ C return type: @"sk_color_t"@
+
+{- | C function signature:
+
+@
+void sk_pixmap_get_pixel_color4f(const sk_pixmap_t *cpixmap, int x, int y, sk_color4f_t *color)
+@
+-}
 foreign import ccall "sk_pixmap_get_pixel_color4f" sk_pixmap_get_pixel_color4f ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> Ptr (Sk_color4f) -- ^ C argument @"color"@ of type @sk_color4f_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_pixmap_get_pixel_alphaf(const sk_pixmap_t *cpixmap, int x, int y)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"sk_color4f_t * color"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_pixmap_get_pixel_alphaf(const sk_pixmap_t *cpixmap, int x, int y)
+@
+-}
 foreign import ccall "sk_pixmap_get_pixel_alphaf" sk_pixmap_get_pixel_alphaf ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void *sk_pixmap_get_writable_addr(const sk_pixmap_t *cpixmap)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void *sk_pixmap_get_writable_addr(const sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_pixmap_get_writable_addr" sk_pixmap_get_writable_addr ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> IO (Ptr (())) -- ^ C return type: @void *@
--- | C function: @void *sk_pixmap_get_writeable_addr_with_xy(const sk_pixmap_t *cpixmap, int x, int y)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> IO (Ptr (())) -- ^ C return type: @"void *"@
+
+{- | C function signature:
+
+@
+void *sk_pixmap_get_writeable_addr_with_xy(const sk_pixmap_t *cpixmap, int x, int y)
+@
+-}
 foreign import ccall "sk_pixmap_get_writeable_addr_with_xy" sk_pixmap_get_writeable_addr_with_xy ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (Ptr (())) -- ^ C return type: @void *@
--- | C function: @_Bool sk_pixmap_read_pixels(const sk_pixmap_t *cpixmap, const sk_imageinfo_t *dstInfo, void *dstPixels, size_t dstRowBytes, int srcX, int srcY)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (Ptr (())) -- ^ C return type: @"void *"@
+
+{- | C function signature:
+
+@
+_Bool sk_pixmap_read_pixels(const sk_pixmap_t *cpixmap, const sk_imageinfo_t *dstInfo, void *dstPixels, size_t dstRowBytes, int srcX, int srcY)
+@
+-}
 foreign import ccall "sk_pixmap_read_pixels" sk_pixmap_read_pixels ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"dstInfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"dstPixels"@ of type @void *@
-  -> CSize -- ^ C argument @"dstRowBytes"@ of type @size_t@
-  -> CInt -- ^ C argument @"srcX"@ of type @int@
-  -> CInt -- ^ C argument @"srcY"@ of type @int@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pixmap_scale_pixels(const sk_pixmap_t *cpixmap, const sk_pixmap_t *dst, const sk_sampling_options_t *sampling)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * dstInfo"@
+  -> Ptr (()) -- ^ C argument @"void * dstPixels"@
+  -> CSize -- ^ C argument @"size_t dstRowBytes"@
+  -> CInt -- ^ C argument @"int srcX"@
+  -> CInt -- ^ C argument @"int srcY"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pixmap_scale_pixels(const sk_pixmap_t *cpixmap, const sk_pixmap_t *dst, const sk_sampling_options_t *sampling)
+@
+-}
 foreign import ccall "sk_pixmap_scale_pixels" sk_pixmap_scale_pixels ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"dst"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pixmap_erase_color(const sk_pixmap_t *cpixmap, sk_color_t color, const sk_irect_t *subset)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * dst"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pixmap_erase_color(const sk_pixmap_t *cpixmap, sk_color_t color, const sk_irect_t *subset)
+@
+-}
 foreign import ccall "sk_pixmap_erase_color" sk_pixmap_erase_color ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pixmap_erase_color4f(const sk_pixmap_t *cpixmap, const sk_color4f_t *color, const sk_irect_t *subset)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> Sk_color -- ^ C argument @"sk_color_t color"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * subset"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pixmap_erase_color4f(const sk_pixmap_t *cpixmap, const sk_color4f_t *color, const sk_irect_t *subset)
+@
+-}
 foreign import ccall "sk_pixmap_erase_color4f" sk_pixmap_erase_color4f ::
-  Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_color4f) -- ^ C argument @"color"@ of type @const sk_color4f_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_webpencoder_encode(sk_wstream_t *dst, const sk_pixmap_t *src, const sk_webpencoder_options_t *options)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"const sk_color4f_t * color"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * subset"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_webpencoder_encode(sk_wstream_t *dst, const sk_pixmap_t *src, const sk_webpencoder_options_t *options)
+@
+-}
 foreign import ccall "sk_webpencoder_encode" sk_webpencoder_encode ::
-  Ptr (Sk_wstream) -- ^ C argument @"dst"@ of type @sk_wstream_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"src"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_webpencoder_options) -- ^ C argument @"options"@ of type @const sk_webpencoder_options_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_jpegencoder_encode(sk_wstream_t *dst, const sk_pixmap_t *src, const sk_jpegencoder_options_t *options)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * dst"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * src"@
+  -> Ptr (Sk_webpencoder_options) -- ^ C argument @"const sk_webpencoder_options_t * options"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_jpegencoder_encode(sk_wstream_t *dst, const sk_pixmap_t *src, const sk_jpegencoder_options_t *options)
+@
+-}
 foreign import ccall "sk_jpegencoder_encode" sk_jpegencoder_encode ::
-  Ptr (Sk_wstream) -- ^ C argument @"dst"@ of type @sk_wstream_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"src"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_jpegencoder_options) -- ^ C argument @"options"@ of type @const sk_jpegencoder_options_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pngencoder_encode(sk_wstream_t *dst, const sk_pixmap_t *src, const sk_pngencoder_options_t *options)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * dst"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * src"@
+  -> Ptr (Sk_jpegencoder_options) -- ^ C argument @"const sk_jpegencoder_options_t * options"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pngencoder_encode(sk_wstream_t *dst, const sk_pixmap_t *src, const sk_pngencoder_options_t *options)
+@
+-}
 foreign import ccall "sk_pngencoder_encode" sk_pngencoder_encode ::
-  Ptr (Sk_wstream) -- ^ C argument @"dst"@ of type @sk_wstream_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"src"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_pngencoder_options) -- ^ C argument @"options"@ of type @const sk_pngencoder_options_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_swizzle_swap_rb(uint32_t *dest, const uint32_t *src, int count)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * dst"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * src"@
+  -> Ptr (Sk_pngencoder_options) -- ^ C argument @"const sk_pngencoder_options_t * options"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_swizzle_swap_rb(uint32_t *dest, const uint32_t *src, int count)
+@
+-}
 foreign import ccall "sk_swizzle_swap_rb" sk_swizzle_swap_rb ::
-  Ptr (Word32) -- ^ C argument @"dest"@ of type @uint32_t *@
-  -> Ptr (Word32) -- ^ C argument @"src"@ of type @const uint32_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_color_t sk_color_unpremultiply(const sk_pmcolor_t pmcolor)@
+  Ptr (Word32) -- ^ C argument @"uint32_t * dest"@
+  -> Ptr (Word32) -- ^ C argument @"const uint32_t * src"@
+  -> CInt -- ^ C argument @"int count"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_color_t sk_color_unpremultiply(const sk_pmcolor_t pmcolor)
+@
+-}
 foreign import ccall "sk_color_unpremultiply" sk_color_unpremultiply ::
-  Sk_pmcolor -- ^ C argument @"pmcolor"@ of type @const sk_pmcolor_t@
-  -> IO (Sk_color) -- ^ C return type: @sk_color_t@
--- | C function: @sk_pmcolor_t sk_color_premultiply(const sk_color_t color)@
+  Sk_pmcolor -- ^ C argument @"const sk_pmcolor_t pmcolor"@
+  -> IO (Sk_color) -- ^ C return type: @"sk_color_t"@
+
+{- | C function signature:
+
+@
+sk_pmcolor_t sk_color_premultiply(const sk_color_t color)
+@
+-}
 foreign import ccall "sk_color_premultiply" sk_color_premultiply ::
-  Sk_color -- ^ C argument @"color"@ of type @const sk_color_t@
-  -> IO (Sk_pmcolor) -- ^ C return type: @sk_pmcolor_t@
--- | C function: @void sk_color_unpremultiply_array(const sk_pmcolor_t *pmcolors, int size, sk_color_t *colors)@
+  Sk_color -- ^ C argument @"const sk_color_t color"@
+  -> IO (Sk_pmcolor) -- ^ C return type: @"sk_pmcolor_t"@
+
+{- | C function signature:
+
+@
+void sk_color_unpremultiply_array(const sk_pmcolor_t *pmcolors, int size, sk_color_t *colors)
+@
+-}
 foreign import ccall "sk_color_unpremultiply_array" sk_color_unpremultiply_array ::
-  Ptr (Sk_pmcolor) -- ^ C argument @"pmcolors"@ of type @const sk_pmcolor_t *@
-  -> CInt -- ^ C argument @"size"@ of type @int@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @sk_color_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_color_premultiply_array(const sk_color_t *colors, int size, sk_pmcolor_t *pmcolors)@
+  Ptr (Sk_pmcolor) -- ^ C argument @"const sk_pmcolor_t * pmcolors"@
+  -> CInt -- ^ C argument @"int size"@
+  -> Ptr (Sk_color) -- ^ C argument @"sk_color_t * colors"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_color_premultiply_array(const sk_color_t *colors, int size, sk_pmcolor_t *pmcolors)
+@
+-}
 foreign import ccall "sk_color_premultiply_array" sk_color_premultiply_array ::
-  Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t *@
-  -> CInt -- ^ C argument @"size"@ of type @int@
-  -> Ptr (Sk_pmcolor) -- ^ C argument @"pmcolors"@ of type @sk_pmcolor_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_color_get_bit_shift(int *a, int *r, int *g, int *b)@
+  Ptr (Sk_color) -- ^ C argument @"const sk_color_t * colors"@
+  -> CInt -- ^ C argument @"int size"@
+  -> Ptr (Sk_pmcolor) -- ^ C argument @"sk_pmcolor_t * pmcolors"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_color_get_bit_shift(int *a, int *r, int *g, int *b)
+@
+-}
 foreign import ccall "sk_color_get_bit_shift" sk_color_get_bit_shift ::
-  Ptr (CInt) -- ^ C argument @"a"@ of type @int *@
-  -> Ptr (CInt) -- ^ C argument @"r"@ of type @int *@
-  -> Ptr (CInt) -- ^ C argument @"g"@ of type @int *@
-  -> Ptr (CInt) -- ^ C argument @"b"@ of type @int *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_region_t *sk_region_new(void)@
+  Ptr (CInt) -- ^ C argument @"int * a"@
+  -> Ptr (CInt) -- ^ C argument @"int * r"@
+  -> Ptr (CInt) -- ^ C argument @"int * g"@
+  -> Ptr (CInt) -- ^ C argument @"int * b"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_region_t *sk_region_new(void)
+@
+-}
 foreign import ccall "sk_region_new" sk_region_new ::
-  IO (Ptr (Sk_region)) -- ^ C return type: @sk_region_t *@
--- | C function: @void sk_region_delete(sk_region_t *r)@
+  IO (Ptr (Sk_region)) -- ^ C return type: @"sk_region_t *"@
+
+{- | C function signature:
+
+@
+void sk_region_delete(sk_region_t *r)
+@
+-}
 foreign import ccall "sk_region_delete" sk_region_delete ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_region_is_empty(const sk_region_t *r)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_is_empty(const sk_region_t *r)
+@
+-}
 foreign import ccall "sk_region_is_empty" sk_region_is_empty ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_is_rect(const sk_region_t *r)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_is_rect(const sk_region_t *r)
+@
+-}
 foreign import ccall "sk_region_is_rect" sk_region_is_rect ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_is_complex(const sk_region_t *r)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_is_complex(const sk_region_t *r)
+@
+-}
 foreign import ccall "sk_region_is_complex" sk_region_is_complex ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_region_get_bounds(const sk_region_t *r, sk_irect_t *rect)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_region_get_bounds(const sk_region_t *r, sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_get_bounds" sk_region_get_bounds ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @sk_irect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_region_get_boundary_path(const sk_region_t *r, sk_path_t *path)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * rect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_get_boundary_path(const sk_region_t *r, sk_path_t *path)
+@
+-}
 foreign import ccall "sk_region_get_boundary_path" sk_region_get_boundary_path ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"path"@ of type @sk_path_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_set_empty(sk_region_t *r)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * path"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_set_empty(sk_region_t *r)
+@
+-}
 foreign import ccall "sk_region_set_empty" sk_region_set_empty ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_set_rect(sk_region_t *r, const sk_irect_t *rect)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_set_rect(sk_region_t *r, const sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_set_rect" sk_region_set_rect ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_set_rects(sk_region_t *r, const sk_irect_t *rects, int count)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * rect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_set_rects(sk_region_t *r, const sk_irect_t *rects, int count)
+@
+-}
 foreign import ccall "sk_region_set_rects" sk_region_set_rects ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rects"@ of type @const sk_irect_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_set_region(sk_region_t *r, const sk_region_t *region)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * rects"@
+  -> CInt -- ^ C argument @"int count"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_set_region(sk_region_t *r, const sk_region_t *region)
+@
+-}
 foreign import ccall "sk_region_set_region" sk_region_set_region ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_set_path(sk_region_t *r, const sk_path_t *t, const sk_region_t *clip)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_set_path(sk_region_t *r, const sk_path_t *t, const sk_region_t *clip)
+@
+-}
 foreign import ccall "sk_region_set_path" sk_region_set_path ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"t"@ of type @const sk_path_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"clip"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_intersects_rect(const sk_region_t *r, const sk_irect_t *rect)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * t"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * clip"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_intersects_rect(const sk_region_t *r, const sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_intersects_rect" sk_region_intersects_rect ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_intersects(const sk_region_t *r, const sk_region_t *src)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * rect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_intersects(const sk_region_t *r, const sk_region_t *src)
+@
+-}
 foreign import ccall "sk_region_intersects" sk_region_intersects ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"src"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_contains_point(const sk_region_t *r, int x, int y)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * src"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_contains_point(const sk_region_t *r, int x, int y)
+@
+-}
 foreign import ccall "sk_region_contains_point" sk_region_contains_point ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_contains_rect(const sk_region_t *r, const sk_irect_t *rect)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_contains_rect(const sk_region_t *r, const sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_contains_rect" sk_region_contains_rect ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_contains(const sk_region_t *r, const sk_region_t *region)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * rect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_contains(const sk_region_t *r, const sk_region_t *region)
+@
+-}
 foreign import ccall "sk_region_contains" sk_region_contains ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_quick_contains(const sk_region_t *r, const sk_irect_t *rect)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_quick_contains(const sk_region_t *r, const sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_quick_contains" sk_region_quick_contains ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_quick_reject_rect(const sk_region_t *r, const sk_irect_t *rect)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * rect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_quick_reject_rect(const sk_region_t *r, const sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_quick_reject_rect" sk_region_quick_reject_rect ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @const sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_quick_reject(const sk_region_t *r, const sk_region_t *region)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * rect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_quick_reject(const sk_region_t *r, const sk_region_t *region)
+@
+-}
 foreign import ccall "sk_region_quick_reject" sk_region_quick_reject ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @const sk_region_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_region_translate(sk_region_t *r, int x, int y)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * r"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_region_translate(sk_region_t *r, int x, int y)
+@
+-}
 foreign import ccall "sk_region_translate" sk_region_translate ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_region_op_rect(sk_region_t *r, const sk_irect_t *rect, sk_region_op_t op)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_op_rect(sk_region_t *r, const sk_irect_t *rect, sk_region_op_t op)
+@
+-}
 foreign import ccall "sk_region_op_rect" sk_region_op_rect ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @const sk_irect_t *@
-  -> Sk_region_op -- ^ C argument @"op"@ of type @sk_region_op_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_op(sk_region_t *r, const sk_region_t *region, sk_region_op_t op)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * rect"@
+  -> Sk_region_op -- ^ C argument @"sk_region_op_t op"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_op(sk_region_t *r, const sk_region_t *region, sk_region_op_t op)
+@
+-}
 foreign import ccall "sk_region_op" sk_region_op ::
-  Ptr (Sk_region) -- ^ C argument @"r"@ of type @sk_region_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> Sk_region_op -- ^ C argument @"op"@ of type @sk_region_op_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_region_iterator_t *sk_region_iterator_new(const sk_region_t *region)@
+  Ptr (Sk_region) -- ^ C argument @"sk_region_t * r"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> Sk_region_op -- ^ C argument @"sk_region_op_t op"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_region_iterator_t *sk_region_iterator_new(const sk_region_t *region)
+@
+-}
 foreign import ccall "sk_region_iterator_new" sk_region_iterator_new ::
-  Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> IO (Ptr (Sk_region_iterator)) -- ^ C return type: @sk_region_iterator_t *@
--- | C function: @void sk_region_iterator_delete(sk_region_iterator_t *iter)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> IO (Ptr (Sk_region_iterator)) -- ^ C return type: @"sk_region_iterator_t *"@
+
+{- | C function signature:
+
+@
+void sk_region_iterator_delete(sk_region_iterator_t *iter)
+@
+-}
 foreign import ccall "sk_region_iterator_delete" sk_region_iterator_delete ::
-  Ptr (Sk_region_iterator) -- ^ C argument @"iter"@ of type @sk_region_iterator_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_region_iterator_rewind(sk_region_iterator_t *iter)@
+  Ptr (Sk_region_iterator) -- ^ C argument @"sk_region_iterator_t * iter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_iterator_rewind(sk_region_iterator_t *iter)
+@
+-}
 foreign import ccall "sk_region_iterator_rewind" sk_region_iterator_rewind ::
-  Ptr (Sk_region_iterator) -- ^ C argument @"iter"@ of type @sk_region_iterator_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_region_iterator_done(const sk_region_iterator_t *iter)@
+  Ptr (Sk_region_iterator) -- ^ C argument @"sk_region_iterator_t * iter"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_iterator_done(const sk_region_iterator_t *iter)
+@
+-}
 foreign import ccall "sk_region_iterator_done" sk_region_iterator_done ::
-  Ptr (Sk_region_iterator) -- ^ C argument @"iter"@ of type @const sk_region_iterator_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_region_iterator_next(sk_region_iterator_t *iter)@
+  Ptr (Sk_region_iterator) -- ^ C argument @"const sk_region_iterator_t * iter"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_region_iterator_next(sk_region_iterator_t *iter)
+@
+-}
 foreign import ccall "sk_region_iterator_next" sk_region_iterator_next ::
-  Ptr (Sk_region_iterator) -- ^ C argument @"iter"@ of type @sk_region_iterator_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_region_iterator_rect(const sk_region_iterator_t *iter, sk_irect_t *rect)@
+  Ptr (Sk_region_iterator) -- ^ C argument @"sk_region_iterator_t * iter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_region_iterator_rect(const sk_region_iterator_t *iter, sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_iterator_rect" sk_region_iterator_rect ::
-  Ptr (Sk_region_iterator) -- ^ C argument @"iter"@ of type @const sk_region_iterator_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @sk_irect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_region_cliperator_t *sk_region_cliperator_new(const sk_region_t *region, const sk_irect_t *clip)@
+  Ptr (Sk_region_iterator) -- ^ C argument @"const sk_region_iterator_t * iter"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * rect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_region_cliperator_t *sk_region_cliperator_new(const sk_region_t *region, const sk_irect_t *clip)
+@
+-}
 foreign import ccall "sk_region_cliperator_new" sk_region_cliperator_new ::
-  Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"clip"@ of type @const sk_irect_t *@
-  -> IO (Ptr (Sk_region_cliperator)) -- ^ C return type: @sk_region_cliperator_t *@
--- | C function: @void sk_region_cliperator_delete(sk_region_cliperator_t *iter)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * clip"@
+  -> IO (Ptr (Sk_region_cliperator)) -- ^ C return type: @"sk_region_cliperator_t *"@
+
+{- | C function signature:
+
+@
+void sk_region_cliperator_delete(sk_region_cliperator_t *iter)
+@
+-}
 foreign import ccall "sk_region_cliperator_delete" sk_region_cliperator_delete ::
-  Ptr (Sk_region_cliperator) -- ^ C argument @"iter"@ of type @sk_region_cliperator_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_region_cliperator_done(sk_region_cliperator_t *iter)@
+  Ptr (Sk_region_cliperator) -- ^ C argument @"sk_region_cliperator_t * iter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_cliperator_done(sk_region_cliperator_t *iter)
+@
+-}
 foreign import ccall "sk_region_cliperator_done" sk_region_cliperator_done ::
-  Ptr (Sk_region_cliperator) -- ^ C argument @"iter"@ of type @sk_region_cliperator_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_region_cliperator_next(sk_region_cliperator_t *iter)@
+  Ptr (Sk_region_cliperator) -- ^ C argument @"sk_region_cliperator_t * iter"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_region_cliperator_next(sk_region_cliperator_t *iter)
+@
+-}
 foreign import ccall "sk_region_cliperator_next" sk_region_cliperator_next ::
-  Ptr (Sk_region_cliperator) -- ^ C argument @"iter"@ of type @sk_region_cliperator_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_region_cliperator_rect(const sk_region_cliperator_t *iter, sk_irect_t *rect)@
+  Ptr (Sk_region_cliperator) -- ^ C argument @"sk_region_cliperator_t * iter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_region_cliperator_rect(const sk_region_cliperator_t *iter, sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_region_cliperator_rect" sk_region_cliperator_rect ::
-  Ptr (Sk_region_cliperator) -- ^ C argument @"iter"@ of type @const sk_region_cliperator_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @sk_irect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_region_spanerator_t *sk_region_spanerator_new(const sk_region_t *region, int y, int left, int right)@
+  Ptr (Sk_region_cliperator) -- ^ C argument @"const sk_region_cliperator_t * iter"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * rect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_region_spanerator_t *sk_region_spanerator_new(const sk_region_t *region, int y, int left, int right)
+@
+-}
 foreign import ccall "sk_region_spanerator_new" sk_region_spanerator_new ::
-  Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> CInt -- ^ C argument @"left"@ of type @int@
-  -> CInt -- ^ C argument @"right"@ of type @int@
-  -> IO (Ptr (Sk_region_spanerator)) -- ^ C return type: @sk_region_spanerator_t *@
--- | C function: @void sk_region_spanerator_delete(sk_region_spanerator_t *iter)@
+  Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> CInt -- ^ C argument @"int y"@
+  -> CInt -- ^ C argument @"int left"@
+  -> CInt -- ^ C argument @"int right"@
+  -> IO (Ptr (Sk_region_spanerator)) -- ^ C return type: @"sk_region_spanerator_t *"@
+
+{- | C function signature:
+
+@
+void sk_region_spanerator_delete(sk_region_spanerator_t *iter)
+@
+-}
 foreign import ccall "sk_region_spanerator_delete" sk_region_spanerator_delete ::
-  Ptr (Sk_region_spanerator) -- ^ C argument @"iter"@ of type @sk_region_spanerator_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_region_spanerator_next(sk_region_spanerator_t *iter, int *left, int *right)@
+  Ptr (Sk_region_spanerator) -- ^ C argument @"sk_region_spanerator_t * iter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_region_spanerator_next(sk_region_spanerator_t *iter, int *left, int *right)
+@
+-}
 foreign import ccall "sk_region_spanerator_next" sk_region_spanerator_next ::
-  Ptr (Sk_region_spanerator) -- ^ C argument @"iter"@ of type @sk_region_spanerator_t *@
-  -> Ptr (CInt) -- ^ C argument @"left"@ of type @int *@
-  -> Ptr (CInt) -- ^ C argument @"right"@ of type @int *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_canvas_destroy(sk_canvas_t *ccanvas)@
+  Ptr (Sk_region_spanerator) -- ^ C argument @"sk_region_spanerator_t * iter"@
+  -> Ptr (CInt) -- ^ C argument @"int * left"@
+  -> Ptr (CInt) -- ^ C argument @"int * right"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_canvas_destroy(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_destroy" sk_canvas_destroy ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_clear(sk_canvas_t *ccanvas, sk_color_t color)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_clear(sk_canvas_t *ccanvas, sk_color_t color)
+@
+-}
 foreign import ccall "sk_canvas_clear" sk_canvas_clear ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_discard(sk_canvas_t *ccanvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Sk_color -- ^ C argument @"sk_color_t color"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_discard(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_discard" sk_canvas_discard ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_canvas_get_save_count(sk_canvas_t *ccanvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_canvas_get_save_count(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_get_save_count" sk_canvas_get_save_count ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_canvas_restore_to_count(sk_canvas_t *ccanvas, int saveCount)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_canvas_restore_to_count(sk_canvas_t *ccanvas, int saveCount)
+@
+-}
 foreign import ccall "sk_canvas_restore_to_count" sk_canvas_restore_to_count ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CInt -- ^ C argument @"saveCount"@ of type @int@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_color(sk_canvas_t *ccanvas, sk_color_t color, sk_blendmode_t cmode)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CInt -- ^ C argument @"int saveCount"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_color(sk_canvas_t *ccanvas, sk_color_t color, sk_blendmode_t cmode)
+@
+-}
 foreign import ccall "sk_canvas_draw_color" sk_canvas_draw_color ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> Sk_blendmode -- ^ C argument @"cmode"@ of type @sk_blendmode_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_points(sk_canvas_t *ccanvas, sk_point_mode_t pointMode, size_t count, const sk_point_t points[], const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Sk_color -- ^ C argument @"sk_color_t color"@
+  -> Sk_blendmode -- ^ C argument @"sk_blendmode_t cmode"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_points(sk_canvas_t *ccanvas, sk_point_mode_t pointMode, size_t count, const sk_point_t points[], const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_points" sk_canvas_draw_points ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Sk_point_mode -- ^ C argument @"pointMode"@ of type @sk_point_mode_t@
-  -> CSize -- ^ C argument @"count"@ of type @size_t@
-  -> Ptr (Sk_point) -- ^ C argument @"points"@ of type @const sk_point_t []@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_point(sk_canvas_t *ccanvas, float x, float y, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Sk_point_mode -- ^ C argument @"sk_point_mode_t pointMode"@
+  -> CSize -- ^ C argument @"size_t count"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t [] points"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_point(sk_canvas_t *ccanvas, float x, float y, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_point" sk_canvas_draw_point ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_line(sk_canvas_t *ccanvas, float x0, float y0, float x1, float y1, sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_line(sk_canvas_t *ccanvas, float x0, float y0, float x1, float y1, sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_line" sk_canvas_draw_line ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"x0"@ of type @float@
-  -> CFloat -- ^ C argument @"y0"@ of type @float@
-  -> CFloat -- ^ C argument @"x1"@ of type @float@
-  -> CFloat -- ^ C argument @"y1"@ of type @float@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_simple_text(sk_canvas_t *ccanvas, const void *text, size_t byte_length, sk_text_encoding_t encoding, float x, float y, const sk_font_t *cfont, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float x0"@
+  -> CFloat -- ^ C argument @"float y0"@
+  -> CFloat -- ^ C argument @"float x1"@
+  -> CFloat -- ^ C argument @"float y1"@
+  -> Ptr (Sk_paint) -- ^ C argument @"sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_simple_text(sk_canvas_t *ccanvas, const void *text, size_t byte_length, sk_text_encoding_t encoding, float x, float y, const sk_font_t *cfont, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_simple_text" sk_canvas_draw_simple_text ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (()) -- ^ C argument @"text"@ of type @const void *@
-  -> CSize -- ^ C argument @"byte_length"@ of type @size_t@
-  -> Sk_text_encoding -- ^ C argument @"encoding"@ of type @sk_text_encoding_t@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_font) -- ^ C argument @"cfont"@ of type @const sk_font_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_text_blob(sk_canvas_t *ccanvas, sk_textblob_t *text, float x, float y, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (()) -- ^ C argument @"const void * text"@
+  -> CSize -- ^ C argument @"size_t byte_length"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * cfont"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_text_blob(sk_canvas_t *ccanvas, sk_textblob_t *text, float x, float y, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_text_blob" sk_canvas_draw_text_blob ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_textblob) -- ^ C argument @"text"@ of type @sk_textblob_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_reset_matrix(sk_canvas_t *ccanvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_textblob) -- ^ C argument @"sk_textblob_t * text"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_reset_matrix(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_reset_matrix" sk_canvas_reset_matrix ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_set_matrix(sk_canvas_t *ccanvas, const sk_matrix44_t *cmatrix)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_set_matrix(sk_canvas_t *ccanvas, const sk_matrix44_t *cmatrix)
+@
+-}
 foreign import ccall "sk_canvas_set_matrix" sk_canvas_set_matrix ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_matrix44) -- ^ C argument @"cmatrix"@ of type @const sk_matrix44_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_get_matrix(sk_canvas_t *ccanvas, sk_matrix44_t *cmatrix)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_matrix44) -- ^ C argument @"const sk_matrix44_t * cmatrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_get_matrix(sk_canvas_t *ccanvas, sk_matrix44_t *cmatrix)
+@
+-}
 foreign import ccall "sk_canvas_get_matrix" sk_canvas_get_matrix ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_matrix44) -- ^ C argument @"cmatrix"@ of type @sk_matrix44_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_round_rect(sk_canvas_t *ccanvas, const sk_rect_t *crect, float rx, float ry, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_matrix44) -- ^ C argument @"sk_matrix44_t * cmatrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_round_rect(sk_canvas_t *ccanvas, const sk_rect_t *crect, float rx, float ry, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_round_rect" sk_canvas_draw_round_rect ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> CFloat -- ^ C argument @"rx"@ of type @float@
-  -> CFloat -- ^ C argument @"ry"@ of type @float@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_clip_rect_with_operation(sk_canvas_t *ccanvas, const sk_rect_t *crect, sk_clipop_t op, _Bool doAA)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> CFloat -- ^ C argument @"float rx"@
+  -> CFloat -- ^ C argument @"float ry"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_clip_rect_with_operation(sk_canvas_t *ccanvas, const sk_rect_t *crect, sk_clipop_t op, _Bool doAA)
+@
+-}
 foreign import ccall "sk_canvas_clip_rect_with_operation" sk_canvas_clip_rect_with_operation ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> Sk_clipop -- ^ C argument @"op"@ of type @sk_clipop_t@
-  -> CBool -- ^ C argument @"doAA"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_clip_path_with_operation(sk_canvas_t *ccanvas, const sk_path_t *cpath, sk_clipop_t op, _Bool doAA)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> Sk_clipop -- ^ C argument @"sk_clipop_t op"@
+  -> CBool -- ^ C argument @"_Bool doAA"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_clip_path_with_operation(sk_canvas_t *ccanvas, const sk_path_t *cpath, sk_clipop_t op, _Bool doAA)
+@
+-}
 foreign import ccall "sk_canvas_clip_path_with_operation" sk_canvas_clip_path_with_operation ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> Sk_clipop -- ^ C argument @"op"@ of type @sk_clipop_t@
-  -> CBool -- ^ C argument @"doAA"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_clip_rrect_with_operation(sk_canvas_t *ccanvas, const sk_rrect_t *crect, sk_clipop_t op, _Bool doAA)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> Sk_clipop -- ^ C argument @"sk_clipop_t op"@
+  -> CBool -- ^ C argument @"_Bool doAA"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_clip_rrect_with_operation(sk_canvas_t *ccanvas, const sk_rrect_t *crect, sk_clipop_t op, _Bool doAA)
+@
+-}
 foreign import ccall "sk_canvas_clip_rrect_with_operation" sk_canvas_clip_rrect_with_operation ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument @"crect"@ of type @const sk_rrect_t *@
-  -> Sk_clipop -- ^ C argument @"op"@ of type @sk_clipop_t@
-  -> CBool -- ^ C argument @"doAA"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_canvas_get_local_clip_bounds(sk_canvas_t *ccanvas, sk_rect_t *cbounds)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * crect"@
+  -> Sk_clipop -- ^ C argument @"sk_clipop_t op"@
+  -> CBool -- ^ C argument @"_Bool doAA"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_canvas_get_local_clip_bounds(sk_canvas_t *ccanvas, sk_rect_t *cbounds)
+@
+-}
 foreign import ccall "sk_canvas_get_local_clip_bounds" sk_canvas_get_local_clip_bounds ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cbounds"@ of type @sk_rect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_canvas_get_device_clip_bounds(sk_canvas_t *ccanvas, sk_irect_t *cbounds)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * cbounds"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_canvas_get_device_clip_bounds(sk_canvas_t *ccanvas, sk_irect_t *cbounds)
+@
+-}
 foreign import ccall "sk_canvas_get_device_clip_bounds" sk_canvas_get_device_clip_bounds ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"cbounds"@ of type @sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int sk_canvas_save(sk_canvas_t *ccanvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * cbounds"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int sk_canvas_save(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_save" sk_canvas_save ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_canvas_save_layer(sk_canvas_t *ccanvas, const sk_rect_t *crect, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_canvas_save_layer(sk_canvas_t *ccanvas, const sk_rect_t *crect, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_save_layer" sk_canvas_save_layer ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_canvas_save_layer_rec(sk_canvas_t *ccanvas, const sk_canvas_savelayerrec_t *crec)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_canvas_save_layer_rec(sk_canvas_t *ccanvas, const sk_canvas_savelayerrec_t *crec)
+@
+-}
 foreign import ccall "sk_canvas_save_layer_rec" sk_canvas_save_layer_rec ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_canvas_savelayerrec) -- ^ C argument @"crec"@ of type @const sk_canvas_savelayerrec_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_canvas_restore(sk_canvas_t *ccanvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_canvas_savelayerrec) -- ^ C argument @"const sk_canvas_savelayerrec_t * crec"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_canvas_restore(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_restore" sk_canvas_restore ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_translate(sk_canvas_t *ccanvas, float dx, float dy)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_translate(sk_canvas_t *ccanvas, float dx, float dy)
+@
+-}
 foreign import ccall "sk_canvas_translate" sk_canvas_translate ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_scale(sk_canvas_t *ccanvas, float sx, float sy)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_scale(sk_canvas_t *ccanvas, float sx, float sy)
+@
+-}
 foreign import ccall "sk_canvas_scale" sk_canvas_scale ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"sx"@ of type @float@
-  -> CFloat -- ^ C argument @"sy"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_rotate_degrees(sk_canvas_t *ccanvas, float degrees)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float sx"@
+  -> CFloat -- ^ C argument @"float sy"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_rotate_degrees(sk_canvas_t *ccanvas, float degrees)
+@
+-}
 foreign import ccall "sk_canvas_rotate_degrees" sk_canvas_rotate_degrees ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"degrees"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_rotate_radians(sk_canvas_t *ccanvas, float radians)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float degrees"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_rotate_radians(sk_canvas_t *ccanvas, float radians)
+@
+-}
 foreign import ccall "sk_canvas_rotate_radians" sk_canvas_rotate_radians ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"radians"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_skew(sk_canvas_t *ccanvas, float sx, float sy)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float radians"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_skew(sk_canvas_t *ccanvas, float sx, float sy)
+@
+-}
 foreign import ccall "sk_canvas_skew" sk_canvas_skew ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"sx"@ of type @float@
-  -> CFloat -- ^ C argument @"sy"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_concat(sk_canvas_t *ccanvas, const sk_matrix44_t *cmatrix)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float sx"@
+  -> CFloat -- ^ C argument @"float sy"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_concat(sk_canvas_t *ccanvas, const sk_matrix44_t *cmatrix)
+@
+-}
 foreign import ccall "sk_canvas_concat" sk_canvas_concat ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_matrix44) -- ^ C argument @"cmatrix"@ of type @const sk_matrix44_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_canvas_quick_reject(sk_canvas_t *ccanvas, const sk_rect_t *crect)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_matrix44) -- ^ C argument @"const sk_matrix44_t * cmatrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_canvas_quick_reject(sk_canvas_t *ccanvas, const sk_rect_t *crect)
+@
+-}
 foreign import ccall "sk_canvas_quick_reject" sk_canvas_quick_reject ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_canvas_clip_region(sk_canvas_t *ccanvas, const sk_region_t *region, sk_clipop_t op)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_canvas_clip_region(sk_canvas_t *ccanvas, const sk_region_t *region, sk_clipop_t op)
+@
+-}
 foreign import ccall "sk_canvas_clip_region" sk_canvas_clip_region ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"region"@ of type @const sk_region_t *@
-  -> Sk_clipop -- ^ C argument @"op"@ of type @sk_clipop_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_paint(sk_canvas_t *ccanvas, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * region"@
+  -> Sk_clipop -- ^ C argument @"sk_clipop_t op"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_paint(sk_canvas_t *ccanvas, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_paint" sk_canvas_draw_paint ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_region(sk_canvas_t *ccanvas, const sk_region_t *cregion, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_region(sk_canvas_t *ccanvas, const sk_region_t *cregion, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_region" sk_canvas_draw_region ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_region) -- ^ C argument @"cregion"@ of type @const sk_region_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_rect(sk_canvas_t *ccanvas, const sk_rect_t *crect, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_region) -- ^ C argument @"const sk_region_t * cregion"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_rect(sk_canvas_t *ccanvas, const sk_rect_t *crect, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_rect" sk_canvas_draw_rect ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_rrect(sk_canvas_t *ccanvas, const sk_rrect_t *crect, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_rrect(sk_canvas_t *ccanvas, const sk_rrect_t *crect, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_rrect" sk_canvas_draw_rrect ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument @"crect"@ of type @const sk_rrect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_circle(sk_canvas_t *ccanvas, float cx, float cy, float rad, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * crect"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_circle(sk_canvas_t *ccanvas, float cx, float cy, float rad, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_circle" sk_canvas_draw_circle ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> CFloat -- ^ C argument @"cx"@ of type @float@
-  -> CFloat -- ^ C argument @"cy"@ of type @float@
-  -> CFloat -- ^ C argument @"rad"@ of type @float@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_oval(sk_canvas_t *ccanvas, const sk_rect_t *crect, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> CFloat -- ^ C argument @"float cx"@
+  -> CFloat -- ^ C argument @"float cy"@
+  -> CFloat -- ^ C argument @"float rad"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_oval(sk_canvas_t *ccanvas, const sk_rect_t *crect, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_oval" sk_canvas_draw_oval ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_path(sk_canvas_t *ccanvas, const sk_path_t *cpath, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_path(sk_canvas_t *ccanvas, const sk_path_t *cpath, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_path" sk_canvas_draw_path ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_image(sk_canvas_t *ccanvas, const sk_image_t *cimage, float x, float y, const sk_sampling_options_t *sampling, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_image(sk_canvas_t *ccanvas, const sk_image_t *cimage, float x, float y, const sk_sampling_options_t *sampling, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_image" sk_canvas_draw_image ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_image_rect(sk_canvas_t *ccanvas, const sk_image_t *cimage, const sk_rect_t *csrcR, const sk_rect_t *cdstR, const sk_sampling_options_t *sampling, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_image_rect(sk_canvas_t *ccanvas, const sk_image_t *cimage, const sk_rect_t *csrcR, const sk_rect_t *cdstR, const sk_sampling_options_t *sampling, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_image_rect" sk_canvas_draw_image_rect ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"csrcR"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cdstR"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_picture(sk_canvas_t *ccanvas, const sk_picture_t *cpicture, const sk_matrix_t *cmatrix, const sk_paint_t *cpaint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * csrcR"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cdstR"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_picture(sk_canvas_t *ccanvas, const sk_picture_t *cpicture, const sk_matrix_t *cmatrix, const sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_canvas_draw_picture" sk_canvas_draw_picture ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_picture) -- ^ C argument @"cpicture"@ of type @const sk_picture_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_drawable(sk_canvas_t *ccanvas, sk_drawable_t *cdrawable, const sk_matrix_t *cmatrix)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * cpicture"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_drawable(sk_canvas_t *ccanvas, sk_drawable_t *cdrawable, const sk_matrix_t *cmatrix)
+@
+-}
 foreign import ccall "sk_canvas_draw_drawable" sk_canvas_draw_drawable ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_drawable) -- ^ C argument @"cdrawable"@ of type @sk_drawable_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_canvas_t *sk_canvas_new_from_bitmap(const sk_bitmap_t *bitmap)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_drawable) -- ^ C argument @"sk_drawable_t * cdrawable"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_canvas_new_from_bitmap(const sk_bitmap_t *bitmap)
+@
+-}
 foreign import ccall "sk_canvas_new_from_bitmap" sk_canvas_new_from_bitmap ::
-  Ptr (Sk_bitmap) -- ^ C argument @"bitmap"@ of type @const sk_bitmap_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @sk_canvas_t *sk_canvas_new_from_raster(const sk_imageinfo_t *cinfo, void *pixels, size_t rowBytes, const sk_surfaceprops_t *props)@
+  Ptr (Sk_bitmap) -- ^ C argument @"const sk_bitmap_t * bitmap"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_canvas_new_from_raster(const sk_imageinfo_t *cinfo, void *pixels, size_t rowBytes, const sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_canvas_new_from_raster" sk_canvas_new_from_raster ::
-  Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"pixels"@ of type @void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @void sk_canvas_draw_annotation(sk_canvas_t *t, const sk_rect_t *rect, const char *key, sk_data_t *value)@
+  Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * cinfo"@
+  -> Ptr (()) -- ^ C argument @"void * pixels"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_annotation(sk_canvas_t *t, const sk_rect_t *rect, const char *key, sk_data_t *value)
+@
+-}
 foreign import ccall "sk_canvas_draw_annotation" sk_canvas_draw_annotation ::
-  Ptr (Sk_canvas) -- ^ C argument @"t"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> Ptr (CChar) -- ^ C argument @"key"@ of type @const char *@
-  -> Ptr (Sk_data) -- ^ C argument @"value"@ of type @sk_data_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_url_annotation(sk_canvas_t *t, const sk_rect_t *rect, sk_data_t *value)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * t"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> Ptr (CChar) -- ^ C argument @"const char * key"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_url_annotation(sk_canvas_t *t, const sk_rect_t *rect, sk_data_t *value)
+@
+-}
 foreign import ccall "sk_canvas_draw_url_annotation" sk_canvas_draw_url_annotation ::
-  Ptr (Sk_canvas) -- ^ C argument @"t"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"value"@ of type @sk_data_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_named_destination_annotation(sk_canvas_t *t, const sk_point_t *point, sk_data_t *value)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * t"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_named_destination_annotation(sk_canvas_t *t, const sk_point_t *point, sk_data_t *value)
+@
+-}
 foreign import ccall "sk_canvas_draw_named_destination_annotation" sk_canvas_draw_named_destination_annotation ::
-  Ptr (Sk_canvas) -- ^ C argument @"t"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"point"@ of type @const sk_point_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"value"@ of type @sk_data_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_link_destination_annotation(sk_canvas_t *t, const sk_rect_t *rect, sk_data_t *value)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * t"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * point"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_link_destination_annotation(sk_canvas_t *t, const sk_rect_t *rect, sk_data_t *value)
+@
+-}
 foreign import ccall "sk_canvas_draw_link_destination_annotation" sk_canvas_draw_link_destination_annotation ::
-  Ptr (Sk_canvas) -- ^ C argument @"t"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"value"@ of type @sk_data_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_image_lattice(sk_canvas_t *ccanvas, const sk_image_t *image, const sk_lattice_t *lattice, const sk_rect_t *dst, sk_filter_mode_t mode, const sk_paint_t *paint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * t"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_image_lattice(sk_canvas_t *ccanvas, const sk_image_t *image, const sk_lattice_t *lattice, const sk_rect_t *dst, sk_filter_mode_t mode, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_canvas_draw_image_lattice" sk_canvas_draw_image_lattice ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Ptr (Sk_lattice) -- ^ C argument @"lattice"@ of type @const sk_lattice_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"dst"@ of type @const sk_rect_t *@
-  -> Sk_filter_mode -- ^ C argument @"mode"@ of type @sk_filter_mode_t@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_image_nine(sk_canvas_t *ccanvas, const sk_image_t *image, const sk_irect_t *center, const sk_rect_t *dst, sk_filter_mode_t mode, const sk_paint_t *paint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Ptr (Sk_lattice) -- ^ C argument @"const sk_lattice_t * lattice"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * dst"@
+  -> Sk_filter_mode -- ^ C argument @"sk_filter_mode_t mode"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_image_nine(sk_canvas_t *ccanvas, const sk_image_t *image, const sk_irect_t *center, const sk_rect_t *dst, sk_filter_mode_t mode, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_canvas_draw_image_nine" sk_canvas_draw_image_nine ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"center"@ of type @const sk_irect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"dst"@ of type @const sk_rect_t *@
-  -> Sk_filter_mode -- ^ C argument @"mode"@ of type @sk_filter_mode_t@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_vertices(sk_canvas_t *ccanvas, const sk_vertices_t *vertices, sk_blendmode_t mode, const sk_paint_t *paint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * center"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * dst"@
+  -> Sk_filter_mode -- ^ C argument @"sk_filter_mode_t mode"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_vertices(sk_canvas_t *ccanvas, const sk_vertices_t *vertices, sk_blendmode_t mode, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_canvas_draw_vertices" sk_canvas_draw_vertices ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_vertices) -- ^ C argument @"vertices"@ of type @const sk_vertices_t *@
-  -> Sk_blendmode -- ^ C argument @"mode"@ of type @sk_blendmode_t@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_arc(sk_canvas_t *ccanvas, const sk_rect_t *oval, float startAngle, float sweepAngle, _Bool useCenter, const sk_paint_t *paint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_vertices) -- ^ C argument @"const sk_vertices_t * vertices"@
+  -> Sk_blendmode -- ^ C argument @"sk_blendmode_t mode"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_arc(sk_canvas_t *ccanvas, const sk_rect_t *oval, float startAngle, float sweepAngle, _Bool useCenter, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_canvas_draw_arc" sk_canvas_draw_arc ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"oval"@ of type @const sk_rect_t *@
-  -> CFloat -- ^ C argument @"startAngle"@ of type @float@
-  -> CFloat -- ^ C argument @"sweepAngle"@ of type @float@
-  -> CBool -- ^ C argument @"useCenter"@ of type @_Bool@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_drrect(sk_canvas_t *ccanvas, const sk_rrect_t *outer, const sk_rrect_t *inner, const sk_paint_t *paint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * oval"@
+  -> CFloat -- ^ C argument @"float startAngle"@
+  -> CFloat -- ^ C argument @"float sweepAngle"@
+  -> CBool -- ^ C argument @"_Bool useCenter"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_drrect(sk_canvas_t *ccanvas, const sk_rrect_t *outer, const sk_rrect_t *inner, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_canvas_draw_drrect" sk_canvas_draw_drrect ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument @"outer"@ of type @const sk_rrect_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument @"inner"@ of type @const sk_rrect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_atlas(sk_canvas_t *ccanvas, const sk_image_t *atlas, const sk_rsxform_t *xform, const sk_rect_t *tex, const sk_color_t *colors, int count, sk_blendmode_t mode, const sk_sampling_options_t *sampling, const sk_rect_t *cullRect, const sk_paint_t *paint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * outer"@
+  -> Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * inner"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_atlas(sk_canvas_t *ccanvas, const sk_image_t *atlas, const sk_rsxform_t *xform, const sk_rect_t *tex, const sk_color_t *colors, int count, sk_blendmode_t mode, const sk_sampling_options_t *sampling, const sk_rect_t *cullRect, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_canvas_draw_atlas" sk_canvas_draw_atlas ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_image) -- ^ C argument @"atlas"@ of type @const sk_image_t *@
-  -> Ptr (Sk_rsxform) -- ^ C argument @"xform"@ of type @const sk_rsxform_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"tex"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Sk_blendmode -- ^ C argument @"mode"@ of type @sk_blendmode_t@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cullRect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_canvas_draw_patch(sk_canvas_t *ccanvas, const sk_point_t *cubics, const sk_color_t *colors, const sk_point_t *texCoords, sk_blendmode_t mode, const sk_paint_t *paint)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_image) -- ^ C argument @"const sk_image_t * atlas"@
+  -> Ptr (Sk_rsxform) -- ^ C argument @"const sk_rsxform_t * xform"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * tex"@
+  -> Ptr (Sk_color) -- ^ C argument @"const sk_color_t * colors"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Sk_blendmode -- ^ C argument @"sk_blendmode_t mode"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cullRect"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_canvas_draw_patch(sk_canvas_t *ccanvas, const sk_point_t *cubics, const sk_color_t *colors, const sk_point_t *texCoords, sk_blendmode_t mode, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_canvas_draw_patch" sk_canvas_draw_patch ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"cubics"@ of type @const sk_point_t *@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"texCoords"@ of type @const sk_point_t *@
-  -> Sk_blendmode -- ^ C argument @"mode"@ of type @sk_blendmode_t@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_canvas_is_clip_empty(sk_canvas_t *ccanvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * cubics"@
+  -> Ptr (Sk_color) -- ^ C argument @"const sk_color_t * colors"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * texCoords"@
+  -> Sk_blendmode -- ^ C argument @"sk_blendmode_t mode"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_canvas_is_clip_empty(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_is_clip_empty" sk_canvas_is_clip_empty ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_canvas_is_clip_rect(sk_canvas_t *ccanvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_canvas_is_clip_rect(sk_canvas_t *ccanvas)
+@
+-}
 foreign import ccall "sk_canvas_is_clip_rect" sk_canvas_is_clip_rect ::
-  Ptr (Sk_canvas) -- ^ C argument @"ccanvas"@ of type @sk_canvas_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_nodraw_canvas_t *sk_nodraw_canvas_new(int width, int height)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * ccanvas"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_nodraw_canvas_t *sk_nodraw_canvas_new(int width, int height)
+@
+-}
 foreign import ccall "sk_nodraw_canvas_new" sk_nodraw_canvas_new ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> IO (Ptr (Sk_nodraw_canvas)) -- ^ C return type: @sk_nodraw_canvas_t *@
--- | C function: @void sk_nodraw_canvas_destroy(sk_nodraw_canvas_t *t)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> IO (Ptr (Sk_nodraw_canvas)) -- ^ C return type: @"sk_nodraw_canvas_t *"@
+
+{- | C function signature:
+
+@
+void sk_nodraw_canvas_destroy(sk_nodraw_canvas_t *t)
+@
+-}
 foreign import ccall "sk_nodraw_canvas_destroy" sk_nodraw_canvas_destroy ::
-  Ptr (Sk_nodraw_canvas) -- ^ C argument @"t"@ of type @sk_nodraw_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_nway_canvas_t *sk_nway_canvas_new(int width, int height)@
+  Ptr (Sk_nodraw_canvas) -- ^ C argument @"sk_nodraw_canvas_t * t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_nway_canvas_t *sk_nway_canvas_new(int width, int height)
+@
+-}
 foreign import ccall "sk_nway_canvas_new" sk_nway_canvas_new ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> IO (Ptr (Sk_nway_canvas)) -- ^ C return type: @sk_nway_canvas_t *@
--- | C function: @void sk_nway_canvas_destroy(sk_nway_canvas_t *t)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> IO (Ptr (Sk_nway_canvas)) -- ^ C return type: @"sk_nway_canvas_t *"@
+
+{- | C function signature:
+
+@
+void sk_nway_canvas_destroy(sk_nway_canvas_t *t)
+@
+-}
 foreign import ccall "sk_nway_canvas_destroy" sk_nway_canvas_destroy ::
-  Ptr (Sk_nway_canvas) -- ^ C argument @"t"@ of type @sk_nway_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_nway_canvas_add_canvas(sk_nway_canvas_t *t, sk_canvas_t *canvas)@
+  Ptr (Sk_nway_canvas) -- ^ C argument @"sk_nway_canvas_t * t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_nway_canvas_add_canvas(sk_nway_canvas_t *t, sk_canvas_t *canvas)
+@
+-}
 foreign import ccall "sk_nway_canvas_add_canvas" sk_nway_canvas_add_canvas ::
-  Ptr (Sk_nway_canvas) -- ^ C argument @"t"@ of type @sk_nway_canvas_t *@
-  -> Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_nway_canvas_remove_canvas(sk_nway_canvas_t *t, sk_canvas_t *canvas)@
+  Ptr (Sk_nway_canvas) -- ^ C argument @"sk_nway_canvas_t * t"@
+  -> Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_nway_canvas_remove_canvas(sk_nway_canvas_t *t, sk_canvas_t *canvas)
+@
+-}
 foreign import ccall "sk_nway_canvas_remove_canvas" sk_nway_canvas_remove_canvas ::
-  Ptr (Sk_nway_canvas) -- ^ C argument @"t"@ of type @sk_nway_canvas_t *@
-  -> Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_nway_canvas_remove_all(sk_nway_canvas_t *t)@
+  Ptr (Sk_nway_canvas) -- ^ C argument @"sk_nway_canvas_t * t"@
+  -> Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_nway_canvas_remove_all(sk_nway_canvas_t *t)
+@
+-}
 foreign import ccall "sk_nway_canvas_remove_all" sk_nway_canvas_remove_all ::
-  Ptr (Sk_nway_canvas) -- ^ C argument @"t"@ of type @sk_nway_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_overdraw_canvas_t *sk_overdraw_canvas_new(sk_canvas_t *canvas)@
+  Ptr (Sk_nway_canvas) -- ^ C argument @"sk_nway_canvas_t * t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_overdraw_canvas_t *sk_overdraw_canvas_new(sk_canvas_t *canvas)
+@
+-}
 foreign import ccall "sk_overdraw_canvas_new" sk_overdraw_canvas_new ::
-  Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> IO (Ptr (Sk_overdraw_canvas)) -- ^ C return type: @sk_overdraw_canvas_t *@
--- | C function: @void sk_overdraw_canvas_destroy(sk_overdraw_canvas_t *canvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> IO (Ptr (Sk_overdraw_canvas)) -- ^ C return type: @"sk_overdraw_canvas_t *"@
+
+{- | C function signature:
+
+@
+void sk_overdraw_canvas_destroy(sk_overdraw_canvas_t *canvas)
+@
+-}
 foreign import ccall "sk_overdraw_canvas_destroy" sk_overdraw_canvas_destroy ::
-  Ptr (Sk_overdraw_canvas) -- ^ C argument @"canvas"@ of type @sk_overdraw_canvas_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @gr_recording_context_t *sk_get_recording_context(sk_canvas_t *canvas)@
+  Ptr (Sk_overdraw_canvas) -- ^ C argument @"sk_overdraw_canvas_t * canvas"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+gr_recording_context_t *sk_get_recording_context(sk_canvas_t *canvas)
+@
+-}
 foreign import ccall "sk_get_recording_context" sk_get_recording_context ::
-  Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> IO (Ptr (Gr_recording_context)) -- ^ C return type: @gr_recording_context_t *@
--- | C function: @sk_surface_t *sk_get_surface(sk_canvas_t *canvas)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> IO (Ptr (Gr_recording_context)) -- ^ C return type: @"gr_recording_context_t *"@
+
+{- | C function signature:
+
+@
+sk_surface_t *sk_get_surface(sk_canvas_t *canvas)
+@
+-}
 foreign import ccall "sk_get_surface" sk_get_surface ::
-  Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> IO (Ptr (Sk_surface)) -- ^ C return type: @sk_surface_t *@
--- | C function: @void sk_textblob_ref(const sk_textblob_t *blob)@
+  Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> IO (Ptr (Sk_surface)) -- ^ C return type: @"sk_surface_t *"@
+
+{- | C function signature:
+
+@
+void sk_textblob_ref(const sk_textblob_t *blob)
+@
+-}
 foreign import ccall "sk_textblob_ref" sk_textblob_ref ::
-  Ptr (Sk_textblob) -- ^ C argument @"blob"@ of type @const sk_textblob_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_unref(const sk_textblob_t *blob)@
+  Ptr (Sk_textblob) -- ^ C argument @"const sk_textblob_t * blob"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_unref(const sk_textblob_t *blob)
+@
+-}
 foreign import ccall "sk_textblob_unref" sk_textblob_unref ::
-  Ptr (Sk_textblob) -- ^ C argument @"blob"@ of type @const sk_textblob_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @uint32_t sk_textblob_get_unique_id(const sk_textblob_t *blob)@
+  Ptr (Sk_textblob) -- ^ C argument @"const sk_textblob_t * blob"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+uint32_t sk_textblob_get_unique_id(const sk_textblob_t *blob)
+@
+-}
 foreign import ccall "sk_textblob_get_unique_id" sk_textblob_get_unique_id ::
-  Ptr (Sk_textblob) -- ^ C argument @"blob"@ of type @const sk_textblob_t *@
-  -> IO (Word32) -- ^ C return type: @uint32_t@
--- | C function: @void sk_textblob_get_bounds(const sk_textblob_t *blob, sk_rect_t *bounds)@
+  Ptr (Sk_textblob) -- ^ C argument @"const sk_textblob_t * blob"@
+  -> IO (Word32) -- ^ C return type: @"uint32_t"@
+
+{- | C function signature:
+
+@
+void sk_textblob_get_bounds(const sk_textblob_t *blob, sk_rect_t *bounds)
+@
+-}
 foreign import ccall "sk_textblob_get_bounds" sk_textblob_get_bounds ::
-  Ptr (Sk_textblob) -- ^ C argument @"blob"@ of type @const sk_textblob_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_textblob_get_intercepts(const sk_textblob_t *blob, const float bounds[2], float intervals[], const sk_paint_t *paint)@
+  Ptr (Sk_textblob) -- ^ C argument @"const sk_textblob_t * blob"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * bounds"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_textblob_get_intercepts(const sk_textblob_t *blob, const float bounds[2], float intervals[], const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_textblob_get_intercepts" sk_textblob_get_intercepts ::
-  Ptr (Sk_textblob) -- ^ C argument @"blob"@ of type @const sk_textblob_t *@
-  -> Ptr (CFloat) -- ^ C argument @"bounds"@ of type @const float [2]@
-  -> Ptr (CFloat) -- ^ C argument @"intervals"@ of type @float []@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @sk_textblob_builder_t *sk_textblob_builder_new(void)@
+  Ptr (Sk_textblob) -- ^ C argument @"const sk_textblob_t * blob"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [2] bounds"@
+  -> Ptr (CFloat) -- ^ C argument @"float [] intervals"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+sk_textblob_builder_t *sk_textblob_builder_new(void)
+@
+-}
 foreign import ccall "sk_textblob_builder_new" sk_textblob_builder_new ::
-  IO (Ptr (Sk_textblob_builder)) -- ^ C return type: @sk_textblob_builder_t *@
--- | C function: @void sk_textblob_builder_delete(sk_textblob_builder_t *builder)@
+  IO (Ptr (Sk_textblob_builder)) -- ^ C return type: @"sk_textblob_builder_t *"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_delete(sk_textblob_builder_t *builder)
+@
+-}
 foreign import ccall "sk_textblob_builder_delete" sk_textblob_builder_delete ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_textblob_t *sk_textblob_builder_make(sk_textblob_builder_t *builder)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_textblob_t *sk_textblob_builder_make(sk_textblob_builder_t *builder)
+@
+-}
 foreign import ccall "sk_textblob_builder_make" sk_textblob_builder_make ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> IO (Ptr (Sk_textblob)) -- ^ C return type: @sk_textblob_t *@
--- | C function: @void sk_textblob_builder_alloc_run(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float x, float y, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> IO (Ptr (Sk_textblob)) -- ^ C return type: @"sk_textblob_t *"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float x, float y, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run" sk_textblob_builder_alloc_run ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_builder_alloc_run_pos_h(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float y, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run_pos_h(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float y, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run_pos_h" sk_textblob_builder_alloc_run_pos_h ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_builder_alloc_run_pos(sk_textblob_builder_t *builder, const sk_font_t *font, int count, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run_pos(sk_textblob_builder_t *builder, const sk_font_t *font, int count, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run_pos" sk_textblob_builder_alloc_run_pos ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_builder_alloc_run_rsxform(sk_textblob_builder_t *builder, const sk_font_t *font, int count, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run_rsxform(sk_textblob_builder_t *builder, const sk_font_t *font, int count, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run_rsxform" sk_textblob_builder_alloc_run_rsxform ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_builder_alloc_run_text(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float x, float y, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run_text(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float x, float y, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run_text" sk_textblob_builder_alloc_run_text ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> CInt -- ^ C argument @"textByteCount"@ of type @int@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_builder_alloc_run_text_pos_h(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float y, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> CInt -- ^ C argument @"int textByteCount"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run_text_pos_h(sk_textblob_builder_t *builder, const sk_font_t *font, int count, float y, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run_text_pos_h" sk_textblob_builder_alloc_run_text_pos_h ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> CInt -- ^ C argument @"textByteCount"@ of type @int@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_builder_alloc_run_text_pos(sk_textblob_builder_t *builder, const sk_font_t *font, int count, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> CInt -- ^ C argument @"int textByteCount"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run_text_pos(sk_textblob_builder_t *builder, const sk_font_t *font, int count, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run_text_pos" sk_textblob_builder_alloc_run_text_pos ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CInt -- ^ C argument @"textByteCount"@ of type @int@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_textblob_builder_alloc_run_text_rsxform(sk_textblob_builder_t *builder, const sk_font_t *font, int count, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CInt -- ^ C argument @"int textByteCount"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_textblob_builder_alloc_run_text_rsxform(sk_textblob_builder_t *builder, const sk_font_t *font, int count, int textByteCount, const sk_rect_t *bounds, sk_textblob_builder_runbuffer_t *runbuffer)
+@
+-}
 foreign import ccall "sk_textblob_builder_alloc_run_text_rsxform" sk_textblob_builder_alloc_run_text_rsxform ::
-  Ptr (Sk_textblob_builder) -- ^ C argument @"builder"@ of type @sk_textblob_builder_t *@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CInt -- ^ C argument @"textByteCount"@ of type @int@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"runbuffer"@ of type @sk_textblob_builder_runbuffer_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_maskfilter_ref(sk_maskfilter_t *)@
+  Ptr (Sk_textblob_builder) -- ^ C argument @"sk_textblob_builder_t * builder"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CInt -- ^ C argument @"int textByteCount"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_textblob_builder_runbuffer) -- ^ C argument @"sk_textblob_builder_runbuffer_t * runbuffer"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_maskfilter_ref(sk_maskfilter_t *)
+@
+-}
 foreign import ccall "sk_maskfilter_ref" sk_maskfilter_ref ::
-  Ptr (Sk_maskfilter) -- ^ C argument type: @sk_maskfilter_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_maskfilter_unref(sk_maskfilter_t *)@
+  Ptr (Sk_maskfilter) -- ^ C argument type: @"sk_maskfilter_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_maskfilter_unref(sk_maskfilter_t *)
+@
+-}
 foreign import ccall "sk_maskfilter_unref" sk_maskfilter_unref ::
-  Ptr (Sk_maskfilter) -- ^ C argument type: @sk_maskfilter_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_maskfilter_t *sk_maskfilter_new_blur(sk_blurstyle_t, float sigma)@
+  Ptr (Sk_maskfilter) -- ^ C argument type: @"sk_maskfilter_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_maskfilter_t *sk_maskfilter_new_blur(sk_blurstyle_t, float sigma)
+@
+-}
 foreign import ccall "sk_maskfilter_new_blur" sk_maskfilter_new_blur ::
-  Sk_blurstyle -- ^ C argument type: @sk_blurstyle_t@
-  -> CFloat -- ^ C argument @"sigma"@ of type @float@
-  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @sk_maskfilter_t *@
--- | C function: @sk_maskfilter_t *sk_maskfilter_new_blur_with_flags(sk_blurstyle_t, float sigma, _Bool respectCTM)@
+  Sk_blurstyle -- ^ C argument type: @"sk_blurstyle_t"@
+  -> CFloat -- ^ C argument @"float sigma"@
+  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @"sk_maskfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_maskfilter_t *sk_maskfilter_new_blur_with_flags(sk_blurstyle_t, float sigma, _Bool respectCTM)
+@
+-}
 foreign import ccall "sk_maskfilter_new_blur_with_flags" sk_maskfilter_new_blur_with_flags ::
-  Sk_blurstyle -- ^ C argument type: @sk_blurstyle_t@
-  -> CFloat -- ^ C argument @"sigma"@ of type @float@
-  -> CBool -- ^ C argument @"respectCTM"@ of type @_Bool@
-  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @sk_maskfilter_t *@
--- | C function: @sk_maskfilter_t *sk_maskfilter_new_table(const uint8_t table[256])@
+  Sk_blurstyle -- ^ C argument type: @"sk_blurstyle_t"@
+  -> CFloat -- ^ C argument @"float sigma"@
+  -> CBool -- ^ C argument @"_Bool respectCTM"@
+  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @"sk_maskfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_maskfilter_t *sk_maskfilter_new_table(const uint8_t table[256])
+@
+-}
 foreign import ccall "sk_maskfilter_new_table" sk_maskfilter_new_table ::
-  Ptr (Word8) -- ^ C argument @"table"@ of type @const uint8_t [256]@
-  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @sk_maskfilter_t *@
--- | C function: @sk_maskfilter_t *sk_maskfilter_new_gamma(float gamma)@
+  Ptr (Word8) -- ^ C argument @"const uint8_t [256] table"@
+  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @"sk_maskfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_maskfilter_t *sk_maskfilter_new_gamma(float gamma)
+@
+-}
 foreign import ccall "sk_maskfilter_new_gamma" sk_maskfilter_new_gamma ::
-  CFloat -- ^ C argument @"gamma"@ of type @float@
-  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @sk_maskfilter_t *@
--- | C function: @sk_maskfilter_t *sk_maskfilter_new_clip(uint8_t min, uint8_t max)@
+  CFloat -- ^ C argument @"float gamma"@
+  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @"sk_maskfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_maskfilter_t *sk_maskfilter_new_clip(uint8_t min, uint8_t max)
+@
+-}
 foreign import ccall "sk_maskfilter_new_clip" sk_maskfilter_new_clip ::
-  Word8 -- ^ C argument @"min"@ of type @uint8_t@
-  -> Word8 -- ^ C argument @"max"@ of type @uint8_t@
-  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @sk_maskfilter_t *@
--- | C function: @sk_maskfilter_t *sk_maskfilter_new_shader(sk_shader_t *cshader)@
+  Word8 -- ^ C argument @"uint8_t min"@
+  -> Word8 -- ^ C argument @"uint8_t max"@
+  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @"sk_maskfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_maskfilter_t *sk_maskfilter_new_shader(sk_shader_t *cshader)
+@
+-}
 foreign import ccall "sk_maskfilter_new_shader" sk_maskfilter_new_shader ::
-  Ptr (Sk_shader) -- ^ C argument @"cshader"@ of type @sk_shader_t *@
-  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @sk_maskfilter_t *@
--- | C function: @void sk_colorspace_ref(sk_colorspace_t *colorspace)@
+  Ptr (Sk_shader) -- ^ C argument @"sk_shader_t * cshader"@
+  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @"sk_maskfilter_t *"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_ref(sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_colorspace_ref" sk_colorspace_ref ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_unref(sk_colorspace_t *colorspace)@
+  Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_unref(sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_colorspace_unref" sk_colorspace_unref ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_colorspace_t *sk_colorspace_new_srgb(void)@
+  Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_colorspace_new_srgb(void)
+@
+-}
 foreign import ccall "sk_colorspace_new_srgb" sk_colorspace_new_srgb ::
-  IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @sk_colorspace_t *sk_colorspace_new_srgb_linear(void)@
+  IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_colorspace_new_srgb_linear(void)
+@
+-}
 foreign import ccall "sk_colorspace_new_srgb_linear" sk_colorspace_new_srgb_linear ::
-  IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @sk_colorspace_t *sk_colorspace_new_rgb(const sk_colorspace_transfer_fn_t *transferFn, const sk_colorspace_xyz_t *toXYZD50)@
+  IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_colorspace_new_rgb(const sk_colorspace_transfer_fn_t *transferFn, const sk_colorspace_xyz_t *toXYZD50)
+@
+-}
 foreign import ccall "sk_colorspace_new_rgb" sk_colorspace_new_rgb ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @const sk_colorspace_transfer_fn_t *@
-  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"toXYZD50"@ of type @const sk_colorspace_xyz_t *@
-  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @sk_colorspace_t *sk_colorspace_new_icc(const sk_colorspace_icc_profile_t *profile)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"const sk_colorspace_transfer_fn_t * transferFn"@
+  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"const sk_colorspace_xyz_t * toXYZD50"@
+  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_colorspace_new_icc(const sk_colorspace_icc_profile_t *profile)
+@
+-}
 foreign import ccall "sk_colorspace_new_icc" sk_colorspace_new_icc ::
-  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"profile"@ of type @const sk_colorspace_icc_profile_t *@
-  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @void sk_colorspace_to_profile(const sk_colorspace_t *colorspace, sk_colorspace_icc_profile_t *profile)@
+  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"const sk_colorspace_icc_profile_t * profile"@
+  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_to_profile(const sk_colorspace_t *colorspace, sk_colorspace_icc_profile_t *profile)
+@
+-}
 foreign import ccall "sk_colorspace_to_profile" sk_colorspace_to_profile ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"profile"@ of type @sk_colorspace_icc_profile_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_colorspace_gamma_close_to_srgb(const sk_colorspace_t *colorspace)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"sk_colorspace_icc_profile_t * profile"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_gamma_close_to_srgb(const sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_colorspace_gamma_close_to_srgb" sk_colorspace_gamma_close_to_srgb ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_colorspace_gamma_is_linear(const sk_colorspace_t *colorspace)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_gamma_is_linear(const sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_colorspace_gamma_is_linear" sk_colorspace_gamma_is_linear ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_colorspace_is_numerical_transfer_fn(const sk_colorspace_t *colorspace, sk_colorspace_transfer_fn_t *transferFn)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_is_numerical_transfer_fn(const sk_colorspace_t *colorspace, sk_colorspace_transfer_fn_t *transferFn)
+@
+-}
 foreign import ccall "sk_colorspace_is_numerical_transfer_fn" sk_colorspace_is_numerical_transfer_fn ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_colorspace_to_xyzd50(const sk_colorspace_t *colorspace, sk_colorspace_xyz_t *toXYZD50)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * transferFn"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_to_xyzd50(const sk_colorspace_t *colorspace, sk_colorspace_xyz_t *toXYZD50)
+@
+-}
 foreign import ccall "sk_colorspace_to_xyzd50" sk_colorspace_to_xyzd50 ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"toXYZD50"@ of type @sk_colorspace_xyz_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_colorspace_t *sk_colorspace_make_linear_gamma(const sk_colorspace_t *colorspace)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * toXYZD50"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_colorspace_make_linear_gamma(const sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_colorspace_make_linear_gamma" sk_colorspace_make_linear_gamma ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @sk_colorspace_t *sk_colorspace_make_srgb_gamma(const sk_colorspace_t *colorspace)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_colorspace_make_srgb_gamma(const sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_colorspace_make_srgb_gamma" sk_colorspace_make_srgb_gamma ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @_Bool sk_colorspace_is_srgb(const sk_colorspace_t *colorspace)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_is_srgb(const sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_colorspace_is_srgb" sk_colorspace_is_srgb ::
-  Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_colorspace_equals(const sk_colorspace_t *src, const sk_colorspace_t *dst)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_equals(const sk_colorspace_t *src, const sk_colorspace_t *dst)
+@
+-}
 foreign import ccall "sk_colorspace_equals" sk_colorspace_equals ::
-  Ptr (Sk_colorspace) -- ^ C argument @"src"@ of type @const sk_colorspace_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"dst"@ of type @const sk_colorspace_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_colorspace_transfer_fn_named_srgb(sk_colorspace_transfer_fn_t *transferFn)@
+  Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * src"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * dst"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_transfer_fn_named_srgb(sk_colorspace_transfer_fn_t *transferFn)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_named_srgb" sk_colorspace_transfer_fn_named_srgb ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_transfer_fn_named_2dot2(sk_colorspace_transfer_fn_t *transferFn)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * transferFn"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_transfer_fn_named_2dot2(sk_colorspace_transfer_fn_t *transferFn)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_named_2dot2" sk_colorspace_transfer_fn_named_2dot2 ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_transfer_fn_named_linear(sk_colorspace_transfer_fn_t *transferFn)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * transferFn"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_transfer_fn_named_linear(sk_colorspace_transfer_fn_t *transferFn)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_named_linear" sk_colorspace_transfer_fn_named_linear ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_transfer_fn_named_rec2020(sk_colorspace_transfer_fn_t *transferFn)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * transferFn"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_transfer_fn_named_rec2020(sk_colorspace_transfer_fn_t *transferFn)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_named_rec2020" sk_colorspace_transfer_fn_named_rec2020 ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_transfer_fn_named_pq(sk_colorspace_transfer_fn_t *transferFn)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * transferFn"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_transfer_fn_named_pq(sk_colorspace_transfer_fn_t *transferFn)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_named_pq" sk_colorspace_transfer_fn_named_pq ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_transfer_fn_named_hlg(sk_colorspace_transfer_fn_t *transferFn)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * transferFn"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_transfer_fn_named_hlg(sk_colorspace_transfer_fn_t *transferFn)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_named_hlg" sk_colorspace_transfer_fn_named_hlg ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_colorspace_transfer_fn_eval(const sk_colorspace_transfer_fn_t *transferFn, float x)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * transferFn"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_colorspace_transfer_fn_eval(const sk_colorspace_transfer_fn_t *transferFn, float x)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_eval" sk_colorspace_transfer_fn_eval ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"transferFn"@ of type @const sk_colorspace_transfer_fn_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @_Bool sk_colorspace_transfer_fn_invert(const sk_colorspace_transfer_fn_t *src, sk_colorspace_transfer_fn_t *dst)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"const sk_colorspace_transfer_fn_t * transferFn"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_transfer_fn_invert(const sk_colorspace_transfer_fn_t *src, sk_colorspace_transfer_fn_t *dst)
+@
+-}
 foreign import ccall "sk_colorspace_transfer_fn_invert" sk_colorspace_transfer_fn_invert ::
-  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"src"@ of type @const sk_colorspace_transfer_fn_t *@
-  -> Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"dst"@ of type @sk_colorspace_transfer_fn_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_colorspace_primaries_to_xyzd50(const sk_colorspace_primaries_t *primaries, sk_colorspace_xyz_t *toXYZD50)@
+  Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"const sk_colorspace_transfer_fn_t * src"@
+  -> Ptr (Sk_colorspace_transfer_fn) -- ^ C argument @"sk_colorspace_transfer_fn_t * dst"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_primaries_to_xyzd50(const sk_colorspace_primaries_t *primaries, sk_colorspace_xyz_t *toXYZD50)
+@
+-}
 foreign import ccall "sk_colorspace_primaries_to_xyzd50" sk_colorspace_primaries_to_xyzd50 ::
-  Ptr (Sk_colorspace_primaries) -- ^ C argument @"primaries"@ of type @const sk_colorspace_primaries_t *@
-  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"toXYZD50"@ of type @sk_colorspace_xyz_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_colorspace_xyz_named_srgb(sk_colorspace_xyz_t *xyz)@
+  Ptr (Sk_colorspace_primaries) -- ^ C argument @"const sk_colorspace_primaries_t * primaries"@
+  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * toXYZD50"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_xyz_named_srgb(sk_colorspace_xyz_t *xyz)
+@
+-}
 foreign import ccall "sk_colorspace_xyz_named_srgb" sk_colorspace_xyz_named_srgb ::
-  Ptr (Sk_colorspace_xyz) -- ^ C argument @"xyz"@ of type @sk_colorspace_xyz_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_xyz_named_adobe_rgb(sk_colorspace_xyz_t *xyz)@
+  Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * xyz"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_xyz_named_adobe_rgb(sk_colorspace_xyz_t *xyz)
+@
+-}
 foreign import ccall "sk_colorspace_xyz_named_adobe_rgb" sk_colorspace_xyz_named_adobe_rgb ::
-  Ptr (Sk_colorspace_xyz) -- ^ C argument @"xyz"@ of type @sk_colorspace_xyz_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_xyz_named_display_p3(sk_colorspace_xyz_t *xyz)@
+  Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * xyz"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_xyz_named_display_p3(sk_colorspace_xyz_t *xyz)
+@
+-}
 foreign import ccall "sk_colorspace_xyz_named_display_p3" sk_colorspace_xyz_named_display_p3 ::
-  Ptr (Sk_colorspace_xyz) -- ^ C argument @"xyz"@ of type @sk_colorspace_xyz_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_xyz_named_rec2020(sk_colorspace_xyz_t *xyz)@
+  Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * xyz"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_xyz_named_rec2020(sk_colorspace_xyz_t *xyz)
+@
+-}
 foreign import ccall "sk_colorspace_xyz_named_rec2020" sk_colorspace_xyz_named_rec2020 ::
-  Ptr (Sk_colorspace_xyz) -- ^ C argument @"xyz"@ of type @sk_colorspace_xyz_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_xyz_named_xyz(sk_colorspace_xyz_t *xyz)@
+  Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * xyz"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_xyz_named_xyz(sk_colorspace_xyz_t *xyz)
+@
+-}
 foreign import ccall "sk_colorspace_xyz_named_xyz" sk_colorspace_xyz_named_xyz ::
-  Ptr (Sk_colorspace_xyz) -- ^ C argument @"xyz"@ of type @sk_colorspace_xyz_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_colorspace_xyz_invert(const sk_colorspace_xyz_t *src, sk_colorspace_xyz_t *dst)@
+  Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * xyz"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_xyz_invert(const sk_colorspace_xyz_t *src, sk_colorspace_xyz_t *dst)
+@
+-}
 foreign import ccall "sk_colorspace_xyz_invert" sk_colorspace_xyz_invert ::
-  Ptr (Sk_colorspace_xyz) -- ^ C argument @"src"@ of type @const sk_colorspace_xyz_t *@
-  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"dst"@ of type @sk_colorspace_xyz_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_colorspace_xyz_concat(const sk_colorspace_xyz_t *a, const sk_colorspace_xyz_t *b, sk_colorspace_xyz_t *result)@
+  Ptr (Sk_colorspace_xyz) -- ^ C argument @"const sk_colorspace_xyz_t * src"@
+  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * dst"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_xyz_concat(const sk_colorspace_xyz_t *a, const sk_colorspace_xyz_t *b, sk_colorspace_xyz_t *result)
+@
+-}
 foreign import ccall "sk_colorspace_xyz_concat" sk_colorspace_xyz_concat ::
-  Ptr (Sk_colorspace_xyz) -- ^ C argument @"a"@ of type @const sk_colorspace_xyz_t *@
-  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"b"@ of type @const sk_colorspace_xyz_t *@
-  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"result"@ of type @sk_colorspace_xyz_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_colorspace_icc_profile_delete(sk_colorspace_icc_profile_t *profile)@
+  Ptr (Sk_colorspace_xyz) -- ^ C argument @"const sk_colorspace_xyz_t * a"@
+  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"const sk_colorspace_xyz_t * b"@
+  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * result"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_colorspace_icc_profile_delete(sk_colorspace_icc_profile_t *profile)
+@
+-}
 foreign import ccall "sk_colorspace_icc_profile_delete" sk_colorspace_icc_profile_delete ::
-  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"profile"@ of type @sk_colorspace_icc_profile_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_colorspace_icc_profile_t *sk_colorspace_icc_profile_new(void)@
+  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"sk_colorspace_icc_profile_t * profile"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_colorspace_icc_profile_t *sk_colorspace_icc_profile_new(void)
+@
+-}
 foreign import ccall "sk_colorspace_icc_profile_new" sk_colorspace_icc_profile_new ::
-  IO (Ptr (Sk_colorspace_icc_profile)) -- ^ C return type: @sk_colorspace_icc_profile_t *@
--- | C function: @_Bool sk_colorspace_icc_profile_parse(const void *buffer, size_t length, sk_colorspace_icc_profile_t *profile)@
+  IO (Ptr (Sk_colorspace_icc_profile)) -- ^ C return type: @"sk_colorspace_icc_profile_t *"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_icc_profile_parse(const void *buffer, size_t length, sk_colorspace_icc_profile_t *profile)
+@
+-}
 foreign import ccall "sk_colorspace_icc_profile_parse" sk_colorspace_icc_profile_parse ::
-  Ptr (()) -- ^ C argument @"buffer"@ of type @const void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"profile"@ of type @sk_colorspace_icc_profile_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @const uint8_t *sk_colorspace_icc_profile_get_buffer(const sk_colorspace_icc_profile_t *profile, uint32_t *size)@
+  Ptr (()) -- ^ C argument @"const void * buffer"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"sk_colorspace_icc_profile_t * profile"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+const uint8_t *sk_colorspace_icc_profile_get_buffer(const sk_colorspace_icc_profile_t *profile, uint32_t *size)
+@
+-}
 foreign import ccall "sk_colorspace_icc_profile_get_buffer" sk_colorspace_icc_profile_get_buffer ::
-  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"profile"@ of type @const sk_colorspace_icc_profile_t *@
-  -> Ptr (Word32) -- ^ C argument @"size"@ of type @uint32_t *@
-  -> IO (Ptr (Word8)) -- ^ C return type: @const uint8_t *@
--- | C function: @_Bool sk_colorspace_icc_profile_get_to_xyzd50(const sk_colorspace_icc_profile_t *profile, sk_colorspace_xyz_t *toXYZD50)@
+  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"const sk_colorspace_icc_profile_t * profile"@
+  -> Ptr (Word32) -- ^ C argument @"uint32_t * size"@
+  -> IO (Ptr (Word8)) -- ^ C return type: @"const uint8_t *"@
+
+{- | C function signature:
+
+@
+_Bool sk_colorspace_icc_profile_get_to_xyzd50(const sk_colorspace_icc_profile_t *profile, sk_colorspace_xyz_t *toXYZD50)
+@
+-}
 foreign import ccall "sk_colorspace_icc_profile_get_to_xyzd50" sk_colorspace_icc_profile_get_to_xyzd50 ::
-  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"profile"@ of type @const sk_colorspace_icc_profile_t *@
-  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"toXYZD50"@ of type @sk_colorspace_xyz_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_color_t sk_color4f_to_color(const sk_color4f_t *color4f)@
+  Ptr (Sk_colorspace_icc_profile) -- ^ C argument @"const sk_colorspace_icc_profile_t * profile"@
+  -> Ptr (Sk_colorspace_xyz) -- ^ C argument @"sk_colorspace_xyz_t * toXYZD50"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_color_t sk_color4f_to_color(const sk_color4f_t *color4f)
+@
+-}
 foreign import ccall "sk_color4f_to_color" sk_color4f_to_color ::
-  Ptr (Sk_color4f) -- ^ C argument @"color4f"@ of type @const sk_color4f_t *@
-  -> IO (Sk_color) -- ^ C return type: @sk_color_t@
--- | C function: @void sk_color4f_from_color(sk_color_t color, sk_color4f_t *color4f)@
+  Ptr (Sk_color4f) -- ^ C argument @"const sk_color4f_t * color4f"@
+  -> IO (Sk_color) -- ^ C return type: @"sk_color_t"@
+
+{- | C function signature:
+
+@
+void sk_color4f_from_color(sk_color_t color, sk_color4f_t *color4f)
+@
+-}
 foreign import ccall "sk_color4f_from_color" sk_color4f_from_color ::
-  Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> Ptr (Sk_color4f) -- ^ C argument @"color4f"@ of type @sk_color4f_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_imagefilter_unref(sk_imagefilter_t *cfilter)@
+  Sk_color -- ^ C argument @"sk_color_t color"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"sk_color4f_t * color4f"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_imagefilter_unref(sk_imagefilter_t *cfilter)
+@
+-}
 foreign import ccall "sk_imagefilter_unref" sk_imagefilter_unref ::
-  Ptr (Sk_imagefilter) -- ^ C argument @"cfilter"@ of type @sk_imagefilter_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_arithmetic(float k1, float k2, float k3, float k4, _Bool enforcePMColor, const sk_imagefilter_t *background, const sk_imagefilter_t *foreground, const sk_rect_t *cropRect)@
+  Ptr (Sk_imagefilter) -- ^ C argument @"sk_imagefilter_t * cfilter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_arithmetic(float k1, float k2, float k3, float k4, _Bool enforcePMColor, const sk_imagefilter_t *background, const sk_imagefilter_t *foreground, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_arithmetic" sk_imagefilter_new_arithmetic ::
-  CFloat -- ^ C argument @"k1"@ of type @float@
-  -> CFloat -- ^ C argument @"k2"@ of type @float@
-  -> CFloat -- ^ C argument @"k3"@ of type @float@
-  -> CFloat -- ^ C argument @"k4"@ of type @float@
-  -> CBool -- ^ C argument @"enforcePMColor"@ of type @_Bool@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"background"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"foreground"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_blend(sk_blendmode_t mode, const sk_imagefilter_t *background, const sk_imagefilter_t *foreground, const sk_rect_t *cropRect)@
+  CFloat -- ^ C argument @"float k1"@
+  -> CFloat -- ^ C argument @"float k2"@
+  -> CFloat -- ^ C argument @"float k3"@
+  -> CFloat -- ^ C argument @"float k4"@
+  -> CBool -- ^ C argument @"_Bool enforcePMColor"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * background"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * foreground"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_blend(sk_blendmode_t mode, const sk_imagefilter_t *background, const sk_imagefilter_t *foreground, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_blend" sk_imagefilter_new_blend ::
-  Sk_blendmode -- ^ C argument @"mode"@ of type @sk_blendmode_t@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"background"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"foreground"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_blender(sk_blender_t *blender, const sk_imagefilter_t *background, const sk_imagefilter_t *foreground, const sk_rect_t *cropRect)@
+  Sk_blendmode -- ^ C argument @"sk_blendmode_t mode"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * background"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * foreground"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_blender(sk_blender_t *blender, const sk_imagefilter_t *background, const sk_imagefilter_t *foreground, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_blender" sk_imagefilter_new_blender ::
-  Ptr (Sk_blender) -- ^ C argument @"blender"@ of type @sk_blender_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"background"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"foreground"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_blur(float sigmaX, float sigmaY, sk_shader_tilemode_t tileMode, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_blender) -- ^ C argument @"sk_blender_t * blender"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * background"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * foreground"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_blur(float sigmaX, float sigmaY, sk_shader_tilemode_t tileMode, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_blur" sk_imagefilter_new_blur ::
-  CFloat -- ^ C argument @"sigmaX"@ of type @float@
-  -> CFloat -- ^ C argument @"sigmaY"@ of type @float@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_color_filter(sk_colorfilter_t *cf, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  CFloat -- ^ C argument @"float sigmaX"@
+  -> CFloat -- ^ C argument @"float sigmaY"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_color_filter(sk_colorfilter_t *cf, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_color_filter" sk_imagefilter_new_color_filter ::
-  Ptr (Sk_colorfilter) -- ^ C argument @"cf"@ of type @sk_colorfilter_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_compose(const sk_imagefilter_t *outer, const sk_imagefilter_t *inner)@
+  Ptr (Sk_colorfilter) -- ^ C argument @"sk_colorfilter_t * cf"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_compose(const sk_imagefilter_t *outer, const sk_imagefilter_t *inner)
+@
+-}
 foreign import ccall "sk_imagefilter_new_compose" sk_imagefilter_new_compose ::
-  Ptr (Sk_imagefilter) -- ^ C argument @"outer"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"inner"@ of type @const sk_imagefilter_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_displacement_map_effect(sk_color_channel_t xChannelSelector, sk_color_channel_t yChannelSelector, float scale, const sk_imagefilter_t *displacement, const sk_imagefilter_t *color, const sk_rect_t *cropRect)@
+  Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * outer"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * inner"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_displacement_map_effect(sk_color_channel_t xChannelSelector, sk_color_channel_t yChannelSelector, float scale, const sk_imagefilter_t *displacement, const sk_imagefilter_t *color, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_displacement_map_effect" sk_imagefilter_new_displacement_map_effect ::
-  Sk_color_channel -- ^ C argument @"xChannelSelector"@ of type @sk_color_channel_t@
-  -> Sk_color_channel -- ^ C argument @"yChannelSelector"@ of type @sk_color_channel_t@
-  -> CFloat -- ^ C argument @"scale"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"displacement"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"color"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_drop_shadow(float dx, float dy, float sigmaX, float sigmaY, sk_color_t color, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Sk_color_channel -- ^ C argument @"sk_color_channel_t xChannelSelector"@
+  -> Sk_color_channel -- ^ C argument @"sk_color_channel_t yChannelSelector"@
+  -> CFloat -- ^ C argument @"float scale"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * displacement"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * color"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_drop_shadow(float dx, float dy, float sigmaX, float sigmaY, sk_color_t color, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_drop_shadow" sk_imagefilter_new_drop_shadow ::
-  CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> CFloat -- ^ C argument @"sigmaX"@ of type @float@
-  -> CFloat -- ^ C argument @"sigmaY"@ of type @float@
-  -> Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_drop_shadow_only(float dx, float dy, float sigmaX, float sigmaY, sk_color_t color, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> CFloat -- ^ C argument @"float sigmaX"@
+  -> CFloat -- ^ C argument @"float sigmaY"@
+  -> Sk_color -- ^ C argument @"sk_color_t color"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_drop_shadow_only(float dx, float dy, float sigmaX, float sigmaY, sk_color_t color, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_drop_shadow_only" sk_imagefilter_new_drop_shadow_only ::
-  CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> CFloat -- ^ C argument @"sigmaX"@ of type @float@
-  -> CFloat -- ^ C argument @"sigmaY"@ of type @float@
-  -> Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_image(sk_image_t *image, const sk_rect_t *srcRect, const sk_rect_t *dstRect, const sk_sampling_options_t *sampling)@
+  CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> CFloat -- ^ C argument @"float sigmaX"@
+  -> CFloat -- ^ C argument @"float sigmaY"@
+  -> Sk_color -- ^ C argument @"sk_color_t color"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_image(sk_image_t *image, const sk_rect_t *srcRect, const sk_rect_t *dstRect, const sk_sampling_options_t *sampling)
+@
+-}
 foreign import ccall "sk_imagefilter_new_image" sk_imagefilter_new_image ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @sk_image_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"srcRect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"dstRect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_image_simple(sk_image_t *image, const sk_sampling_options_t *sampling)@
+  Ptr (Sk_image) -- ^ C argument @"sk_image_t * image"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * srcRect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * dstRect"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_image_simple(sk_image_t *image, const sk_sampling_options_t *sampling)
+@
+-}
 foreign import ccall "sk_imagefilter_new_image_simple" sk_imagefilter_new_image_simple ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @sk_image_t *@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_magnifier(const sk_rect_t *lensBounds, float zoomAmount, float inset, const sk_sampling_options_t *sampling, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_image) -- ^ C argument @"sk_image_t * image"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_magnifier(const sk_rect_t *lensBounds, float zoomAmount, float inset, const sk_sampling_options_t *sampling, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_magnifier" sk_imagefilter_new_magnifier ::
-  Ptr (Sk_rect) -- ^ C argument @"lensBounds"@ of type @const sk_rect_t *@
-  -> CFloat -- ^ C argument @"zoomAmount"@ of type @float@
-  -> CFloat -- ^ C argument @"inset"@ of type @float@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_matrix_convolution(const sk_isize_t *kernelSize, const float kernel[], float gain, float bias, const sk_ipoint_t *kernelOffset, sk_shader_tilemode_t ctileMode, _Bool convolveAlpha, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * lensBounds"@
+  -> CFloat -- ^ C argument @"float zoomAmount"@
+  -> CFloat -- ^ C argument @"float inset"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_matrix_convolution(const sk_isize_t *kernelSize, const float kernel[], float gain, float bias, const sk_ipoint_t *kernelOffset, sk_shader_tilemode_t ctileMode, _Bool convolveAlpha, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_matrix_convolution" sk_imagefilter_new_matrix_convolution ::
-  Ptr (Sk_isize) -- ^ C argument @"kernelSize"@ of type @const sk_isize_t *@
-  -> Ptr (CFloat) -- ^ C argument @"kernel"@ of type @const float []@
-  -> CFloat -- ^ C argument @"gain"@ of type @float@
-  -> CFloat -- ^ C argument @"bias"@ of type @float@
-  -> Ptr (Sk_ipoint) -- ^ C argument @"kernelOffset"@ of type @const sk_ipoint_t *@
-  -> Sk_shader_tilemode -- ^ C argument @"ctileMode"@ of type @sk_shader_tilemode_t@
-  -> CBool -- ^ C argument @"convolveAlpha"@ of type @_Bool@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_matrix_transform(const sk_matrix_t *cmatrix, const sk_sampling_options_t *sampling, const sk_imagefilter_t *input)@
+  Ptr (Sk_isize) -- ^ C argument @"const sk_isize_t * kernelSize"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] kernel"@
+  -> CFloat -- ^ C argument @"float gain"@
+  -> CFloat -- ^ C argument @"float bias"@
+  -> Ptr (Sk_ipoint) -- ^ C argument @"const sk_ipoint_t * kernelOffset"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t ctileMode"@
+  -> CBool -- ^ C argument @"_Bool convolveAlpha"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_matrix_transform(const sk_matrix_t *cmatrix, const sk_sampling_options_t *sampling, const sk_imagefilter_t *input)
+@
+-}
 foreign import ccall "sk_imagefilter_new_matrix_transform" sk_imagefilter_new_matrix_transform ::
-  Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_merge(const sk_imagefilter_t *cfilters[], int count, const sk_rect_t *cropRect)@
+  Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_merge(const sk_imagefilter_t *cfilters[], int count, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_merge" sk_imagefilter_new_merge ::
-  Ptr (Ptr (Sk_imagefilter)) -- ^ C argument @"cfilters"@ of type @const sk_imagefilter_t *[]@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_merge_simple(const sk_imagefilter_t *first, const sk_imagefilter_t *second, const sk_rect_t *cropRect)@
+  Ptr (Ptr (Sk_imagefilter)) -- ^ C argument @"const sk_imagefilter_t *[] cfilters"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_merge_simple(const sk_imagefilter_t *first, const sk_imagefilter_t *second, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_merge_simple" sk_imagefilter_new_merge_simple ::
-  Ptr (Sk_imagefilter) -- ^ C argument @"first"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"second"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_offset(float dx, float dy, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * first"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * second"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_offset(float dx, float dy, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_offset" sk_imagefilter_new_offset ::
-  CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_picture(const sk_picture_t *picture)@
+  CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_picture(const sk_picture_t *picture)
+@
+-}
 foreign import ccall "sk_imagefilter_new_picture" sk_imagefilter_new_picture ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @const sk_picture_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_picture_with_rect(const sk_picture_t *picture, const sk_rect_t *targetRect)@
+  Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * picture"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_picture_with_rect(const sk_picture_t *picture, const sk_rect_t *targetRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_picture_with_rect" sk_imagefilter_new_picture_with_rect ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @const sk_picture_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"targetRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_shader(const sk_shader_t *shader, _Bool dither, const sk_rect_t *cropRect)@
+  Ptr (Sk_picture) -- ^ C argument @"const sk_picture_t * picture"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * targetRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_shader(const sk_shader_t *shader, _Bool dither, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_shader" sk_imagefilter_new_shader ::
-  Ptr (Sk_shader) -- ^ C argument @"shader"@ of type @const sk_shader_t *@
-  -> CBool -- ^ C argument @"dither"@ of type @_Bool@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_tile(const sk_rect_t *src, const sk_rect_t *dst, const sk_imagefilter_t *input)@
+  Ptr (Sk_shader) -- ^ C argument @"const sk_shader_t * shader"@
+  -> CBool -- ^ C argument @"_Bool dither"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_tile(const sk_rect_t *src, const sk_rect_t *dst, const sk_imagefilter_t *input)
+@
+-}
 foreign import ccall "sk_imagefilter_new_tile" sk_imagefilter_new_tile ::
-  Ptr (Sk_rect) -- ^ C argument @"src"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"dst"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_dilate(float radiusX, float radiusY, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * src"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * dst"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_dilate(float radiusX, float radiusY, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_dilate" sk_imagefilter_new_dilate ::
-  CFloat -- ^ C argument @"radiusX"@ of type @float@
-  -> CFloat -- ^ C argument @"radiusY"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_erode(float radiusX, float radiusY, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  CFloat -- ^ C argument @"float radiusX"@
+  -> CFloat -- ^ C argument @"float radiusY"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_erode(float radiusX, float radiusY, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_erode" sk_imagefilter_new_erode ::
-  CFloat -- ^ C argument @"radiusX"@ of type @float@
-  -> CFloat -- ^ C argument @"radiusY"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_distant_lit_diffuse(const sk_point3_t *direction, sk_color_t lightColor, float surfaceScale, float kd, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  CFloat -- ^ C argument @"float radiusX"@
+  -> CFloat -- ^ C argument @"float radiusY"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_distant_lit_diffuse(const sk_point3_t *direction, sk_color_t lightColor, float surfaceScale, float kd, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_distant_lit_diffuse" sk_imagefilter_new_distant_lit_diffuse ::
-  Ptr (Sk_point3) -- ^ C argument @"direction"@ of type @const sk_point3_t *@
-  -> Sk_color -- ^ C argument @"lightColor"@ of type @sk_color_t@
-  -> CFloat -- ^ C argument @"surfaceScale"@ of type @float@
-  -> CFloat -- ^ C argument @"kd"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_point_lit_diffuse(const sk_point3_t *location, sk_color_t lightColor, float surfaceScale, float kd, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * direction"@
+  -> Sk_color -- ^ C argument @"sk_color_t lightColor"@
+  -> CFloat -- ^ C argument @"float surfaceScale"@
+  -> CFloat -- ^ C argument @"float kd"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_point_lit_diffuse(const sk_point3_t *location, sk_color_t lightColor, float surfaceScale, float kd, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_point_lit_diffuse" sk_imagefilter_new_point_lit_diffuse ::
-  Ptr (Sk_point3) -- ^ C argument @"location"@ of type @const sk_point3_t *@
-  -> Sk_color -- ^ C argument @"lightColor"@ of type @sk_color_t@
-  -> CFloat -- ^ C argument @"surfaceScale"@ of type @float@
-  -> CFloat -- ^ C argument @"kd"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_spot_lit_diffuse(const sk_point3_t *location, const sk_point3_t *target, float specularExponent, float cutoffAngle, sk_color_t lightColor, float surfaceScale, float kd, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * location"@
+  -> Sk_color -- ^ C argument @"sk_color_t lightColor"@
+  -> CFloat -- ^ C argument @"float surfaceScale"@
+  -> CFloat -- ^ C argument @"float kd"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_spot_lit_diffuse(const sk_point3_t *location, const sk_point3_t *target, float specularExponent, float cutoffAngle, sk_color_t lightColor, float surfaceScale, float kd, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_spot_lit_diffuse" sk_imagefilter_new_spot_lit_diffuse ::
-  Ptr (Sk_point3) -- ^ C argument @"location"@ of type @const sk_point3_t *@
-  -> Ptr (Sk_point3) -- ^ C argument @"target"@ of type @const sk_point3_t *@
-  -> CFloat -- ^ C argument @"specularExponent"@ of type @float@
-  -> CFloat -- ^ C argument @"cutoffAngle"@ of type @float@
-  -> Sk_color -- ^ C argument @"lightColor"@ of type @sk_color_t@
-  -> CFloat -- ^ C argument @"surfaceScale"@ of type @float@
-  -> CFloat -- ^ C argument @"kd"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_distant_lit_specular(const sk_point3_t *direction, sk_color_t lightColor, float surfaceScale, float ks, float shininess, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * location"@
+  -> Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * target"@
+  -> CFloat -- ^ C argument @"float specularExponent"@
+  -> CFloat -- ^ C argument @"float cutoffAngle"@
+  -> Sk_color -- ^ C argument @"sk_color_t lightColor"@
+  -> CFloat -- ^ C argument @"float surfaceScale"@
+  -> CFloat -- ^ C argument @"float kd"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_distant_lit_specular(const sk_point3_t *direction, sk_color_t lightColor, float surfaceScale, float ks, float shininess, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_distant_lit_specular" sk_imagefilter_new_distant_lit_specular ::
-  Ptr (Sk_point3) -- ^ C argument @"direction"@ of type @const sk_point3_t *@
-  -> Sk_color -- ^ C argument @"lightColor"@ of type @sk_color_t@
-  -> CFloat -- ^ C argument @"surfaceScale"@ of type @float@
-  -> CFloat -- ^ C argument @"ks"@ of type @float@
-  -> CFloat -- ^ C argument @"shininess"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_point_lit_specular(const sk_point3_t *location, sk_color_t lightColor, float surfaceScale, float ks, float shininess, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * direction"@
+  -> Sk_color -- ^ C argument @"sk_color_t lightColor"@
+  -> CFloat -- ^ C argument @"float surfaceScale"@
+  -> CFloat -- ^ C argument @"float ks"@
+  -> CFloat -- ^ C argument @"float shininess"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_point_lit_specular(const sk_point3_t *location, sk_color_t lightColor, float surfaceScale, float ks, float shininess, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_point_lit_specular" sk_imagefilter_new_point_lit_specular ::
-  Ptr (Sk_point3) -- ^ C argument @"location"@ of type @const sk_point3_t *@
-  -> Sk_color -- ^ C argument @"lightColor"@ of type @sk_color_t@
-  -> CFloat -- ^ C argument @"surfaceScale"@ of type @float@
-  -> CFloat -- ^ C argument @"ks"@ of type @float@
-  -> CFloat -- ^ C argument @"shininess"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_imagefilter_t *sk_imagefilter_new_spot_lit_specular(const sk_point3_t *location, const sk_point3_t *target, float specularExponent, float cutoffAngle, sk_color_t lightColor, float surfaceScale, float ks, float shininess, const sk_imagefilter_t *input, const sk_rect_t *cropRect)@
+  Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * location"@
+  -> Sk_color -- ^ C argument @"sk_color_t lightColor"@
+  -> CFloat -- ^ C argument @"float surfaceScale"@
+  -> CFloat -- ^ C argument @"float ks"@
+  -> CFloat -- ^ C argument @"float shininess"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_imagefilter_new_spot_lit_specular(const sk_point3_t *location, const sk_point3_t *target, float specularExponent, float cutoffAngle, sk_color_t lightColor, float surfaceScale, float ks, float shininess, const sk_imagefilter_t *input, const sk_rect_t *cropRect)
+@
+-}
 foreign import ccall "sk_imagefilter_new_spot_lit_specular" sk_imagefilter_new_spot_lit_specular ::
-  Ptr (Sk_point3) -- ^ C argument @"location"@ of type @const sk_point3_t *@
-  -> Ptr (Sk_point3) -- ^ C argument @"target"@ of type @const sk_point3_t *@
-  -> CFloat -- ^ C argument @"specularExponent"@ of type @float@
-  -> CFloat -- ^ C argument @"cutoffAngle"@ of type @float@
-  -> Sk_color -- ^ C argument @"lightColor"@ of type @sk_color_t@
-  -> CFloat -- ^ C argument @"surfaceScale"@ of type @float@
-  -> CFloat -- ^ C argument @"ks"@ of type @float@
-  -> CFloat -- ^ C argument @"shininess"@ of type @float@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"input"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cropRect"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @void sk_bitmap_destructor(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * location"@
+  -> Ptr (Sk_point3) -- ^ C argument @"const sk_point3_t * target"@
+  -> CFloat -- ^ C argument @"float specularExponent"@
+  -> CFloat -- ^ C argument @"float cutoffAngle"@
+  -> Sk_color -- ^ C argument @"sk_color_t lightColor"@
+  -> CFloat -- ^ C argument @"float surfaceScale"@
+  -> CFloat -- ^ C argument @"float ks"@
+  -> CFloat -- ^ C argument @"float shininess"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * input"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cropRect"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_destructor(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_destructor" sk_bitmap_destructor ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_bitmap_t *sk_bitmap_new(void)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_bitmap_t *sk_bitmap_new(void)
+@
+-}
 foreign import ccall "sk_bitmap_new" sk_bitmap_new ::
-  IO (Ptr (Sk_bitmap)) -- ^ C return type: @sk_bitmap_t *@
--- | C function: @void sk_bitmap_get_info(sk_bitmap_t *cbitmap, sk_imageinfo_t *info)@
+  IO (Ptr (Sk_bitmap)) -- ^ C return type: @"sk_bitmap_t *"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_get_info(sk_bitmap_t *cbitmap, sk_imageinfo_t *info)
+@
+-}
 foreign import ccall "sk_bitmap_get_info" sk_bitmap_get_info ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"info"@ of type @sk_imageinfo_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void *sk_bitmap_get_pixels(sk_bitmap_t *cbitmap, size_t *length)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"sk_imageinfo_t * info"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void *sk_bitmap_get_pixels(sk_bitmap_t *cbitmap, size_t *length)
+@
+-}
 foreign import ccall "sk_bitmap_get_pixels" sk_bitmap_get_pixels ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (CSize) -- ^ C argument @"length"@ of type @size_t *@
-  -> IO (Ptr (())) -- ^ C return type: @void *@
--- | C function: @size_t sk_bitmap_get_row_bytes(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (CSize) -- ^ C argument @"size_t * length"@
+  -> IO (Ptr (())) -- ^ C return type: @"void *"@
+
+{- | C function signature:
+
+@
+size_t sk_bitmap_get_row_bytes(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_get_row_bytes" sk_bitmap_get_row_bytes ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_bitmap_get_byte_count(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_bitmap_get_byte_count(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_get_byte_count" sk_bitmap_get_byte_count ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @void sk_bitmap_reset(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_reset(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_reset" sk_bitmap_reset ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_bitmap_is_null(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_is_null(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_is_null" sk_bitmap_is_null ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_bitmap_is_immutable(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_is_immutable(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_is_immutable" sk_bitmap_is_immutable ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_bitmap_set_immutable(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_set_immutable(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_set_immutable" sk_bitmap_set_immutable ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_bitmap_erase(sk_bitmap_t *cbitmap, sk_color_t color)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_erase(sk_bitmap_t *cbitmap, sk_color_t color)
+@
+-}
 foreign import ccall "sk_bitmap_erase" sk_bitmap_erase ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_bitmap_erase_rect(sk_bitmap_t *cbitmap, sk_color_t color, sk_irect_t *rect)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Sk_color -- ^ C argument @"sk_color_t color"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_erase_rect(sk_bitmap_t *cbitmap, sk_color_t color, sk_irect_t *rect)
+@
+-}
 foreign import ccall "sk_bitmap_erase_rect" sk_bitmap_erase_rect ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> Ptr (Sk_irect) -- ^ C argument @"rect"@ of type @sk_irect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @uint8_t *sk_bitmap_get_addr_8(sk_bitmap_t *cbitmap, int x, int y)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Sk_color -- ^ C argument @"sk_color_t color"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * rect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+uint8_t *sk_bitmap_get_addr_8(sk_bitmap_t *cbitmap, int x, int y)
+@
+-}
 foreign import ccall "sk_bitmap_get_addr_8" sk_bitmap_get_addr_8 ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (Ptr (Word8)) -- ^ C return type: @uint8_t *@
--- | C function: @uint16_t *sk_bitmap_get_addr_16(sk_bitmap_t *cbitmap, int x, int y)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (Ptr (Word8)) -- ^ C return type: @"uint8_t *"@
+
+{- | C function signature:
+
+@
+uint16_t *sk_bitmap_get_addr_16(sk_bitmap_t *cbitmap, int x, int y)
+@
+-}
 foreign import ccall "sk_bitmap_get_addr_16" sk_bitmap_get_addr_16 ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (Ptr (Word16)) -- ^ C return type: @uint16_t *@
--- | C function: @uint32_t *sk_bitmap_get_addr_32(sk_bitmap_t *cbitmap, int x, int y)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (Ptr (Word16)) -- ^ C return type: @"uint16_t *"@
+
+{- | C function signature:
+
+@
+uint32_t *sk_bitmap_get_addr_32(sk_bitmap_t *cbitmap, int x, int y)
+@
+-}
 foreign import ccall "sk_bitmap_get_addr_32" sk_bitmap_get_addr_32 ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (Ptr (Word32)) -- ^ C return type: @uint32_t *@
--- | C function: @void *sk_bitmap_get_addr(sk_bitmap_t *cbitmap, int x, int y)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (Ptr (Word32)) -- ^ C return type: @"uint32_t *"@
+
+{- | C function signature:
+
+@
+void *sk_bitmap_get_addr(sk_bitmap_t *cbitmap, int x, int y)
+@
+-}
 foreign import ccall "sk_bitmap_get_addr" sk_bitmap_get_addr ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (Ptr (())) -- ^ C return type: @void *@
--- | C function: @sk_color_t sk_bitmap_get_pixel_color(sk_bitmap_t *cbitmap, int x, int y)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (Ptr (())) -- ^ C return type: @"void *"@
+
+{- | C function signature:
+
+@
+sk_color_t sk_bitmap_get_pixel_color(sk_bitmap_t *cbitmap, int x, int y)
+@
+-}
 foreign import ccall "sk_bitmap_get_pixel_color" sk_bitmap_get_pixel_color ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> CInt -- ^ C argument @"x"@ of type @int@
-  -> CInt -- ^ C argument @"y"@ of type @int@
-  -> IO (Sk_color) -- ^ C return type: @sk_color_t@
--- | C function: @_Bool sk_bitmap_ready_to_draw(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> CInt -- ^ C argument @"int x"@
+  -> CInt -- ^ C argument @"int y"@
+  -> IO (Sk_color) -- ^ C return type: @"sk_color_t"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_ready_to_draw(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_ready_to_draw" sk_bitmap_ready_to_draw ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_bitmap_get_pixel_colors(sk_bitmap_t *cbitmap, sk_color_t *colors)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_get_pixel_colors(sk_bitmap_t *cbitmap, sk_color_t *colors)
+@
+-}
 foreign import ccall "sk_bitmap_get_pixel_colors" sk_bitmap_get_pixel_colors ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @sk_color_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_bitmap_install_pixels(sk_bitmap_t *cbitmap, const sk_imageinfo_t *cinfo, void *pixels, size_t rowBytes, const sk_bitmap_release_proc releaseProc, void *context)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_color) -- ^ C argument @"sk_color_t * colors"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_install_pixels(sk_bitmap_t *cbitmap, const sk_imageinfo_t *cinfo, void *pixels, size_t rowBytes, const sk_bitmap_release_proc releaseProc, void *context)
+@
+-}
 foreign import ccall "sk_bitmap_install_pixels" sk_bitmap_install_pixels ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"pixels"@ of type @void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> FunPtr Sk_bitmap_release_proc -- ^ C argument @"releaseProc"@ of type @const sk_bitmap_release_proc@
-  -> Ptr (()) -- ^ C argument @"context"@ of type @void *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_bitmap_install_pixels_with_pixmap(sk_bitmap_t *cbitmap, const sk_pixmap_t *cpixmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * cinfo"@
+  -> Ptr (()) -- ^ C argument @"void * pixels"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> FunPtr Sk_bitmap_release_proc -- ^ C argument @"const sk_bitmap_release_proc releaseProc"@
+  -> Ptr (()) -- ^ C argument @"void * context"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_install_pixels_with_pixmap(sk_bitmap_t *cbitmap, const sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_bitmap_install_pixels_with_pixmap" sk_bitmap_install_pixels_with_pixmap ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @const sk_pixmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_bitmap_try_alloc_pixels(sk_bitmap_t *cbitmap, const sk_imageinfo_t *requestedInfo, size_t rowBytes)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * cpixmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_try_alloc_pixels(sk_bitmap_t *cbitmap, const sk_imageinfo_t *requestedInfo, size_t rowBytes)
+@
+-}
 foreign import ccall "sk_bitmap_try_alloc_pixels" sk_bitmap_try_alloc_pixels ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"requestedInfo"@ of type @const sk_imageinfo_t *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_bitmap_try_alloc_pixels_with_flags(sk_bitmap_t *cbitmap, const sk_imageinfo_t *requestedInfo, uint32_t flags)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * requestedInfo"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_try_alloc_pixels_with_flags(sk_bitmap_t *cbitmap, const sk_imageinfo_t *requestedInfo, uint32_t flags)
+@
+-}
 foreign import ccall "sk_bitmap_try_alloc_pixels_with_flags" sk_bitmap_try_alloc_pixels_with_flags ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"requestedInfo"@ of type @const sk_imageinfo_t *@
-  -> Word32 -- ^ C argument @"flags"@ of type @uint32_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_bitmap_set_pixels(sk_bitmap_t *cbitmap, void *pixels)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * requestedInfo"@
+  -> Word32 -- ^ C argument @"uint32_t flags"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_set_pixels(sk_bitmap_t *cbitmap, void *pixels)
+@
+-}
 foreign import ccall "sk_bitmap_set_pixels" sk_bitmap_set_pixels ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (()) -- ^ C argument @"pixels"@ of type @void *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_bitmap_peek_pixels(sk_bitmap_t *cbitmap, sk_pixmap_t *cpixmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (()) -- ^ C argument @"void * pixels"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_peek_pixels(sk_bitmap_t *cbitmap, sk_pixmap_t *cpixmap)
+@
+-}
 foreign import ccall "sk_bitmap_peek_pixels" sk_bitmap_peek_pixels ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"cpixmap"@ of type @sk_pixmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_bitmap_extract_subset(sk_bitmap_t *cbitmap, sk_bitmap_t *dst, sk_irect_t *subset)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * cpixmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_extract_subset(sk_bitmap_t *cbitmap, sk_bitmap_t *dst, sk_irect_t *subset)
+@
+-}
 foreign import ccall "sk_bitmap_extract_subset" sk_bitmap_extract_subset ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_bitmap) -- ^ C argument @"dst"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_bitmap_extract_alpha(sk_bitmap_t *cbitmap, sk_bitmap_t *dst, const sk_paint_t *paint, sk_ipoint_t *offset)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * dst"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * subset"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_bitmap_extract_alpha(sk_bitmap_t *cbitmap, sk_bitmap_t *dst, const sk_paint_t *paint, sk_ipoint_t *offset)
+@
+-}
 foreign import ccall "sk_bitmap_extract_alpha" sk_bitmap_extract_alpha ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_bitmap) -- ^ C argument @"dst"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> Ptr (Sk_ipoint) -- ^ C argument @"offset"@ of type @sk_ipoint_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_bitmap_notify_pixels_changed(sk_bitmap_t *cbitmap)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * dst"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> Ptr (Sk_ipoint) -- ^ C argument @"sk_ipoint_t * offset"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_notify_pixels_changed(sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_bitmap_notify_pixels_changed" sk_bitmap_notify_pixels_changed ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_bitmap_swap(sk_bitmap_t *cbitmap, sk_bitmap_t *cother)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_bitmap_swap(sk_bitmap_t *cbitmap, sk_bitmap_t *cother)
+@
+-}
 foreign import ccall "sk_bitmap_swap" sk_bitmap_swap ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Ptr (Sk_bitmap) -- ^ C argument @"cother"@ of type @sk_bitmap_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_shader_t *sk_bitmap_make_shader(sk_bitmap_t *cbitmap, sk_shader_tilemode_t tmx, sk_shader_tilemode_t tmy, sk_sampling_options_t *sampling, const sk_matrix_t *cmatrix)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cother"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_bitmap_make_shader(sk_bitmap_t *cbitmap, sk_shader_tilemode_t tmx, sk_shader_tilemode_t tmy, sk_sampling_options_t *sampling, const sk_matrix_t *cmatrix)
+@
+-}
 foreign import ccall "sk_bitmap_make_shader" sk_bitmap_make_shader ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @sk_bitmap_t *@
-  -> Sk_shader_tilemode -- ^ C argument @"tmx"@ of type @sk_shader_tilemode_t@
-  -> Sk_shader_tilemode -- ^ C argument @"tmy"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @sk_sampling_options_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sksg_invalidation_controller_t *sksg_invalidation_controller_new(void)@
+  Ptr (Sk_bitmap) -- ^ C argument @"sk_bitmap_t * cbitmap"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tmx"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tmy"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sksg_invalidation_controller_t *sksg_invalidation_controller_new(void)
+@
+-}
 foreign import ccall "sksg_invalidation_controller_new" sksg_invalidation_controller_new ::
-  IO (Ptr (Sksg_invalidation_controller)) -- ^ C return type: @sksg_invalidation_controller_t *@
--- | C function: @void sksg_invalidation_controller_delete(sksg_invalidation_controller_t *instance)@
+  IO (Ptr (Sksg_invalidation_controller)) -- ^ C return type: @"sksg_invalidation_controller_t *"@
+
+{- | C function signature:
+
+@
+void sksg_invalidation_controller_delete(sksg_invalidation_controller_t *instance)
+@
+-}
 foreign import ccall "sksg_invalidation_controller_delete" sksg_invalidation_controller_delete ::
-  Ptr (Sksg_invalidation_controller) -- ^ C argument @"instance"@ of type @sksg_invalidation_controller_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sksg_invalidation_controller_inval(sksg_invalidation_controller_t *instance, sk_rect_t *rect, sk_matrix_t *matrix)@
+  Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sksg_invalidation_controller_inval(sksg_invalidation_controller_t *instance, sk_rect_t *rect, sk_matrix_t *matrix)
+@
+-}
 foreign import ccall "sksg_invalidation_controller_inval" sksg_invalidation_controller_inval ::
-  Ptr (Sksg_invalidation_controller) -- ^ C argument @"instance"@ of type @sksg_invalidation_controller_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @sk_rect_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sksg_invalidation_controller_get_bounds(sksg_invalidation_controller_t *instance, sk_rect_t *bounds)@
+  Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * instance"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * rect"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sksg_invalidation_controller_get_bounds(sksg_invalidation_controller_t *instance, sk_rect_t *bounds)
+@
+-}
 foreign import ccall "sksg_invalidation_controller_get_bounds" sksg_invalidation_controller_get_bounds ::
-  Ptr (Sksg_invalidation_controller) -- ^ C argument @"instance"@ of type @sksg_invalidation_controller_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sksg_invalidation_controller_begin(sksg_invalidation_controller_t *instance)@
+  Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * instance"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * bounds"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sksg_invalidation_controller_begin(sksg_invalidation_controller_t *instance)
+@
+-}
 foreign import ccall "sksg_invalidation_controller_begin" sksg_invalidation_controller_begin ::
-  Ptr (Sksg_invalidation_controller) -- ^ C argument @"instance"@ of type @sksg_invalidation_controller_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sksg_invalidation_controller_end(sksg_invalidation_controller_t *instance)@
+  Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sksg_invalidation_controller_end(sksg_invalidation_controller_t *instance)
+@
+-}
 foreign import ccall "sksg_invalidation_controller_end" sksg_invalidation_controller_end ::
-  Ptr (Sksg_invalidation_controller) -- ^ C argument @"instance"@ of type @sksg_invalidation_controller_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sksg_invalidation_controller_reset(sksg_invalidation_controller_t *instance)@
+  Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sksg_invalidation_controller_reset(sksg_invalidation_controller_t *instance)
+@
+-}
 foreign import ccall "sksg_invalidation_controller_reset" sksg_invalidation_controller_reset ::
-  Ptr (Sksg_invalidation_controller) -- ^ C argument @"instance"@ of type @sksg_invalidation_controller_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_path_t *sk_path_new(void)@
+  Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_path_t *sk_path_new(void)
+@
+-}
 foreign import ccall "sk_path_new" sk_path_new ::
-  IO (Ptr (Sk_path)) -- ^ C return type: @sk_path_t *@
--- | C function: @void sk_path_delete(sk_path_t *)@
+  IO (Ptr (Sk_path)) -- ^ C return type: @"sk_path_t *"@
+
+{- | C function signature:
+
+@
+void sk_path_delete(sk_path_t *)
+@
+-}
 foreign import ccall "sk_path_delete" sk_path_delete ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_move_to(sk_path_t *, float x, float y)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_move_to(sk_path_t *, float x, float y)
+@
+-}
 foreign import ccall "sk_path_move_to" sk_path_move_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_line_to(sk_path_t *, float x, float y)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_line_to(sk_path_t *, float x, float y)
+@
+-}
 foreign import ccall "sk_path_line_to" sk_path_line_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_quad_to(sk_path_t *, float x0, float y0, float x1, float y1)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_quad_to(sk_path_t *, float x0, float y0, float x1, float y1)
+@
+-}
 foreign import ccall "sk_path_quad_to" sk_path_quad_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"x0"@ of type @float@
-  -> CFloat -- ^ C argument @"y0"@ of type @float@
-  -> CFloat -- ^ C argument @"x1"@ of type @float@
-  -> CFloat -- ^ C argument @"y1"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_conic_to(sk_path_t *, float x0, float y0, float x1, float y1, float w)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float x0"@
+  -> CFloat -- ^ C argument @"float y0"@
+  -> CFloat -- ^ C argument @"float x1"@
+  -> CFloat -- ^ C argument @"float y1"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_conic_to(sk_path_t *, float x0, float y0, float x1, float y1, float w)
+@
+-}
 foreign import ccall "sk_path_conic_to" sk_path_conic_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"x0"@ of type @float@
-  -> CFloat -- ^ C argument @"y0"@ of type @float@
-  -> CFloat -- ^ C argument @"x1"@ of type @float@
-  -> CFloat -- ^ C argument @"y1"@ of type @float@
-  -> CFloat -- ^ C argument @"w"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_cubic_to(sk_path_t *, float x0, float y0, float x1, float y1, float x2, float y2)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float x0"@
+  -> CFloat -- ^ C argument @"float y0"@
+  -> CFloat -- ^ C argument @"float x1"@
+  -> CFloat -- ^ C argument @"float y1"@
+  -> CFloat -- ^ C argument @"float w"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_cubic_to(sk_path_t *, float x0, float y0, float x1, float y1, float x2, float y2)
+@
+-}
 foreign import ccall "sk_path_cubic_to" sk_path_cubic_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"x0"@ of type @float@
-  -> CFloat -- ^ C argument @"y0"@ of type @float@
-  -> CFloat -- ^ C argument @"x1"@ of type @float@
-  -> CFloat -- ^ C argument @"y1"@ of type @float@
-  -> CFloat -- ^ C argument @"x2"@ of type @float@
-  -> CFloat -- ^ C argument @"y2"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_arc_to(sk_path_t *, float rx, float ry, float xAxisRotate, sk_path_arc_size_t largeArc, sk_path_direction_t sweep, float x, float y)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float x0"@
+  -> CFloat -- ^ C argument @"float y0"@
+  -> CFloat -- ^ C argument @"float x1"@
+  -> CFloat -- ^ C argument @"float y1"@
+  -> CFloat -- ^ C argument @"float x2"@
+  -> CFloat -- ^ C argument @"float y2"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_arc_to(sk_path_t *, float rx, float ry, float xAxisRotate, sk_path_arc_size_t largeArc, sk_path_direction_t sweep, float x, float y)
+@
+-}
 foreign import ccall "sk_path_arc_to" sk_path_arc_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"rx"@ of type @float@
-  -> CFloat -- ^ C argument @"ry"@ of type @float@
-  -> CFloat -- ^ C argument @"xAxisRotate"@ of type @float@
-  -> Sk_path_arc_size -- ^ C argument @"largeArc"@ of type @sk_path_arc_size_t@
-  -> Sk_path_direction -- ^ C argument @"sweep"@ of type @sk_path_direction_t@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_rarc_to(sk_path_t *, float rx, float ry, float xAxisRotate, sk_path_arc_size_t largeArc, sk_path_direction_t sweep, float x, float y)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float rx"@
+  -> CFloat -- ^ C argument @"float ry"@
+  -> CFloat -- ^ C argument @"float xAxisRotate"@
+  -> Sk_path_arc_size -- ^ C argument @"sk_path_arc_size_t largeArc"@
+  -> Sk_path_direction -- ^ C argument @"sk_path_direction_t sweep"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_rarc_to(sk_path_t *, float rx, float ry, float xAxisRotate, sk_path_arc_size_t largeArc, sk_path_direction_t sweep, float x, float y)
+@
+-}
 foreign import ccall "sk_path_rarc_to" sk_path_rarc_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"rx"@ of type @float@
-  -> CFloat -- ^ C argument @"ry"@ of type @float@
-  -> CFloat -- ^ C argument @"xAxisRotate"@ of type @float@
-  -> Sk_path_arc_size -- ^ C argument @"largeArc"@ of type @sk_path_arc_size_t@
-  -> Sk_path_direction -- ^ C argument @"sweep"@ of type @sk_path_direction_t@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_arc_to_with_oval(sk_path_t *, const sk_rect_t *oval, float startAngle, float sweepAngle, _Bool forceMoveTo)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float rx"@
+  -> CFloat -- ^ C argument @"float ry"@
+  -> CFloat -- ^ C argument @"float xAxisRotate"@
+  -> Sk_path_arc_size -- ^ C argument @"sk_path_arc_size_t largeArc"@
+  -> Sk_path_direction -- ^ C argument @"sk_path_direction_t sweep"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_arc_to_with_oval(sk_path_t *, const sk_rect_t *oval, float startAngle, float sweepAngle, _Bool forceMoveTo)
+@
+-}
 foreign import ccall "sk_path_arc_to_with_oval" sk_path_arc_to_with_oval ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"oval"@ of type @const sk_rect_t *@
-  -> CFloat -- ^ C argument @"startAngle"@ of type @float@
-  -> CFloat -- ^ C argument @"sweepAngle"@ of type @float@
-  -> CBool -- ^ C argument @"forceMoveTo"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_arc_to_with_points(sk_path_t *, float x1, float y1, float x2, float y2, float radius)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * oval"@
+  -> CFloat -- ^ C argument @"float startAngle"@
+  -> CFloat -- ^ C argument @"float sweepAngle"@
+  -> CBool -- ^ C argument @"_Bool forceMoveTo"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_arc_to_with_points(sk_path_t *, float x1, float y1, float x2, float y2, float radius)
+@
+-}
 foreign import ccall "sk_path_arc_to_with_points" sk_path_arc_to_with_points ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"x1"@ of type @float@
-  -> CFloat -- ^ C argument @"y1"@ of type @float@
-  -> CFloat -- ^ C argument @"x2"@ of type @float@
-  -> CFloat -- ^ C argument @"y2"@ of type @float@
-  -> CFloat -- ^ C argument @"radius"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_close(sk_path_t *)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float x1"@
+  -> CFloat -- ^ C argument @"float y1"@
+  -> CFloat -- ^ C argument @"float x2"@
+  -> CFloat -- ^ C argument @"float y2"@
+  -> CFloat -- ^ C argument @"float radius"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_close(sk_path_t *)
+@
+-}
 foreign import ccall "sk_path_close" sk_path_close ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_rect(sk_path_t *, const sk_rect_t *, sk_path_direction_t)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_rect(sk_path_t *, const sk_rect_t *, sk_path_direction_t)
+@
+-}
 foreign import ccall "sk_path_add_rect" sk_path_add_rect ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @const sk_rect_t *@
-  -> Sk_path_direction -- ^ C argument type: @sk_path_direction_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_rrect(sk_path_t *, const sk_rrect_t *, sk_path_direction_t)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"const sk_rect_t *"@
+  -> Sk_path_direction -- ^ C argument type: @"sk_path_direction_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_rrect(sk_path_t *, const sk_rrect_t *, sk_path_direction_t)
+@
+-}
 foreign import ccall "sk_path_add_rrect" sk_path_add_rrect ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument type: @const sk_rrect_t *@
-  -> Sk_path_direction -- ^ C argument type: @sk_path_direction_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_rrect_start(sk_path_t *, const sk_rrect_t *, sk_path_direction_t, uint32_t)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> Ptr (Sk_rrect) -- ^ C argument type: @"const sk_rrect_t *"@
+  -> Sk_path_direction -- ^ C argument type: @"sk_path_direction_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_rrect_start(sk_path_t *, const sk_rrect_t *, sk_path_direction_t, uint32_t)
+@
+-}
 foreign import ccall "sk_path_add_rrect_start" sk_path_add_rrect_start ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument type: @const sk_rrect_t *@
-  -> Sk_path_direction -- ^ C argument type: @sk_path_direction_t@
-  -> Word32 -- ^ C argument type: @uint32_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_rounded_rect(sk_path_t *, const sk_rect_t *, float, float, sk_path_direction_t)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> Ptr (Sk_rrect) -- ^ C argument type: @"const sk_rrect_t *"@
+  -> Sk_path_direction -- ^ C argument type: @"sk_path_direction_t"@
+  -> Word32 -- ^ C argument type: @"uint32_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_rounded_rect(sk_path_t *, const sk_rect_t *, float, float, sk_path_direction_t)
+@
+-}
 foreign import ccall "sk_path_add_rounded_rect" sk_path_add_rounded_rect ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @const sk_rect_t *@
-  -> CFloat -- ^ C argument type: @float@
-  -> CFloat -- ^ C argument type: @float@
-  -> Sk_path_direction -- ^ C argument type: @sk_path_direction_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_oval(sk_path_t *, const sk_rect_t *, sk_path_direction_t)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"const sk_rect_t *"@
+  -> CFloat -- ^ C argument type: @"float"@
+  -> CFloat -- ^ C argument type: @"float"@
+  -> Sk_path_direction -- ^ C argument type: @"sk_path_direction_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_oval(sk_path_t *, const sk_rect_t *, sk_path_direction_t)
+@
+-}
 foreign import ccall "sk_path_add_oval" sk_path_add_oval ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @const sk_rect_t *@
-  -> Sk_path_direction -- ^ C argument type: @sk_path_direction_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_circle(sk_path_t *, float x, float y, float radius, sk_path_direction_t dir)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"const sk_rect_t *"@
+  -> Sk_path_direction -- ^ C argument type: @"sk_path_direction_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_circle(sk_path_t *, float x, float y, float radius, sk_path_direction_t dir)
+@
+-}
 foreign import ccall "sk_path_add_circle" sk_path_add_circle ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> CFloat -- ^ C argument @"radius"@ of type @float@
-  -> Sk_path_direction -- ^ C argument @"dir"@ of type @sk_path_direction_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_get_bounds(const sk_path_t *, sk_rect_t *)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> CFloat -- ^ C argument @"float radius"@
+  -> Sk_path_direction -- ^ C argument @"sk_path_direction_t dir"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_get_bounds(const sk_path_t *, sk_rect_t *)
+@
+-}
 foreign import ccall "sk_path_get_bounds" sk_path_get_bounds ::
-  Ptr (Sk_path) -- ^ C argument type: @const sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_compute_tight_bounds(const sk_path_t *, sk_rect_t *)@
+  Ptr (Sk_path) -- ^ C argument type: @"const sk_path_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"sk_rect_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_compute_tight_bounds(const sk_path_t *, sk_rect_t *)
+@
+-}
 foreign import ccall "sk_path_compute_tight_bounds" sk_path_compute_tight_bounds ::
-  Ptr (Sk_path) -- ^ C argument type: @const sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_rmove_to(sk_path_t *, float dx, float dy)@
+  Ptr (Sk_path) -- ^ C argument type: @"const sk_path_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"sk_rect_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_rmove_to(sk_path_t *, float dx, float dy)
+@
+-}
 foreign import ccall "sk_path_rmove_to" sk_path_rmove_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_rline_to(sk_path_t *, float dx, float yd)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_rline_to(sk_path_t *, float dx, float yd)
+@
+-}
 foreign import ccall "sk_path_rline_to" sk_path_rline_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"yd"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_rquad_to(sk_path_t *, float dx0, float dy0, float dx1, float dy1)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float yd"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_rquad_to(sk_path_t *, float dx0, float dy0, float dx1, float dy1)
+@
+-}
 foreign import ccall "sk_path_rquad_to" sk_path_rquad_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"dx0"@ of type @float@
-  -> CFloat -- ^ C argument @"dy0"@ of type @float@
-  -> CFloat -- ^ C argument @"dx1"@ of type @float@
-  -> CFloat -- ^ C argument @"dy1"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_rconic_to(sk_path_t *, float dx0, float dy0, float dx1, float dy1, float w)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float dx0"@
+  -> CFloat -- ^ C argument @"float dy0"@
+  -> CFloat -- ^ C argument @"float dx1"@
+  -> CFloat -- ^ C argument @"float dy1"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_rconic_to(sk_path_t *, float dx0, float dy0, float dx1, float dy1, float w)
+@
+-}
 foreign import ccall "sk_path_rconic_to" sk_path_rconic_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"dx0"@ of type @float@
-  -> CFloat -- ^ C argument @"dy0"@ of type @float@
-  -> CFloat -- ^ C argument @"dx1"@ of type @float@
-  -> CFloat -- ^ C argument @"dy1"@ of type @float@
-  -> CFloat -- ^ C argument @"w"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_rcubic_to(sk_path_t *, float dx0, float dy0, float dx1, float dy1, float dx2, float dy2)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float dx0"@
+  -> CFloat -- ^ C argument @"float dy0"@
+  -> CFloat -- ^ C argument @"float dx1"@
+  -> CFloat -- ^ C argument @"float dy1"@
+  -> CFloat -- ^ C argument @"float w"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_rcubic_to(sk_path_t *, float dx0, float dy0, float dx1, float dy1, float dx2, float dy2)
+@
+-}
 foreign import ccall "sk_path_rcubic_to" sk_path_rcubic_to ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> CFloat -- ^ C argument @"dx0"@ of type @float@
-  -> CFloat -- ^ C argument @"dy0"@ of type @float@
-  -> CFloat -- ^ C argument @"dx1"@ of type @float@
-  -> CFloat -- ^ C argument @"dy1"@ of type @float@
-  -> CFloat -- ^ C argument @"dx2"@ of type @float@
-  -> CFloat -- ^ C argument @"dy2"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_rect_start(sk_path_t *cpath, const sk_rect_t *crect, sk_path_direction_t cdir, uint32_t startIndex)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> CFloat -- ^ C argument @"float dx0"@
+  -> CFloat -- ^ C argument @"float dy0"@
+  -> CFloat -- ^ C argument @"float dx1"@
+  -> CFloat -- ^ C argument @"float dy1"@
+  -> CFloat -- ^ C argument @"float dx2"@
+  -> CFloat -- ^ C argument @"float dy2"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_rect_start(sk_path_t *cpath, const sk_rect_t *crect, sk_path_direction_t cdir, uint32_t startIndex)
+@
+-}
 foreign import ccall "sk_path_add_rect_start" sk_path_add_rect_start ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> Sk_path_direction -- ^ C argument @"cdir"@ of type @sk_path_direction_t@
-  -> Word32 -- ^ C argument @"startIndex"@ of type @uint32_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_arc(sk_path_t *cpath, const sk_rect_t *crect, float startAngle, float sweepAngle)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> Sk_path_direction -- ^ C argument @"sk_path_direction_t cdir"@
+  -> Word32 -- ^ C argument @"uint32_t startIndex"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_arc(sk_path_t *cpath, const sk_rect_t *crect, float startAngle, float sweepAngle)
+@
+-}
 foreign import ccall "sk_path_add_arc" sk_path_add_arc ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"crect"@ of type @const sk_rect_t *@
-  -> CFloat -- ^ C argument @"startAngle"@ of type @float@
-  -> CFloat -- ^ C argument @"sweepAngle"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_path_filltype_t sk_path_get_filltype(sk_path_t *)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * crect"@
+  -> CFloat -- ^ C argument @"float startAngle"@
+  -> CFloat -- ^ C argument @"float sweepAngle"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_path_filltype_t sk_path_get_filltype(sk_path_t *)
+@
+-}
 foreign import ccall "sk_path_get_filltype" sk_path_get_filltype ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> IO (Sk_path_filltype) -- ^ C return type: @sk_path_filltype_t@
--- | C function: @void sk_path_set_filltype(sk_path_t *, sk_path_filltype_t)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> IO (Sk_path_filltype) -- ^ C return type: @"sk_path_filltype_t"@
+
+{- | C function signature:
+
+@
+void sk_path_set_filltype(sk_path_t *, sk_path_filltype_t)
+@
+-}
 foreign import ccall "sk_path_set_filltype" sk_path_set_filltype ::
-  Ptr (Sk_path) -- ^ C argument type: @sk_path_t *@
-  -> Sk_path_filltype -- ^ C argument type: @sk_path_filltype_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_transform(sk_path_t *cpath, const sk_matrix_t *cmatrix)@
+  Ptr (Sk_path) -- ^ C argument type: @"sk_path_t *"@
+  -> Sk_path_filltype -- ^ C argument type: @"sk_path_filltype_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_transform(sk_path_t *cpath, const sk_matrix_t *cmatrix)
+@
+-}
 foreign import ccall "sk_path_transform" sk_path_transform ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_transform_to_dest(const sk_path_t *cpath, const sk_matrix_t *cmatrix, sk_path_t *destination)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_transform_to_dest(const sk_path_t *cpath, const sk_matrix_t *cmatrix, sk_path_t *destination)
+@
+-}
 foreign import ccall "sk_path_transform_to_dest" sk_path_transform_to_dest ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"destination"@ of type @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_path_t *sk_path_clone(const sk_path_t *cpath)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * destination"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_path_t *sk_path_clone(const sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_clone" sk_path_clone ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> IO (Ptr (Sk_path)) -- ^ C return type: @sk_path_t *@
--- | C function: @void sk_path_add_path_offset(sk_path_t *cpath, sk_path_t *other, float dx, float dy, sk_path_add_mode_t add_mode)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> IO (Ptr (Sk_path)) -- ^ C return type: @"sk_path_t *"@
+
+{- | C function signature:
+
+@
+void sk_path_add_path_offset(sk_path_t *cpath, sk_path_t *other, float dx, float dy, sk_path_add_mode_t add_mode)
+@
+-}
 foreign import ccall "sk_path_add_path_offset" sk_path_add_path_offset ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"other"@ of type @sk_path_t *@
-  -> CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> Sk_path_add_mode -- ^ C argument @"add_mode"@ of type @sk_path_add_mode_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_path_matrix(sk_path_t *cpath, sk_path_t *other, sk_matrix_t *matrix, sk_path_add_mode_t add_mode)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * other"@
+  -> CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> Sk_path_add_mode -- ^ C argument @"sk_path_add_mode_t add_mode"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_path_matrix(sk_path_t *cpath, sk_path_t *other, sk_matrix_t *matrix, sk_path_add_mode_t add_mode)
+@
+-}
 foreign import ccall "sk_path_add_path_matrix" sk_path_add_path_matrix ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"other"@ of type @sk_path_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> Sk_path_add_mode -- ^ C argument @"add_mode"@ of type @sk_path_add_mode_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_path(sk_path_t *cpath, sk_path_t *other, sk_path_add_mode_t add_mode)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * other"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> Sk_path_add_mode -- ^ C argument @"sk_path_add_mode_t add_mode"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_path(sk_path_t *cpath, sk_path_t *other, sk_path_add_mode_t add_mode)
+@
+-}
 foreign import ccall "sk_path_add_path" sk_path_add_path ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"other"@ of type @sk_path_t *@
-  -> Sk_path_add_mode -- ^ C argument @"add_mode"@ of type @sk_path_add_mode_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_add_path_reverse(sk_path_t *cpath, sk_path_t *other)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * other"@
+  -> Sk_path_add_mode -- ^ C argument @"sk_path_add_mode_t add_mode"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_add_path_reverse(sk_path_t *cpath, sk_path_t *other)
+@
+-}
 foreign import ccall "sk_path_add_path_reverse" sk_path_add_path_reverse ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"other"@ of type @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_reset(sk_path_t *cpath)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * other"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_reset(sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_reset" sk_path_reset ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_rewind(sk_path_t *cpath)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_rewind(sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_rewind" sk_path_rewind ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_path_count_points(const sk_path_t *cpath)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_path_count_points(const sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_count_points" sk_path_count_points ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_path_count_verbs(const sk_path_t *cpath)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_path_count_verbs(const sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_count_verbs" sk_path_count_verbs ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_path_get_point(const sk_path_t *cpath, int index, sk_point_t *point)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_path_get_point(const sk_path_t *cpath, int index, sk_point_t *point)
+@
+-}
 foreign import ccall "sk_path_get_point" sk_path_get_point ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_point) -- ^ C argument @"point"@ of type @sk_point_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_path_get_points(const sk_path_t *cpath, sk_point_t *points, int max)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * point"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_path_get_points(const sk_path_t *cpath, sk_point_t *points, int max)
+@
+-}
 foreign import ccall "sk_path_get_points" sk_path_get_points ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"points"@ of type @sk_point_t *@
-  -> CInt -- ^ C argument @"max"@ of type @int@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @_Bool sk_path_contains(const sk_path_t *cpath, float x, float y)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * points"@
+  -> CInt -- ^ C argument @"int max"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_contains(const sk_path_t *cpath, float x, float y)
+@
+-}
 foreign import ccall "sk_path_contains" sk_path_contains ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_path_parse_svg_string(sk_path_t *cpath, const char *str)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_parse_svg_string(sk_path_t *cpath, const char *str)
+@
+-}
 foreign import ccall "sk_path_parse_svg_string" sk_path_parse_svg_string ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (CChar) -- ^ C argument @"str"@ of type @const char *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_path_to_svg_string(const sk_path_t *cpath, sk_string_t *str)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (CChar) -- ^ C argument @"const char * str"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_path_to_svg_string(const sk_path_t *cpath, sk_string_t *str)
+@
+-}
 foreign import ccall "sk_path_to_svg_string" sk_path_to_svg_string ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> Ptr (Sk_string) -- ^ C argument @"str"@ of type @sk_string_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_path_get_last_point(const sk_path_t *cpath, sk_point_t *point)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * str"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_get_last_point(const sk_path_t *cpath, sk_point_t *point)
+@
+-}
 foreign import ccall "sk_path_get_last_point" sk_path_get_last_point ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"point"@ of type @sk_point_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int sk_path_convert_conic_to_quads(const sk_point_t *p0, const sk_point_t *p1, const sk_point_t *p2, float w, sk_point_t *pts, int pow2)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * point"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int sk_path_convert_conic_to_quads(const sk_point_t *p0, const sk_point_t *p1, const sk_point_t *p2, float w, sk_point_t *pts, int pow2)
+@
+-}
 foreign import ccall "sk_path_convert_conic_to_quads" sk_path_convert_conic_to_quads ::
-  Ptr (Sk_point) -- ^ C argument @"p0"@ of type @const sk_point_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"p1"@ of type @const sk_point_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"p2"@ of type @const sk_point_t *@
-  -> CFloat -- ^ C argument @"w"@ of type @float@
-  -> Ptr (Sk_point) -- ^ C argument @"pts"@ of type @sk_point_t *@
-  -> CInt -- ^ C argument @"pow2"@ of type @int@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_path_add_poly(sk_path_t *cpath, const sk_point_t *points, int count, _Bool close)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t * p0"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * p1"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * p2"@
+  -> CFloat -- ^ C argument @"float w"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * pts"@
+  -> CInt -- ^ C argument @"int pow2"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_path_add_poly(sk_path_t *cpath, const sk_point_t *points, int count, _Bool close)
+@
+-}
 foreign import ccall "sk_path_add_poly" sk_path_add_poly ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"points"@ of type @const sk_point_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CBool -- ^ C argument @"close"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @uint32_t sk_path_get_segment_masks(sk_path_t *cpath)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * points"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CBool -- ^ C argument @"_Bool close"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+uint32_t sk_path_get_segment_masks(sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_get_segment_masks" sk_path_get_segment_masks ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> IO (Word32) -- ^ C return type: @uint32_t@
--- | C function: @_Bool sk_path_is_oval(sk_path_t *cpath, sk_rect_t *bounds)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> IO (Word32) -- ^ C return type: @"uint32_t"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_is_oval(sk_path_t *cpath, sk_rect_t *bounds)
+@
+-}
 foreign import ccall "sk_path_is_oval" sk_path_is_oval ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @sk_rect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_path_is_rrect(sk_path_t *cpath, sk_rrect_t *bounds)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * bounds"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_is_rrect(sk_path_t *cpath, sk_rrect_t *bounds)
+@
+-}
 foreign import ccall "sk_path_is_rrect" sk_path_is_rrect ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument @"bounds"@ of type @sk_rrect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_path_is_line(sk_path_t *cpath, sk_point_t line[2])@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * bounds"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_is_line(sk_path_t *cpath, sk_point_t line[2])
+@
+-}
 foreign import ccall "sk_path_is_line" sk_path_is_line ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"line"@ of type @sk_point_t [2]@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_path_is_rect(sk_path_t *cpath, sk_rect_t *rect, _Bool *isClosed, sk_path_direction_t *direction)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t [2] line"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_is_rect(sk_path_t *cpath, sk_rect_t *rect, _Bool *isClosed, sk_path_direction_t *direction)
+@
+-}
 foreign import ccall "sk_path_is_rect" sk_path_is_rect ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @sk_rect_t *@
-  -> Ptr (CBool) -- ^ C argument @"isClosed"@ of type @_Bool *@
-  -> Ptr (Sk_path_direction) -- ^ C argument @"direction"@ of type @sk_path_direction_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_path_is_convex(const sk_path_t *cpath)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * rect"@
+  -> Ptr (CBool) -- ^ C argument @"_Bool * isClosed"@
+  -> Ptr (Sk_path_direction) -- ^ C argument @"sk_path_direction_t * direction"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_path_is_convex(const sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_is_convex" sk_path_is_convex ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @const sk_path_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_path_iterator_t *sk_path_create_iter(sk_path_t *cpath, int forceClose)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * cpath"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_path_iterator_t *sk_path_create_iter(sk_path_t *cpath, int forceClose)
+@
+-}
 foreign import ccall "sk_path_create_iter" sk_path_create_iter ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> CInt -- ^ C argument @"forceClose"@ of type @int@
-  -> IO (Ptr (Sk_path_iterator)) -- ^ C return type: @sk_path_iterator_t *@
--- | C function: @sk_path_verb_t sk_path_iter_next(sk_path_iterator_t *iterator, sk_point_t points[4])@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> CInt -- ^ C argument @"int forceClose"@
+  -> IO (Ptr (Sk_path_iterator)) -- ^ C return type: @"sk_path_iterator_t *"@
+
+{- | C function signature:
+
+@
+sk_path_verb_t sk_path_iter_next(sk_path_iterator_t *iterator, sk_point_t points[4])
+@
+-}
 foreign import ccall "sk_path_iter_next" sk_path_iter_next ::
-  Ptr (Sk_path_iterator) -- ^ C argument @"iterator"@ of type @sk_path_iterator_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"points"@ of type @sk_point_t [4]@
-  -> IO (Sk_path_verb) -- ^ C return type: @sk_path_verb_t@
--- | C function: @float sk_path_iter_conic_weight(sk_path_iterator_t *iterator)@
+  Ptr (Sk_path_iterator) -- ^ C argument @"sk_path_iterator_t * iterator"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t [4] points"@
+  -> IO (Sk_path_verb) -- ^ C return type: @"sk_path_verb_t"@
+
+{- | C function signature:
+
+@
+float sk_path_iter_conic_weight(sk_path_iterator_t *iterator)
+@
+-}
 foreign import ccall "sk_path_iter_conic_weight" sk_path_iter_conic_weight ::
-  Ptr (Sk_path_iterator) -- ^ C argument @"iterator"@ of type @sk_path_iterator_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @int sk_path_iter_is_close_line(sk_path_iterator_t *iterator)@
+  Ptr (Sk_path_iterator) -- ^ C argument @"sk_path_iterator_t * iterator"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+int sk_path_iter_is_close_line(sk_path_iterator_t *iterator)
+@
+-}
 foreign import ccall "sk_path_iter_is_close_line" sk_path_iter_is_close_line ::
-  Ptr (Sk_path_iterator) -- ^ C argument @"iterator"@ of type @sk_path_iterator_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_path_iter_is_closed_contour(sk_path_iterator_t *iterator)@
+  Ptr (Sk_path_iterator) -- ^ C argument @"sk_path_iterator_t * iterator"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_path_iter_is_closed_contour(sk_path_iterator_t *iterator)
+@
+-}
 foreign import ccall "sk_path_iter_is_closed_contour" sk_path_iter_is_closed_contour ::
-  Ptr (Sk_path_iterator) -- ^ C argument @"iterator"@ of type @sk_path_iterator_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_path_iter_destroy(sk_path_iterator_t *iterator)@
+  Ptr (Sk_path_iterator) -- ^ C argument @"sk_path_iterator_t * iterator"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_path_iter_destroy(sk_path_iterator_t *iterator)
+@
+-}
 foreign import ccall "sk_path_iter_destroy" sk_path_iter_destroy ::
-  Ptr (Sk_path_iterator) -- ^ C argument @"iterator"@ of type @sk_path_iterator_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_path_rawiterator_t *sk_path_create_rawiter(sk_path_t *cpath)@
+  Ptr (Sk_path_iterator) -- ^ C argument @"sk_path_iterator_t * iterator"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_path_rawiterator_t *sk_path_create_rawiter(sk_path_t *cpath)
+@
+-}
 foreign import ccall "sk_path_create_rawiter" sk_path_create_rawiter ::
-  Ptr (Sk_path) -- ^ C argument @"cpath"@ of type @sk_path_t *@
-  -> IO (Ptr (Sk_path_rawiterator)) -- ^ C return type: @sk_path_rawiterator_t *@
--- | C function: @sk_path_verb_t sk_path_rawiter_peek(sk_path_rawiterator_t *iterator)@
+  Ptr (Sk_path) -- ^ C argument @"sk_path_t * cpath"@
+  -> IO (Ptr (Sk_path_rawiterator)) -- ^ C return type: @"sk_path_rawiterator_t *"@
+
+{- | C function signature:
+
+@
+sk_path_verb_t sk_path_rawiter_peek(sk_path_rawiterator_t *iterator)
+@
+-}
 foreign import ccall "sk_path_rawiter_peek" sk_path_rawiter_peek ::
-  Ptr (Sk_path_rawiterator) -- ^ C argument @"iterator"@ of type @sk_path_rawiterator_t *@
-  -> IO (Sk_path_verb) -- ^ C return type: @sk_path_verb_t@
--- | C function: @sk_path_verb_t sk_path_rawiter_next(sk_path_rawiterator_t *iterator, sk_point_t points[4])@
+  Ptr (Sk_path_rawiterator) -- ^ C argument @"sk_path_rawiterator_t * iterator"@
+  -> IO (Sk_path_verb) -- ^ C return type: @"sk_path_verb_t"@
+
+{- | C function signature:
+
+@
+sk_path_verb_t sk_path_rawiter_next(sk_path_rawiterator_t *iterator, sk_point_t points[4])
+@
+-}
 foreign import ccall "sk_path_rawiter_next" sk_path_rawiter_next ::
-  Ptr (Sk_path_rawiterator) -- ^ C argument @"iterator"@ of type @sk_path_rawiterator_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"points"@ of type @sk_point_t [4]@
-  -> IO (Sk_path_verb) -- ^ C return type: @sk_path_verb_t@
--- | C function: @float sk_path_rawiter_conic_weight(sk_path_rawiterator_t *iterator)@
+  Ptr (Sk_path_rawiterator) -- ^ C argument @"sk_path_rawiterator_t * iterator"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t [4] points"@
+  -> IO (Sk_path_verb) -- ^ C return type: @"sk_path_verb_t"@
+
+{- | C function signature:
+
+@
+float sk_path_rawiter_conic_weight(sk_path_rawiterator_t *iterator)
+@
+-}
 foreign import ccall "sk_path_rawiter_conic_weight" sk_path_rawiter_conic_weight ::
-  Ptr (Sk_path_rawiterator) -- ^ C argument @"iterator"@ of type @sk_path_rawiterator_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_path_rawiter_destroy(sk_path_rawiterator_t *iterator)@
+  Ptr (Sk_path_rawiterator) -- ^ C argument @"sk_path_rawiterator_t * iterator"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_path_rawiter_destroy(sk_path_rawiterator_t *iterator)
+@
+-}
 foreign import ccall "sk_path_rawiter_destroy" sk_path_rawiter_destroy ::
-  Ptr (Sk_path_rawiterator) -- ^ C argument @"iterator"@ of type @sk_path_rawiterator_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_pathop_op(const sk_path_t *one, const sk_path_t *two, sk_pathop_t op, sk_path_t *result)@
+  Ptr (Sk_path_rawiterator) -- ^ C argument @"sk_path_rawiterator_t * iterator"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathop_op(const sk_path_t *one, const sk_path_t *two, sk_pathop_t op, sk_path_t *result)
+@
+-}
 foreign import ccall "sk_pathop_op" sk_pathop_op ::
-  Ptr (Sk_path) -- ^ C argument @"one"@ of type @const sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"two"@ of type @const sk_path_t *@
-  -> Sk_pathop -- ^ C argument @"op"@ of type @sk_pathop_t@
-  -> Ptr (Sk_path) -- ^ C argument @"result"@ of type @sk_path_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pathop_simplify(const sk_path_t *path, sk_path_t *result)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * one"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * two"@
+  -> Sk_pathop -- ^ C argument @"sk_pathop_t op"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * result"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathop_simplify(const sk_path_t *path, sk_path_t *result)
+@
+-}
 foreign import ccall "sk_pathop_simplify" sk_pathop_simplify ::
-  Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"result"@ of type @sk_path_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pathop_tight_bounds(const sk_path_t *path, sk_rect_t *result)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * result"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathop_tight_bounds(const sk_path_t *path, sk_rect_t *result)
+@
+-}
 foreign import ccall "sk_pathop_tight_bounds" sk_pathop_tight_bounds ::
-  Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"result"@ of type @sk_rect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pathop_as_winding(const sk_path_t *path, sk_path_t *result)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * result"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathop_as_winding(const sk_path_t *path, sk_path_t *result)
+@
+-}
 foreign import ccall "sk_pathop_as_winding" sk_pathop_as_winding ::
-  Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"result"@ of type @sk_path_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_opbuilder_t *sk_opbuilder_new(void)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * result"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_opbuilder_t *sk_opbuilder_new(void)
+@
+-}
 foreign import ccall "sk_opbuilder_new" sk_opbuilder_new ::
-  IO (Ptr (Sk_opbuilder)) -- ^ C return type: @sk_opbuilder_t *@
--- | C function: @void sk_opbuilder_destroy(sk_opbuilder_t *builder)@
+  IO (Ptr (Sk_opbuilder)) -- ^ C return type: @"sk_opbuilder_t *"@
+
+{- | C function signature:
+
+@
+void sk_opbuilder_destroy(sk_opbuilder_t *builder)
+@
+-}
 foreign import ccall "sk_opbuilder_destroy" sk_opbuilder_destroy ::
-  Ptr (Sk_opbuilder) -- ^ C argument @"builder"@ of type @sk_opbuilder_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_opbuilder_add(sk_opbuilder_t *builder, const sk_path_t *path, sk_pathop_t op)@
+  Ptr (Sk_opbuilder) -- ^ C argument @"sk_opbuilder_t * builder"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_opbuilder_add(sk_opbuilder_t *builder, const sk_path_t *path, sk_pathop_t op)
+@
+-}
 foreign import ccall "sk_opbuilder_add" sk_opbuilder_add ::
-  Ptr (Sk_opbuilder) -- ^ C argument @"builder"@ of type @sk_opbuilder_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> Sk_pathop -- ^ C argument @"op"@ of type @sk_pathop_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_opbuilder_resolve(sk_opbuilder_t *builder, sk_path_t *result)@
+  Ptr (Sk_opbuilder) -- ^ C argument @"sk_opbuilder_t * builder"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> Sk_pathop -- ^ C argument @"sk_pathop_t op"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_opbuilder_resolve(sk_opbuilder_t *builder, sk_path_t *result)
+@
+-}
 foreign import ccall "sk_opbuilder_resolve" sk_opbuilder_resolve ::
-  Ptr (Sk_opbuilder) -- ^ C argument @"builder"@ of type @sk_opbuilder_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"result"@ of type @sk_path_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_pathmeasure_t *sk_pathmeasure_new(void)@
+  Ptr (Sk_opbuilder) -- ^ C argument @"sk_opbuilder_t * builder"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * result"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_pathmeasure_t *sk_pathmeasure_new(void)
+@
+-}
 foreign import ccall "sk_pathmeasure_new" sk_pathmeasure_new ::
-  IO (Ptr (Sk_pathmeasure)) -- ^ C return type: @sk_pathmeasure_t *@
--- | C function: @sk_pathmeasure_t *sk_pathmeasure_new_with_path(const sk_path_t *path, _Bool forceClosed, float resScale)@
+  IO (Ptr (Sk_pathmeasure)) -- ^ C return type: @"sk_pathmeasure_t *"@
+
+{- | C function signature:
+
+@
+sk_pathmeasure_t *sk_pathmeasure_new_with_path(const sk_path_t *path, _Bool forceClosed, float resScale)
+@
+-}
 foreign import ccall "sk_pathmeasure_new_with_path" sk_pathmeasure_new_with_path ::
-  Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> CBool -- ^ C argument @"forceClosed"@ of type @_Bool@
-  -> CFloat -- ^ C argument @"resScale"@ of type @float@
-  -> IO (Ptr (Sk_pathmeasure)) -- ^ C return type: @sk_pathmeasure_t *@
--- | C function: @void sk_pathmeasure_destroy(sk_pathmeasure_t *pathMeasure)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> CBool -- ^ C argument @"_Bool forceClosed"@
+  -> CFloat -- ^ C argument @"float resScale"@
+  -> IO (Ptr (Sk_pathmeasure)) -- ^ C return type: @"sk_pathmeasure_t *"@
+
+{- | C function signature:
+
+@
+void sk_pathmeasure_destroy(sk_pathmeasure_t *pathMeasure)
+@
+-}
 foreign import ccall "sk_pathmeasure_destroy" sk_pathmeasure_destroy ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_pathmeasure_set_path(sk_pathmeasure_t *pathMeasure, const sk_path_t *path, _Bool forceClosed)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_pathmeasure_set_path(sk_pathmeasure_t *pathMeasure, const sk_path_t *path, _Bool forceClosed)
+@
+-}
 foreign import ccall "sk_pathmeasure_set_path" sk_pathmeasure_set_path ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> CBool -- ^ C argument @"forceClosed"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_pathmeasure_get_length(sk_pathmeasure_t *pathMeasure)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> CBool -- ^ C argument @"_Bool forceClosed"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_pathmeasure_get_length(sk_pathmeasure_t *pathMeasure)
+@
+-}
 foreign import ccall "sk_pathmeasure_get_length" sk_pathmeasure_get_length ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @_Bool sk_pathmeasure_get_pos_tan(sk_pathmeasure_t *pathMeasure, float distance, sk_point_t *position, sk_vector_t *tangent)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathmeasure_get_pos_tan(sk_pathmeasure_t *pathMeasure, float distance, sk_point_t *position, sk_vector_t *tangent)
+@
+-}
 foreign import ccall "sk_pathmeasure_get_pos_tan" sk_pathmeasure_get_pos_tan ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> CFloat -- ^ C argument @"distance"@ of type @float@
-  -> Ptr (Sk_point) -- ^ C argument @"position"@ of type @sk_point_t *@
-  -> Ptr (Sk_vector) -- ^ C argument @"tangent"@ of type @sk_vector_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pathmeasure_get_matrix(sk_pathmeasure_t *pathMeasure, float distance, sk_matrix_t *matrix, sk_pathmeasure_matrixflags_t flags)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> CFloat -- ^ C argument @"float distance"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * position"@
+  -> Ptr (Sk_vector) -- ^ C argument @"sk_vector_t * tangent"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathmeasure_get_matrix(sk_pathmeasure_t *pathMeasure, float distance, sk_matrix_t *matrix, sk_pathmeasure_matrixflags_t flags)
+@
+-}
 foreign import ccall "sk_pathmeasure_get_matrix" sk_pathmeasure_get_matrix ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> CFloat -- ^ C argument @"distance"@ of type @float@
-  -> Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> Sk_pathmeasure_matrixflags -- ^ C argument @"flags"@ of type @sk_pathmeasure_matrixflags_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pathmeasure_get_segment(sk_pathmeasure_t *pathMeasure, float start, float stop, sk_path_t *dst, _Bool startWithMoveTo)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> CFloat -- ^ C argument @"float distance"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> Sk_pathmeasure_matrixflags -- ^ C argument @"sk_pathmeasure_matrixflags_t flags"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathmeasure_get_segment(sk_pathmeasure_t *pathMeasure, float start, float stop, sk_path_t *dst, _Bool startWithMoveTo)
+@
+-}
 foreign import ccall "sk_pathmeasure_get_segment" sk_pathmeasure_get_segment ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> CFloat -- ^ C argument @"start"@ of type @float@
-  -> CFloat -- ^ C argument @"stop"@ of type @float@
-  -> Ptr (Sk_path) -- ^ C argument @"dst"@ of type @sk_path_t *@
-  -> CBool -- ^ C argument @"startWithMoveTo"@ of type @_Bool@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pathmeasure_is_closed(sk_pathmeasure_t *pathMeasure)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> CFloat -- ^ C argument @"float start"@
+  -> CFloat -- ^ C argument @"float stop"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * dst"@
+  -> CBool -- ^ C argument @"_Bool startWithMoveTo"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathmeasure_is_closed(sk_pathmeasure_t *pathMeasure)
+@
+-}
 foreign import ccall "sk_pathmeasure_is_closed" sk_pathmeasure_is_closed ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_pathmeasure_next_contour(sk_pathmeasure_t *pathMeasure)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_pathmeasure_next_contour(sk_pathmeasure_t *pathMeasure)
+@
+-}
 foreign import ccall "sk_pathmeasure_next_contour" sk_pathmeasure_next_contour ::
-  Ptr (Sk_pathmeasure) -- ^ C argument @"pathMeasure"@ of type @sk_pathmeasure_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_runtimeeffect_t *sk_runtimeeffect_make_for_color_filter(sk_string_t *sksl, sk_string_t *error)@
+  Ptr (Sk_pathmeasure) -- ^ C argument @"sk_pathmeasure_t * pathMeasure"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_runtimeeffect_t *sk_runtimeeffect_make_for_color_filter(sk_string_t *sksl, sk_string_t *error)
+@
+-}
 foreign import ccall "sk_runtimeeffect_make_for_color_filter" sk_runtimeeffect_make_for_color_filter ::
-  Ptr (Sk_string) -- ^ C argument @"sksl"@ of type @sk_string_t *@
-  -> Ptr (Sk_string) -- ^ C argument @"error"@ of type @sk_string_t *@
-  -> IO (Ptr (Sk_runtimeeffect)) -- ^ C return type: @sk_runtimeeffect_t *@
--- | C function: @sk_runtimeeffect_t *sk_runtimeeffect_make_for_shader(sk_string_t *sksl, sk_string_t *error)@
+  Ptr (Sk_string) -- ^ C argument @"sk_string_t * sksl"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * error"@
+  -> IO (Ptr (Sk_runtimeeffect)) -- ^ C return type: @"sk_runtimeeffect_t *"@
+
+{- | C function signature:
+
+@
+sk_runtimeeffect_t *sk_runtimeeffect_make_for_shader(sk_string_t *sksl, sk_string_t *error)
+@
+-}
 foreign import ccall "sk_runtimeeffect_make_for_shader" sk_runtimeeffect_make_for_shader ::
-  Ptr (Sk_string) -- ^ C argument @"sksl"@ of type @sk_string_t *@
-  -> Ptr (Sk_string) -- ^ C argument @"error"@ of type @sk_string_t *@
-  -> IO (Ptr (Sk_runtimeeffect)) -- ^ C return type: @sk_runtimeeffect_t *@
--- | C function: @sk_runtimeeffect_t *sk_runtimeeffect_make_for_blender(sk_string_t *sksl, sk_string_t *error)@
+  Ptr (Sk_string) -- ^ C argument @"sk_string_t * sksl"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * error"@
+  -> IO (Ptr (Sk_runtimeeffect)) -- ^ C return type: @"sk_runtimeeffect_t *"@
+
+{- | C function signature:
+
+@
+sk_runtimeeffect_t *sk_runtimeeffect_make_for_blender(sk_string_t *sksl, sk_string_t *error)
+@
+-}
 foreign import ccall "sk_runtimeeffect_make_for_blender" sk_runtimeeffect_make_for_blender ::
-  Ptr (Sk_string) -- ^ C argument @"sksl"@ of type @sk_string_t *@
-  -> Ptr (Sk_string) -- ^ C argument @"error"@ of type @sk_string_t *@
-  -> IO (Ptr (Sk_runtimeeffect)) -- ^ C return type: @sk_runtimeeffect_t *@
--- | C function: @void sk_runtimeeffect_unref(sk_runtimeeffect_t *effect)@
+  Ptr (Sk_string) -- ^ C argument @"sk_string_t * sksl"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * error"@
+  -> IO (Ptr (Sk_runtimeeffect)) -- ^ C return type: @"sk_runtimeeffect_t *"@
+
+{- | C function signature:
+
+@
+void sk_runtimeeffect_unref(sk_runtimeeffect_t *effect)
+@
+-}
 foreign import ccall "sk_runtimeeffect_unref" sk_runtimeeffect_unref ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @sk_runtimeeffect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_shader_t *sk_runtimeeffect_make_shader(sk_runtimeeffect_t *effect, sk_data_t *uniforms, sk_flattenable_t **children, size_t childCount, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"sk_runtimeeffect_t * effect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_runtimeeffect_make_shader(sk_runtimeeffect_t *effect, sk_data_t *uniforms, sk_flattenable_t **children, size_t childCount, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_runtimeeffect_make_shader" sk_runtimeeffect_make_shader ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @sk_runtimeeffect_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"uniforms"@ of type @sk_data_t *@
-  -> Ptr (Ptr (Sk_flattenable)) -- ^ C argument @"children"@ of type @sk_flattenable_t **@
-  -> CSize -- ^ C argument @"childCount"@ of type @size_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_colorfilter_t *sk_runtimeeffect_make_color_filter(sk_runtimeeffect_t *effect, sk_data_t *uniforms, sk_flattenable_t **children, size_t childCount)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"sk_runtimeeffect_t * effect"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * uniforms"@
+  -> Ptr (Ptr (Sk_flattenable)) -- ^ C argument @"sk_flattenable_t ** children"@
+  -> CSize -- ^ C argument @"size_t childCount"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_runtimeeffect_make_color_filter(sk_runtimeeffect_t *effect, sk_data_t *uniforms, sk_flattenable_t **children, size_t childCount)
+@
+-}
 foreign import ccall "sk_runtimeeffect_make_color_filter" sk_runtimeeffect_make_color_filter ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @sk_runtimeeffect_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"uniforms"@ of type @sk_data_t *@
-  -> Ptr (Ptr (Sk_flattenable)) -- ^ C argument @"children"@ of type @sk_flattenable_t **@
-  -> CSize -- ^ C argument @"childCount"@ of type @size_t@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @sk_blender_t *sk_runtimeeffect_make_blender(sk_runtimeeffect_t *effect, sk_data_t *uniforms, sk_flattenable_t **children, size_t childCount)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"sk_runtimeeffect_t * effect"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * uniforms"@
+  -> Ptr (Ptr (Sk_flattenable)) -- ^ C argument @"sk_flattenable_t ** children"@
+  -> CSize -- ^ C argument @"size_t childCount"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+sk_blender_t *sk_runtimeeffect_make_blender(sk_runtimeeffect_t *effect, sk_data_t *uniforms, sk_flattenable_t **children, size_t childCount)
+@
+-}
 foreign import ccall "sk_runtimeeffect_make_blender" sk_runtimeeffect_make_blender ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @sk_runtimeeffect_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"uniforms"@ of type @sk_data_t *@
-  -> Ptr (Ptr (Sk_flattenable)) -- ^ C argument @"children"@ of type @sk_flattenable_t **@
-  -> CSize -- ^ C argument @"childCount"@ of type @size_t@
-  -> IO (Ptr (Sk_blender)) -- ^ C return type: @sk_blender_t *@
--- | C function: @size_t sk_runtimeeffect_get_uniform_byte_size(const sk_runtimeeffect_t *effect)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"sk_runtimeeffect_t * effect"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * uniforms"@
+  -> Ptr (Ptr (Sk_flattenable)) -- ^ C argument @"sk_flattenable_t ** children"@
+  -> CSize -- ^ C argument @"size_t childCount"@
+  -> IO (Ptr (Sk_blender)) -- ^ C return type: @"sk_blender_t *"@
+
+{- | C function signature:
+
+@
+size_t sk_runtimeeffect_get_uniform_byte_size(const sk_runtimeeffect_t *effect)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_uniform_byte_size" sk_runtimeeffect_get_uniform_byte_size ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_runtimeeffect_get_uniforms_size(const sk_runtimeeffect_t *effect)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_runtimeeffect_get_uniforms_size(const sk_runtimeeffect_t *effect)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_uniforms_size" sk_runtimeeffect_get_uniforms_size ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @void sk_runtimeeffect_get_uniform_name(const sk_runtimeeffect_t *effect, int index, sk_string_t *name)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+void sk_runtimeeffect_get_uniform_name(const sk_runtimeeffect_t *effect, int index, sk_string_t *name)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_uniform_name" sk_runtimeeffect_get_uniform_name ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_string) -- ^ C argument @"name"@ of type @sk_string_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_runtimeeffect_get_uniform_from_index(const sk_runtimeeffect_t *effect, int index, sk_runtimeeffect_uniform_t *cuniform)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * name"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_runtimeeffect_get_uniform_from_index(const sk_runtimeeffect_t *effect, int index, sk_runtimeeffect_uniform_t *cuniform)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_uniform_from_index" sk_runtimeeffect_get_uniform_from_index ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_runtimeeffect_uniform) -- ^ C argument @"cuniform"@ of type @sk_runtimeeffect_uniform_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_runtimeeffect_get_uniform_from_name(const sk_runtimeeffect_t *effect, const char *name, size_t len, sk_runtimeeffect_uniform_t *cuniform)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_runtimeeffect_uniform) -- ^ C argument @"sk_runtimeeffect_uniform_t * cuniform"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_runtimeeffect_get_uniform_from_name(const sk_runtimeeffect_t *effect, const char *name, size_t len, sk_runtimeeffect_uniform_t *cuniform)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_uniform_from_name" sk_runtimeeffect_get_uniform_from_name ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> Ptr (CChar) -- ^ C argument @"name"@ of type @const char *@
-  -> CSize -- ^ C argument @"len"@ of type @size_t@
-  -> Ptr (Sk_runtimeeffect_uniform) -- ^ C argument @"cuniform"@ of type @sk_runtimeeffect_uniform_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_runtimeeffect_get_children_size(const sk_runtimeeffect_t *effect)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> Ptr (CChar) -- ^ C argument @"const char * name"@
+  -> CSize -- ^ C argument @"size_t len"@
+  -> Ptr (Sk_runtimeeffect_uniform) -- ^ C argument @"sk_runtimeeffect_uniform_t * cuniform"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_runtimeeffect_get_children_size(const sk_runtimeeffect_t *effect)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_children_size" sk_runtimeeffect_get_children_size ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @void sk_runtimeeffect_get_child_name(const sk_runtimeeffect_t *effect, int index, sk_string_t *name)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+void sk_runtimeeffect_get_child_name(const sk_runtimeeffect_t *effect, int index, sk_string_t *name)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_child_name" sk_runtimeeffect_get_child_name ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_string) -- ^ C argument @"name"@ of type @sk_string_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_runtimeeffect_get_child_from_index(const sk_runtimeeffect_t *effect, int index, sk_runtimeeffect_child_t *cchild)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * name"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_runtimeeffect_get_child_from_index(const sk_runtimeeffect_t *effect, int index, sk_runtimeeffect_child_t *cchild)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_child_from_index" sk_runtimeeffect_get_child_from_index ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_runtimeeffect_child) -- ^ C argument @"cchild"@ of type @sk_runtimeeffect_child_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_runtimeeffect_get_child_from_name(const sk_runtimeeffect_t *effect, const char *name, size_t len, sk_runtimeeffect_child_t *cchild)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_runtimeeffect_child) -- ^ C argument @"sk_runtimeeffect_child_t * cchild"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_runtimeeffect_get_child_from_name(const sk_runtimeeffect_t *effect, const char *name, size_t len, sk_runtimeeffect_child_t *cchild)
+@
+-}
 foreign import ccall "sk_runtimeeffect_get_child_from_name" sk_runtimeeffect_get_child_from_name ::
-  Ptr (Sk_runtimeeffect) -- ^ C argument @"effect"@ of type @const sk_runtimeeffect_t *@
-  -> Ptr (CChar) -- ^ C argument @"name"@ of type @const char *@
-  -> CSize -- ^ C argument @"len"@ of type @size_t@
-  -> Ptr (Sk_runtimeeffect_child) -- ^ C argument @"cchild"@ of type @sk_runtimeeffect_child_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_refcnt_unique(const sk_refcnt_t *refcnt)@
+  Ptr (Sk_runtimeeffect) -- ^ C argument @"const sk_runtimeeffect_t * effect"@
+  -> Ptr (CChar) -- ^ C argument @"const char * name"@
+  -> CSize -- ^ C argument @"size_t len"@
+  -> Ptr (Sk_runtimeeffect_child) -- ^ C argument @"sk_runtimeeffect_child_t * cchild"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_refcnt_unique(const sk_refcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_refcnt_unique" sk_refcnt_unique ::
-  Ptr (Sk_refcnt) -- ^ C argument @"refcnt"@ of type @const sk_refcnt_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int sk_refcnt_get_ref_count(const sk_refcnt_t *refcnt)@
+  Ptr (Sk_refcnt) -- ^ C argument @"const sk_refcnt_t * refcnt"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int sk_refcnt_get_ref_count(const sk_refcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_refcnt_get_ref_count" sk_refcnt_get_ref_count ::
-  Ptr (Sk_refcnt) -- ^ C argument @"refcnt"@ of type @const sk_refcnt_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_refcnt_safe_ref(sk_refcnt_t *refcnt)@
+  Ptr (Sk_refcnt) -- ^ C argument @"const sk_refcnt_t * refcnt"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_refcnt_safe_ref(sk_refcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_refcnt_safe_ref" sk_refcnt_safe_ref ::
-  Ptr (Sk_refcnt) -- ^ C argument @"refcnt"@ of type @sk_refcnt_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_refcnt_safe_unref(sk_refcnt_t *refcnt)@
+  Ptr (Sk_refcnt) -- ^ C argument @"sk_refcnt_t * refcnt"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_refcnt_safe_unref(sk_refcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_refcnt_safe_unref" sk_refcnt_safe_unref ::
-  Ptr (Sk_refcnt) -- ^ C argument @"refcnt"@ of type @sk_refcnt_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_nvrefcnt_unique(const sk_nvrefcnt_t *refcnt)@
+  Ptr (Sk_refcnt) -- ^ C argument @"sk_refcnt_t * refcnt"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_nvrefcnt_unique(const sk_nvrefcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_nvrefcnt_unique" sk_nvrefcnt_unique ::
-  Ptr (Sk_nvrefcnt) -- ^ C argument @"refcnt"@ of type @const sk_nvrefcnt_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int sk_nvrefcnt_get_ref_count(const sk_nvrefcnt_t *refcnt)@
+  Ptr (Sk_nvrefcnt) -- ^ C argument @"const sk_nvrefcnt_t * refcnt"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int sk_nvrefcnt_get_ref_count(const sk_nvrefcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_nvrefcnt_get_ref_count" sk_nvrefcnt_get_ref_count ::
-  Ptr (Sk_nvrefcnt) -- ^ C argument @"refcnt"@ of type @const sk_nvrefcnt_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_nvrefcnt_safe_ref(sk_nvrefcnt_t *refcnt)@
+  Ptr (Sk_nvrefcnt) -- ^ C argument @"const sk_nvrefcnt_t * refcnt"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_nvrefcnt_safe_ref(sk_nvrefcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_nvrefcnt_safe_ref" sk_nvrefcnt_safe_ref ::
-  Ptr (Sk_nvrefcnt) -- ^ C argument @"refcnt"@ of type @sk_nvrefcnt_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_nvrefcnt_safe_unref(sk_nvrefcnt_t *refcnt)@
+  Ptr (Sk_nvrefcnt) -- ^ C argument @"sk_nvrefcnt_t * refcnt"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_nvrefcnt_safe_unref(sk_nvrefcnt_t *refcnt)
+@
+-}
 foreign import ccall "sk_nvrefcnt_safe_unref" sk_nvrefcnt_safe_unref ::
-  Ptr (Sk_nvrefcnt) -- ^ C argument @"refcnt"@ of type @sk_nvrefcnt_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_colortype_t sk_colortype_get_default_8888(void)@
+  Ptr (Sk_nvrefcnt) -- ^ C argument @"sk_nvrefcnt_t * refcnt"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_colortype_t sk_colortype_get_default_8888(void)
+@
+-}
 foreign import ccall "sk_colortype_get_default_8888" sk_colortype_get_default_8888 ::
-  IO (Sk_colortype) -- ^ C return type: @sk_colortype_t@
--- | C function: @int sk_version_get_milestone(void)@
+  IO (Sk_colortype) -- ^ C return type: @"sk_colortype_t"@
+
+{- | C function signature:
+
+@
+int sk_version_get_milestone(void)
+@
+-}
 foreign import ccall "sk_version_get_milestone" sk_version_get_milestone ::
-  IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_version_get_increment(void)@
+  IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_version_get_increment(void)
+@
+-}
 foreign import ccall "sk_version_get_increment" sk_version_get_increment ::
-  IO (CInt) -- ^ C return type: @int@
--- | C function: @const char *sk_version_get_string(void)@
+  IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+const char *sk_version_get_string(void)
+@
+-}
 foreign import ccall "sk_version_get_string" sk_version_get_string ::
-  IO (Ptr (CChar)) -- ^ C return type: @const char *@
--- | C function: @void sk_document_unref(sk_document_t *document)@
+  IO (Ptr (CChar)) -- ^ C return type: @"const char *"@
+
+{- | C function signature:
+
+@
+void sk_document_unref(sk_document_t *document)
+@
+-}
 foreign import ccall "sk_document_unref" sk_document_unref ::
-  Ptr (Sk_document) -- ^ C argument @"document"@ of type @sk_document_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_document_t *sk_document_create_pdf_from_stream(sk_wstream_t *stream)@
+  Ptr (Sk_document) -- ^ C argument @"sk_document_t * document"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_document_t *sk_document_create_pdf_from_stream(sk_wstream_t *stream)
+@
+-}
 foreign import ccall "sk_document_create_pdf_from_stream" sk_document_create_pdf_from_stream ::
-  Ptr (Sk_wstream) -- ^ C argument @"stream"@ of type @sk_wstream_t *@
-  -> IO (Ptr (Sk_document)) -- ^ C return type: @sk_document_t *@
--- | C function: @sk_document_t *sk_document_create_pdf_from_stream_with_metadata(sk_wstream_t *stream, const sk_document_pdf_metadata_t *metadata)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * stream"@
+  -> IO (Ptr (Sk_document)) -- ^ C return type: @"sk_document_t *"@
+
+{- | C function signature:
+
+@
+sk_document_t *sk_document_create_pdf_from_stream_with_metadata(sk_wstream_t *stream, const sk_document_pdf_metadata_t *metadata)
+@
+-}
 foreign import ccall "sk_document_create_pdf_from_stream_with_metadata" sk_document_create_pdf_from_stream_with_metadata ::
-  Ptr (Sk_wstream) -- ^ C argument @"stream"@ of type @sk_wstream_t *@
-  -> Ptr (Sk_document_pdf_metadata) -- ^ C argument @"metadata"@ of type @const sk_document_pdf_metadata_t *@
-  -> IO (Ptr (Sk_document)) -- ^ C return type: @sk_document_t *@
--- | C function: @sk_document_t *sk_document_create_xps_from_stream(sk_wstream_t *stream, float dpi)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * stream"@
+  -> Ptr (Sk_document_pdf_metadata) -- ^ C argument @"const sk_document_pdf_metadata_t * metadata"@
+  -> IO (Ptr (Sk_document)) -- ^ C return type: @"sk_document_t *"@
+
+{- | C function signature:
+
+@
+sk_document_t *sk_document_create_xps_from_stream(sk_wstream_t *stream, float dpi)
+@
+-}
 foreign import ccall "sk_document_create_xps_from_stream" sk_document_create_xps_from_stream ::
-  Ptr (Sk_wstream) -- ^ C argument @"stream"@ of type @sk_wstream_t *@
-  -> CFloat -- ^ C argument @"dpi"@ of type @float@
-  -> IO (Ptr (Sk_document)) -- ^ C return type: @sk_document_t *@
--- | C function: @sk_canvas_t *sk_document_begin_page(sk_document_t *document, float width, float height, const sk_rect_t *content)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * stream"@
+  -> CFloat -- ^ C argument @"float dpi"@
+  -> IO (Ptr (Sk_document)) -- ^ C return type: @"sk_document_t *"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_document_begin_page(sk_document_t *document, float width, float height, const sk_rect_t *content)
+@
+-}
 foreign import ccall "sk_document_begin_page" sk_document_begin_page ::
-  Ptr (Sk_document) -- ^ C argument @"document"@ of type @sk_document_t *@
-  -> CFloat -- ^ C argument @"width"@ of type @float@
-  -> CFloat -- ^ C argument @"height"@ of type @float@
-  -> Ptr (Sk_rect) -- ^ C argument @"content"@ of type @const sk_rect_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @void sk_document_end_page(sk_document_t *document)@
+  Ptr (Sk_document) -- ^ C argument @"sk_document_t * document"@
+  -> CFloat -- ^ C argument @"float width"@
+  -> CFloat -- ^ C argument @"float height"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * content"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+void sk_document_end_page(sk_document_t *document)
+@
+-}
 foreign import ccall "sk_document_end_page" sk_document_end_page ::
-  Ptr (Sk_document) -- ^ C argument @"document"@ of type @sk_document_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_document_close(sk_document_t *document)@
+  Ptr (Sk_document) -- ^ C argument @"sk_document_t * document"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_document_close(sk_document_t *document)
+@
+-}
 foreign import ccall "sk_document_close" sk_document_close ::
-  Ptr (Sk_document) -- ^ C argument @"document"@ of type @sk_document_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_document_abort(sk_document_t *document)@
+  Ptr (Sk_document) -- ^ C argument @"sk_document_t * document"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_document_abort(sk_document_t *document)
+@
+-}
 foreign import ccall "sk_document_abort" sk_document_abort ::
-  Ptr (Sk_document) -- ^ C argument @"document"@ of type @sk_document_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_image_ref(const sk_image_t *cimage)@
+  Ptr (Sk_document) -- ^ C argument @"sk_document_t * document"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_image_ref(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_ref" sk_image_ref ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_image_unref(const sk_image_t *cimage)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_image_unref(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_unref" sk_image_unref ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_image_t *sk_image_new_raster_copy(const sk_imageinfo_t *cinfo, const void *pixels, size_t rowBytes)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_raster_copy(const sk_imageinfo_t *cinfo, const void *pixels, size_t rowBytes)
+@
+-}
 foreign import ccall "sk_image_new_raster_copy" sk_image_new_raster_copy ::
-  Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"pixels"@ of type @const void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_raster_copy_with_pixmap(const sk_pixmap_t *pixmap)@
+  Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * cinfo"@
+  -> Ptr (()) -- ^ C argument @"const void * pixels"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_raster_copy_with_pixmap(const sk_pixmap_t *pixmap)
+@
+-}
 foreign import ccall "sk_image_new_raster_copy_with_pixmap" sk_image_new_raster_copy_with_pixmap ::
-  Ptr (Sk_pixmap) -- ^ C argument @"pixmap"@ of type @const sk_pixmap_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_raster_data(const sk_imageinfo_t *cinfo, sk_data_t *pixels, size_t rowBytes)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * pixmap"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_raster_data(const sk_imageinfo_t *cinfo, sk_data_t *pixels, size_t rowBytes)
+@
+-}
 foreign import ccall "sk_image_new_raster_data" sk_image_new_raster_data ::
-  Ptr (Sk_imageinfo) -- ^ C argument @"cinfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (Sk_data) -- ^ C argument @"pixels"@ of type @sk_data_t *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_raster(const sk_pixmap_t *pixmap, sk_image_raster_release_proc releaseProc, void *context)@
+  Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * cinfo"@
+  -> Ptr (Sk_data) -- ^ C argument @"sk_data_t * pixels"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_raster(const sk_pixmap_t *pixmap, sk_image_raster_release_proc releaseProc, void *context)
+@
+-}
 foreign import ccall "sk_image_new_raster" sk_image_new_raster ::
-  Ptr (Sk_pixmap) -- ^ C argument @"pixmap"@ of type @const sk_pixmap_t *@
-  -> FunPtr Sk_image_raster_release_proc -- ^ C argument @"releaseProc"@ of type @sk_image_raster_release_proc@
-  -> Ptr (()) -- ^ C argument @"context"@ of type @void *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_from_bitmap(const sk_bitmap_t *cbitmap)@
+  Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * pixmap"@
+  -> FunPtr Sk_image_raster_release_proc -- ^ C argument @"sk_image_raster_release_proc releaseProc"@
+  -> Ptr (()) -- ^ C argument @"void * context"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_from_bitmap(const sk_bitmap_t *cbitmap)
+@
+-}
 foreign import ccall "sk_image_new_from_bitmap" sk_image_new_from_bitmap ::
-  Ptr (Sk_bitmap) -- ^ C argument @"cbitmap"@ of type @const sk_bitmap_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_from_encoded(const sk_data_t *cdata)@
+  Ptr (Sk_bitmap) -- ^ C argument @"const sk_bitmap_t * cbitmap"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_from_encoded(const sk_data_t *cdata)
+@
+-}
 foreign import ccall "sk_image_new_from_encoded" sk_image_new_from_encoded ::
-  Ptr (Sk_data) -- ^ C argument @"cdata"@ of type @const sk_data_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_from_texture(gr_recording_context_t *context, const gr_backendtexture_t *texture, gr_surfaceorigin_t origin, sk_colortype_t colorType, sk_alphatype_t alpha, const sk_colorspace_t *colorSpace, const sk_image_texture_release_proc releaseProc, void *releaseContext)@
+  Ptr (Sk_data) -- ^ C argument @"const sk_data_t * cdata"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_from_texture(gr_recording_context_t *context, const gr_backendtexture_t *texture, gr_surfaceorigin_t origin, sk_colortype_t colorType, sk_alphatype_t alpha, const sk_colorspace_t *colorSpace, const sk_image_texture_release_proc releaseProc, void *releaseContext)
+@
+-}
 foreign import ccall "sk_image_new_from_texture" sk_image_new_from_texture ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> Gr_surfaceorigin -- ^ C argument @"origin"@ of type @gr_surfaceorigin_t@
-  -> Sk_colortype -- ^ C argument @"colorType"@ of type @sk_colortype_t@
-  -> Sk_alphatype -- ^ C argument @"alpha"@ of type @sk_alphatype_t@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorSpace"@ of type @const sk_colorspace_t *@
-  -> FunPtr Sk_image_texture_release_proc -- ^ C argument @"releaseProc"@ of type @const sk_image_texture_release_proc@
-  -> Ptr (()) -- ^ C argument @"releaseContext"@ of type @void *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_from_adopted_texture(gr_recording_context_t *context, const gr_backendtexture_t *texture, gr_surfaceorigin_t origin, sk_colortype_t colorType, sk_alphatype_t alpha, const sk_colorspace_t *colorSpace)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> Gr_surfaceorigin -- ^ C argument @"gr_surfaceorigin_t origin"@
+  -> Sk_colortype -- ^ C argument @"sk_colortype_t colorType"@
+  -> Sk_alphatype -- ^ C argument @"sk_alphatype_t alpha"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorSpace"@
+  -> FunPtr Sk_image_texture_release_proc -- ^ C argument @"const sk_image_texture_release_proc releaseProc"@
+  -> Ptr (()) -- ^ C argument @"void * releaseContext"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_from_adopted_texture(gr_recording_context_t *context, const gr_backendtexture_t *texture, gr_surfaceorigin_t origin, sk_colortype_t colorType, sk_alphatype_t alpha, const sk_colorspace_t *colorSpace)
+@
+-}
 foreign import ccall "sk_image_new_from_adopted_texture" sk_image_new_from_adopted_texture ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> Gr_surfaceorigin -- ^ C argument @"origin"@ of type @gr_surfaceorigin_t@
-  -> Sk_colortype -- ^ C argument @"colorType"@ of type @sk_colortype_t@
-  -> Sk_alphatype -- ^ C argument @"alpha"@ of type @sk_alphatype_t@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorSpace"@ of type @const sk_colorspace_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_new_from_picture(sk_picture_t *picture, const sk_isize_t *dimensions, const sk_matrix_t *cmatrix, const sk_paint_t *paint, _Bool useFloatingPointBitDepth, const sk_colorspace_t *colorSpace, const sk_surfaceprops_t *props)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> Gr_surfaceorigin -- ^ C argument @"gr_surfaceorigin_t origin"@
+  -> Sk_colortype -- ^ C argument @"sk_colortype_t colorType"@
+  -> Sk_alphatype -- ^ C argument @"sk_alphatype_t alpha"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorSpace"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_new_from_picture(sk_picture_t *picture, const sk_isize_t *dimensions, const sk_matrix_t *cmatrix, const sk_paint_t *paint, _Bool useFloatingPointBitDepth, const sk_colorspace_t *colorSpace, const sk_surfaceprops_t *props)
+@
+-}
 foreign import ccall "sk_image_new_from_picture" sk_image_new_from_picture ::
-  Ptr (Sk_picture) -- ^ C argument @"picture"@ of type @sk_picture_t *@
-  -> Ptr (Sk_isize) -- ^ C argument @"dimensions"@ of type @const sk_isize_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> CBool -- ^ C argument @"useFloatingPointBitDepth"@ of type @_Bool@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorSpace"@ of type @const sk_colorspace_t *@
-  -> Ptr (Sk_surfaceprops) -- ^ C argument @"props"@ of type @const sk_surfaceprops_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @int sk_image_get_width(const sk_image_t *cimage)@
+  Ptr (Sk_picture) -- ^ C argument @"sk_picture_t * picture"@
+  -> Ptr (Sk_isize) -- ^ C argument @"const sk_isize_t * dimensions"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> CBool -- ^ C argument @"_Bool useFloatingPointBitDepth"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorSpace"@
+  -> Ptr (Sk_surfaceprops) -- ^ C argument @"const sk_surfaceprops_t * props"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+int sk_image_get_width(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_get_width" sk_image_get_width ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_image_get_height(const sk_image_t *cimage)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_image_get_height(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_get_height" sk_image_get_height ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @uint32_t sk_image_get_unique_id(const sk_image_t *cimage)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+uint32_t sk_image_get_unique_id(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_get_unique_id" sk_image_get_unique_id ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (Word32) -- ^ C return type: @uint32_t@
--- | C function: @sk_alphatype_t sk_image_get_alpha_type(const sk_image_t *image)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (Word32) -- ^ C return type: @"uint32_t"@
+
+{- | C function signature:
+
+@
+sk_alphatype_t sk_image_get_alpha_type(const sk_image_t *image)
+@
+-}
 foreign import ccall "sk_image_get_alpha_type" sk_image_get_alpha_type ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> IO (Sk_alphatype) -- ^ C return type: @sk_alphatype_t@
--- | C function: @sk_colortype_t sk_image_get_color_type(const sk_image_t *image)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> IO (Sk_alphatype) -- ^ C return type: @"sk_alphatype_t"@
+
+{- | C function signature:
+
+@
+sk_colortype_t sk_image_get_color_type(const sk_image_t *image)
+@
+-}
 foreign import ccall "sk_image_get_color_type" sk_image_get_color_type ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> IO (Sk_colortype) -- ^ C return type: @sk_colortype_t@
--- | C function: @sk_colorspace_t *sk_image_get_colorspace(const sk_image_t *image)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> IO (Sk_colortype) -- ^ C return type: @"sk_colortype_t"@
+
+{- | C function signature:
+
+@
+sk_colorspace_t *sk_image_get_colorspace(const sk_image_t *image)
+@
+-}
 foreign import ccall "sk_image_get_colorspace" sk_image_get_colorspace ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @sk_colorspace_t *@
--- | C function: @_Bool sk_image_is_alpha_only(const sk_image_t *image)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> IO (Ptr (Sk_colorspace)) -- ^ C return type: @"sk_colorspace_t *"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_is_alpha_only(const sk_image_t *image)
+@
+-}
 foreign import ccall "sk_image_is_alpha_only" sk_image_is_alpha_only ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_shader_t *sk_image_make_shader(const sk_image_t *image, sk_shader_tilemode_t tileX, sk_shader_tilemode_t tileY, const sk_sampling_options_t *sampling, const sk_matrix_t *cmatrix)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_image_make_shader(const sk_image_t *image, sk_shader_tilemode_t tileX, sk_shader_tilemode_t tileY, const sk_sampling_options_t *sampling, const sk_matrix_t *cmatrix)
+@
+-}
 foreign import ccall "sk_image_make_shader" sk_image_make_shader ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Sk_shader_tilemode -- ^ C argument @"tileX"@ of type @sk_shader_tilemode_t@
-  -> Sk_shader_tilemode -- ^ C argument @"tileY"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_image_make_raw_shader(const sk_image_t *image, sk_shader_tilemode_t tileX, sk_shader_tilemode_t tileY, const sk_sampling_options_t *sampling, const sk_matrix_t *cmatrix)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileX"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileY"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_image_make_raw_shader(const sk_image_t *image, sk_shader_tilemode_t tileX, sk_shader_tilemode_t tileY, const sk_sampling_options_t *sampling, const sk_matrix_t *cmatrix)
+@
+-}
 foreign import ccall "sk_image_make_raw_shader" sk_image_make_raw_shader ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Sk_shader_tilemode -- ^ C argument @"tileX"@ of type @sk_shader_tilemode_t@
-  -> Sk_shader_tilemode -- ^ C argument @"tileY"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @_Bool sk_image_peek_pixels(const sk_image_t *image, sk_pixmap_t *pixmap)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileX"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileY"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_peek_pixels(const sk_image_t *image, sk_pixmap_t *pixmap)
+@
+-}
 foreign import ccall "sk_image_peek_pixels" sk_image_peek_pixels ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"pixmap"@ of type @sk_pixmap_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_image_is_texture_backed(const sk_image_t *image)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"sk_pixmap_t * pixmap"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_is_texture_backed(const sk_image_t *image)
+@
+-}
 foreign import ccall "sk_image_is_texture_backed" sk_image_is_texture_backed ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_image_is_lazy_generated(const sk_image_t *image)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_is_lazy_generated(const sk_image_t *image)
+@
+-}
 foreign import ccall "sk_image_is_lazy_generated" sk_image_is_lazy_generated ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_image_is_valid(const sk_image_t *image, gr_recording_context_t *context)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_is_valid(const sk_image_t *image, gr_recording_context_t *context)
+@
+-}
 foreign import ccall "sk_image_is_valid" sk_image_is_valid ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_image_read_pixels(const sk_image_t *image, const sk_imageinfo_t *dstInfo, void *dstPixels, size_t dstRowBytes, int srcX, int srcY, sk_image_caching_hint_t cachingHint)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_read_pixels(const sk_image_t *image, const sk_imageinfo_t *dstInfo, void *dstPixels, size_t dstRowBytes, int srcX, int srcY, sk_image_caching_hint_t cachingHint)
+@
+-}
 foreign import ccall "sk_image_read_pixels" sk_image_read_pixels ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"dstInfo"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"dstPixels"@ of type @void *@
-  -> CSize -- ^ C argument @"dstRowBytes"@ of type @size_t@
-  -> CInt -- ^ C argument @"srcX"@ of type @int@
-  -> CInt -- ^ C argument @"srcY"@ of type @int@
-  -> Sk_image_caching_hint -- ^ C argument @"cachingHint"@ of type @sk_image_caching_hint_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_image_read_pixels_into_pixmap(const sk_image_t *image, const sk_pixmap_t *dst, int srcX, int srcY, sk_image_caching_hint_t cachingHint)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * dstInfo"@
+  -> Ptr (()) -- ^ C argument @"void * dstPixels"@
+  -> CSize -- ^ C argument @"size_t dstRowBytes"@
+  -> CInt -- ^ C argument @"int srcX"@
+  -> CInt -- ^ C argument @"int srcY"@
+  -> Sk_image_caching_hint -- ^ C argument @"sk_image_caching_hint_t cachingHint"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_read_pixels_into_pixmap(const sk_image_t *image, const sk_pixmap_t *dst, int srcX, int srcY, sk_image_caching_hint_t cachingHint)
+@
+-}
 foreign import ccall "sk_image_read_pixels_into_pixmap" sk_image_read_pixels_into_pixmap ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"dst"@ of type @const sk_pixmap_t *@
-  -> CInt -- ^ C argument @"srcX"@ of type @int@
-  -> CInt -- ^ C argument @"srcY"@ of type @int@
-  -> Sk_image_caching_hint -- ^ C argument @"cachingHint"@ of type @sk_image_caching_hint_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_image_scale_pixels(const sk_image_t *image, const sk_pixmap_t *dst, const sk_sampling_options_t *sampling, sk_image_caching_hint_t cachingHint)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * dst"@
+  -> CInt -- ^ C argument @"int srcX"@
+  -> CInt -- ^ C argument @"int srcY"@
+  -> Sk_image_caching_hint -- ^ C argument @"sk_image_caching_hint_t cachingHint"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_image_scale_pixels(const sk_image_t *image, const sk_pixmap_t *dst, const sk_sampling_options_t *sampling, sk_image_caching_hint_t cachingHint)
+@
+-}
 foreign import ccall "sk_image_scale_pixels" sk_image_scale_pixels ::
-  Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> Ptr (Sk_pixmap) -- ^ C argument @"dst"@ of type @const sk_pixmap_t *@
-  -> Ptr (Sk_sampling_options) -- ^ C argument @"sampling"@ of type @const sk_sampling_options_t *@
-  -> Sk_image_caching_hint -- ^ C argument @"cachingHint"@ of type @sk_image_caching_hint_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_data_t *sk_image_ref_encoded(const sk_image_t *cimage)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> Ptr (Sk_pixmap) -- ^ C argument @"const sk_pixmap_t * dst"@
+  -> Ptr (Sk_sampling_options) -- ^ C argument @"const sk_sampling_options_t * sampling"@
+  -> Sk_image_caching_hint -- ^ C argument @"sk_image_caching_hint_t cachingHint"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_image_ref_encoded(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_ref_encoded" sk_image_ref_encoded ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @sk_image_t *sk_image_make_subset_raster(const sk_image_t *cimage, const sk_irect_t *subset)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_make_subset_raster(const sk_image_t *cimage, const sk_irect_t *subset)
+@
+-}
 foreign import ccall "sk_image_make_subset_raster" sk_image_make_subset_raster ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @const sk_irect_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_make_subset(const sk_image_t *cimage, gr_direct_context_t *context, const sk_irect_t *subset)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * subset"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_make_subset(const sk_image_t *cimage, gr_direct_context_t *context, const sk_irect_t *subset)
+@
+-}
 foreign import ccall "sk_image_make_subset" sk_image_make_subset ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @const sk_irect_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_make_texture_image(const sk_image_t *cimage, gr_direct_context_t *context, _Bool mipmapped, _Bool budgeted)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * subset"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_make_texture_image(const sk_image_t *cimage, gr_direct_context_t *context, _Bool mipmapped, _Bool budgeted)
+@
+-}
 foreign import ccall "sk_image_make_texture_image" sk_image_make_texture_image ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> CBool -- ^ C argument @"mipmapped"@ of type @_Bool@
-  -> CBool -- ^ C argument @"budgeted"@ of type @_Bool@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_make_non_texture_image(const sk_image_t *cimage)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> CBool -- ^ C argument @"_Bool mipmapped"@
+  -> CBool -- ^ C argument @"_Bool budgeted"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_make_non_texture_image(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_make_non_texture_image" sk_image_make_non_texture_image ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_make_raster_image(const sk_image_t *cimage)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_make_raster_image(const sk_image_t *cimage)
+@
+-}
 foreign import ccall "sk_image_make_raster_image" sk_image_make_raster_image ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_make_with_filter_raster(const sk_image_t *cimage, const sk_imagefilter_t *filter, const sk_irect_t *subset, const sk_irect_t *clipBounds, sk_irect_t *outSubset, sk_ipoint_t *outOffset)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_make_with_filter_raster(const sk_image_t *cimage, const sk_imagefilter_t *filter, const sk_irect_t *subset, const sk_irect_t *clipBounds, sk_irect_t *outSubset, sk_ipoint_t *outOffset)
+@
+-}
 foreign import ccall "sk_image_make_with_filter_raster" sk_image_make_with_filter_raster ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"filter"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @const sk_irect_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"clipBounds"@ of type @const sk_irect_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"outSubset"@ of type @sk_irect_t *@
-  -> Ptr (Sk_ipoint) -- ^ C argument @"outOffset"@ of type @sk_ipoint_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @sk_image_t *sk_image_make_with_filter(const sk_image_t *cimage, gr_recording_context_t *context, const sk_imagefilter_t *filter, const sk_irect_t *subset, const sk_irect_t *clipBounds, sk_irect_t *outSubset, sk_ipoint_t *outOffset)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * filter"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * subset"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * clipBounds"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * outSubset"@
+  -> Ptr (Sk_ipoint) -- ^ C argument @"sk_ipoint_t * outOffset"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+sk_image_t *sk_image_make_with_filter(const sk_image_t *cimage, gr_recording_context_t *context, const sk_imagefilter_t *filter, const sk_irect_t *subset, const sk_irect_t *clipBounds, sk_irect_t *outSubset, sk_ipoint_t *outOffset)
+@
+-}
 foreign import ccall "sk_image_make_with_filter" sk_image_make_with_filter ::
-  Ptr (Sk_image) -- ^ C argument @"cimage"@ of type @const sk_image_t *@
-  -> Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument @"filter"@ of type @const sk_imagefilter_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"subset"@ of type @const sk_irect_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"clipBounds"@ of type @const sk_irect_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"outSubset"@ of type @sk_irect_t *@
-  -> Ptr (Sk_ipoint) -- ^ C argument @"outOffset"@ of type @sk_ipoint_t *@
-  -> IO (Ptr (Sk_image)) -- ^ C return type: @sk_image_t *@
--- | C function: @size_t sk_codec_min_buffered_bytes_needed(void)@
+  Ptr (Sk_image) -- ^ C argument @"const sk_image_t * cimage"@
+  -> Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument @"const sk_imagefilter_t * filter"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * subset"@
+  -> Ptr (Sk_irect) -- ^ C argument @"const sk_irect_t * clipBounds"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * outSubset"@
+  -> Ptr (Sk_ipoint) -- ^ C argument @"sk_ipoint_t * outOffset"@
+  -> IO (Ptr (Sk_image)) -- ^ C return type: @"sk_image_t *"@
+
+{- | C function signature:
+
+@
+size_t sk_codec_min_buffered_bytes_needed(void)
+@
+-}
 foreign import ccall "sk_codec_min_buffered_bytes_needed" sk_codec_min_buffered_bytes_needed ::
-  IO (CSize) -- ^ C return type: @size_t@
--- | C function: @sk_codec_t *sk_codec_new_from_stream(sk_stream_t *stream, sk_codec_result_t *result)@
+  IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+sk_codec_t *sk_codec_new_from_stream(sk_stream_t *stream, sk_codec_result_t *result)
+@
+-}
 foreign import ccall "sk_codec_new_from_stream" sk_codec_new_from_stream ::
-  Ptr (Sk_stream) -- ^ C argument @"stream"@ of type @sk_stream_t *@
-  -> Ptr (Sk_codec_result) -- ^ C argument @"result"@ of type @sk_codec_result_t *@
-  -> IO (Ptr (Sk_codec)) -- ^ C return type: @sk_codec_t *@
--- | C function: @sk_codec_t *sk_codec_new_from_data(sk_data_t *data)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * stream"@
+  -> Ptr (Sk_codec_result) -- ^ C argument @"sk_codec_result_t * result"@
+  -> IO (Ptr (Sk_codec)) -- ^ C return type: @"sk_codec_t *"@
+
+{- | C function signature:
+
+@
+sk_codec_t *sk_codec_new_from_data(sk_data_t *data)
+@
+-}
 foreign import ccall "sk_codec_new_from_data" sk_codec_new_from_data ::
-  Ptr (Sk_data) -- ^ C argument @"data"@ of type @sk_data_t *@
-  -> IO (Ptr (Sk_codec)) -- ^ C return type: @sk_codec_t *@
--- | C function: @void sk_codec_destroy(sk_codec_t *codec)@
+  Ptr (Sk_data) -- ^ C argument @"sk_data_t * data"@
+  -> IO (Ptr (Sk_codec)) -- ^ C return type: @"sk_codec_t *"@
+
+{- | C function signature:
+
+@
+void sk_codec_destroy(sk_codec_t *codec)
+@
+-}
 foreign import ccall "sk_codec_destroy" sk_codec_destroy ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_codec_get_info(sk_codec_t *codec, sk_imageinfo_t *info)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_codec_get_info(sk_codec_t *codec, sk_imageinfo_t *info)
+@
+-}
 foreign import ccall "sk_codec_get_info" sk_codec_get_info ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"info"@ of type @sk_imageinfo_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_encodedorigin_t sk_codec_get_origin(sk_codec_t *codec)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"sk_imageinfo_t * info"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_encodedorigin_t sk_codec_get_origin(sk_codec_t *codec)
+@
+-}
 foreign import ccall "sk_codec_get_origin" sk_codec_get_origin ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> IO (Sk_encodedorigin) -- ^ C return type: @sk_encodedorigin_t@
--- | C function: @void sk_codec_get_scaled_dimensions(sk_codec_t *codec, float desiredScale, sk_isize_t *dimensions)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> IO (Sk_encodedorigin) -- ^ C return type: @"sk_encodedorigin_t"@
+
+{- | C function signature:
+
+@
+void sk_codec_get_scaled_dimensions(sk_codec_t *codec, float desiredScale, sk_isize_t *dimensions)
+@
+-}
 foreign import ccall "sk_codec_get_scaled_dimensions" sk_codec_get_scaled_dimensions ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> CFloat -- ^ C argument @"desiredScale"@ of type @float@
-  -> Ptr (Sk_isize) -- ^ C argument @"dimensions"@ of type @sk_isize_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_codec_get_valid_subset(sk_codec_t *codec, sk_irect_t *desiredSubset)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> CFloat -- ^ C argument @"float desiredScale"@
+  -> Ptr (Sk_isize) -- ^ C argument @"sk_isize_t * dimensions"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_codec_get_valid_subset(sk_codec_t *codec, sk_irect_t *desiredSubset)
+@
+-}
 foreign import ccall "sk_codec_get_valid_subset" sk_codec_get_valid_subset ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (Sk_irect) -- ^ C argument @"desiredSubset"@ of type @sk_irect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_encoded_image_format_t sk_codec_get_encoded_format(sk_codec_t *codec)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (Sk_irect) -- ^ C argument @"sk_irect_t * desiredSubset"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_encoded_image_format_t sk_codec_get_encoded_format(sk_codec_t *codec)
+@
+-}
 foreign import ccall "sk_codec_get_encoded_format" sk_codec_get_encoded_format ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> IO (Sk_encoded_image_format) -- ^ C return type: @sk_encoded_image_format_t@
--- | C function: @sk_codec_result_t sk_codec_get_pixels(sk_codec_t *codec, const sk_imageinfo_t *info, void *pixels, size_t rowBytes, const sk_codec_options_t *options)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> IO (Sk_encoded_image_format) -- ^ C return type: @"sk_encoded_image_format_t"@
+
+{- | C function signature:
+
+@
+sk_codec_result_t sk_codec_get_pixels(sk_codec_t *codec, const sk_imageinfo_t *info, void *pixels, size_t rowBytes, const sk_codec_options_t *options)
+@
+-}
 foreign import ccall "sk_codec_get_pixels" sk_codec_get_pixels ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"info"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"pixels"@ of type @void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> Ptr (Sk_codec_options) -- ^ C argument @"options"@ of type @const sk_codec_options_t *@
-  -> IO (Sk_codec_result) -- ^ C return type: @sk_codec_result_t@
--- | C function: @sk_codec_result_t sk_codec_start_incremental_decode(sk_codec_t *codec, const sk_imageinfo_t *info, void *pixels, size_t rowBytes, const sk_codec_options_t *options)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * info"@
+  -> Ptr (()) -- ^ C argument @"void * pixels"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> Ptr (Sk_codec_options) -- ^ C argument @"const sk_codec_options_t * options"@
+  -> IO (Sk_codec_result) -- ^ C return type: @"sk_codec_result_t"@
+
+{- | C function signature:
+
+@
+sk_codec_result_t sk_codec_start_incremental_decode(sk_codec_t *codec, const sk_imageinfo_t *info, void *pixels, size_t rowBytes, const sk_codec_options_t *options)
+@
+-}
 foreign import ccall "sk_codec_start_incremental_decode" sk_codec_start_incremental_decode ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"info"@ of type @const sk_imageinfo_t *@
-  -> Ptr (()) -- ^ C argument @"pixels"@ of type @void *@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> Ptr (Sk_codec_options) -- ^ C argument @"options"@ of type @const sk_codec_options_t *@
-  -> IO (Sk_codec_result) -- ^ C return type: @sk_codec_result_t@
--- | C function: @sk_codec_result_t sk_codec_incremental_decode(sk_codec_t *codec, int *rowsDecoded)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * info"@
+  -> Ptr (()) -- ^ C argument @"void * pixels"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> Ptr (Sk_codec_options) -- ^ C argument @"const sk_codec_options_t * options"@
+  -> IO (Sk_codec_result) -- ^ C return type: @"sk_codec_result_t"@
+
+{- | C function signature:
+
+@
+sk_codec_result_t sk_codec_incremental_decode(sk_codec_t *codec, int *rowsDecoded)
+@
+-}
 foreign import ccall "sk_codec_incremental_decode" sk_codec_incremental_decode ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (CInt) -- ^ C argument @"rowsDecoded"@ of type @int *@
-  -> IO (Sk_codec_result) -- ^ C return type: @sk_codec_result_t@
--- | C function: @sk_codec_result_t sk_codec_start_scanline_decode(sk_codec_t *codec, const sk_imageinfo_t *info, const sk_codec_options_t *options)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (CInt) -- ^ C argument @"int * rowsDecoded"@
+  -> IO (Sk_codec_result) -- ^ C return type: @"sk_codec_result_t"@
+
+{- | C function signature:
+
+@
+sk_codec_result_t sk_codec_start_scanline_decode(sk_codec_t *codec, const sk_imageinfo_t *info, const sk_codec_options_t *options)
+@
+-}
 foreign import ccall "sk_codec_start_scanline_decode" sk_codec_start_scanline_decode ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (Sk_imageinfo) -- ^ C argument @"info"@ of type @const sk_imageinfo_t *@
-  -> Ptr (Sk_codec_options) -- ^ C argument @"options"@ of type @const sk_codec_options_t *@
-  -> IO (Sk_codec_result) -- ^ C return type: @sk_codec_result_t@
--- | C function: @int sk_codec_get_scanlines(sk_codec_t *codec, void *dst, int countLines, size_t rowBytes)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (Sk_imageinfo) -- ^ C argument @"const sk_imageinfo_t * info"@
+  -> Ptr (Sk_codec_options) -- ^ C argument @"const sk_codec_options_t * options"@
+  -> IO (Sk_codec_result) -- ^ C return type: @"sk_codec_result_t"@
+
+{- | C function signature:
+
+@
+int sk_codec_get_scanlines(sk_codec_t *codec, void *dst, int countLines, size_t rowBytes)
+@
+-}
 foreign import ccall "sk_codec_get_scanlines" sk_codec_get_scanlines ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (()) -- ^ C argument @"dst"@ of type @void *@
-  -> CInt -- ^ C argument @"countLines"@ of type @int@
-  -> CSize -- ^ C argument @"rowBytes"@ of type @size_t@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @_Bool sk_codec_skip_scanlines(sk_codec_t *codec, int countLines)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (()) -- ^ C argument @"void * dst"@
+  -> CInt -- ^ C argument @"int countLines"@
+  -> CSize -- ^ C argument @"size_t rowBytes"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+_Bool sk_codec_skip_scanlines(sk_codec_t *codec, int countLines)
+@
+-}
 foreign import ccall "sk_codec_skip_scanlines" sk_codec_skip_scanlines ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> CInt -- ^ C argument @"countLines"@ of type @int@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_codec_scanline_order_t sk_codec_get_scanline_order(sk_codec_t *codec)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> CInt -- ^ C argument @"int countLines"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_codec_scanline_order_t sk_codec_get_scanline_order(sk_codec_t *codec)
+@
+-}
 foreign import ccall "sk_codec_get_scanline_order" sk_codec_get_scanline_order ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> IO (Sk_codec_scanline_order) -- ^ C return type: @sk_codec_scanline_order_t@
--- | C function: @int sk_codec_next_scanline(sk_codec_t *codec)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> IO (Sk_codec_scanline_order) -- ^ C return type: @"sk_codec_scanline_order_t"@
+
+{- | C function signature:
+
+@
+int sk_codec_next_scanline(sk_codec_t *codec)
+@
+-}
 foreign import ccall "sk_codec_next_scanline" sk_codec_next_scanline ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_codec_output_scanline(sk_codec_t *codec, int inputScanline)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_codec_output_scanline(sk_codec_t *codec, int inputScanline)
+@
+-}
 foreign import ccall "sk_codec_output_scanline" sk_codec_output_scanline ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> CInt -- ^ C argument @"inputScanline"@ of type @int@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_codec_get_frame_count(sk_codec_t *codec)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> CInt -- ^ C argument @"int inputScanline"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_codec_get_frame_count(sk_codec_t *codec)
+@
+-}
 foreign import ccall "sk_codec_get_frame_count" sk_codec_get_frame_count ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_codec_get_frame_info(sk_codec_t *codec, sk_codec_frameinfo_t *frameInfo)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_codec_get_frame_info(sk_codec_t *codec, sk_codec_frameinfo_t *frameInfo)
+@
+-}
 foreign import ccall "sk_codec_get_frame_info" sk_codec_get_frame_info ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> Ptr (Sk_codec_frameinfo) -- ^ C argument @"frameInfo"@ of type @sk_codec_frameinfo_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_codec_get_frame_info_for_index(sk_codec_t *codec, int index, sk_codec_frameinfo_t *frameInfo)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> Ptr (Sk_codec_frameinfo) -- ^ C argument @"sk_codec_frameinfo_t * frameInfo"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_codec_get_frame_info_for_index(sk_codec_t *codec, int index, sk_codec_frameinfo_t *frameInfo)
+@
+-}
 foreign import ccall "sk_codec_get_frame_info_for_index" sk_codec_get_frame_info_for_index ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> CInt -- ^ C argument @"index"@ of type @int@
-  -> Ptr (Sk_codec_frameinfo) -- ^ C argument @"frameInfo"@ of type @sk_codec_frameinfo_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int sk_codec_get_repetition_count(sk_codec_t *codec)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> CInt -- ^ C argument @"int index"@
+  -> Ptr (Sk_codec_frameinfo) -- ^ C argument @"sk_codec_frameinfo_t * frameInfo"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int sk_codec_get_repetition_count(sk_codec_t *codec)
+@
+-}
 foreign import ccall "sk_codec_get_repetition_count" sk_codec_get_repetition_count ::
-  Ptr (Sk_codec) -- ^ C argument @"codec"@ of type @sk_codec_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @sk_data_t *sk_data_new_empty(void)@
+  Ptr (Sk_codec) -- ^ C argument @"sk_codec_t * codec"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_data_new_empty(void)
+@
+-}
 foreign import ccall "sk_data_new_empty" sk_data_new_empty ::
-  IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @sk_data_t *sk_data_new_with_copy(const void *src, size_t length)@
+  IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_data_new_with_copy(const void *src, size_t length)
+@
+-}
 foreign import ccall "sk_data_new_with_copy" sk_data_new_with_copy ::
-  Ptr (()) -- ^ C argument @"src"@ of type @const void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @sk_data_t *sk_data_new_subset(const sk_data_t *src, size_t offset, size_t length)@
+  Ptr (()) -- ^ C argument @"const void * src"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_data_new_subset(const sk_data_t *src, size_t offset, size_t length)
+@
+-}
 foreign import ccall "sk_data_new_subset" sk_data_new_subset ::
-  Ptr (Sk_data) -- ^ C argument @"src"@ of type @const sk_data_t *@
-  -> CSize -- ^ C argument @"offset"@ of type @size_t@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @void sk_data_ref(const sk_data_t *)@
+  Ptr (Sk_data) -- ^ C argument @"const sk_data_t * src"@
+  -> CSize -- ^ C argument @"size_t offset"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+void sk_data_ref(const sk_data_t *)
+@
+-}
 foreign import ccall "sk_data_ref" sk_data_ref ::
-  Ptr (Sk_data) -- ^ C argument type: @const sk_data_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_data_unref(const sk_data_t *)@
+  Ptr (Sk_data) -- ^ C argument type: @"const sk_data_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_data_unref(const sk_data_t *)
+@
+-}
 foreign import ccall "sk_data_unref" sk_data_unref ::
-  Ptr (Sk_data) -- ^ C argument type: @const sk_data_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_data_get_size(const sk_data_t *)@
+  Ptr (Sk_data) -- ^ C argument type: @"const sk_data_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_data_get_size(const sk_data_t *)
+@
+-}
 foreign import ccall "sk_data_get_size" sk_data_get_size ::
-  Ptr (Sk_data) -- ^ C argument type: @const sk_data_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @const void *sk_data_get_data(const sk_data_t *)@
+  Ptr (Sk_data) -- ^ C argument type: @"const sk_data_t *"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+const void *sk_data_get_data(const sk_data_t *)
+@
+-}
 foreign import ccall "sk_data_get_data" sk_data_get_data ::
-  Ptr (Sk_data) -- ^ C argument type: @const sk_data_t *@
-  -> IO (Ptr (())) -- ^ C return type: @const void *@
--- | C function: @sk_data_t *sk_data_new_from_file(const char *path)@
+  Ptr (Sk_data) -- ^ C argument type: @"const sk_data_t *"@
+  -> IO (Ptr (())) -- ^ C return type: @"const void *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_data_new_from_file(const char *path)
+@
+-}
 foreign import ccall "sk_data_new_from_file" sk_data_new_from_file ::
-  Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @sk_data_t *sk_data_new_from_stream(sk_stream_t *stream, size_t length)@
+  Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_data_new_from_stream(sk_stream_t *stream, size_t length)
+@
+-}
 foreign import ccall "sk_data_new_from_stream" sk_data_new_from_stream ::
-  Ptr (Sk_stream) -- ^ C argument @"stream"@ of type @sk_stream_t *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @const uint8_t *sk_data_get_bytes(const sk_data_t *)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * stream"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+const uint8_t *sk_data_get_bytes(const sk_data_t *)
+@
+-}
 foreign import ccall "sk_data_get_bytes" sk_data_get_bytes ::
-  Ptr (Sk_data) -- ^ C argument type: @const sk_data_t *@
-  -> IO (Ptr (Word8)) -- ^ C return type: @const uint8_t *@
--- | C function: @sk_data_t *sk_data_new_with_proc(const void *ptr, size_t length, sk_data_release_proc proc, void *ctx)@
+  Ptr (Sk_data) -- ^ C argument type: @"const sk_data_t *"@
+  -> IO (Ptr (Word8)) -- ^ C return type: @"const uint8_t *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_data_new_with_proc(const void *ptr, size_t length, sk_data_release_proc proc, void *ctx)
+@
+-}
 foreign import ccall "sk_data_new_with_proc" sk_data_new_with_proc ::
-  Ptr (()) -- ^ C argument @"ptr"@ of type @const void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> FunPtr Sk_data_release_proc -- ^ C argument @"proc"@ of type @sk_data_release_proc@
-  -> Ptr (()) -- ^ C argument @"ctx"@ of type @void *@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @sk_data_t *sk_data_new_uninitialized(size_t size)@
+  Ptr (()) -- ^ C argument @"const void * ptr"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> FunPtr Sk_data_release_proc -- ^ C argument @"sk_data_release_proc proc"@
+  -> Ptr (()) -- ^ C argument @"void * ctx"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_data_new_uninitialized(size_t size)
+@
+-}
 foreign import ccall "sk_data_new_uninitialized" sk_data_new_uninitialized ::
-  CSize -- ^ C argument @"size"@ of type @size_t@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @sk_paint_t *sk_paint_new(void)@
+  CSize -- ^ C argument @"size_t size"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+sk_paint_t *sk_paint_new(void)
+@
+-}
 foreign import ccall "sk_paint_new" sk_paint_new ::
-  IO (Ptr (Sk_paint)) -- ^ C return type: @sk_paint_t *@
--- | C function: @sk_paint_t *sk_paint_clone(sk_paint_t *)@
+  IO (Ptr (Sk_paint)) -- ^ C return type: @"sk_paint_t *"@
+
+{- | C function signature:
+
+@
+sk_paint_t *sk_paint_clone(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_clone" sk_paint_clone ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (Ptr (Sk_paint)) -- ^ C return type: @sk_paint_t *@
--- | C function: @void sk_paint_delete(sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (Ptr (Sk_paint)) -- ^ C return type: @"sk_paint_t *"@
+
+{- | C function signature:
+
+@
+void sk_paint_delete(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_delete" sk_paint_delete ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_paint_reset(sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_paint_reset(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_reset" sk_paint_reset ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_paint_is_antialias(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_paint_is_antialias(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_is_antialias" sk_paint_is_antialias ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_paint_set_antialias(sk_paint_t *, _Bool)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_antialias(sk_paint_t *, _Bool)
+@
+-}
 foreign import ccall "sk_paint_set_antialias" sk_paint_set_antialias ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> CBool -- ^ C argument type: @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_color_t sk_paint_get_color(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> CBool -- ^ C argument type: @"_Bool"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_color_t sk_paint_get_color(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_color" sk_paint_get_color ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (Sk_color) -- ^ C return type: @sk_color_t@
--- | C function: @void sk_paint_get_color4f(const sk_paint_t *paint, sk_color4f_t *color)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (Sk_color) -- ^ C return type: @"sk_color_t"@
+
+{- | C function signature:
+
+@
+void sk_paint_get_color4f(const sk_paint_t *paint, sk_color4f_t *color)
+@
+-}
 foreign import ccall "sk_paint_get_color4f" sk_paint_get_color4f ::
-  Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> Ptr (Sk_color4f) -- ^ C argument @"color"@ of type @sk_color4f_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_paint_set_color(sk_paint_t *, sk_color_t)@
+  Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"sk_color4f_t * color"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_color(sk_paint_t *, sk_color_t)
+@
+-}
 foreign import ccall "sk_paint_set_color" sk_paint_set_color ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Sk_color -- ^ C argument type: @sk_color_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_paint_set_color4f(sk_paint_t *paint, sk_color4f_t *color, sk_colorspace_t *colorspace)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Sk_color -- ^ C argument type: @"sk_color_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_color4f(sk_paint_t *paint, sk_color4f_t *color, sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_paint_set_color4f" sk_paint_set_color4f ::
-  Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @sk_paint_t *@
-  -> Ptr (Sk_color4f) -- ^ C argument @"color"@ of type @sk_color4f_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @sk_colorspace_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_paint_style_t sk_paint_get_style(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument @"sk_paint_t * paint"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"sk_color4f_t * color"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"sk_colorspace_t * colorspace"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_paint_style_t sk_paint_get_style(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_style" sk_paint_get_style ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (Sk_paint_style) -- ^ C return type: @sk_paint_style_t@
--- | C function: @void sk_paint_set_style(sk_paint_t *, sk_paint_style_t)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (Sk_paint_style) -- ^ C return type: @"sk_paint_style_t"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_style(sk_paint_t *, sk_paint_style_t)
+@
+-}
 foreign import ccall "sk_paint_set_style" sk_paint_set_style ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Sk_paint_style -- ^ C argument type: @sk_paint_style_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_paint_get_stroke_width(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Sk_paint_style -- ^ C argument type: @"sk_paint_style_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_paint_get_stroke_width(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_stroke_width" sk_paint_get_stroke_width ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_paint_set_stroke_width(sk_paint_t *, float width)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_stroke_width(sk_paint_t *, float width)
+@
+-}
 foreign import ccall "sk_paint_set_stroke_width" sk_paint_set_stroke_width ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> CFloat -- ^ C argument @"width"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_paint_get_stroke_miter(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> CFloat -- ^ C argument @"float width"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_paint_get_stroke_miter(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_stroke_miter" sk_paint_get_stroke_miter ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_paint_set_stroke_miter(sk_paint_t *, float miter)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_stroke_miter(sk_paint_t *, float miter)
+@
+-}
 foreign import ccall "sk_paint_set_stroke_miter" sk_paint_set_stroke_miter ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> CFloat -- ^ C argument @"miter"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_stroke_cap_t sk_paint_get_stroke_cap(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> CFloat -- ^ C argument @"float miter"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_stroke_cap_t sk_paint_get_stroke_cap(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_stroke_cap" sk_paint_get_stroke_cap ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (Sk_stroke_cap) -- ^ C return type: @sk_stroke_cap_t@
--- | C function: @void sk_paint_set_stroke_cap(sk_paint_t *, sk_stroke_cap_t)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (Sk_stroke_cap) -- ^ C return type: @"sk_stroke_cap_t"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_stroke_cap(sk_paint_t *, sk_stroke_cap_t)
+@
+-}
 foreign import ccall "sk_paint_set_stroke_cap" sk_paint_set_stroke_cap ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Sk_stroke_cap -- ^ C argument type: @sk_stroke_cap_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_stroke_join_t sk_paint_get_stroke_join(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Sk_stroke_cap -- ^ C argument type: @"sk_stroke_cap_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_stroke_join_t sk_paint_get_stroke_join(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_stroke_join" sk_paint_get_stroke_join ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (Sk_stroke_join) -- ^ C return type: @sk_stroke_join_t@
--- | C function: @void sk_paint_set_stroke_join(sk_paint_t *, sk_stroke_join_t)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (Sk_stroke_join) -- ^ C return type: @"sk_stroke_join_t"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_stroke_join(sk_paint_t *, sk_stroke_join_t)
+@
+-}
 foreign import ccall "sk_paint_set_stroke_join" sk_paint_set_stroke_join ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Sk_stroke_join -- ^ C argument type: @sk_stroke_join_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_paint_set_shader(sk_paint_t *, sk_shader_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Sk_stroke_join -- ^ C argument type: @"sk_stroke_join_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_shader(sk_paint_t *, sk_shader_t *)
+@
+-}
 foreign import ccall "sk_paint_set_shader" sk_paint_set_shader ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Ptr (Sk_shader) -- ^ C argument type: @sk_shader_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_paint_set_maskfilter(sk_paint_t *, sk_maskfilter_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Ptr (Sk_shader) -- ^ C argument type: @"sk_shader_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_maskfilter(sk_paint_t *, sk_maskfilter_t *)
+@
+-}
 foreign import ccall "sk_paint_set_maskfilter" sk_paint_set_maskfilter ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Ptr (Sk_maskfilter) -- ^ C argument type: @sk_maskfilter_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_paint_set_blendmode(sk_paint_t *, sk_blendmode_t)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Ptr (Sk_maskfilter) -- ^ C argument type: @"sk_maskfilter_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_blendmode(sk_paint_t *, sk_blendmode_t)
+@
+-}
 foreign import ccall "sk_paint_set_blendmode" sk_paint_set_blendmode ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Sk_blendmode -- ^ C argument type: @sk_blendmode_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_paint_set_blender(sk_paint_t *paint, sk_blender_t *blender)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Sk_blendmode -- ^ C argument type: @"sk_blendmode_t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_blender(sk_paint_t *paint, sk_blender_t *blender)
+@
+-}
 foreign import ccall "sk_paint_set_blender" sk_paint_set_blender ::
-  Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @sk_paint_t *@
-  -> Ptr (Sk_blender) -- ^ C argument @"blender"@ of type @sk_blender_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_paint_is_dither(const sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument @"sk_paint_t * paint"@
+  -> Ptr (Sk_blender) -- ^ C argument @"sk_blender_t * blender"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_paint_is_dither(const sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_is_dither" sk_paint_is_dither ::
-  Ptr (Sk_paint) -- ^ C argument type: @const sk_paint_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_paint_set_dither(sk_paint_t *, _Bool)@
+  Ptr (Sk_paint) -- ^ C argument type: @"const sk_paint_t *"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_dither(sk_paint_t *, _Bool)
+@
+-}
 foreign import ccall "sk_paint_set_dither" sk_paint_set_dither ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> CBool -- ^ C argument type: @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_shader_t *sk_paint_get_shader(sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> CBool -- ^ C argument type: @"_Bool"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_paint_get_shader(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_shader" sk_paint_get_shader ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_maskfilter_t *sk_paint_get_maskfilter(sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_maskfilter_t *sk_paint_get_maskfilter(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_maskfilter" sk_paint_get_maskfilter ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @sk_maskfilter_t *@
--- | C function: @void sk_paint_set_colorfilter(sk_paint_t *, sk_colorfilter_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (Ptr (Sk_maskfilter)) -- ^ C return type: @"sk_maskfilter_t *"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_colorfilter(sk_paint_t *, sk_colorfilter_t *)
+@
+-}
 foreign import ccall "sk_paint_set_colorfilter" sk_paint_set_colorfilter ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Ptr (Sk_colorfilter) -- ^ C argument type: @sk_colorfilter_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_colorfilter_t *sk_paint_get_colorfilter(sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Ptr (Sk_colorfilter) -- ^ C argument type: @"sk_colorfilter_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_colorfilter_t *sk_paint_get_colorfilter(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_colorfilter" sk_paint_get_colorfilter ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @sk_colorfilter_t *@
--- | C function: @void sk_paint_set_imagefilter(sk_paint_t *, sk_imagefilter_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (Ptr (Sk_colorfilter)) -- ^ C return type: @"sk_colorfilter_t *"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_imagefilter(sk_paint_t *, sk_imagefilter_t *)
+@
+-}
 foreign import ccall "sk_paint_set_imagefilter" sk_paint_set_imagefilter ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> Ptr (Sk_imagefilter) -- ^ C argument type: @sk_imagefilter_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_imagefilter_t *sk_paint_get_imagefilter(sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> Ptr (Sk_imagefilter) -- ^ C argument type: @"sk_imagefilter_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_imagefilter_t *sk_paint_get_imagefilter(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_imagefilter" sk_paint_get_imagefilter ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @sk_imagefilter_t *@
--- | C function: @sk_blendmode_t sk_paint_get_blendmode(sk_paint_t *)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (Ptr (Sk_imagefilter)) -- ^ C return type: @"sk_imagefilter_t *"@
+
+{- | C function signature:
+
+@
+sk_blendmode_t sk_paint_get_blendmode(sk_paint_t *)
+@
+-}
 foreign import ccall "sk_paint_get_blendmode" sk_paint_get_blendmode ::
-  Ptr (Sk_paint) -- ^ C argument type: @sk_paint_t *@
-  -> IO (Sk_blendmode) -- ^ C return type: @sk_blendmode_t@
--- | C function: @sk_blender_t *sk_paint_get_blender(sk_paint_t *cpaint)@
+  Ptr (Sk_paint) -- ^ C argument type: @"sk_paint_t *"@
+  -> IO (Sk_blendmode) -- ^ C return type: @"sk_blendmode_t"@
+
+{- | C function signature:
+
+@
+sk_blender_t *sk_paint_get_blender(sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_paint_get_blender" sk_paint_get_blender ::
-  Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @sk_paint_t *@
-  -> IO (Ptr (Sk_blender)) -- ^ C return type: @sk_blender_t *@
--- | C function: @sk_path_effect_t *sk_paint_get_path_effect(sk_paint_t *cpaint)@
+  Ptr (Sk_paint) -- ^ C argument @"sk_paint_t * cpaint"@
+  -> IO (Ptr (Sk_blender)) -- ^ C return type: @"sk_blender_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_paint_get_path_effect(sk_paint_t *cpaint)
+@
+-}
 foreign import ccall "sk_paint_get_path_effect" sk_paint_get_path_effect ::
-  Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @sk_paint_t *@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @void sk_paint_set_path_effect(sk_paint_t *cpaint, sk_path_effect_t *effect)@
+  Ptr (Sk_paint) -- ^ C argument @"sk_paint_t * cpaint"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+void sk_paint_set_path_effect(sk_paint_t *cpaint, sk_path_effect_t *effect)
+@
+-}
 foreign import ccall "sk_paint_set_path_effect" sk_paint_set_path_effect ::
-  Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @sk_paint_t *@
-  -> Ptr (Sk_path_effect) -- ^ C argument @"effect"@ of type @sk_path_effect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_paint_get_fill_path(const sk_paint_t *cpaint, const sk_path_t *src, sk_path_t *dst, const sk_rect_t *cullRect, const sk_matrix_t *cmatrix)@
+  Ptr (Sk_paint) -- ^ C argument @"sk_paint_t * cpaint"@
+  -> Ptr (Sk_path_effect) -- ^ C argument @"sk_path_effect_t * effect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_paint_get_fill_path(const sk_paint_t *cpaint, const sk_path_t *src, sk_path_t *dst, const sk_rect_t *cullRect, const sk_matrix_t *cmatrix)
+@
+-}
 foreign import ccall "sk_paint_get_fill_path" sk_paint_get_fill_path ::
-  Ptr (Sk_paint) -- ^ C argument @"cpaint"@ of type @const sk_paint_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"src"@ of type @const sk_path_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"dst"@ of type @sk_path_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"cullRect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"cmatrix"@ of type @const sk_matrix_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_stream_asset_destroy(sk_stream_asset_t *cstream)@
+  Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * cpaint"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * src"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * dst"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * cullRect"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * cmatrix"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_stream_asset_destroy(sk_stream_asset_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_asset_destroy" sk_stream_asset_destroy ::
-  Ptr (Sk_stream_asset) -- ^ C argument @"cstream"@ of type @sk_stream_asset_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_stream_filestream_t *sk_filestream_new(const char *path)@
+  Ptr (Sk_stream_asset) -- ^ C argument @"sk_stream_asset_t * cstream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_stream_filestream_t *sk_filestream_new(const char *path)
+@
+-}
 foreign import ccall "sk_filestream_new" sk_filestream_new ::
-  Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> IO (Ptr (Sk_stream_filestream)) -- ^ C return type: @sk_stream_filestream_t *@
--- | C function: @void sk_filestream_destroy(sk_stream_filestream_t *cstream)@
+  Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> IO (Ptr (Sk_stream_filestream)) -- ^ C return type: @"sk_stream_filestream_t *"@
+
+{- | C function signature:
+
+@
+void sk_filestream_destroy(sk_stream_filestream_t *cstream)
+@
+-}
 foreign import ccall "sk_filestream_destroy" sk_filestream_destroy ::
-  Ptr (Sk_stream_filestream) -- ^ C argument @"cstream"@ of type @sk_stream_filestream_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_filestream_is_valid(sk_stream_filestream_t *cstream)@
+  Ptr (Sk_stream_filestream) -- ^ C argument @"sk_stream_filestream_t * cstream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_filestream_is_valid(sk_stream_filestream_t *cstream)
+@
+-}
 foreign import ccall "sk_filestream_is_valid" sk_filestream_is_valid ::
-  Ptr (Sk_stream_filestream) -- ^ C argument @"cstream"@ of type @sk_stream_filestream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_stream_memorystream_t *sk_memorystream_new(void)@
+  Ptr (Sk_stream_filestream) -- ^ C argument @"sk_stream_filestream_t * cstream"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_stream_memorystream_t *sk_memorystream_new(void)
+@
+-}
 foreign import ccall "sk_memorystream_new" sk_memorystream_new ::
-  IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @sk_stream_memorystream_t *@
--- | C function: @sk_stream_memorystream_t *sk_memorystream_new_with_length(size_t length)@
+  IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @"sk_stream_memorystream_t *"@
+
+{- | C function signature:
+
+@
+sk_stream_memorystream_t *sk_memorystream_new_with_length(size_t length)
+@
+-}
 foreign import ccall "sk_memorystream_new_with_length" sk_memorystream_new_with_length ::
-  CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @sk_stream_memorystream_t *@
--- | C function: @sk_stream_memorystream_t *sk_memorystream_new_with_data(const void *data, size_t length, _Bool copyData)@
+  CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @"sk_stream_memorystream_t *"@
+
+{- | C function signature:
+
+@
+sk_stream_memorystream_t *sk_memorystream_new_with_data(const void *data, size_t length, _Bool copyData)
+@
+-}
 foreign import ccall "sk_memorystream_new_with_data" sk_memorystream_new_with_data ::
-  Ptr (()) -- ^ C argument @"data"@ of type @const void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> CBool -- ^ C argument @"copyData"@ of type @_Bool@
-  -> IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @sk_stream_memorystream_t *@
--- | C function: @sk_stream_memorystream_t *sk_memorystream_new_with_skdata(sk_data_t *data)@
+  Ptr (()) -- ^ C argument @"const void * data"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> CBool -- ^ C argument @"_Bool copyData"@
+  -> IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @"sk_stream_memorystream_t *"@
+
+{- | C function signature:
+
+@
+sk_stream_memorystream_t *sk_memorystream_new_with_skdata(sk_data_t *data)
+@
+-}
 foreign import ccall "sk_memorystream_new_with_skdata" sk_memorystream_new_with_skdata ::
-  Ptr (Sk_data) -- ^ C argument @"data"@ of type @sk_data_t *@
-  -> IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @sk_stream_memorystream_t *@
--- | C function: @void sk_memorystream_set_memory(sk_stream_memorystream_t *cmemorystream, const void *data, size_t length, _Bool copyData)@
+  Ptr (Sk_data) -- ^ C argument @"sk_data_t * data"@
+  -> IO (Ptr (Sk_stream_memorystream)) -- ^ C return type: @"sk_stream_memorystream_t *"@
+
+{- | C function signature:
+
+@
+void sk_memorystream_set_memory(sk_stream_memorystream_t *cmemorystream, const void *data, size_t length, _Bool copyData)
+@
+-}
 foreign import ccall "sk_memorystream_set_memory" sk_memorystream_set_memory ::
-  Ptr (Sk_stream_memorystream) -- ^ C argument @"cmemorystream"@ of type @sk_stream_memorystream_t *@
-  -> Ptr (()) -- ^ C argument @"data"@ of type @const void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> CBool -- ^ C argument @"copyData"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_memorystream_destroy(sk_stream_memorystream_t *cstream)@
+  Ptr (Sk_stream_memorystream) -- ^ C argument @"sk_stream_memorystream_t * cmemorystream"@
+  -> Ptr (()) -- ^ C argument @"const void * data"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> CBool -- ^ C argument @"_Bool copyData"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_memorystream_destroy(sk_stream_memorystream_t *cstream)
+@
+-}
 foreign import ccall "sk_memorystream_destroy" sk_memorystream_destroy ::
-  Ptr (Sk_stream_memorystream) -- ^ C argument @"cstream"@ of type @sk_stream_memorystream_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_stream_read(sk_stream_t *cstream, void *buffer, size_t size)@
+  Ptr (Sk_stream_memorystream) -- ^ C argument @"sk_stream_memorystream_t * cstream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_stream_read(sk_stream_t *cstream, void *buffer, size_t size)
+@
+-}
 foreign import ccall "sk_stream_read" sk_stream_read ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (()) -- ^ C argument @"buffer"@ of type @void *@
-  -> CSize -- ^ C argument @"size"@ of type @size_t@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_stream_peek(sk_stream_t *cstream, void *buffer, size_t size)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (()) -- ^ C argument @"void * buffer"@
+  -> CSize -- ^ C argument @"size_t size"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_stream_peek(sk_stream_t *cstream, void *buffer, size_t size)
+@
+-}
 foreign import ccall "sk_stream_peek" sk_stream_peek ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (()) -- ^ C argument @"buffer"@ of type @void *@
-  -> CSize -- ^ C argument @"size"@ of type @size_t@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_stream_skip(sk_stream_t *cstream, size_t size)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (()) -- ^ C argument @"void * buffer"@
+  -> CSize -- ^ C argument @"size_t size"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_stream_skip(sk_stream_t *cstream, size_t size)
+@
+-}
 foreign import ccall "sk_stream_skip" sk_stream_skip ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> CSize -- ^ C argument @"size"@ of type @size_t@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @_Bool sk_stream_is_at_end(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> CSize -- ^ C argument @"size_t size"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_is_at_end(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_is_at_end" sk_stream_is_at_end ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_read_s8(sk_stream_t *cstream, int8_t *buffer)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_read_s8(sk_stream_t *cstream, int8_t *buffer)
+@
+-}
 foreign import ccall "sk_stream_read_s8" sk_stream_read_s8 ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (Int8) -- ^ C argument @"buffer"@ of type @int8_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_read_s16(sk_stream_t *cstream, int16_t *buffer)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (Int8) -- ^ C argument @"int8_t * buffer"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_read_s16(sk_stream_t *cstream, int16_t *buffer)
+@
+-}
 foreign import ccall "sk_stream_read_s16" sk_stream_read_s16 ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (Int16) -- ^ C argument @"buffer"@ of type @int16_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_read_s32(sk_stream_t *cstream, int32_t *buffer)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (Int16) -- ^ C argument @"int16_t * buffer"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_read_s32(sk_stream_t *cstream, int32_t *buffer)
+@
+-}
 foreign import ccall "sk_stream_read_s32" sk_stream_read_s32 ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (Int32) -- ^ C argument @"buffer"@ of type @int32_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_read_u8(sk_stream_t *cstream, uint8_t *buffer)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (Int32) -- ^ C argument @"int32_t * buffer"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_read_u8(sk_stream_t *cstream, uint8_t *buffer)
+@
+-}
 foreign import ccall "sk_stream_read_u8" sk_stream_read_u8 ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (Word8) -- ^ C argument @"buffer"@ of type @uint8_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_read_u16(sk_stream_t *cstream, uint16_t *buffer)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (Word8) -- ^ C argument @"uint8_t * buffer"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_read_u16(sk_stream_t *cstream, uint16_t *buffer)
+@
+-}
 foreign import ccall "sk_stream_read_u16" sk_stream_read_u16 ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (Word16) -- ^ C argument @"buffer"@ of type @uint16_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_read_u32(sk_stream_t *cstream, uint32_t *buffer)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (Word16) -- ^ C argument @"uint16_t * buffer"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_read_u32(sk_stream_t *cstream, uint32_t *buffer)
+@
+-}
 foreign import ccall "sk_stream_read_u32" sk_stream_read_u32 ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (Word32) -- ^ C argument @"buffer"@ of type @uint32_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_read_bool(sk_stream_t *cstream, _Bool *buffer)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (Word32) -- ^ C argument @"uint32_t * buffer"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_read_bool(sk_stream_t *cstream, _Bool *buffer)
+@
+-}
 foreign import ccall "sk_stream_read_bool" sk_stream_read_bool ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> Ptr (CBool) -- ^ C argument @"buffer"@ of type @_Bool *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_rewind(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> Ptr (CBool) -- ^ C argument @"_Bool * buffer"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_rewind(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_rewind" sk_stream_rewind ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_has_position(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_has_position(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_has_position" sk_stream_has_position ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @size_t sk_stream_get_position(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+size_t sk_stream_get_position(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_get_position" sk_stream_get_position ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @_Bool sk_stream_seek(sk_stream_t *cstream, size_t position)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_seek(sk_stream_t *cstream, size_t position)
+@
+-}
 foreign import ccall "sk_stream_seek" sk_stream_seek ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> CSize -- ^ C argument @"position"@ of type @size_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_move(sk_stream_t *cstream, long offset)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> CSize -- ^ C argument @"size_t position"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_move(sk_stream_t *cstream, long offset)
+@
+-}
 foreign import ccall "sk_stream_move" sk_stream_move ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> CLong -- ^ C argument @"offset"@ of type @long@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_stream_has_length(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> CLong -- ^ C argument @"long offset"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_stream_has_length(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_has_length" sk_stream_has_length ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @size_t sk_stream_get_length(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+size_t sk_stream_get_length(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_get_length" sk_stream_get_length ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @const void *sk_stream_get_memory_base(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+const void *sk_stream_get_memory_base(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_get_memory_base" sk_stream_get_memory_base ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (Ptr (())) -- ^ C return type: @const void *@
--- | C function: @sk_stream_t *sk_stream_fork(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (Ptr (())) -- ^ C return type: @"const void *"@
+
+{- | C function signature:
+
+@
+sk_stream_t *sk_stream_fork(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_fork" sk_stream_fork ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (Ptr (Sk_stream)) -- ^ C return type: @sk_stream_t *@
--- | C function: @sk_stream_t *sk_stream_duplicate(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (Ptr (Sk_stream)) -- ^ C return type: @"sk_stream_t *"@
+
+{- | C function signature:
+
+@
+sk_stream_t *sk_stream_duplicate(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_duplicate" sk_stream_duplicate ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (Ptr (Sk_stream)) -- ^ C return type: @sk_stream_t *@
--- | C function: @void sk_stream_destroy(sk_stream_t *cstream)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (Ptr (Sk_stream)) -- ^ C return type: @"sk_stream_t *"@
+
+{- | C function signature:
+
+@
+void sk_stream_destroy(sk_stream_t *cstream)
+@
+-}
 foreign import ccall "sk_stream_destroy" sk_stream_destroy ::
-  Ptr (Sk_stream) -- ^ C argument @"cstream"@ of type @sk_stream_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_wstream_filestream_t *sk_filewstream_new(const char *path)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * cstream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_wstream_filestream_t *sk_filewstream_new(const char *path)
+@
+-}
 foreign import ccall "sk_filewstream_new" sk_filewstream_new ::
-  Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> IO (Ptr (Sk_wstream_filestream)) -- ^ C return type: @sk_wstream_filestream_t *@
--- | C function: @void sk_filewstream_destroy(sk_wstream_filestream_t *cstream)@
+  Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> IO (Ptr (Sk_wstream_filestream)) -- ^ C return type: @"sk_wstream_filestream_t *"@
+
+{- | C function signature:
+
+@
+void sk_filewstream_destroy(sk_wstream_filestream_t *cstream)
+@
+-}
 foreign import ccall "sk_filewstream_destroy" sk_filewstream_destroy ::
-  Ptr (Sk_wstream_filestream) -- ^ C argument @"cstream"@ of type @sk_wstream_filestream_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_filewstream_is_valid(sk_wstream_filestream_t *cstream)@
+  Ptr (Sk_wstream_filestream) -- ^ C argument @"sk_wstream_filestream_t * cstream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_filewstream_is_valid(sk_wstream_filestream_t *cstream)
+@
+-}
 foreign import ccall "sk_filewstream_is_valid" sk_filewstream_is_valid ::
-  Ptr (Sk_wstream_filestream) -- ^ C argument @"cstream"@ of type @sk_wstream_filestream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @sk_wstream_dynamicmemorystream_t *sk_dynamicmemorywstream_new(void)@
+  Ptr (Sk_wstream_filestream) -- ^ C argument @"sk_wstream_filestream_t * cstream"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+sk_wstream_dynamicmemorystream_t *sk_dynamicmemorywstream_new(void)
+@
+-}
 foreign import ccall "sk_dynamicmemorywstream_new" sk_dynamicmemorywstream_new ::
-  IO (Ptr (Sk_wstream_dynamicmemorystream)) -- ^ C return type: @sk_wstream_dynamicmemorystream_t *@
--- | C function: @sk_stream_asset_t *sk_dynamicmemorywstream_detach_as_stream(sk_wstream_dynamicmemorystream_t *cstream)@
+  IO (Ptr (Sk_wstream_dynamicmemorystream)) -- ^ C return type: @"sk_wstream_dynamicmemorystream_t *"@
+
+{- | C function signature:
+
+@
+sk_stream_asset_t *sk_dynamicmemorywstream_detach_as_stream(sk_wstream_dynamicmemorystream_t *cstream)
+@
+-}
 foreign import ccall "sk_dynamicmemorywstream_detach_as_stream" sk_dynamicmemorywstream_detach_as_stream ::
-  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"cstream"@ of type @sk_wstream_dynamicmemorystream_t *@
-  -> IO (Ptr (Sk_stream_asset)) -- ^ C return type: @sk_stream_asset_t *@
--- | C function: @sk_data_t *sk_dynamicmemorywstream_detach_as_data(sk_wstream_dynamicmemorystream_t *cstream)@
+  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"sk_wstream_dynamicmemorystream_t * cstream"@
+  -> IO (Ptr (Sk_stream_asset)) -- ^ C return type: @"sk_stream_asset_t *"@
+
+{- | C function signature:
+
+@
+sk_data_t *sk_dynamicmemorywstream_detach_as_data(sk_wstream_dynamicmemorystream_t *cstream)
+@
+-}
 foreign import ccall "sk_dynamicmemorywstream_detach_as_data" sk_dynamicmemorywstream_detach_as_data ::
-  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"cstream"@ of type @sk_wstream_dynamicmemorystream_t *@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @void sk_dynamicmemorywstream_copy_to(sk_wstream_dynamicmemorystream_t *cstream, void *data)@
+  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"sk_wstream_dynamicmemorystream_t * cstream"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+void sk_dynamicmemorywstream_copy_to(sk_wstream_dynamicmemorystream_t *cstream, void *data)
+@
+-}
 foreign import ccall "sk_dynamicmemorywstream_copy_to" sk_dynamicmemorywstream_copy_to ::
-  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"cstream"@ of type @sk_wstream_dynamicmemorystream_t *@
-  -> Ptr (()) -- ^ C argument @"data"@ of type @void *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_dynamicmemorywstream_write_to_stream(sk_wstream_dynamicmemorystream_t *cstream, sk_wstream_t *dst)@
+  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"sk_wstream_dynamicmemorystream_t * cstream"@
+  -> Ptr (()) -- ^ C argument @"void * data"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_dynamicmemorywstream_write_to_stream(sk_wstream_dynamicmemorystream_t *cstream, sk_wstream_t *dst)
+@
+-}
 foreign import ccall "sk_dynamicmemorywstream_write_to_stream" sk_dynamicmemorywstream_write_to_stream ::
-  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"cstream"@ of type @sk_wstream_dynamicmemorystream_t *@
-  -> Ptr (Sk_wstream) -- ^ C argument @"dst"@ of type @sk_wstream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_dynamicmemorywstream_destroy(sk_wstream_dynamicmemorystream_t *cstream)@
+  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"sk_wstream_dynamicmemorystream_t * cstream"@
+  -> Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * dst"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_dynamicmemorywstream_destroy(sk_wstream_dynamicmemorystream_t *cstream)
+@
+-}
 foreign import ccall "sk_dynamicmemorywstream_destroy" sk_dynamicmemorywstream_destroy ::
-  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"cstream"@ of type @sk_wstream_dynamicmemorystream_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_wstream_write(sk_wstream_t *cstream, const void *buffer, size_t size)@
+  Ptr (Sk_wstream_dynamicmemorystream) -- ^ C argument @"sk_wstream_dynamicmemorystream_t * cstream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write(sk_wstream_t *cstream, const void *buffer, size_t size)
+@
+-}
 foreign import ccall "sk_wstream_write" sk_wstream_write ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Ptr (()) -- ^ C argument @"buffer"@ of type @const void *@
-  -> CSize -- ^ C argument @"size"@ of type @size_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_newline(sk_wstream_t *cstream)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Ptr (()) -- ^ C argument @"const void * buffer"@
+  -> CSize -- ^ C argument @"size_t size"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_newline(sk_wstream_t *cstream)
+@
+-}
 foreign import ccall "sk_wstream_newline" sk_wstream_newline ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_wstream_flush(sk_wstream_t *cstream)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_wstream_flush(sk_wstream_t *cstream)
+@
+-}
 foreign import ccall "sk_wstream_flush" sk_wstream_flush ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_wstream_bytes_written(sk_wstream_t *cstream)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_wstream_bytes_written(sk_wstream_t *cstream)
+@
+-}
 foreign import ccall "sk_wstream_bytes_written" sk_wstream_bytes_written ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @_Bool sk_wstream_write_8(sk_wstream_t *cstream, uint8_t value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_8(sk_wstream_t *cstream, uint8_t value)
+@
+-}
 foreign import ccall "sk_wstream_write_8" sk_wstream_write_8 ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Word8 -- ^ C argument @"value"@ of type @uint8_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_16(sk_wstream_t *cstream, uint16_t value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Word8 -- ^ C argument @"uint8_t value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_16(sk_wstream_t *cstream, uint16_t value)
+@
+-}
 foreign import ccall "sk_wstream_write_16" sk_wstream_write_16 ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Word16 -- ^ C argument @"value"@ of type @uint16_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_32(sk_wstream_t *cstream, uint32_t value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Word16 -- ^ C argument @"uint16_t value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_32(sk_wstream_t *cstream, uint32_t value)
+@
+-}
 foreign import ccall "sk_wstream_write_32" sk_wstream_write_32 ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Word32 -- ^ C argument @"value"@ of type @uint32_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_text(sk_wstream_t *cstream, const char *value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Word32 -- ^ C argument @"uint32_t value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_text(sk_wstream_t *cstream, const char *value)
+@
+-}
 foreign import ccall "sk_wstream_write_text" sk_wstream_write_text ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Ptr (CChar) -- ^ C argument @"value"@ of type @const char *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_dec_as_text(sk_wstream_t *cstream, int32_t value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Ptr (CChar) -- ^ C argument @"const char * value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_dec_as_text(sk_wstream_t *cstream, int32_t value)
+@
+-}
 foreign import ccall "sk_wstream_write_dec_as_text" sk_wstream_write_dec_as_text ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Int32 -- ^ C argument @"value"@ of type @int32_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_bigdec_as_text(sk_wstream_t *cstream, int64_t value, int minDigits)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Int32 -- ^ C argument @"int32_t value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_bigdec_as_text(sk_wstream_t *cstream, int64_t value, int minDigits)
+@
+-}
 foreign import ccall "sk_wstream_write_bigdec_as_text" sk_wstream_write_bigdec_as_text ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Int64 -- ^ C argument @"value"@ of type @int64_t@
-  -> CInt -- ^ C argument @"minDigits"@ of type @int@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_hex_as_text(sk_wstream_t *cstream, uint32_t value, int minDigits)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Int64 -- ^ C argument @"int64_t value"@
+  -> CInt -- ^ C argument @"int minDigits"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_hex_as_text(sk_wstream_t *cstream, uint32_t value, int minDigits)
+@
+-}
 foreign import ccall "sk_wstream_write_hex_as_text" sk_wstream_write_hex_as_text ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Word32 -- ^ C argument @"value"@ of type @uint32_t@
-  -> CInt -- ^ C argument @"minDigits"@ of type @int@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_scalar_as_text(sk_wstream_t *cstream, float value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Word32 -- ^ C argument @"uint32_t value"@
+  -> CInt -- ^ C argument @"int minDigits"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_scalar_as_text(sk_wstream_t *cstream, float value)
+@
+-}
 foreign import ccall "sk_wstream_write_scalar_as_text" sk_wstream_write_scalar_as_text ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> CFloat -- ^ C argument @"value"@ of type @float@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_bool(sk_wstream_t *cstream, _Bool value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> CFloat -- ^ C argument @"float value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_bool(sk_wstream_t *cstream, _Bool value)
+@
+-}
 foreign import ccall "sk_wstream_write_bool" sk_wstream_write_bool ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> CBool -- ^ C argument @"value"@ of type @_Bool@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_scalar(sk_wstream_t *cstream, float value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> CBool -- ^ C argument @"_Bool value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_scalar(sk_wstream_t *cstream, float value)
+@
+-}
 foreign import ccall "sk_wstream_write_scalar" sk_wstream_write_scalar ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> CFloat -- ^ C argument @"value"@ of type @float@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_packed_uint(sk_wstream_t *cstream, size_t value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> CFloat -- ^ C argument @"float value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_packed_uint(sk_wstream_t *cstream, size_t value)
+@
+-}
 foreign import ccall "sk_wstream_write_packed_uint" sk_wstream_write_packed_uint ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> CSize -- ^ C argument @"value"@ of type @size_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_wstream_write_stream(sk_wstream_t *cstream, sk_stream_t *input, size_t length)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> CSize -- ^ C argument @"size_t value"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_wstream_write_stream(sk_wstream_t *cstream, sk_stream_t *input, size_t length)
+@
+-}
 foreign import ccall "sk_wstream_write_stream" sk_wstream_write_stream ::
-  Ptr (Sk_wstream) -- ^ C argument @"cstream"@ of type @sk_wstream_t *@
-  -> Ptr (Sk_stream) -- ^ C argument @"input"@ of type @sk_stream_t *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int sk_wstream_get_size_of_packed_uint(size_t value)@
+  Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * cstream"@
+  -> Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * input"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int sk_wstream_get_size_of_packed_uint(size_t value)
+@
+-}
 foreign import ccall "sk_wstream_get_size_of_packed_uint" sk_wstream_get_size_of_packed_uint ::
-  CSize -- ^ C argument @"value"@ of type @size_t@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @void sk_blender_ref(sk_blender_t *blender)@
+  CSize -- ^ C argument @"size_t value"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_blender_ref(sk_blender_t *blender)
+@
+-}
 foreign import ccall "sk_blender_ref" sk_blender_ref ::
-  Ptr (Sk_blender) -- ^ C argument @"blender"@ of type @sk_blender_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_blender_unref(sk_blender_t *blender)@
+  Ptr (Sk_blender) -- ^ C argument @"sk_blender_t * blender"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_blender_unref(sk_blender_t *blender)
+@
+-}
 foreign import ccall "sk_blender_unref" sk_blender_unref ::
-  Ptr (Sk_blender) -- ^ C argument @"blender"@ of type @sk_blender_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_blender_t *sk_blender_new_mode(sk_blendmode_t mode)@
+  Ptr (Sk_blender) -- ^ C argument @"sk_blender_t * blender"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_blender_t *sk_blender_new_mode(sk_blendmode_t mode)
+@
+-}
 foreign import ccall "sk_blender_new_mode" sk_blender_new_mode ::
-  Sk_blendmode -- ^ C argument @"mode"@ of type @sk_blendmode_t@
-  -> IO (Ptr (Sk_blender)) -- ^ C return type: @sk_blender_t *@
--- | C function: @sk_blender_t *sk_blender_new_arithmetic(float k1, float k2, float k3, float k4, _Bool enforcePremul)@
+  Sk_blendmode -- ^ C argument @"sk_blendmode_t mode"@
+  -> IO (Ptr (Sk_blender)) -- ^ C return type: @"sk_blender_t *"@
+
+{- | C function signature:
+
+@
+sk_blender_t *sk_blender_new_arithmetic(float k1, float k2, float k3, float k4, _Bool enforcePremul)
+@
+-}
 foreign import ccall "sk_blender_new_arithmetic" sk_blender_new_arithmetic ::
-  CFloat -- ^ C argument @"k1"@ of type @float@
-  -> CFloat -- ^ C argument @"k2"@ of type @float@
-  -> CFloat -- ^ C argument @"k3"@ of type @float@
-  -> CFloat -- ^ C argument @"k4"@ of type @float@
-  -> CBool -- ^ C argument @"enforcePremul"@ of type @_Bool@
-  -> IO (Ptr (Sk_blender)) -- ^ C return type: @sk_blender_t *@
--- | C function: @void sk_graphics_init(void)@
+  CFloat -- ^ C argument @"float k1"@
+  -> CFloat -- ^ C argument @"float k2"@
+  -> CFloat -- ^ C argument @"float k3"@
+  -> CFloat -- ^ C argument @"float k4"@
+  -> CBool -- ^ C argument @"_Bool enforcePremul"@
+  -> IO (Ptr (Sk_blender)) -- ^ C return type: @"sk_blender_t *"@
+
+{- | C function signature:
+
+@
+void sk_graphics_init(void)
+@
+-}
 foreign import ccall "sk_graphics_init" sk_graphics_init ::
-  IO (()) -- ^ C return type: @void@
--- | C function: @void sk_graphics_purge_font_cache(void)@
+  IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_graphics_purge_font_cache(void)
+@
+-}
 foreign import ccall "sk_graphics_purge_font_cache" sk_graphics_purge_font_cache ::
-  IO (()) -- ^ C return type: @void@
--- | C function: @void sk_graphics_purge_resource_cache(void)@
+  IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_graphics_purge_resource_cache(void)
+@
+-}
 foreign import ccall "sk_graphics_purge_resource_cache" sk_graphics_purge_resource_cache ::
-  IO (()) -- ^ C return type: @void@
--- | C function: @void sk_graphics_purge_all_caches(void)@
+  IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_graphics_purge_all_caches(void)
+@
+-}
 foreign import ccall "sk_graphics_purge_all_caches" sk_graphics_purge_all_caches ::
-  IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_graphics_get_font_cache_used(void)@
+  IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_get_font_cache_used(void)
+@
+-}
 foreign import ccall "sk_graphics_get_font_cache_used" sk_graphics_get_font_cache_used ::
-  IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_graphics_get_font_cache_limit(void)@
+  IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_get_font_cache_limit(void)
+@
+-}
 foreign import ccall "sk_graphics_get_font_cache_limit" sk_graphics_get_font_cache_limit ::
-  IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_graphics_set_font_cache_limit(size_t bytes)@
+  IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_set_font_cache_limit(size_t bytes)
+@
+-}
 foreign import ccall "sk_graphics_set_font_cache_limit" sk_graphics_set_font_cache_limit ::
-  CSize -- ^ C argument @"bytes"@ of type @size_t@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @int sk_graphics_get_font_cache_count_used(void)@
+  CSize -- ^ C argument @"size_t bytes"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+int sk_graphics_get_font_cache_count_used(void)
+@
+-}
 foreign import ccall "sk_graphics_get_font_cache_count_used" sk_graphics_get_font_cache_count_used ::
-  IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_graphics_get_font_cache_count_limit(void)@
+  IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_graphics_get_font_cache_count_limit(void)
+@
+-}
 foreign import ccall "sk_graphics_get_font_cache_count_limit" sk_graphics_get_font_cache_count_limit ::
-  IO (CInt) -- ^ C return type: @int@
--- | C function: @int sk_graphics_set_font_cache_count_limit(int count)@
+  IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int sk_graphics_set_font_cache_count_limit(int count)
+@
+-}
 foreign import ccall "sk_graphics_set_font_cache_count_limit" sk_graphics_set_font_cache_count_limit ::
-  CInt -- ^ C argument @"count"@ of type @int@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @size_t sk_graphics_get_resource_cache_total_bytes_used(void)@
+  CInt -- ^ C argument @"int count"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_get_resource_cache_total_bytes_used(void)
+@
+-}
 foreign import ccall "sk_graphics_get_resource_cache_total_bytes_used" sk_graphics_get_resource_cache_total_bytes_used ::
-  IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_graphics_get_resource_cache_total_byte_limit(void)@
+  IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_get_resource_cache_total_byte_limit(void)
+@
+-}
 foreign import ccall "sk_graphics_get_resource_cache_total_byte_limit" sk_graphics_get_resource_cache_total_byte_limit ::
-  IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_graphics_set_resource_cache_total_byte_limit(size_t newLimit)@
+  IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_set_resource_cache_total_byte_limit(size_t newLimit)
+@
+-}
 foreign import ccall "sk_graphics_set_resource_cache_total_byte_limit" sk_graphics_set_resource_cache_total_byte_limit ::
-  CSize -- ^ C argument @"newLimit"@ of type @size_t@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_graphics_get_resource_cache_single_allocation_byte_limit(void)@
+  CSize -- ^ C argument @"size_t newLimit"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_get_resource_cache_single_allocation_byte_limit(void)
+@
+-}
 foreign import ccall "sk_graphics_get_resource_cache_single_allocation_byte_limit" sk_graphics_get_resource_cache_single_allocation_byte_limit ::
-  IO (CSize) -- ^ C return type: @size_t@
--- | C function: @size_t sk_graphics_set_resource_cache_single_allocation_byte_limit(size_t newLimit)@
+  IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+size_t sk_graphics_set_resource_cache_single_allocation_byte_limit(size_t newLimit)
+@
+-}
 foreign import ccall "sk_graphics_set_resource_cache_single_allocation_byte_limit" sk_graphics_set_resource_cache_single_allocation_byte_limit ::
-  CSize -- ^ C argument @"newLimit"@ of type @size_t@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @void sk_graphics_dump_memory_statistics(sk_tracememorydump_t *dump)@
+  CSize -- ^ C argument @"size_t newLimit"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+void sk_graphics_dump_memory_statistics(sk_tracememorydump_t *dump)
+@
+-}
 foreign import ccall "sk_graphics_dump_memory_statistics" sk_graphics_dump_memory_statistics ::
-  Ptr (Sk_tracememorydump) -- ^ C argument @"dump"@ of type @sk_tracememorydump_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @skottie_animation_t *skottie_animation_make_from_string(const char *data, size_t length)@
+  Ptr (Sk_tracememorydump) -- ^ C argument @"sk_tracememorydump_t * dump"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_make_from_string(const char *data, size_t length)
+@
+-}
 foreign import ccall "skottie_animation_make_from_string" skottie_animation_make_from_string ::
-  Ptr (CChar) -- ^ C argument @"data"@ of type @const char *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @skottie_animation_t *skottie_animation_make_from_data(const char *data, size_t length)@
+  Ptr (CChar) -- ^ C argument @"const char * data"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_make_from_data(const char *data, size_t length)
+@
+-}
 foreign import ccall "skottie_animation_make_from_data" skottie_animation_make_from_data ::
-  Ptr (CChar) -- ^ C argument @"data"@ of type @const char *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @skottie_animation_t *skottie_animation_make_from_stream(sk_stream_t *stream)@
+  Ptr (CChar) -- ^ C argument @"const char * data"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_make_from_stream(sk_stream_t *stream)
+@
+-}
 foreign import ccall "skottie_animation_make_from_stream" skottie_animation_make_from_stream ::
-  Ptr (Sk_stream) -- ^ C argument @"stream"@ of type @sk_stream_t *@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @skottie_animation_t *skottie_animation_make_from_file(const char *path)@
+  Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * stream"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_make_from_file(const char *path)
+@
+-}
 foreign import ccall "skottie_animation_make_from_file" skottie_animation_make_from_file ::
-  Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @void skottie_animation_ref(skottie_animation_t *instance)@
+  Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+void skottie_animation_ref(skottie_animation_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_ref" skottie_animation_ref ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_unref(skottie_animation_t *instance)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_unref(skottie_animation_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_unref" skottie_animation_unref ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_delete(skottie_animation_t *instance)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_delete(skottie_animation_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_delete" skottie_animation_delete ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_render(skottie_animation_t *instance, sk_canvas_t *canvas, sk_rect_t *dst)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_render(skottie_animation_t *instance, sk_canvas_t *canvas, sk_rect_t *dst)
+@
+-}
 foreign import ccall "skottie_animation_render" skottie_animation_render ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"dst"@ of type @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_render_with_flags(skottie_animation_t *instance, sk_canvas_t *canvas, sk_rect_t *dst, skottie_animation_renderflags_t flags)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * dst"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_render_with_flags(skottie_animation_t *instance, sk_canvas_t *canvas, sk_rect_t *dst, skottie_animation_renderflags_t flags)
+@
+-}
 foreign import ccall "skottie_animation_render_with_flags" skottie_animation_render_with_flags ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> Ptr (Sk_canvas) -- ^ C argument @"canvas"@ of type @sk_canvas_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"dst"@ of type @sk_rect_t *@
-  -> Skottie_animation_renderflags -- ^ C argument @"flags"@ of type @skottie_animation_renderflags_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_seek(skottie_animation_t *instance, float t, sksg_invalidation_controller_t *ic)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> Ptr (Sk_canvas) -- ^ C argument @"sk_canvas_t * canvas"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * dst"@
+  -> Skottie_animation_renderflags -- ^ C argument @"skottie_animation_renderflags_t flags"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_seek(skottie_animation_t *instance, float t, sksg_invalidation_controller_t *ic)
+@
+-}
 foreign import ccall "skottie_animation_seek" skottie_animation_seek ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> CFloat -- ^ C argument @"t"@ of type @float@
-  -> Ptr (Sksg_invalidation_controller) -- ^ C argument @"ic"@ of type @sksg_invalidation_controller_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_seek_frame(skottie_animation_t *instance, float t, sksg_invalidation_controller_t *ic)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> CFloat -- ^ C argument @"float t"@
+  -> Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * ic"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_seek_frame(skottie_animation_t *instance, float t, sksg_invalidation_controller_t *ic)
+@
+-}
 foreign import ccall "skottie_animation_seek_frame" skottie_animation_seek_frame ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> CFloat -- ^ C argument @"t"@ of type @float@
-  -> Ptr (Sksg_invalidation_controller) -- ^ C argument @"ic"@ of type @sksg_invalidation_controller_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_seek_frame_time(skottie_animation_t *instance, float t, sksg_invalidation_controller_t *ic)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> CFloat -- ^ C argument @"float t"@
+  -> Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * ic"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_seek_frame_time(skottie_animation_t *instance, float t, sksg_invalidation_controller_t *ic)
+@
+-}
 foreign import ccall "skottie_animation_seek_frame_time" skottie_animation_seek_frame_time ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> CFloat -- ^ C argument @"t"@ of type @float@
-  -> Ptr (Sksg_invalidation_controller) -- ^ C argument @"ic"@ of type @sksg_invalidation_controller_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @double skottie_animation_get_duration(skottie_animation_t *instance)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> CFloat -- ^ C argument @"float t"@
+  -> Ptr (Sksg_invalidation_controller) -- ^ C argument @"sksg_invalidation_controller_t * ic"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+double skottie_animation_get_duration(skottie_animation_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_get_duration" skottie_animation_get_duration ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> IO (CDouble) -- ^ C return type: @double@
--- | C function: @double skottie_animation_get_fps(skottie_animation_t *instance)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> IO (CDouble) -- ^ C return type: @"double"@
+
+{- | C function signature:
+
+@
+double skottie_animation_get_fps(skottie_animation_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_get_fps" skottie_animation_get_fps ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> IO (CDouble) -- ^ C return type: @double@
--- | C function: @double skottie_animation_get_in_point(skottie_animation_t *instance)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> IO (CDouble) -- ^ C return type: @"double"@
+
+{- | C function signature:
+
+@
+double skottie_animation_get_in_point(skottie_animation_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_get_in_point" skottie_animation_get_in_point ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> IO (CDouble) -- ^ C return type: @double@
--- | C function: @double skottie_animation_get_out_point(skottie_animation_t *instance)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> IO (CDouble) -- ^ C return type: @"double"@
+
+{- | C function signature:
+
+@
+double skottie_animation_get_out_point(skottie_animation_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_get_out_point" skottie_animation_get_out_point ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> IO (CDouble) -- ^ C return type: @double@
--- | C function: @void skottie_animation_get_version(skottie_animation_t *instance, sk_string_t *version)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> IO (CDouble) -- ^ C return type: @"double"@
+
+{- | C function signature:
+
+@
+void skottie_animation_get_version(skottie_animation_t *instance, sk_string_t *version)
+@
+-}
 foreign import ccall "skottie_animation_get_version" skottie_animation_get_version ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> Ptr (Sk_string) -- ^ C argument @"version"@ of type @sk_string_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_get_size(skottie_animation_t *instance, sk_size_t *size)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> Ptr (Sk_string) -- ^ C argument @"sk_string_t * version"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_get_size(skottie_animation_t *instance, sk_size_t *size)
+@
+-}
 foreign import ccall "skottie_animation_get_size" skottie_animation_get_size ::
-  Ptr (Skottie_animation) -- ^ C argument @"instance"@ of type @skottie_animation_t *@
-  -> Ptr (Sk_size) -- ^ C argument @"size"@ of type @sk_size_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @skottie_animation_builder_t *skottie_animation_builder_new(skottie_animation_builder_flags_t flags)@
+  Ptr (Skottie_animation) -- ^ C argument @"skottie_animation_t * instance"@
+  -> Ptr (Sk_size) -- ^ C argument @"sk_size_t * size"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+skottie_animation_builder_t *skottie_animation_builder_new(skottie_animation_builder_flags_t flags)
+@
+-}
 foreign import ccall "skottie_animation_builder_new" skottie_animation_builder_new ::
-  Skottie_animation_builder_flags -- ^ C argument @"flags"@ of type @skottie_animation_builder_flags_t@
-  -> IO (Ptr (Skottie_animation_builder)) -- ^ C return type: @skottie_animation_builder_t *@
--- | C function: @void skottie_animation_builder_delete(skottie_animation_builder_t *instance)@
+  Skottie_animation_builder_flags -- ^ C argument @"skottie_animation_builder_flags_t flags"@
+  -> IO (Ptr (Skottie_animation_builder)) -- ^ C return type: @"skottie_animation_builder_t *"@
+
+{- | C function signature:
+
+@
+void skottie_animation_builder_delete(skottie_animation_builder_t *instance)
+@
+-}
 foreign import ccall "skottie_animation_builder_delete" skottie_animation_builder_delete ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_builder_get_stats(skottie_animation_builder_t *instance, skottie_animation_builder_stats_t *stats)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_builder_get_stats(skottie_animation_builder_t *instance, skottie_animation_builder_stats_t *stats)
+@
+-}
 foreign import ccall "skottie_animation_builder_get_stats" skottie_animation_builder_get_stats ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> Ptr (Skottie_animation_builder_stats) -- ^ C argument @"stats"@ of type @skottie_animation_builder_stats_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_builder_set_resource_provider(skottie_animation_builder_t *instance, skottie_resource_provider_t *resourceProvider)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> Ptr (Skottie_animation_builder_stats) -- ^ C argument @"skottie_animation_builder_stats_t * stats"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_builder_set_resource_provider(skottie_animation_builder_t *instance, skottie_resource_provider_t *resourceProvider)
+@
+-}
 foreign import ccall "skottie_animation_builder_set_resource_provider" skottie_animation_builder_set_resource_provider ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> Ptr (Skottie_resource_provider) -- ^ C argument @"resourceProvider"@ of type @skottie_resource_provider_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skottie_animation_builder_set_font_manager(skottie_animation_builder_t *instance, sk_fontmgr_t *fontManager)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> Ptr (Skottie_resource_provider) -- ^ C argument @"skottie_resource_provider_t * resourceProvider"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skottie_animation_builder_set_font_manager(skottie_animation_builder_t *instance, sk_fontmgr_t *fontManager)
+@
+-}
 foreign import ccall "skottie_animation_builder_set_font_manager" skottie_animation_builder_set_font_manager ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> Ptr (Sk_fontmgr) -- ^ C argument @"fontManager"@ of type @sk_fontmgr_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @skottie_animation_t *skottie_animation_builder_make_from_stream(skottie_animation_builder_t *instance, sk_stream_t *stream)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> Ptr (Sk_fontmgr) -- ^ C argument @"sk_fontmgr_t * fontManager"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_builder_make_from_stream(skottie_animation_builder_t *instance, sk_stream_t *stream)
+@
+-}
 foreign import ccall "skottie_animation_builder_make_from_stream" skottie_animation_builder_make_from_stream ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> Ptr (Sk_stream) -- ^ C argument @"stream"@ of type @sk_stream_t *@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @skottie_animation_t *skottie_animation_builder_make_from_file(skottie_animation_builder_t *instance, const char *path)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> Ptr (Sk_stream) -- ^ C argument @"sk_stream_t * stream"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_builder_make_from_file(skottie_animation_builder_t *instance, const char *path)
+@
+-}
 foreign import ccall "skottie_animation_builder_make_from_file" skottie_animation_builder_make_from_file ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @skottie_animation_t *skottie_animation_builder_make_from_string(skottie_animation_builder_t *instance, const char *data, size_t length)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_builder_make_from_string(skottie_animation_builder_t *instance, const char *data, size_t length)
+@
+-}
 foreign import ccall "skottie_animation_builder_make_from_string" skottie_animation_builder_make_from_string ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> Ptr (CChar) -- ^ C argument @"data"@ of type @const char *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @skottie_animation_t *skottie_animation_builder_make_from_data(skottie_animation_builder_t *instance, const char *data, size_t length)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> Ptr (CChar) -- ^ C argument @"const char * data"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+skottie_animation_t *skottie_animation_builder_make_from_data(skottie_animation_builder_t *instance, const char *data, size_t length)
+@
+-}
 foreign import ccall "skottie_animation_builder_make_from_data" skottie_animation_builder_make_from_data ::
-  Ptr (Skottie_animation_builder) -- ^ C argument @"instance"@ of type @skottie_animation_builder_t *@
-  -> Ptr (CChar) -- ^ C argument @"data"@ of type @const char *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @skottie_animation_t *@
--- | C function: @void skresources_resource_provider_ref(skresources_resource_provider_t *instance)@
+  Ptr (Skottie_animation_builder) -- ^ C argument @"skottie_animation_builder_t * instance"@
+  -> Ptr (CChar) -- ^ C argument @"const char * data"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Skottie_animation)) -- ^ C return type: @"skottie_animation_t *"@
+
+{- | C function signature:
+
+@
+void skresources_resource_provider_ref(skresources_resource_provider_t *instance)
+@
+-}
 foreign import ccall "skresources_resource_provider_ref" skresources_resource_provider_ref ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"instance"@ of type @skresources_resource_provider_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skresources_resource_provider_unref(skresources_resource_provider_t *instance)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skresources_resource_provider_unref(skresources_resource_provider_t *instance)
+@
+-}
 foreign import ccall "skresources_resource_provider_unref" skresources_resource_provider_unref ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"instance"@ of type @skresources_resource_provider_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void skresources_resource_provider_delete(skresources_resource_provider_t *instance)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void skresources_resource_provider_delete(skresources_resource_provider_t *instance)
+@
+-}
 foreign import ccall "skresources_resource_provider_delete" skresources_resource_provider_delete ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"instance"@ of type @skresources_resource_provider_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_data_t *skresources_resource_provider_load(skresources_resource_provider_t *instance, const char *path, const char *name)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * instance"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_data_t *skresources_resource_provider_load(skresources_resource_provider_t *instance, const char *path, const char *name)
+@
+-}
 foreign import ccall "skresources_resource_provider_load" skresources_resource_provider_load ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"instance"@ of type @skresources_resource_provider_t *@
-  -> Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> Ptr (CChar) -- ^ C argument @"name"@ of type @const char *@
-  -> IO (Ptr (Sk_data)) -- ^ C return type: @sk_data_t *@
--- | C function: @skresources_image_asset_t *skresources_resource_provider_load_image_asset(skresources_resource_provider_t *instance, const char *path, const char *name, const char *id)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * instance"@
+  -> Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> Ptr (CChar) -- ^ C argument @"const char * name"@
+  -> IO (Ptr (Sk_data)) -- ^ C return type: @"sk_data_t *"@
+
+{- | C function signature:
+
+@
+skresources_image_asset_t *skresources_resource_provider_load_image_asset(skresources_resource_provider_t *instance, const char *path, const char *name, const char *id)
+@
+-}
 foreign import ccall "skresources_resource_provider_load_image_asset" skresources_resource_provider_load_image_asset ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"instance"@ of type @skresources_resource_provider_t *@
-  -> Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> Ptr (CChar) -- ^ C argument @"name"@ of type @const char *@
-  -> Ptr (CChar) -- ^ C argument @"id"@ of type @const char *@
-  -> IO (Ptr (Skresources_image_asset)) -- ^ C return type: @skresources_image_asset_t *@
--- | C function: @skresources_external_track_asset_t *skresources_resource_provider_load_audio_asset(skresources_resource_provider_t *instance, const char *path, const char *name, const char *id)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * instance"@
+  -> Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> Ptr (CChar) -- ^ C argument @"const char * name"@
+  -> Ptr (CChar) -- ^ C argument @"const char * id"@
+  -> IO (Ptr (Skresources_image_asset)) -- ^ C return type: @"skresources_image_asset_t *"@
+
+{- | C function signature:
+
+@
+skresources_external_track_asset_t *skresources_resource_provider_load_audio_asset(skresources_resource_provider_t *instance, const char *path, const char *name, const char *id)
+@
+-}
 foreign import ccall "skresources_resource_provider_load_audio_asset" skresources_resource_provider_load_audio_asset ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"instance"@ of type @skresources_resource_provider_t *@
-  -> Ptr (CChar) -- ^ C argument @"path"@ of type @const char *@
-  -> Ptr (CChar) -- ^ C argument @"name"@ of type @const char *@
-  -> Ptr (CChar) -- ^ C argument @"id"@ of type @const char *@
-  -> IO (Ptr (Skresources_external_track_asset)) -- ^ C return type: @skresources_external_track_asset_t *@
--- | C function: @sk_typeface_t *skresources_resource_provider_load_typeface(skresources_resource_provider_t *instance, const char *name, const char *url)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * instance"@
+  -> Ptr (CChar) -- ^ C argument @"const char * path"@
+  -> Ptr (CChar) -- ^ C argument @"const char * name"@
+  -> Ptr (CChar) -- ^ C argument @"const char * id"@
+  -> IO (Ptr (Skresources_external_track_asset)) -- ^ C return type: @"skresources_external_track_asset_t *"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *skresources_resource_provider_load_typeface(skresources_resource_provider_t *instance, const char *name, const char *url)
+@
+-}
 foreign import ccall "skresources_resource_provider_load_typeface" skresources_resource_provider_load_typeface ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"instance"@ of type @skresources_resource_provider_t *@
-  -> Ptr (CChar) -- ^ C argument @"name"@ of type @const char *@
-  -> Ptr (CChar) -- ^ C argument @"url"@ of type @const char *@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @skresources_resource_provider_t *skresources_file_resource_provider_make(sk_string_t *base_dir, _Bool predecode)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * instance"@
+  -> Ptr (CChar) -- ^ C argument @"const char * name"@
+  -> Ptr (CChar) -- ^ C argument @"const char * url"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+skresources_resource_provider_t *skresources_file_resource_provider_make(sk_string_t *base_dir, _Bool predecode)
+@
+-}
 foreign import ccall "skresources_file_resource_provider_make" skresources_file_resource_provider_make ::
-  Ptr (Sk_string) -- ^ C argument @"base_dir"@ of type @sk_string_t *@
-  -> CBool -- ^ C argument @"predecode"@ of type @_Bool@
-  -> IO (Ptr (Skresources_resource_provider)) -- ^ C return type: @skresources_resource_provider_t *@
--- | C function: @skresources_resource_provider_t *skresources_caching_resource_provider_proxy_make(skresources_resource_provider_t *rp)@
+  Ptr (Sk_string) -- ^ C argument @"sk_string_t * base_dir"@
+  -> CBool -- ^ C argument @"_Bool predecode"@
+  -> IO (Ptr (Skresources_resource_provider)) -- ^ C return type: @"skresources_resource_provider_t *"@
+
+{- | C function signature:
+
+@
+skresources_resource_provider_t *skresources_caching_resource_provider_proxy_make(skresources_resource_provider_t *rp)
+@
+-}
 foreign import ccall "skresources_caching_resource_provider_proxy_make" skresources_caching_resource_provider_proxy_make ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"rp"@ of type @skresources_resource_provider_t *@
-  -> IO (Ptr (Skresources_resource_provider)) -- ^ C return type: @skresources_resource_provider_t *@
--- | C function: @skresources_resource_provider_t *skresources_data_uri_resource_provider_proxy_make(skresources_resource_provider_t *rp, _Bool predecode)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * rp"@
+  -> IO (Ptr (Skresources_resource_provider)) -- ^ C return type: @"skresources_resource_provider_t *"@
+
+{- | C function signature:
+
+@
+skresources_resource_provider_t *skresources_data_uri_resource_provider_proxy_make(skresources_resource_provider_t *rp, _Bool predecode)
+@
+-}
 foreign import ccall "skresources_data_uri_resource_provider_proxy_make" skresources_data_uri_resource_provider_proxy_make ::
-  Ptr (Skresources_resource_provider) -- ^ C argument @"rp"@ of type @skresources_resource_provider_t *@
-  -> CBool -- ^ C argument @"predecode"@ of type @_Bool@
-  -> IO (Ptr (Skresources_resource_provider)) -- ^ C return type: @skresources_resource_provider_t *@
--- | C function: @sk_canvas_t *sk_svgcanvas_create_with_stream(const sk_rect_t *bounds, sk_wstream_t *stream)@
+  Ptr (Skresources_resource_provider) -- ^ C argument @"skresources_resource_provider_t * rp"@
+  -> CBool -- ^ C argument @"_Bool predecode"@
+  -> IO (Ptr (Skresources_resource_provider)) -- ^ C return type: @"skresources_resource_provider_t *"@
+
+{- | C function signature:
+
+@
+sk_canvas_t *sk_svgcanvas_create_with_stream(const sk_rect_t *bounds, sk_wstream_t *stream)
+@
+-}
 foreign import ccall "sk_svgcanvas_create_with_stream" sk_svgcanvas_create_with_stream ::
-  Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_wstream) -- ^ C argument @"stream"@ of type @sk_wstream_t *@
-  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @sk_canvas_t *@
--- | C function: @sk_string_t *sk_string_new_empty(void)@
+  Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * bounds"@
+  -> Ptr (Sk_wstream) -- ^ C argument @"sk_wstream_t * stream"@
+  -> IO (Ptr (Sk_canvas)) -- ^ C return type: @"sk_canvas_t *"@
+
+{- | C function signature:
+
+@
+sk_string_t *sk_string_new_empty(void)
+@
+-}
 foreign import ccall "sk_string_new_empty" sk_string_new_empty ::
-  IO (Ptr (Sk_string)) -- ^ C return type: @sk_string_t *@
--- | C function: @sk_string_t *sk_string_new_with_copy(const char *src, size_t length)@
+  IO (Ptr (Sk_string)) -- ^ C return type: @"sk_string_t *"@
+
+{- | C function signature:
+
+@
+sk_string_t *sk_string_new_with_copy(const char *src, size_t length)
+@
+-}
 foreign import ccall "sk_string_new_with_copy" sk_string_new_with_copy ::
-  Ptr (CChar) -- ^ C argument @"src"@ of type @const char *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> IO (Ptr (Sk_string)) -- ^ C return type: @sk_string_t *@
--- | C function: @void sk_string_destructor(const sk_string_t *)@
+  Ptr (CChar) -- ^ C argument @"const char * src"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> IO (Ptr (Sk_string)) -- ^ C return type: @"sk_string_t *"@
+
+{- | C function signature:
+
+@
+void sk_string_destructor(const sk_string_t *)
+@
+-}
 foreign import ccall "sk_string_destructor" sk_string_destructor ::
-  Ptr (Sk_string) -- ^ C argument type: @const sk_string_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_string_get_size(const sk_string_t *)@
+  Ptr (Sk_string) -- ^ C argument type: @"const sk_string_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_string_get_size(const sk_string_t *)
+@
+-}
 foreign import ccall "sk_string_get_size" sk_string_get_size ::
-  Ptr (Sk_string) -- ^ C argument type: @const sk_string_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @const char *sk_string_get_c_str(const sk_string_t *)@
+  Ptr (Sk_string) -- ^ C argument type: @"const sk_string_t *"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+const char *sk_string_get_c_str(const sk_string_t *)
+@
+-}
 foreign import ccall "sk_string_get_c_str" sk_string_get_c_str ::
-  Ptr (Sk_string) -- ^ C argument type: @const sk_string_t *@
-  -> IO (Ptr (CChar)) -- ^ C return type: @const char *@
--- | C function: @void sk_linker_keep_alive(void)@
+  Ptr (Sk_string) -- ^ C argument type: @"const sk_string_t *"@
+  -> IO (Ptr (CChar)) -- ^ C return type: @"const char *"@
+
+{- | C function signature:
+
+@
+void sk_linker_keep_alive(void)
+@
+-}
 foreign import ccall "sk_linker_keep_alive" sk_linker_keep_alive ::
-  IO (()) -- ^ C return type: @void@
--- | C function: @void sk_path_effect_unref(sk_path_effect_t *t)@
+  IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_path_effect_unref(sk_path_effect_t *t)
+@
+-}
 foreign import ccall "sk_path_effect_unref" sk_path_effect_unref ::
-  Ptr (Sk_path_effect) -- ^ C argument @"t"@ of type @sk_path_effect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_path_effect_t *sk_path_effect_create_compose(sk_path_effect_t *outer, sk_path_effect_t *inner)@
+  Ptr (Sk_path_effect) -- ^ C argument @"sk_path_effect_t * t"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_compose(sk_path_effect_t *outer, sk_path_effect_t *inner)
+@
+-}
 foreign import ccall "sk_path_effect_create_compose" sk_path_effect_create_compose ::
-  Ptr (Sk_path_effect) -- ^ C argument @"outer"@ of type @sk_path_effect_t *@
-  -> Ptr (Sk_path_effect) -- ^ C argument @"inner"@ of type @sk_path_effect_t *@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_sum(sk_path_effect_t *first, sk_path_effect_t *second)@
+  Ptr (Sk_path_effect) -- ^ C argument @"sk_path_effect_t * outer"@
+  -> Ptr (Sk_path_effect) -- ^ C argument @"sk_path_effect_t * inner"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_sum(sk_path_effect_t *first, sk_path_effect_t *second)
+@
+-}
 foreign import ccall "sk_path_effect_create_sum" sk_path_effect_create_sum ::
-  Ptr (Sk_path_effect) -- ^ C argument @"first"@ of type @sk_path_effect_t *@
-  -> Ptr (Sk_path_effect) -- ^ C argument @"second"@ of type @sk_path_effect_t *@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_discrete(float segLength, float deviation, uint32_t seedAssist)@
+  Ptr (Sk_path_effect) -- ^ C argument @"sk_path_effect_t * first"@
+  -> Ptr (Sk_path_effect) -- ^ C argument @"sk_path_effect_t * second"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_discrete(float segLength, float deviation, uint32_t seedAssist)
+@
+-}
 foreign import ccall "sk_path_effect_create_discrete" sk_path_effect_create_discrete ::
-  CFloat -- ^ C argument @"segLength"@ of type @float@
-  -> CFloat -- ^ C argument @"deviation"@ of type @float@
-  -> Word32 -- ^ C argument @"seedAssist"@ of type @uint32_t@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_corner(float radius)@
+  CFloat -- ^ C argument @"float segLength"@
+  -> CFloat -- ^ C argument @"float deviation"@
+  -> Word32 -- ^ C argument @"uint32_t seedAssist"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_corner(float radius)
+@
+-}
 foreign import ccall "sk_path_effect_create_corner" sk_path_effect_create_corner ::
-  CFloat -- ^ C argument @"radius"@ of type @float@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_1d_path(const sk_path_t *path, float advance, float phase, sk_path_effect_1d_style_t style)@
+  CFloat -- ^ C argument @"float radius"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_1d_path(const sk_path_t *path, float advance, float phase, sk_path_effect_1d_style_t style)
+@
+-}
 foreign import ccall "sk_path_effect_create_1d_path" sk_path_effect_create_1d_path ::
-  Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> CFloat -- ^ C argument @"advance"@ of type @float@
-  -> CFloat -- ^ C argument @"phase"@ of type @float@
-  -> Sk_path_effect_1d_style -- ^ C argument @"style"@ of type @sk_path_effect_1d_style_t@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_2d_line(float width, const sk_matrix_t *matrix)@
+  Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> CFloat -- ^ C argument @"float advance"@
+  -> CFloat -- ^ C argument @"float phase"@
+  -> Sk_path_effect_1d_style -- ^ C argument @"sk_path_effect_1d_style_t style"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_2d_line(float width, const sk_matrix_t *matrix)
+@
+-}
 foreign import ccall "sk_path_effect_create_2d_line" sk_path_effect_create_2d_line ::
-  CFloat -- ^ C argument @"width"@ of type @float@
-  -> Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_2d_path(const sk_matrix_t *matrix, const sk_path_t *path)@
+  CFloat -- ^ C argument @"float width"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * matrix"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_2d_path(const sk_matrix_t *matrix, const sk_path_t *path)
+@
+-}
 foreign import ccall "sk_path_effect_create_2d_path" sk_path_effect_create_2d_path ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @const sk_matrix_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"path"@ of type @const sk_path_t *@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_dash(const float intervals[], int count, float phase)@
+  Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * matrix"@
+  -> Ptr (Sk_path) -- ^ C argument @"const sk_path_t * path"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_dash(const float intervals[], int count, float phase)
+@
+-}
 foreign import ccall "sk_path_effect_create_dash" sk_path_effect_create_dash ::
-  Ptr (CFloat) -- ^ C argument @"intervals"@ of type @const float []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> CFloat -- ^ C argument @"phase"@ of type @float@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @sk_path_effect_t *sk_path_effect_create_trim(float start, float stop, sk_path_effect_trim_mode_t mode)@
+  Ptr (CFloat) -- ^ C argument @"const float [] intervals"@
+  -> CInt -- ^ C argument @"int count"@
+  -> CFloat -- ^ C argument @"float phase"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+sk_path_effect_t *sk_path_effect_create_trim(float start, float stop, sk_path_effect_trim_mode_t mode)
+@
+-}
 foreign import ccall "sk_path_effect_create_trim" sk_path_effect_create_trim ::
-  CFloat -- ^ C argument @"start"@ of type @float@
-  -> CFloat -- ^ C argument @"stop"@ of type @float@
-  -> Sk_path_effect_trim_mode -- ^ C argument @"mode"@ of type @sk_path_effect_trim_mode_t@
-  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @sk_path_effect_t *@
--- | C function: @void sk_vertices_unref(sk_vertices_t *cvertices)@
+  CFloat -- ^ C argument @"float start"@
+  -> CFloat -- ^ C argument @"float stop"@
+  -> Sk_path_effect_trim_mode -- ^ C argument @"sk_path_effect_trim_mode_t mode"@
+  -> IO (Ptr (Sk_path_effect)) -- ^ C return type: @"sk_path_effect_t *"@
+
+{- | C function signature:
+
+@
+void sk_vertices_unref(sk_vertices_t *cvertices)
+@
+-}
 foreign import ccall "sk_vertices_unref" sk_vertices_unref ::
-  Ptr (Sk_vertices) -- ^ C argument @"cvertices"@ of type @sk_vertices_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_vertices_ref(sk_vertices_t *cvertices)@
+  Ptr (Sk_vertices) -- ^ C argument @"sk_vertices_t * cvertices"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_vertices_ref(sk_vertices_t *cvertices)
+@
+-}
 foreign import ccall "sk_vertices_ref" sk_vertices_ref ::
-  Ptr (Sk_vertices) -- ^ C argument @"cvertices"@ of type @sk_vertices_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_vertices_t *sk_vertices_make_copy(sk_vertices_vertex_mode_t vmode, int vertexCount, const sk_point_t *positions, const sk_point_t *texs, const sk_color_t *colors, int indexCount, const uint16_t *indices)@
+  Ptr (Sk_vertices) -- ^ C argument @"sk_vertices_t * cvertices"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_vertices_t *sk_vertices_make_copy(sk_vertices_vertex_mode_t vmode, int vertexCount, const sk_point_t *positions, const sk_point_t *texs, const sk_color_t *colors, int indexCount, const uint16_t *indices)
+@
+-}
 foreign import ccall "sk_vertices_make_copy" sk_vertices_make_copy ::
-  Sk_vertices_vertex_mode -- ^ C argument @"vmode"@ of type @sk_vertices_vertex_mode_t@
-  -> CInt -- ^ C argument @"vertexCount"@ of type @int@
-  -> Ptr (Sk_point) -- ^ C argument @"positions"@ of type @const sk_point_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"texs"@ of type @const sk_point_t *@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t *@
-  -> CInt -- ^ C argument @"indexCount"@ of type @int@
-  -> Ptr (Word16) -- ^ C argument @"indices"@ of type @const uint16_t *@
-  -> IO (Ptr (Sk_vertices)) -- ^ C return type: @sk_vertices_t *@
--- | C function: @sk_font_t *sk_font_new(void)@
+  Sk_vertices_vertex_mode -- ^ C argument @"sk_vertices_vertex_mode_t vmode"@
+  -> CInt -- ^ C argument @"int vertexCount"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * positions"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * texs"@
+  -> Ptr (Sk_color) -- ^ C argument @"const sk_color_t * colors"@
+  -> CInt -- ^ C argument @"int indexCount"@
+  -> Ptr (Word16) -- ^ C argument @"const uint16_t * indices"@
+  -> IO (Ptr (Sk_vertices)) -- ^ C return type: @"sk_vertices_t *"@
+
+{- | C function signature:
+
+@
+sk_font_t *sk_font_new(void)
+@
+-}
 foreign import ccall "sk_font_new" sk_font_new ::
-  IO (Ptr (Sk_font)) -- ^ C return type: @sk_font_t *@
--- | C function: @sk_font_t *sk_font_new_with_values(sk_typeface_t *typeface, float size, float scaleX, float skewX)@
+  IO (Ptr (Sk_font)) -- ^ C return type: @"sk_font_t *"@
+
+{- | C function signature:
+
+@
+sk_font_t *sk_font_new_with_values(sk_typeface_t *typeface, float size, float scaleX, float skewX)
+@
+-}
 foreign import ccall "sk_font_new_with_values" sk_font_new_with_values ::
-  Ptr (Sk_typeface) -- ^ C argument @"typeface"@ of type @sk_typeface_t *@
-  -> CFloat -- ^ C argument @"size"@ of type @float@
-  -> CFloat -- ^ C argument @"scaleX"@ of type @float@
-  -> CFloat -- ^ C argument @"skewX"@ of type @float@
-  -> IO (Ptr (Sk_font)) -- ^ C return type: @sk_font_t *@
--- | C function: @void sk_font_delete(sk_font_t *font)@
+  Ptr (Sk_typeface) -- ^ C argument @"sk_typeface_t * typeface"@
+  -> CFloat -- ^ C argument @"float size"@
+  -> CFloat -- ^ C argument @"float scaleX"@
+  -> CFloat -- ^ C argument @"float skewX"@
+  -> IO (Ptr (Sk_font)) -- ^ C return type: @"sk_font_t *"@
+
+{- | C function signature:
+
+@
+void sk_font_delete(sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_delete" sk_font_delete ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_font_is_force_auto_hinting(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_font_is_force_auto_hinting(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_is_force_auto_hinting" sk_font_is_force_auto_hinting ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_font_set_force_auto_hinting(sk_font_t *font, _Bool value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_font_set_force_auto_hinting(sk_font_t *font, _Bool value)
+@
+-}
 foreign import ccall "sk_font_set_force_auto_hinting" sk_font_set_force_auto_hinting ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CBool -- ^ C argument @"value"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_font_is_embedded_bitmaps(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CBool -- ^ C argument @"_Bool value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_font_is_embedded_bitmaps(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_is_embedded_bitmaps" sk_font_is_embedded_bitmaps ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_font_set_embedded_bitmaps(sk_font_t *font, _Bool value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_font_set_embedded_bitmaps(sk_font_t *font, _Bool value)
+@
+-}
 foreign import ccall "sk_font_set_embedded_bitmaps" sk_font_set_embedded_bitmaps ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CBool -- ^ C argument @"value"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_font_is_subpixel(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CBool -- ^ C argument @"_Bool value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_font_is_subpixel(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_is_subpixel" sk_font_is_subpixel ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_font_set_subpixel(sk_font_t *font, _Bool value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_font_set_subpixel(sk_font_t *font, _Bool value)
+@
+-}
 foreign import ccall "sk_font_set_subpixel" sk_font_set_subpixel ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CBool -- ^ C argument @"value"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_font_is_linear_metrics(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CBool -- ^ C argument @"_Bool value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_font_is_linear_metrics(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_is_linear_metrics" sk_font_is_linear_metrics ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_font_set_linear_metrics(sk_font_t *font, _Bool value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_font_set_linear_metrics(sk_font_t *font, _Bool value)
+@
+-}
 foreign import ccall "sk_font_set_linear_metrics" sk_font_set_linear_metrics ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CBool -- ^ C argument @"value"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_font_is_embolden(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CBool -- ^ C argument @"_Bool value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_font_is_embolden(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_is_embolden" sk_font_is_embolden ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_font_set_embolden(sk_font_t *font, _Bool value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_font_set_embolden(sk_font_t *font, _Bool value)
+@
+-}
 foreign import ccall "sk_font_set_embolden" sk_font_set_embolden ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CBool -- ^ C argument @"value"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_font_is_baseline_snap(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CBool -- ^ C argument @"_Bool value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_font_is_baseline_snap(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_is_baseline_snap" sk_font_is_baseline_snap ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_font_set_baseline_snap(sk_font_t *font, _Bool value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_font_set_baseline_snap(sk_font_t *font, _Bool value)
+@
+-}
 foreign import ccall "sk_font_set_baseline_snap" sk_font_set_baseline_snap ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CBool -- ^ C argument @"value"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_font_edging_t sk_font_get_edging(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CBool -- ^ C argument @"_Bool value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_font_edging_t sk_font_get_edging(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_get_edging" sk_font_get_edging ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (Sk_font_edging) -- ^ C return type: @sk_font_edging_t@
--- | C function: @void sk_font_set_edging(sk_font_t *font, sk_font_edging_t value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (Sk_font_edging) -- ^ C return type: @"sk_font_edging_t"@
+
+{- | C function signature:
+
+@
+void sk_font_set_edging(sk_font_t *font, sk_font_edging_t value)
+@
+-}
 foreign import ccall "sk_font_set_edging" sk_font_set_edging ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> Sk_font_edging -- ^ C argument @"value"@ of type @sk_font_edging_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_font_hinting_t sk_font_get_hinting(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> Sk_font_edging -- ^ C argument @"sk_font_edging_t value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_font_hinting_t sk_font_get_hinting(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_get_hinting" sk_font_get_hinting ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (Sk_font_hinting) -- ^ C return type: @sk_font_hinting_t@
--- | C function: @void sk_font_set_hinting(sk_font_t *font, sk_font_hinting_t value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (Sk_font_hinting) -- ^ C return type: @"sk_font_hinting_t"@
+
+{- | C function signature:
+
+@
+void sk_font_set_hinting(sk_font_t *font, sk_font_hinting_t value)
+@
+-}
 foreign import ccall "sk_font_set_hinting" sk_font_set_hinting ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> Sk_font_hinting -- ^ C argument @"value"@ of type @sk_font_hinting_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_typeface_t *sk_font_get_typeface(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> Sk_font_hinting -- ^ C argument @"sk_font_hinting_t value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_typeface_t *sk_font_get_typeface(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_get_typeface" sk_font_get_typeface ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @sk_typeface_t *@
--- | C function: @void sk_font_set_typeface(sk_font_t *font, sk_typeface_t *value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (Ptr (Sk_typeface)) -- ^ C return type: @"sk_typeface_t *"@
+
+{- | C function signature:
+
+@
+void sk_font_set_typeface(sk_font_t *font, sk_typeface_t *value)
+@
+-}
 foreign import ccall "sk_font_set_typeface" sk_font_set_typeface ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> Ptr (Sk_typeface) -- ^ C argument @"value"@ of type @sk_typeface_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_font_get_size(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> Ptr (Sk_typeface) -- ^ C argument @"sk_typeface_t * value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_font_get_size(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_get_size" sk_font_get_size ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_font_set_size(sk_font_t *font, float value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_font_set_size(sk_font_t *font, float value)
+@
+-}
 foreign import ccall "sk_font_set_size" sk_font_set_size ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CFloat -- ^ C argument @"value"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_font_get_scale_x(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CFloat -- ^ C argument @"float value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_font_get_scale_x(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_get_scale_x" sk_font_get_scale_x ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_font_set_scale_x(sk_font_t *font, float value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_font_set_scale_x(sk_font_t *font, float value)
+@
+-}
 foreign import ccall "sk_font_set_scale_x" sk_font_set_scale_x ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CFloat -- ^ C argument @"value"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_font_get_skew_x(const sk_font_t *font)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CFloat -- ^ C argument @"float value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_font_get_skew_x(const sk_font_t *font)
+@
+-}
 foreign import ccall "sk_font_get_skew_x" sk_font_get_skew_x ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_font_set_skew_x(sk_font_t *font, float value)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_font_set_skew_x(sk_font_t *font, float value)
+@
+-}
 foreign import ccall "sk_font_set_skew_x" sk_font_set_skew_x ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @sk_font_t *@
-  -> CFloat -- ^ C argument @"value"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int sk_font_text_to_glyphs(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, uint16_t glyphs[], int maxGlyphCount)@
+  Ptr (Sk_font) -- ^ C argument @"sk_font_t * font"@
+  -> CFloat -- ^ C argument @"float value"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_font_text_to_glyphs(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, uint16_t glyphs[], int maxGlyphCount)
+@
+-}
 foreign import ccall "sk_font_text_to_glyphs" sk_font_text_to_glyphs ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (()) -- ^ C argument @"text"@ of type @const void *@
-  -> CSize -- ^ C argument @"byteLength"@ of type @size_t@
-  -> Sk_text_encoding -- ^ C argument @"encoding"@ of type @sk_text_encoding_t@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @uint16_t []@
-  -> CInt -- ^ C argument @"maxGlyphCount"@ of type @int@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @uint16_t sk_font_unichar_to_glyph(const sk_font_t *font, int32_t uni)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (()) -- ^ C argument @"const void * text"@
+  -> CSize -- ^ C argument @"size_t byteLength"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> Ptr (Word16) -- ^ C argument @"uint16_t [] glyphs"@
+  -> CInt -- ^ C argument @"int maxGlyphCount"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+uint16_t sk_font_unichar_to_glyph(const sk_font_t *font, int32_t uni)
+@
+-}
 foreign import ccall "sk_font_unichar_to_glyph" sk_font_unichar_to_glyph ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Int32 -- ^ C argument @"uni"@ of type @int32_t@
-  -> IO (Word16) -- ^ C return type: @uint16_t@
--- | C function: @void sk_font_unichars_to_glyphs(const sk_font_t *font, const int32_t uni[], int count, uint16_t glyphs[])@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Int32 -- ^ C argument @"int32_t uni"@
+  -> IO (Word16) -- ^ C return type: @"uint16_t"@
+
+{- | C function signature:
+
+@
+void sk_font_unichars_to_glyphs(const sk_font_t *font, const int32_t uni[], int count, uint16_t glyphs[])
+@
+-}
 foreign import ccall "sk_font_unichars_to_glyphs" sk_font_unichars_to_glyphs ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Int32) -- ^ C argument @"uni"@ of type @const int32_t []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @uint16_t []@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_font_measure_text(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, sk_rect_t *bounds, const sk_paint_t *paint)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Int32) -- ^ C argument @"const int32_t [] uni"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (Word16) -- ^ C argument @"uint16_t [] glyphs"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_font_measure_text(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, sk_rect_t *bounds, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_font_measure_text" sk_font_measure_text ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (()) -- ^ C argument @"text"@ of type @const void *@
-  -> CSize -- ^ C argument @"byteLength"@ of type @size_t@
-  -> Sk_text_encoding -- ^ C argument @"encoding"@ of type @sk_text_encoding_t@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @sk_rect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_font_measure_text_no_return(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, sk_rect_t *bounds, const sk_paint_t *paint, float *measuredWidth)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (()) -- ^ C argument @"const void * text"@
+  -> CSize -- ^ C argument @"size_t byteLength"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * bounds"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_font_measure_text_no_return(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, sk_rect_t *bounds, const sk_paint_t *paint, float *measuredWidth)
+@
+-}
 foreign import ccall "sk_font_measure_text_no_return" sk_font_measure_text_no_return ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (()) -- ^ C argument @"text"@ of type @const void *@
-  -> CSize -- ^ C argument @"byteLength"@ of type @size_t@
-  -> Sk_text_encoding -- ^ C argument @"encoding"@ of type @sk_text_encoding_t@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @sk_rect_t *@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> Ptr (CFloat) -- ^ C argument @"measuredWidth"@ of type @float *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_font_break_text(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, float maxWidth, float *measuredWidth, const sk_paint_t *paint)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (()) -- ^ C argument @"const void * text"@
+  -> CSize -- ^ C argument @"size_t byteLength"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * bounds"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> Ptr (CFloat) -- ^ C argument @"float * measuredWidth"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_font_break_text(const sk_font_t *font, const void *text, size_t byteLength, sk_text_encoding_t encoding, float maxWidth, float *measuredWidth, const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_font_break_text" sk_font_break_text ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (()) -- ^ C argument @"text"@ of type @const void *@
-  -> CSize -- ^ C argument @"byteLength"@ of type @size_t@
-  -> Sk_text_encoding -- ^ C argument @"encoding"@ of type @sk_text_encoding_t@
-  -> CFloat -- ^ C argument @"maxWidth"@ of type @float@
-  -> Ptr (CFloat) -- ^ C argument @"measuredWidth"@ of type @float *@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @void sk_font_get_widths_bounds(const sk_font_t *font, const uint16_t glyphs[], int count, float widths[], sk_rect_t bounds[], const sk_paint_t *paint)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (()) -- ^ C argument @"const void * text"@
+  -> CSize -- ^ C argument @"size_t byteLength"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> CFloat -- ^ C argument @"float maxWidth"@
+  -> Ptr (CFloat) -- ^ C argument @"float * measuredWidth"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+void sk_font_get_widths_bounds(const sk_font_t *font, const uint16_t glyphs[], int count, float widths[], sk_rect_t bounds[], const sk_paint_t *paint)
+@
+-}
 foreign import ccall "sk_font_get_widths_bounds" sk_font_get_widths_bounds ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @const uint16_t []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (CFloat) -- ^ C argument @"widths"@ of type @float []@
-  -> Ptr (Sk_rect) -- ^ C argument @"bounds"@ of type @sk_rect_t []@
-  -> Ptr (Sk_paint) -- ^ C argument @"paint"@ of type @const sk_paint_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_font_get_pos(const sk_font_t *font, const uint16_t glyphs[], int count, sk_point_t pos[], sk_point_t *origin)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Word16) -- ^ C argument @"const uint16_t [] glyphs"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (CFloat) -- ^ C argument @"float [] widths"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t [] bounds"@
+  -> Ptr (Sk_paint) -- ^ C argument @"const sk_paint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_font_get_pos(const sk_font_t *font, const uint16_t glyphs[], int count, sk_point_t pos[], sk_point_t *origin)
+@
+-}
 foreign import ccall "sk_font_get_pos" sk_font_get_pos ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @const uint16_t []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (Sk_point) -- ^ C argument @"pos"@ of type @sk_point_t []@
-  -> Ptr (Sk_point) -- ^ C argument @"origin"@ of type @sk_point_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_font_get_xpos(const sk_font_t *font, const uint16_t glyphs[], int count, float xpos[], float origin)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Word16) -- ^ C argument @"const uint16_t [] glyphs"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t [] pos"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * origin"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_font_get_xpos(const sk_font_t *font, const uint16_t glyphs[], int count, float xpos[], float origin)
+@
+-}
 foreign import ccall "sk_font_get_xpos" sk_font_get_xpos ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @const uint16_t []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> Ptr (CFloat) -- ^ C argument @"xpos"@ of type @float []@
-  -> CFloat -- ^ C argument @"origin"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_font_get_path(const sk_font_t *font, uint16_t glyph, sk_path_t *path)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Word16) -- ^ C argument @"const uint16_t [] glyphs"@
+  -> CInt -- ^ C argument @"int count"@
+  -> Ptr (CFloat) -- ^ C argument @"float [] xpos"@
+  -> CFloat -- ^ C argument @"float origin"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_font_get_path(const sk_font_t *font, uint16_t glyph, sk_path_t *path)
+@
+-}
 foreign import ccall "sk_font_get_path" sk_font_get_path ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Word16 -- ^ C argument @"glyph"@ of type @uint16_t@
-  -> Ptr (Sk_path) -- ^ C argument @"path"@ of type @sk_path_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_font_get_paths(const sk_font_t *font, uint16_t glyphs[], int count, const sk_glyph_path_proc glyphPathProc, void *context)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Word16 -- ^ C argument @"uint16_t glyph"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * path"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_font_get_paths(const sk_font_t *font, uint16_t glyphs[], int count, const sk_glyph_path_proc glyphPathProc, void *context)
+@
+-}
 foreign import ccall "sk_font_get_paths" sk_font_get_paths ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Word16) -- ^ C argument @"glyphs"@ of type @uint16_t []@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> FunPtr Sk_glyph_path_proc -- ^ C argument @"glyphPathProc"@ of type @const sk_glyph_path_proc@
-  -> Ptr (()) -- ^ C argument @"context"@ of type @void *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_font_get_metrics(const sk_font_t *font, sk_fontmetrics_t *metrics)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Word16) -- ^ C argument @"uint16_t [] glyphs"@
+  -> CInt -- ^ C argument @"int count"@
+  -> FunPtr Sk_glyph_path_proc -- ^ C argument @"const sk_glyph_path_proc glyphPathProc"@
+  -> Ptr (()) -- ^ C argument @"void * context"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_font_get_metrics(const sk_font_t *font, sk_fontmetrics_t *metrics)
+@
+-}
 foreign import ccall "sk_font_get_metrics" sk_font_get_metrics ::
-  Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Sk_fontmetrics) -- ^ C argument @"metrics"@ of type @sk_fontmetrics_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_text_utils_get_path(const void *text, size_t length, sk_text_encoding_t encoding, float x, float y, const sk_font_t *font, sk_path_t *path)@
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Sk_fontmetrics) -- ^ C argument @"sk_fontmetrics_t * metrics"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_text_utils_get_path(const void *text, size_t length, sk_text_encoding_t encoding, float x, float y, const sk_font_t *font, sk_path_t *path)
+@
+-}
 foreign import ccall "sk_text_utils_get_path" sk_text_utils_get_path ::
-  Ptr (()) -- ^ C argument @"text"@ of type @const void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> Sk_text_encoding -- ^ C argument @"encoding"@ of type @sk_text_encoding_t@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"path"@ of type @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_text_utils_get_pos_path(const void *text, size_t length, sk_text_encoding_t encoding, const sk_point_t pos[], const sk_font_t *font, sk_path_t *path)@
+  Ptr (()) -- ^ C argument @"const void * text"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * path"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_text_utils_get_pos_path(const void *text, size_t length, sk_text_encoding_t encoding, const sk_point_t pos[], const sk_font_t *font, sk_path_t *path)
+@
+-}
 foreign import ccall "sk_text_utils_get_pos_path" sk_text_utils_get_pos_path ::
-  Ptr (()) -- ^ C argument @"text"@ of type @const void *@
-  -> CSize -- ^ C argument @"length"@ of type @size_t@
-  -> Sk_text_encoding -- ^ C argument @"encoding"@ of type @sk_text_encoding_t@
-  -> Ptr (Sk_point) -- ^ C argument @"pos"@ of type @const sk_point_t []@
-  -> Ptr (Sk_font) -- ^ C argument @"font"@ of type @const sk_font_t *@
-  -> Ptr (Sk_path) -- ^ C argument @"path"@ of type @sk_path_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_rrect_t *sk_rrect_new(void)@
+  Ptr (()) -- ^ C argument @"const void * text"@
+  -> CSize -- ^ C argument @"size_t length"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t [] pos"@
+  -> Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> Ptr (Sk_path) -- ^ C argument @"sk_path_t * path"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_rrect_t *sk_rrect_new(void)
+@
+-}
 foreign import ccall "sk_rrect_new" sk_rrect_new ::
-  IO (Ptr (Sk_rrect)) -- ^ C return type: @sk_rrect_t *@
--- | C function: @sk_rrect_t *sk_rrect_new_copy(const sk_rrect_t *rrect)@
+  IO (Ptr (Sk_rrect)) -- ^ C return type: @"sk_rrect_t *"@
+
+{- | C function signature:
+
+@
+sk_rrect_t *sk_rrect_new_copy(const sk_rrect_t *rrect)
+@
+-}
 foreign import ccall "sk_rrect_new_copy" sk_rrect_new_copy ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> IO (Ptr (Sk_rrect)) -- ^ C return type: @sk_rrect_t *@
--- | C function: @void sk_rrect_delete(const sk_rrect_t *rrect)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> IO (Ptr (Sk_rrect)) -- ^ C return type: @"sk_rrect_t *"@
+
+{- | C function signature:
+
+@
+void sk_rrect_delete(const sk_rrect_t *rrect)
+@
+-}
 foreign import ccall "sk_rrect_delete" sk_rrect_delete ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_rrect_type_t sk_rrect_get_type(const sk_rrect_t *rrect)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_rrect_type_t sk_rrect_get_type(const sk_rrect_t *rrect)
+@
+-}
 foreign import ccall "sk_rrect_get_type" sk_rrect_get_type ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> IO (Sk_rrect_type) -- ^ C return type: @sk_rrect_type_t@
--- | C function: @void sk_rrect_get_rect(const sk_rrect_t *rrect, sk_rect_t *rect)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> IO (Sk_rrect_type) -- ^ C return type: @"sk_rrect_type_t"@
+
+{- | C function signature:
+
+@
+void sk_rrect_get_rect(const sk_rrect_t *rrect, sk_rect_t *rect)
+@
+-}
 foreign import ccall "sk_rrect_get_rect" sk_rrect_get_rect ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_get_radii(const sk_rrect_t *rrect, sk_rrect_corner_t corner, sk_vector_t *radii)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * rect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_get_radii(const sk_rrect_t *rrect, sk_rrect_corner_t corner, sk_vector_t *radii)
+@
+-}
 foreign import ccall "sk_rrect_get_radii" sk_rrect_get_radii ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> Sk_rrect_corner -- ^ C argument @"corner"@ of type @sk_rrect_corner_t@
-  -> Ptr (Sk_vector) -- ^ C argument @"radii"@ of type @sk_vector_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_rrect_get_width(const sk_rrect_t *rrect)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> Sk_rrect_corner -- ^ C argument @"sk_rrect_corner_t corner"@
+  -> Ptr (Sk_vector) -- ^ C argument @"sk_vector_t * radii"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_rrect_get_width(const sk_rrect_t *rrect)
+@
+-}
 foreign import ccall "sk_rrect_get_width" sk_rrect_get_width ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @float sk_rrect_get_height(const sk_rrect_t *rrect)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+float sk_rrect_get_height(const sk_rrect_t *rrect)
+@
+-}
 foreign import ccall "sk_rrect_get_height" sk_rrect_get_height ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_rrect_set_empty(sk_rrect_t *rrect)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_rrect_set_empty(sk_rrect_t *rrect)
+@
+-}
 foreign import ccall "sk_rrect_set_empty" sk_rrect_set_empty ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_set_rect(sk_rrect_t *rrect, const sk_rect_t *rect)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_set_rect(sk_rrect_t *rrect, const sk_rect_t *rect)
+@
+-}
 foreign import ccall "sk_rrect_set_rect" sk_rrect_set_rect ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_set_oval(sk_rrect_t *rrect, const sk_rect_t *rect)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_set_oval(sk_rrect_t *rrect, const sk_rect_t *rect)
+@
+-}
 foreign import ccall "sk_rrect_set_oval" sk_rrect_set_oval ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_set_rect_xy(sk_rrect_t *rrect, const sk_rect_t *rect, float xRad, float yRad)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_set_rect_xy(sk_rrect_t *rrect, const sk_rect_t *rect, float xRad, float yRad)
+@
+-}
 foreign import ccall "sk_rrect_set_rect_xy" sk_rrect_set_rect_xy ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> CFloat -- ^ C argument @"xRad"@ of type @float@
-  -> CFloat -- ^ C argument @"yRad"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_set_nine_patch(sk_rrect_t *rrect, const sk_rect_t *rect, float leftRad, float topRad, float rightRad, float bottomRad)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> CFloat -- ^ C argument @"float xRad"@
+  -> CFloat -- ^ C argument @"float yRad"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_set_nine_patch(sk_rrect_t *rrect, const sk_rect_t *rect, float leftRad, float topRad, float rightRad, float bottomRad)
+@
+-}
 foreign import ccall "sk_rrect_set_nine_patch" sk_rrect_set_nine_patch ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> CFloat -- ^ C argument @"leftRad"@ of type @float@
-  -> CFloat -- ^ C argument @"topRad"@ of type @float@
-  -> CFloat -- ^ C argument @"rightRad"@ of type @float@
-  -> CFloat -- ^ C argument @"bottomRad"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_set_rect_radii(sk_rrect_t *rrect, const sk_rect_t *rect, const sk_vector_t *radii)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> CFloat -- ^ C argument @"float leftRad"@
+  -> CFloat -- ^ C argument @"float topRad"@
+  -> CFloat -- ^ C argument @"float rightRad"@
+  -> CFloat -- ^ C argument @"float bottomRad"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_set_rect_radii(sk_rrect_t *rrect, const sk_rect_t *rect, const sk_vector_t *radii)
+@
+-}
 foreign import ccall "sk_rrect_set_rect_radii" sk_rrect_set_rect_radii ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> Ptr (Sk_vector) -- ^ C argument @"radii"@ of type @const sk_vector_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_inset(sk_rrect_t *rrect, float dx, float dy)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> Ptr (Sk_vector) -- ^ C argument @"const sk_vector_t * radii"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_inset(sk_rrect_t *rrect, float dx, float dy)
+@
+-}
 foreign import ccall "sk_rrect_inset" sk_rrect_inset ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_outset(sk_rrect_t *rrect, float dx, float dy)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_outset(sk_rrect_t *rrect, float dx, float dy)
+@
+-}
 foreign import ccall "sk_rrect_outset" sk_rrect_outset ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_rrect_offset(sk_rrect_t *rrect, float dx, float dy)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_rrect_offset(sk_rrect_t *rrect, float dx, float dy)
+@
+-}
 foreign import ccall "sk_rrect_offset" sk_rrect_offset ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> CFloat -- ^ C argument @"dx"@ of type @float@
-  -> CFloat -- ^ C argument @"dy"@ of type @float@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool sk_rrect_contains(const sk_rrect_t *rrect, const sk_rect_t *rect)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> CFloat -- ^ C argument @"float dx"@
+  -> CFloat -- ^ C argument @"float dy"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_rrect_contains(const sk_rrect_t *rrect, const sk_rect_t *rect)
+@
+-}
 foreign import ccall "sk_rrect_contains" sk_rrect_contains ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"rect"@ of type @const sk_rect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_rrect_is_valid(const sk_rrect_t *rrect)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> Ptr (Sk_rect) -- ^ C argument @"const sk_rect_t * rect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_rrect_is_valid(const sk_rrect_t *rrect)
+@
+-}
 foreign import ccall "sk_rrect_is_valid" sk_rrect_is_valid ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @const sk_rrect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_rrect_transform(sk_rrect_t *rrect, const sk_matrix_t *matrix, sk_rrect_t *dest)@
+  Ptr (Sk_rrect) -- ^ C argument @"const sk_rrect_t * rrect"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_rrect_transform(sk_rrect_t *rrect, const sk_matrix_t *matrix, sk_rrect_t *dest)
+@
+-}
 foreign import ccall "sk_rrect_transform" sk_rrect_transform ::
-  Ptr (Sk_rrect) -- ^ C argument @"rrect"@ of type @sk_rrect_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @const sk_matrix_t *@
-  -> Ptr (Sk_rrect) -- ^ C argument @"dest"@ of type @sk_rrect_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool sk_matrix_try_invert(sk_matrix_t *matrix, sk_matrix_t *result)@
+  Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * rrect"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * matrix"@
+  -> Ptr (Sk_rrect) -- ^ C argument @"sk_rrect_t * dest"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool sk_matrix_try_invert(sk_matrix_t *matrix, sk_matrix_t *result)
+@
+-}
 foreign import ccall "sk_matrix_try_invert" sk_matrix_try_invert ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"result"@ of type @sk_matrix_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_matrix_concat(sk_matrix_t *result, sk_matrix_t *first, sk_matrix_t *second)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * result"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_matrix_concat(sk_matrix_t *result, sk_matrix_t *first, sk_matrix_t *second)
+@
+-}
 foreign import ccall "sk_matrix_concat" sk_matrix_concat ::
-  Ptr (Sk_matrix) -- ^ C argument @"result"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"first"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"second"@ of type @sk_matrix_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_matrix_pre_concat(sk_matrix_t *result, sk_matrix_t *matrix)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * result"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * first"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * second"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_matrix_pre_concat(sk_matrix_t *result, sk_matrix_t *matrix)
+@
+-}
 foreign import ccall "sk_matrix_pre_concat" sk_matrix_pre_concat ::
-  Ptr (Sk_matrix) -- ^ C argument @"result"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_matrix_post_concat(sk_matrix_t *result, sk_matrix_t *matrix)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * result"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_matrix_post_concat(sk_matrix_t *result, sk_matrix_t *matrix)
+@
+-}
 foreign import ccall "sk_matrix_post_concat" sk_matrix_post_concat ::
-  Ptr (Sk_matrix) -- ^ C argument @"result"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_matrix_map_rect(sk_matrix_t *matrix, sk_rect_t *dest, sk_rect_t *source)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * result"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_matrix_map_rect(sk_matrix_t *matrix, sk_rect_t *dest, sk_rect_t *source)
+@
+-}
 foreign import ccall "sk_matrix_map_rect" sk_matrix_map_rect ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"dest"@ of type @sk_rect_t *@
-  -> Ptr (Sk_rect) -- ^ C argument @"source"@ of type @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_matrix_map_points(sk_matrix_t *matrix, sk_point_t *dst, sk_point_t *src, int count)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * dest"@
+  -> Ptr (Sk_rect) -- ^ C argument @"sk_rect_t * source"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_matrix_map_points(sk_matrix_t *matrix, sk_point_t *dst, sk_point_t *src, int count)
+@
+-}
 foreign import ccall "sk_matrix_map_points" sk_matrix_map_points ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"dst"@ of type @sk_point_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"src"@ of type @sk_point_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_matrix_map_vectors(sk_matrix_t *matrix, sk_point_t *dst, sk_point_t *src, int count)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * dst"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * src"@
+  -> CInt -- ^ C argument @"int count"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_matrix_map_vectors(sk_matrix_t *matrix, sk_point_t *dst, sk_point_t *src, int count)
+@
+-}
 foreign import ccall "sk_matrix_map_vectors" sk_matrix_map_vectors ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"dst"@ of type @sk_point_t *@
-  -> Ptr (Sk_point) -- ^ C argument @"src"@ of type @sk_point_t *@
-  -> CInt -- ^ C argument @"count"@ of type @int@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_matrix_map_xy(sk_matrix_t *matrix, float x, float y, sk_point_t *result)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * dst"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * src"@
+  -> CInt -- ^ C argument @"int count"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_matrix_map_xy(sk_matrix_t *matrix, float x, float y, sk_point_t *result)
+@
+-}
 foreign import ccall "sk_matrix_map_xy" sk_matrix_map_xy ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_point) -- ^ C argument @"result"@ of type @sk_point_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_matrix_map_vector(sk_matrix_t *matrix, float x, float y, sk_point_t *result)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * result"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_matrix_map_vector(sk_matrix_t *matrix, float x, float y, sk_point_t *result)
+@
+-}
 foreign import ccall "sk_matrix_map_vector" sk_matrix_map_vector ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> CFloat -- ^ C argument @"x"@ of type @float@
-  -> CFloat -- ^ C argument @"y"@ of type @float@
-  -> Ptr (Sk_point) -- ^ C argument @"result"@ of type @sk_point_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @float sk_matrix_map_radius(sk_matrix_t *matrix, float radius)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> CFloat -- ^ C argument @"float x"@
+  -> CFloat -- ^ C argument @"float y"@
+  -> Ptr (Sk_point) -- ^ C argument @"sk_point_t * result"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+float sk_matrix_map_radius(sk_matrix_t *matrix, float radius)
+@
+-}
 foreign import ccall "sk_matrix_map_radius" sk_matrix_map_radius ::
-  Ptr (Sk_matrix) -- ^ C argument @"matrix"@ of type @sk_matrix_t *@
-  -> CFloat -- ^ C argument @"radius"@ of type @float@
-  -> IO (CFloat) -- ^ C return type: @float@
--- | C function: @void sk_shader_ref(sk_shader_t *shader)@
+  Ptr (Sk_matrix) -- ^ C argument @"sk_matrix_t * matrix"@
+  -> CFloat -- ^ C argument @"float radius"@
+  -> IO (CFloat) -- ^ C return type: @"float"@
+
+{- | C function signature:
+
+@
+void sk_shader_ref(sk_shader_t *shader)
+@
+-}
 foreign import ccall "sk_shader_ref" sk_shader_ref ::
-  Ptr (Sk_shader) -- ^ C argument @"shader"@ of type @sk_shader_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_shader_unref(sk_shader_t *shader)@
+  Ptr (Sk_shader) -- ^ C argument @"sk_shader_t * shader"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_shader_unref(sk_shader_t *shader)
+@
+-}
 foreign import ccall "sk_shader_unref" sk_shader_unref ::
-  Ptr (Sk_shader) -- ^ C argument @"shader"@ of type @sk_shader_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_shader_t *sk_shader_with_local_matrix(const sk_shader_t *shader, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_shader) -- ^ C argument @"sk_shader_t * shader"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_with_local_matrix(const sk_shader_t *shader, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_with_local_matrix" sk_shader_with_local_matrix ::
-  Ptr (Sk_shader) -- ^ C argument @"shader"@ of type @const sk_shader_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_with_color_filter(const sk_shader_t *shader, const sk_colorfilter_t *filter)@
+  Ptr (Sk_shader) -- ^ C argument @"const sk_shader_t * shader"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_with_color_filter(const sk_shader_t *shader, const sk_colorfilter_t *filter)
+@
+-}
 foreign import ccall "sk_shader_with_color_filter" sk_shader_with_color_filter ::
-  Ptr (Sk_shader) -- ^ C argument @"shader"@ of type @const sk_shader_t *@
-  -> Ptr (Sk_colorfilter) -- ^ C argument @"filter"@ of type @const sk_colorfilter_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_empty(void)@
+  Ptr (Sk_shader) -- ^ C argument @"const sk_shader_t * shader"@
+  -> Ptr (Sk_colorfilter) -- ^ C argument @"const sk_colorfilter_t * filter"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_empty(void)
+@
+-}
 foreign import ccall "sk_shader_new_empty" sk_shader_new_empty ::
-  IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_color(sk_color_t color)@
+  IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_color(sk_color_t color)
+@
+-}
 foreign import ccall "sk_shader_new_color" sk_shader_new_color ::
-  Sk_color -- ^ C argument @"color"@ of type @sk_color_t@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_color4f(const sk_color4f_t *color, const sk_colorspace_t *colorspace)@
+  Sk_color -- ^ C argument @"sk_color_t color"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_color4f(const sk_color4f_t *color, const sk_colorspace_t *colorspace)
+@
+-}
 foreign import ccall "sk_shader_new_color4f" sk_shader_new_color4f ::
-  Ptr (Sk_color4f) -- ^ C argument @"color"@ of type @const sk_color4f_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_blend(sk_blendmode_t mode, const sk_shader_t *dst, const sk_shader_t *src)@
+  Ptr (Sk_color4f) -- ^ C argument @"const sk_color4f_t * color"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_blend(sk_blendmode_t mode, const sk_shader_t *dst, const sk_shader_t *src)
+@
+-}
 foreign import ccall "sk_shader_new_blend" sk_shader_new_blend ::
-  Sk_blendmode -- ^ C argument @"mode"@ of type @sk_blendmode_t@
-  -> Ptr (Sk_shader) -- ^ C argument @"dst"@ of type @const sk_shader_t *@
-  -> Ptr (Sk_shader) -- ^ C argument @"src"@ of type @const sk_shader_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_blender(sk_blender_t *blender, const sk_shader_t *dst, const sk_shader_t *src)@
+  Sk_blendmode -- ^ C argument @"sk_blendmode_t mode"@
+  -> Ptr (Sk_shader) -- ^ C argument @"const sk_shader_t * dst"@
+  -> Ptr (Sk_shader) -- ^ C argument @"const sk_shader_t * src"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_blender(sk_blender_t *blender, const sk_shader_t *dst, const sk_shader_t *src)
+@
+-}
 foreign import ccall "sk_shader_new_blender" sk_shader_new_blender ::
-  Ptr (Sk_blender) -- ^ C argument @"blender"@ of type @sk_blender_t *@
-  -> Ptr (Sk_shader) -- ^ C argument @"dst"@ of type @const sk_shader_t *@
-  -> Ptr (Sk_shader) -- ^ C argument @"src"@ of type @const sk_shader_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_linear_gradient(const sk_point_t points[2], const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_blender) -- ^ C argument @"sk_blender_t * blender"@
+  -> Ptr (Sk_shader) -- ^ C argument @"const sk_shader_t * dst"@
+  -> Ptr (Sk_shader) -- ^ C argument @"const sk_shader_t * src"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_linear_gradient(const sk_point_t points[2], const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_linear_gradient" sk_shader_new_linear_gradient ::
-  Ptr (Sk_point) -- ^ C argument @"points"@ of type @const sk_point_t [2]@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t []@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_linear_gradient_color4f(const sk_point_t points[2], const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t [2] points"@
+  -> Ptr (Sk_color) -- ^ C argument @"const sk_color_t [] colors"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_linear_gradient_color4f(const sk_point_t points[2], const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_linear_gradient_color4f" sk_shader_new_linear_gradient_color4f ::
-  Ptr (Sk_point) -- ^ C argument @"points"@ of type @const sk_point_t [2]@
-  -> Ptr (Sk_color4f) -- ^ C argument @"colors"@ of type @const sk_color4f_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_radial_gradient(const sk_point_t *center, float radius, const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t [2] points"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"const sk_color4f_t * colors"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_radial_gradient(const sk_point_t *center, float radius, const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_radial_gradient" sk_shader_new_radial_gradient ::
-  Ptr (Sk_point) -- ^ C argument @"center"@ of type @const sk_point_t *@
-  -> CFloat -- ^ C argument @"radius"@ of type @float@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t []@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_radial_gradient_color4f(const sk_point_t *center, float radius, const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t * center"@
+  -> CFloat -- ^ C argument @"float radius"@
+  -> Ptr (Sk_color) -- ^ C argument @"const sk_color_t [] colors"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_radial_gradient_color4f(const sk_point_t *center, float radius, const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_radial_gradient_color4f" sk_shader_new_radial_gradient_color4f ::
-  Ptr (Sk_point) -- ^ C argument @"center"@ of type @const sk_point_t *@
-  -> CFloat -- ^ C argument @"radius"@ of type @float@
-  -> Ptr (Sk_color4f) -- ^ C argument @"colors"@ of type @const sk_color4f_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_sweep_gradient(const sk_point_t *center, const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, float startAngle, float endAngle, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t * center"@
+  -> CFloat -- ^ C argument @"float radius"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"const sk_color4f_t * colors"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_sweep_gradient(const sk_point_t *center, const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, float startAngle, float endAngle, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_sweep_gradient" sk_shader_new_sweep_gradient ::
-  Ptr (Sk_point) -- ^ C argument @"center"@ of type @const sk_point_t *@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t []@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> CFloat -- ^ C argument @"startAngle"@ of type @float@
-  -> CFloat -- ^ C argument @"endAngle"@ of type @float@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_sweep_gradient_color4f(const sk_point_t *center, const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, float startAngle, float endAngle, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t * center"@
+  -> Ptr (Sk_color) -- ^ C argument @"const sk_color_t [] colors"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> CFloat -- ^ C argument @"float startAngle"@
+  -> CFloat -- ^ C argument @"float endAngle"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_sweep_gradient_color4f(const sk_point_t *center, const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, float startAngle, float endAngle, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_sweep_gradient_color4f" sk_shader_new_sweep_gradient_color4f ::
-  Ptr (Sk_point) -- ^ C argument @"center"@ of type @const sk_point_t *@
-  -> Ptr (Sk_color4f) -- ^ C argument @"colors"@ of type @const sk_color4f_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> CFloat -- ^ C argument @"startAngle"@ of type @float@
-  -> CFloat -- ^ C argument @"endAngle"@ of type @float@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_two_point_conical_gradient(const sk_point_t *start, float startRadius, const sk_point_t *end, float endRadius, const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t * center"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"const sk_color4f_t * colors"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> CFloat -- ^ C argument @"float startAngle"@
+  -> CFloat -- ^ C argument @"float endAngle"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_two_point_conical_gradient(const sk_point_t *start, float startRadius, const sk_point_t *end, float endRadius, const sk_color_t colors[], const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_two_point_conical_gradient" sk_shader_new_two_point_conical_gradient ::
-  Ptr (Sk_point) -- ^ C argument @"start"@ of type @const sk_point_t *@
-  -> CFloat -- ^ C argument @"startRadius"@ of type @float@
-  -> Ptr (Sk_point) -- ^ C argument @"end"@ of type @const sk_point_t *@
-  -> CFloat -- ^ C argument @"endRadius"@ of type @float@
-  -> Ptr (Sk_color) -- ^ C argument @"colors"@ of type @const sk_color_t []@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_two_point_conical_gradient_color4f(const sk_point_t *start, float startRadius, const sk_point_t *end, float endRadius, const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t * start"@
+  -> CFloat -- ^ C argument @"float startRadius"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * end"@
+  -> CFloat -- ^ C argument @"float endRadius"@
+  -> Ptr (Sk_color) -- ^ C argument @"const sk_color_t [] colors"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_two_point_conical_gradient_color4f(const sk_point_t *start, float startRadius, const sk_point_t *end, float endRadius, const sk_color4f_t *colors, const sk_colorspace_t *colorspace, const float colorPos[], int colorCount, sk_shader_tilemode_t tileMode, const sk_matrix_t *localMatrix)
+@
+-}
 foreign import ccall "sk_shader_new_two_point_conical_gradient_color4f" sk_shader_new_two_point_conical_gradient_color4f ::
-  Ptr (Sk_point) -- ^ C argument @"start"@ of type @const sk_point_t *@
-  -> CFloat -- ^ C argument @"startRadius"@ of type @float@
-  -> Ptr (Sk_point) -- ^ C argument @"end"@ of type @const sk_point_t *@
-  -> CFloat -- ^ C argument @"endRadius"@ of type @float@
-  -> Ptr (Sk_color4f) -- ^ C argument @"colors"@ of type @const sk_color4f_t *@
-  -> Ptr (Sk_colorspace) -- ^ C argument @"colorspace"@ of type @const sk_colorspace_t *@
-  -> Ptr (CFloat) -- ^ C argument @"colorPos"@ of type @const float []@
-  -> CInt -- ^ C argument @"colorCount"@ of type @int@
-  -> Sk_shader_tilemode -- ^ C argument @"tileMode"@ of type @sk_shader_tilemode_t@
-  -> Ptr (Sk_matrix) -- ^ C argument @"localMatrix"@ of type @const sk_matrix_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_perlin_noise_fractal_noise(float baseFrequencyX, float baseFrequencyY, int numOctaves, float seed, const sk_isize_t *tileSize)@
+  Ptr (Sk_point) -- ^ C argument @"const sk_point_t * start"@
+  -> CFloat -- ^ C argument @"float startRadius"@
+  -> Ptr (Sk_point) -- ^ C argument @"const sk_point_t * end"@
+  -> CFloat -- ^ C argument @"float endRadius"@
+  -> Ptr (Sk_color4f) -- ^ C argument @"const sk_color4f_t * colors"@
+  -> Ptr (Sk_colorspace) -- ^ C argument @"const sk_colorspace_t * colorspace"@
+  -> Ptr (CFloat) -- ^ C argument @"const float [] colorPos"@
+  -> CInt -- ^ C argument @"int colorCount"@
+  -> Sk_shader_tilemode -- ^ C argument @"sk_shader_tilemode_t tileMode"@
+  -> Ptr (Sk_matrix) -- ^ C argument @"const sk_matrix_t * localMatrix"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_perlin_noise_fractal_noise(float baseFrequencyX, float baseFrequencyY, int numOctaves, float seed, const sk_isize_t *tileSize)
+@
+-}
 foreign import ccall "sk_shader_new_perlin_noise_fractal_noise" sk_shader_new_perlin_noise_fractal_noise ::
-  CFloat -- ^ C argument @"baseFrequencyX"@ of type @float@
-  -> CFloat -- ^ C argument @"baseFrequencyY"@ of type @float@
-  -> CInt -- ^ C argument @"numOctaves"@ of type @int@
-  -> CFloat -- ^ C argument @"seed"@ of type @float@
-  -> Ptr (Sk_isize) -- ^ C argument @"tileSize"@ of type @const sk_isize_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @sk_shader_t *sk_shader_new_perlin_noise_turbulence(float baseFrequencyX, float baseFrequencyY, int numOctaves, float seed, const sk_isize_t *tileSize)@
+  CFloat -- ^ C argument @"float baseFrequencyX"@
+  -> CFloat -- ^ C argument @"float baseFrequencyY"@
+  -> CInt -- ^ C argument @"int numOctaves"@
+  -> CFloat -- ^ C argument @"float seed"@
+  -> Ptr (Sk_isize) -- ^ C argument @"const sk_isize_t * tileSize"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+sk_shader_t *sk_shader_new_perlin_noise_turbulence(float baseFrequencyX, float baseFrequencyY, int numOctaves, float seed, const sk_isize_t *tileSize)
+@
+-}
 foreign import ccall "sk_shader_new_perlin_noise_turbulence" sk_shader_new_perlin_noise_turbulence ::
-  CFloat -- ^ C argument @"baseFrequencyX"@ of type @float@
-  -> CFloat -- ^ C argument @"baseFrequencyY"@ of type @float@
-  -> CInt -- ^ C argument @"numOctaves"@ of type @int@
-  -> CFloat -- ^ C argument @"seed"@ of type @float@
-  -> Ptr (Sk_isize) -- ^ C argument @"tileSize"@ of type @const sk_isize_t *@
-  -> IO (Ptr (Sk_shader)) -- ^ C return type: @sk_shader_t *@
--- | C function: @void gr_recording_context_unref(gr_recording_context_t *context)@
+  CFloat -- ^ C argument @"float baseFrequencyX"@
+  -> CFloat -- ^ C argument @"float baseFrequencyY"@
+  -> CInt -- ^ C argument @"int numOctaves"@
+  -> CFloat -- ^ C argument @"float seed"@
+  -> Ptr (Sk_isize) -- ^ C argument @"const sk_isize_t * tileSize"@
+  -> IO (Ptr (Sk_shader)) -- ^ C return type: @"sk_shader_t *"@
+
+{- | C function signature:
+
+@
+void gr_recording_context_unref(gr_recording_context_t *context)
+@
+-}
 foreign import ccall "gr_recording_context_unref" gr_recording_context_unref ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @int gr_recording_context_get_max_surface_sample_count_for_color_type(gr_recording_context_t *context, sk_colortype_t colorType)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int gr_recording_context_get_max_surface_sample_count_for_color_type(gr_recording_context_t *context, sk_colortype_t colorType)
+@
+-}
 foreign import ccall "gr_recording_context_get_max_surface_sample_count_for_color_type" gr_recording_context_get_max_surface_sample_count_for_color_type ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> Sk_colortype -- ^ C argument @"colorType"@ of type @sk_colortype_t@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @gr_backend_t gr_recording_context_get_backend(gr_recording_context_t *context)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> Sk_colortype -- ^ C argument @"sk_colortype_t colorType"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+gr_backend_t gr_recording_context_get_backend(gr_recording_context_t *context)
+@
+-}
 foreign import ccall "gr_recording_context_get_backend" gr_recording_context_get_backend ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> IO (Gr_backend) -- ^ C return type: @gr_backend_t@
--- | C function: @_Bool gr_recording_context_is_abandoned(gr_recording_context_t *context)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> IO (Gr_backend) -- ^ C return type: @"gr_backend_t"@
+
+{- | C function signature:
+
+@
+_Bool gr_recording_context_is_abandoned(gr_recording_context_t *context)
+@
+-}
 foreign import ccall "gr_recording_context_is_abandoned" gr_recording_context_is_abandoned ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int gr_recording_context_max_texture_size(gr_recording_context_t *context)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int gr_recording_context_max_texture_size(gr_recording_context_t *context)
+@
+-}
 foreign import ccall "gr_recording_context_max_texture_size" gr_recording_context_max_texture_size ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int gr_recording_context_max_render_target_size(gr_recording_context_t *context)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int gr_recording_context_max_render_target_size(gr_recording_context_t *context)
+@
+-}
 foreign import ccall "gr_recording_context_max_render_target_size" gr_recording_context_max_render_target_size ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @gr_direct_context_t *gr_recording_context_get_direct_context(gr_recording_context_t *context)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+gr_direct_context_t *gr_recording_context_get_direct_context(gr_recording_context_t *context)
+@
+-}
 foreign import ccall "gr_recording_context_get_direct_context" gr_recording_context_get_direct_context ::
-  Ptr (Gr_recording_context) -- ^ C argument @"context"@ of type @gr_recording_context_t *@
-  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @gr_direct_context_t *@
--- | C function: @gr_direct_context_t *gr_direct_context_make_gl(const gr_glinterface_t *glInterface)@
+  Ptr (Gr_recording_context) -- ^ C argument @"gr_recording_context_t * context"@
+  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @"gr_direct_context_t *"@
+
+{- | C function signature:
+
+@
+gr_direct_context_t *gr_direct_context_make_gl(const gr_glinterface_t *glInterface)
+@
+-}
 foreign import ccall "gr_direct_context_make_gl" gr_direct_context_make_gl ::
-  Ptr (Gr_glinterface) -- ^ C argument @"glInterface"@ of type @const gr_glinterface_t *@
-  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @gr_direct_context_t *@
--- | C function: @gr_direct_context_t *gr_direct_context_make_gl_with_options(const gr_glinterface_t *glInterface, const gr_context_options_t *options)@
+  Ptr (Gr_glinterface) -- ^ C argument @"const gr_glinterface_t * glInterface"@
+  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @"gr_direct_context_t *"@
+
+{- | C function signature:
+
+@
+gr_direct_context_t *gr_direct_context_make_gl_with_options(const gr_glinterface_t *glInterface, const gr_context_options_t *options)
+@
+-}
 foreign import ccall "gr_direct_context_make_gl_with_options" gr_direct_context_make_gl_with_options ::
-  Ptr (Gr_glinterface) -- ^ C argument @"glInterface"@ of type @const gr_glinterface_t *@
-  -> Ptr (Gr_context_options) -- ^ C argument @"options"@ of type @const gr_context_options_t *@
-  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @gr_direct_context_t *@
--- | C function: @gr_direct_context_t *gr_direct_context_make_metal(void *device, void *queue)@
+  Ptr (Gr_glinterface) -- ^ C argument @"const gr_glinterface_t * glInterface"@
+  -> Ptr (Gr_context_options) -- ^ C argument @"const gr_context_options_t * options"@
+  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @"gr_direct_context_t *"@
+
+{- | C function signature:
+
+@
+gr_direct_context_t *gr_direct_context_make_metal(void *device, void *queue)
+@
+-}
 foreign import ccall "gr_direct_context_make_metal" gr_direct_context_make_metal ::
-  Ptr (()) -- ^ C argument @"device"@ of type @void *@
-  -> Ptr (()) -- ^ C argument @"queue"@ of type @void *@
-  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @gr_direct_context_t *@
--- | C function: @gr_direct_context_t *gr_direct_context_make_metal_with_options(void *device, void *queue, const gr_context_options_t *options)@
+  Ptr (()) -- ^ C argument @"void * device"@
+  -> Ptr (()) -- ^ C argument @"void * queue"@
+  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @"gr_direct_context_t *"@
+
+{- | C function signature:
+
+@
+gr_direct_context_t *gr_direct_context_make_metal_with_options(void *device, void *queue, const gr_context_options_t *options)
+@
+-}
 foreign import ccall "gr_direct_context_make_metal_with_options" gr_direct_context_make_metal_with_options ::
-  Ptr (()) -- ^ C argument @"device"@ of type @void *@
-  -> Ptr (()) -- ^ C argument @"queue"@ of type @void *@
-  -> Ptr (Gr_context_options) -- ^ C argument @"options"@ of type @const gr_context_options_t *@
-  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @gr_direct_context_t *@
--- | C function: @_Bool gr_direct_context_is_abandoned(gr_direct_context_t *context)@
+  Ptr (()) -- ^ C argument @"void * device"@
+  -> Ptr (()) -- ^ C argument @"void * queue"@
+  -> Ptr (Gr_context_options) -- ^ C argument @"const gr_context_options_t * options"@
+  -> IO (Ptr (Gr_direct_context)) -- ^ C return type: @"gr_direct_context_t *"@
+
+{- | C function signature:
+
+@
+_Bool gr_direct_context_is_abandoned(gr_direct_context_t *context)
+@
+-}
 foreign import ccall "gr_direct_context_is_abandoned" gr_direct_context_is_abandoned ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void gr_direct_context_abandon_context(gr_direct_context_t *context)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_abandon_context(gr_direct_context_t *context)
+@
+-}
 foreign import ccall "gr_direct_context_abandon_context" gr_direct_context_abandon_context ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_release_resources_and_abandon_context(gr_direct_context_t *context)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_release_resources_and_abandon_context(gr_direct_context_t *context)
+@
+-}
 foreign import ccall "gr_direct_context_release_resources_and_abandon_context" gr_direct_context_release_resources_and_abandon_context ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t gr_direct_context_get_resource_cache_limit(gr_direct_context_t *context)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t gr_direct_context_get_resource_cache_limit(gr_direct_context_t *context)
+@
+-}
 foreign import ccall "gr_direct_context_get_resource_cache_limit" gr_direct_context_get_resource_cache_limit ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
--- | C function: @void gr_direct_context_set_resource_cache_limit(gr_direct_context_t *context, size_t maxResourceBytes)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_set_resource_cache_limit(gr_direct_context_t *context, size_t maxResourceBytes)
+@
+-}
 foreign import ccall "gr_direct_context_set_resource_cache_limit" gr_direct_context_set_resource_cache_limit ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> CSize -- ^ C argument @"maxResourceBytes"@ of type @size_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_get_resource_cache_usage(gr_direct_context_t *context, int *maxResources, size_t *maxResourceBytes)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> CSize -- ^ C argument @"size_t maxResourceBytes"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_get_resource_cache_usage(gr_direct_context_t *context, int *maxResources, size_t *maxResourceBytes)
+@
+-}
 foreign import ccall "gr_direct_context_get_resource_cache_usage" gr_direct_context_get_resource_cache_usage ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> Ptr (CInt) -- ^ C argument @"maxResources"@ of type @int *@
-  -> Ptr (CSize) -- ^ C argument @"maxResourceBytes"@ of type @size_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_flush(gr_direct_context_t *context)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> Ptr (CInt) -- ^ C argument @"int * maxResources"@
+  -> Ptr (CSize) -- ^ C argument @"size_t * maxResourceBytes"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_flush(gr_direct_context_t *context)
+@
+-}
 foreign import ccall "gr_direct_context_flush" gr_direct_context_flush ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool gr_direct_context_submit(gr_direct_context_t *context, _Bool syncCpu)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool gr_direct_context_submit(gr_direct_context_t *context, _Bool syncCpu)
+@
+-}
 foreign import ccall "gr_direct_context_submit" gr_direct_context_submit ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> CBool -- ^ C argument @"syncCpu"@ of type @_Bool@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void gr_direct_context_flush_and_submit(gr_direct_context_t *context, _Bool syncCpu)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> CBool -- ^ C argument @"_Bool syncCpu"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_flush_and_submit(gr_direct_context_t *context, _Bool syncCpu)
+@
+-}
 foreign import ccall "gr_direct_context_flush_and_submit" gr_direct_context_flush_and_submit ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> CBool -- ^ C argument @"syncCpu"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_flush_image(gr_direct_context_t *context, const sk_image_t *image)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> CBool -- ^ C argument @"_Bool syncCpu"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_flush_image(gr_direct_context_t *context, const sk_image_t *image)
+@
+-}
 foreign import ccall "gr_direct_context_flush_image" gr_direct_context_flush_image ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> Ptr (Sk_image) -- ^ C argument @"image"@ of type @const sk_image_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_flush_surface(gr_direct_context_t *context, sk_surface_t *surface)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> Ptr (Sk_image) -- ^ C argument @"const sk_image_t * image"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_flush_surface(gr_direct_context_t *context, sk_surface_t *surface)
+@
+-}
 foreign import ccall "gr_direct_context_flush_surface" gr_direct_context_flush_surface ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> Ptr (Sk_surface) -- ^ C argument @"surface"@ of type @sk_surface_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_reset_context(gr_direct_context_t *context, uint32_t state)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> Ptr (Sk_surface) -- ^ C argument @"sk_surface_t * surface"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_reset_context(gr_direct_context_t *context, uint32_t state)
+@
+-}
 foreign import ccall "gr_direct_context_reset_context" gr_direct_context_reset_context ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> Word32 -- ^ C argument @"state"@ of type @uint32_t@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_dump_memory_statistics(const gr_direct_context_t *context, sk_tracememorydump_t *dump)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> Word32 -- ^ C argument @"uint32_t state"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_dump_memory_statistics(const gr_direct_context_t *context, sk_tracememorydump_t *dump)
+@
+-}
 foreign import ccall "gr_direct_context_dump_memory_statistics" gr_direct_context_dump_memory_statistics ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @const gr_direct_context_t *@
-  -> Ptr (Sk_tracememorydump) -- ^ C argument @"dump"@ of type @sk_tracememorydump_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_free_gpu_resources(gr_direct_context_t *context)@
+  Ptr (Gr_direct_context) -- ^ C argument @"const gr_direct_context_t * context"@
+  -> Ptr (Sk_tracememorydump) -- ^ C argument @"sk_tracememorydump_t * dump"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_free_gpu_resources(gr_direct_context_t *context)
+@
+-}
 foreign import ccall "gr_direct_context_free_gpu_resources" gr_direct_context_free_gpu_resources ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_perform_deferred_cleanup(gr_direct_context_t *context, long long ms)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_perform_deferred_cleanup(gr_direct_context_t *context, long long ms)
+@
+-}
 foreign import ccall "gr_direct_context_perform_deferred_cleanup" gr_direct_context_perform_deferred_cleanup ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> CLLong -- ^ C argument @"ms"@ of type @long long@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_purge_unlocked_resources_bytes(gr_direct_context_t *context, size_t bytesToPurge, _Bool preferScratchResources)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> CLLong -- ^ C argument @"long long ms"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_purge_unlocked_resources_bytes(gr_direct_context_t *context, size_t bytesToPurge, _Bool preferScratchResources)
+@
+-}
 foreign import ccall "gr_direct_context_purge_unlocked_resources_bytes" gr_direct_context_purge_unlocked_resources_bytes ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> CSize -- ^ C argument @"bytesToPurge"@ of type @size_t@
-  -> CBool -- ^ C argument @"preferScratchResources"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_direct_context_purge_unlocked_resources(gr_direct_context_t *context, _Bool scratchResourcesOnly)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> CSize -- ^ C argument @"size_t bytesToPurge"@
+  -> CBool -- ^ C argument @"_Bool preferScratchResources"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_direct_context_purge_unlocked_resources(gr_direct_context_t *context, _Bool scratchResourcesOnly)
+@
+-}
 foreign import ccall "gr_direct_context_purge_unlocked_resources" gr_direct_context_purge_unlocked_resources ::
-  Ptr (Gr_direct_context) -- ^ C argument @"context"@ of type @gr_direct_context_t *@
-  -> CBool -- ^ C argument @"scratchResourcesOnly"@ of type @_Bool@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @const gr_glinterface_t *gr_glinterface_create_native_interface(void)@
+  Ptr (Gr_direct_context) -- ^ C argument @"gr_direct_context_t * context"@
+  -> CBool -- ^ C argument @"_Bool scratchResourcesOnly"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+const gr_glinterface_t *gr_glinterface_create_native_interface(void)
+@
+-}
 foreign import ccall "gr_glinterface_create_native_interface" gr_glinterface_create_native_interface ::
-  IO (Ptr (Gr_glinterface)) -- ^ C return type: @const gr_glinterface_t *@
--- | C function: @const gr_glinterface_t *gr_glinterface_assemble_interface(void *ctx, gr_gl_get_proc get)@
+  IO (Ptr (Gr_glinterface)) -- ^ C return type: @"const gr_glinterface_t *"@
+
+{- | C function signature:
+
+@
+const gr_glinterface_t *gr_glinterface_assemble_interface(void *ctx, gr_gl_get_proc get)
+@
+-}
 foreign import ccall "gr_glinterface_assemble_interface" gr_glinterface_assemble_interface ::
-  Ptr (()) -- ^ C argument @"ctx"@ of type @void *@
-  -> FunPtr Gr_gl_get_proc -- ^ C argument @"get"@ of type @gr_gl_get_proc@
-  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @const gr_glinterface_t *@
--- | C function: @const gr_glinterface_t *gr_glinterface_assemble_gl_interface(void *ctx, gr_gl_get_proc get)@
+  Ptr (()) -- ^ C argument @"void * ctx"@
+  -> FunPtr Gr_gl_get_proc -- ^ C argument @"gr_gl_get_proc get"@
+  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @"const gr_glinterface_t *"@
+
+{- | C function signature:
+
+@
+const gr_glinterface_t *gr_glinterface_assemble_gl_interface(void *ctx, gr_gl_get_proc get)
+@
+-}
 foreign import ccall "gr_glinterface_assemble_gl_interface" gr_glinterface_assemble_gl_interface ::
-  Ptr (()) -- ^ C argument @"ctx"@ of type @void *@
-  -> FunPtr Gr_gl_get_proc -- ^ C argument @"get"@ of type @gr_gl_get_proc@
-  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @const gr_glinterface_t *@
--- | C function: @const gr_glinterface_t *gr_glinterface_assemble_gles_interface(void *ctx, gr_gl_get_proc get)@
+  Ptr (()) -- ^ C argument @"void * ctx"@
+  -> FunPtr Gr_gl_get_proc -- ^ C argument @"gr_gl_get_proc get"@
+  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @"const gr_glinterface_t *"@
+
+{- | C function signature:
+
+@
+const gr_glinterface_t *gr_glinterface_assemble_gles_interface(void *ctx, gr_gl_get_proc get)
+@
+-}
 foreign import ccall "gr_glinterface_assemble_gles_interface" gr_glinterface_assemble_gles_interface ::
-  Ptr (()) -- ^ C argument @"ctx"@ of type @void *@
-  -> FunPtr Gr_gl_get_proc -- ^ C argument @"get"@ of type @gr_gl_get_proc@
-  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @const gr_glinterface_t *@
--- | C function: @const gr_glinterface_t *gr_glinterface_assemble_webgl_interface(void *ctx, gr_gl_get_proc get)@
+  Ptr (()) -- ^ C argument @"void * ctx"@
+  -> FunPtr Gr_gl_get_proc -- ^ C argument @"gr_gl_get_proc get"@
+  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @"const gr_glinterface_t *"@
+
+{- | C function signature:
+
+@
+const gr_glinterface_t *gr_glinterface_assemble_webgl_interface(void *ctx, gr_gl_get_proc get)
+@
+-}
 foreign import ccall "gr_glinterface_assemble_webgl_interface" gr_glinterface_assemble_webgl_interface ::
-  Ptr (()) -- ^ C argument @"ctx"@ of type @void *@
-  -> FunPtr Gr_gl_get_proc -- ^ C argument @"get"@ of type @gr_gl_get_proc@
-  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @const gr_glinterface_t *@
--- | C function: @void gr_glinterface_unref(const gr_glinterface_t *glInterface)@
+  Ptr (()) -- ^ C argument @"void * ctx"@
+  -> FunPtr Gr_gl_get_proc -- ^ C argument @"gr_gl_get_proc get"@
+  -> IO (Ptr (Gr_glinterface)) -- ^ C return type: @"const gr_glinterface_t *"@
+
+{- | C function signature:
+
+@
+void gr_glinterface_unref(const gr_glinterface_t *glInterface)
+@
+-}
 foreign import ccall "gr_glinterface_unref" gr_glinterface_unref ::
-  Ptr (Gr_glinterface) -- ^ C argument @"glInterface"@ of type @const gr_glinterface_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool gr_glinterface_validate(const gr_glinterface_t *glInterface)@
+  Ptr (Gr_glinterface) -- ^ C argument @"const gr_glinterface_t * glInterface"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool gr_glinterface_validate(const gr_glinterface_t *glInterface)
+@
+-}
 foreign import ccall "gr_glinterface_validate" gr_glinterface_validate ::
-  Ptr (Gr_glinterface) -- ^ C argument @"glInterface"@ of type @const gr_glinterface_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @_Bool gr_glinterface_has_extension(const gr_glinterface_t *glInterface, const char *extension)@
+  Ptr (Gr_glinterface) -- ^ C argument @"const gr_glinterface_t * glInterface"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+_Bool gr_glinterface_has_extension(const gr_glinterface_t *glInterface, const char *extension)
+@
+-}
 foreign import ccall "gr_glinterface_has_extension" gr_glinterface_has_extension ::
-  Ptr (Gr_glinterface) -- ^ C argument @"glInterface"@ of type @const gr_glinterface_t *@
-  -> Ptr (CChar) -- ^ C argument @"extension"@ of type @const char *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @gr_vk_extensions_t *gr_vk_extensions_new(void)@
+  Ptr (Gr_glinterface) -- ^ C argument @"const gr_glinterface_t * glInterface"@
+  -> Ptr (CChar) -- ^ C argument @"const char * extension"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+gr_vk_extensions_t *gr_vk_extensions_new(void)
+@
+-}
 foreign import ccall "gr_vk_extensions_new" gr_vk_extensions_new ::
-  IO (Ptr (Gr_vk_extensions)) -- ^ C return type: @gr_vk_extensions_t *@
--- | C function: @void gr_vk_extensions_delete(gr_vk_extensions_t *extensions)@
+  IO (Ptr (Gr_vk_extensions)) -- ^ C return type: @"gr_vk_extensions_t *"@
+
+{- | C function signature:
+
+@
+void gr_vk_extensions_delete(gr_vk_extensions_t *extensions)
+@
+-}
 foreign import ccall "gr_vk_extensions_delete" gr_vk_extensions_delete ::
-  Ptr (Gr_vk_extensions) -- ^ C argument @"extensions"@ of type @gr_vk_extensions_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void gr_vk_extensions_init(gr_vk_extensions_t *extensions, gr_vk_get_proc getProc, void *userData, vk_instance_t *instance, vk_physical_device_t *physDev, uint32_t instanceExtensionCount, const char **instanceExtensions, uint32_t deviceExtensionCount, const char **deviceExtensions)@
+  Ptr (Gr_vk_extensions) -- ^ C argument @"gr_vk_extensions_t * extensions"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void gr_vk_extensions_init(gr_vk_extensions_t *extensions, gr_vk_get_proc getProc, void *userData, vk_instance_t *instance, vk_physical_device_t *physDev, uint32_t instanceExtensionCount, const char **instanceExtensions, uint32_t deviceExtensionCount, const char **deviceExtensions)
+@
+-}
 foreign import ccall "gr_vk_extensions_init" gr_vk_extensions_init ::
-  Ptr (Gr_vk_extensions) -- ^ C argument @"extensions"@ of type @gr_vk_extensions_t *@
-  -> FunPtr Gr_vk_get_proc -- ^ C argument @"getProc"@ of type @gr_vk_get_proc@
-  -> Ptr (()) -- ^ C argument @"userData"@ of type @void *@
-  -> Ptr (Vk_instance) -- ^ C argument @"instance"@ of type @vk_instance_t *@
-  -> Ptr (Vk_physical_device) -- ^ C argument @"physDev"@ of type @vk_physical_device_t *@
-  -> Word32 -- ^ C argument @"instanceExtensionCount"@ of type @uint32_t@
-  -> Ptr (Ptr (CChar)) -- ^ C argument @"instanceExtensions"@ of type @const char **@
-  -> Word32 -- ^ C argument @"deviceExtensionCount"@ of type @uint32_t@
-  -> Ptr (Ptr (CChar)) -- ^ C argument @"deviceExtensions"@ of type @const char **@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool gr_vk_extensions_has_extension(gr_vk_extensions_t *extensions, const char *ext, uint32_t minVersion)@
+  Ptr (Gr_vk_extensions) -- ^ C argument @"gr_vk_extensions_t * extensions"@
+  -> FunPtr Gr_vk_get_proc -- ^ C argument @"gr_vk_get_proc getProc"@
+  -> Ptr (()) -- ^ C argument @"void * userData"@
+  -> Ptr (Vk_instance) -- ^ C argument @"vk_instance_t * instance"@
+  -> Ptr (Vk_physical_device) -- ^ C argument @"vk_physical_device_t * physDev"@
+  -> Word32 -- ^ C argument @"uint32_t instanceExtensionCount"@
+  -> Ptr (Ptr (CChar)) -- ^ C argument @"const char ** instanceExtensions"@
+  -> Word32 -- ^ C argument @"uint32_t deviceExtensionCount"@
+  -> Ptr (Ptr (CChar)) -- ^ C argument @"const char ** deviceExtensions"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool gr_vk_extensions_has_extension(gr_vk_extensions_t *extensions, const char *ext, uint32_t minVersion)
+@
+-}
 foreign import ccall "gr_vk_extensions_has_extension" gr_vk_extensions_has_extension ::
-  Ptr (Gr_vk_extensions) -- ^ C argument @"extensions"@ of type @gr_vk_extensions_t *@
-  -> Ptr (CChar) -- ^ C argument @"ext"@ of type @const char *@
-  -> Word32 -- ^ C argument @"minVersion"@ of type @uint32_t@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @gr_backendtexture_t *gr_backendtexture_new_gl(int width, int height, _Bool mipmapped, const gr_gl_textureinfo_t *glInfo)@
+  Ptr (Gr_vk_extensions) -- ^ C argument @"gr_vk_extensions_t * extensions"@
+  -> Ptr (CChar) -- ^ C argument @"const char * ext"@
+  -> Word32 -- ^ C argument @"uint32_t minVersion"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+gr_backendtexture_t *gr_backendtexture_new_gl(int width, int height, _Bool mipmapped, const gr_gl_textureinfo_t *glInfo)
+@
+-}
 foreign import ccall "gr_backendtexture_new_gl" gr_backendtexture_new_gl ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> CBool -- ^ C argument @"mipmapped"@ of type @_Bool@
-  -> Ptr (Gr_gl_textureinfo) -- ^ C argument @"glInfo"@ of type @const gr_gl_textureinfo_t *@
-  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @gr_backendtexture_t *@
--- | C function: @gr_backendtexture_t *gr_backendtexture_new_vulkan(int width, int height, const gr_vk_imageinfo_t *vkInfo)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> CBool -- ^ C argument @"_Bool mipmapped"@
+  -> Ptr (Gr_gl_textureinfo) -- ^ C argument @"const gr_gl_textureinfo_t * glInfo"@
+  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @"gr_backendtexture_t *"@
+
+{- | C function signature:
+
+@
+gr_backendtexture_t *gr_backendtexture_new_vulkan(int width, int height, const gr_vk_imageinfo_t *vkInfo)
+@
+-}
 foreign import ccall "gr_backendtexture_new_vulkan" gr_backendtexture_new_vulkan ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> Ptr (Gr_vk_imageinfo) -- ^ C argument @"vkInfo"@ of type @const gr_vk_imageinfo_t *@
-  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @gr_backendtexture_t *@
--- | C function: @gr_backendtexture_t *gr_backendtexture_new_metal(int width, int height, _Bool mipmapped, const gr_mtl_textureinfo_t *mtlInfo)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> Ptr (Gr_vk_imageinfo) -- ^ C argument @"const gr_vk_imageinfo_t * vkInfo"@
+  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @"gr_backendtexture_t *"@
+
+{- | C function signature:
+
+@
+gr_backendtexture_t *gr_backendtexture_new_metal(int width, int height, _Bool mipmapped, const gr_mtl_textureinfo_t *mtlInfo)
+@
+-}
 foreign import ccall "gr_backendtexture_new_metal" gr_backendtexture_new_metal ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> CBool -- ^ C argument @"mipmapped"@ of type @_Bool@
-  -> Ptr (Gr_mtl_textureinfo) -- ^ C argument @"mtlInfo"@ of type @const gr_mtl_textureinfo_t *@
-  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @gr_backendtexture_t *@
--- | C function: @gr_backendtexture_t *gr_backendtexture_new_direct3d(int width, int height, const gr_d3d_textureresourceinfo_t *d3dInfo)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> CBool -- ^ C argument @"_Bool mipmapped"@
+  -> Ptr (Gr_mtl_textureinfo) -- ^ C argument @"const gr_mtl_textureinfo_t * mtlInfo"@
+  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @"gr_backendtexture_t *"@
+
+{- | C function signature:
+
+@
+gr_backendtexture_t *gr_backendtexture_new_direct3d(int width, int height, const gr_d3d_textureresourceinfo_t *d3dInfo)
+@
+-}
 foreign import ccall "gr_backendtexture_new_direct3d" gr_backendtexture_new_direct3d ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> Ptr (Gr_d3d_textureresourceinfo) -- ^ C argument @"d3dInfo"@ of type @const gr_d3d_textureresourceinfo_t *@
-  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @gr_backendtexture_t *@
--- | C function: @void gr_backendtexture_delete(gr_backendtexture_t *texture)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> Ptr (Gr_d3d_textureresourceinfo) -- ^ C argument @"const gr_d3d_textureresourceinfo_t * d3dInfo"@
+  -> IO (Ptr (Gr_backendtexture)) -- ^ C return type: @"gr_backendtexture_t *"@
+
+{- | C function signature:
+
+@
+void gr_backendtexture_delete(gr_backendtexture_t *texture)
+@
+-}
 foreign import ccall "gr_backendtexture_delete" gr_backendtexture_delete ::
-  Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @gr_backendtexture_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool gr_backendtexture_is_valid(const gr_backendtexture_t *texture)@
+  Ptr (Gr_backendtexture) -- ^ C argument @"gr_backendtexture_t * texture"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool gr_backendtexture_is_valid(const gr_backendtexture_t *texture)
+@
+-}
 foreign import ccall "gr_backendtexture_is_valid" gr_backendtexture_is_valid ::
-  Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int gr_backendtexture_get_width(const gr_backendtexture_t *texture)@
+  Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int gr_backendtexture_get_width(const gr_backendtexture_t *texture)
+@
+-}
 foreign import ccall "gr_backendtexture_get_width" gr_backendtexture_get_width ::
-  Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int gr_backendtexture_get_height(const gr_backendtexture_t *texture)@
+  Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int gr_backendtexture_get_height(const gr_backendtexture_t *texture)
+@
+-}
 foreign import ccall "gr_backendtexture_get_height" gr_backendtexture_get_height ::
-  Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @_Bool gr_backendtexture_has_mipmaps(const gr_backendtexture_t *texture)@
+  Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+_Bool gr_backendtexture_has_mipmaps(const gr_backendtexture_t *texture)
+@
+-}
 foreign import ccall "gr_backendtexture_has_mipmaps" gr_backendtexture_has_mipmaps ::
-  Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @gr_backend_t gr_backendtexture_get_backend(const gr_backendtexture_t *texture)@
+  Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+gr_backend_t gr_backendtexture_get_backend(const gr_backendtexture_t *texture)
+@
+-}
 foreign import ccall "gr_backendtexture_get_backend" gr_backendtexture_get_backend ::
-  Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> IO (Gr_backend) -- ^ C return type: @gr_backend_t@
--- | C function: @_Bool gr_backendtexture_get_gl_textureinfo(const gr_backendtexture_t *texture, gr_gl_textureinfo_t *glInfo)@
+  Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> IO (Gr_backend) -- ^ C return type: @"gr_backend_t"@
+
+{- | C function signature:
+
+@
+_Bool gr_backendtexture_get_gl_textureinfo(const gr_backendtexture_t *texture, gr_gl_textureinfo_t *glInfo)
+@
+-}
 foreign import ccall "gr_backendtexture_get_gl_textureinfo" gr_backendtexture_get_gl_textureinfo ::
-  Ptr (Gr_backendtexture) -- ^ C argument @"texture"@ of type @const gr_backendtexture_t *@
-  -> Ptr (Gr_gl_textureinfo) -- ^ C argument @"glInfo"@ of type @gr_gl_textureinfo_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @gr_backendrendertarget_t *gr_backendrendertarget_new_gl(int width, int height, int samples, int stencils, const gr_gl_framebufferinfo_t *glInfo)@
+  Ptr (Gr_backendtexture) -- ^ C argument @"const gr_backendtexture_t * texture"@
+  -> Ptr (Gr_gl_textureinfo) -- ^ C argument @"gr_gl_textureinfo_t * glInfo"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+gr_backendrendertarget_t *gr_backendrendertarget_new_gl(int width, int height, int samples, int stencils, const gr_gl_framebufferinfo_t *glInfo)
+@
+-}
 foreign import ccall "gr_backendrendertarget_new_gl" gr_backendrendertarget_new_gl ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> CInt -- ^ C argument @"samples"@ of type @int@
-  -> CInt -- ^ C argument @"stencils"@ of type @int@
-  -> Ptr (Gr_gl_framebufferinfo) -- ^ C argument @"glInfo"@ of type @const gr_gl_framebufferinfo_t *@
-  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @gr_backendrendertarget_t *@
--- | C function: @gr_backendrendertarget_t *gr_backendrendertarget_new_vulkan(int width, int height, const gr_vk_imageinfo_t *vkImageInfo)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> CInt -- ^ C argument @"int samples"@
+  -> CInt -- ^ C argument @"int stencils"@
+  -> Ptr (Gr_gl_framebufferinfo) -- ^ C argument @"const gr_gl_framebufferinfo_t * glInfo"@
+  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @"gr_backendrendertarget_t *"@
+
+{- | C function signature:
+
+@
+gr_backendrendertarget_t *gr_backendrendertarget_new_vulkan(int width, int height, const gr_vk_imageinfo_t *vkImageInfo)
+@
+-}
 foreign import ccall "gr_backendrendertarget_new_vulkan" gr_backendrendertarget_new_vulkan ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> Ptr (Gr_vk_imageinfo) -- ^ C argument @"vkImageInfo"@ of type @const gr_vk_imageinfo_t *@
-  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @gr_backendrendertarget_t *@
--- | C function: @gr_backendrendertarget_t *gr_backendrendertarget_new_metal(int width, int height, const gr_mtl_textureinfo_t *mtlInfo)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> Ptr (Gr_vk_imageinfo) -- ^ C argument @"const gr_vk_imageinfo_t * vkImageInfo"@
+  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @"gr_backendrendertarget_t *"@
+
+{- | C function signature:
+
+@
+gr_backendrendertarget_t *gr_backendrendertarget_new_metal(int width, int height, const gr_mtl_textureinfo_t *mtlInfo)
+@
+-}
 foreign import ccall "gr_backendrendertarget_new_metal" gr_backendrendertarget_new_metal ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> Ptr (Gr_mtl_textureinfo) -- ^ C argument @"mtlInfo"@ of type @const gr_mtl_textureinfo_t *@
-  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @gr_backendrendertarget_t *@
--- | C function: @gr_backendrendertarget_t *gr_backendrendertarget_new_direct3d(int width, int height, const gr_d3d_textureresourceinfo_t *d3dInfo)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> Ptr (Gr_mtl_textureinfo) -- ^ C argument @"const gr_mtl_textureinfo_t * mtlInfo"@
+  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @"gr_backendrendertarget_t *"@
+
+{- | C function signature:
+
+@
+gr_backendrendertarget_t *gr_backendrendertarget_new_direct3d(int width, int height, const gr_d3d_textureresourceinfo_t *d3dInfo)
+@
+-}
 foreign import ccall "gr_backendrendertarget_new_direct3d" gr_backendrendertarget_new_direct3d ::
-  CInt -- ^ C argument @"width"@ of type @int@
-  -> CInt -- ^ C argument @"height"@ of type @int@
-  -> Ptr (Gr_d3d_textureresourceinfo) -- ^ C argument @"d3dInfo"@ of type @const gr_d3d_textureresourceinfo_t *@
-  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @gr_backendrendertarget_t *@
--- | C function: @void gr_backendrendertarget_delete(gr_backendrendertarget_t *rendertarget)@
+  CInt -- ^ C argument @"int width"@
+  -> CInt -- ^ C argument @"int height"@
+  -> Ptr (Gr_d3d_textureresourceinfo) -- ^ C argument @"const gr_d3d_textureresourceinfo_t * d3dInfo"@
+  -> IO (Ptr (Gr_backendrendertarget)) -- ^ C return type: @"gr_backendrendertarget_t *"@
+
+{- | C function signature:
+
+@
+void gr_backendrendertarget_delete(gr_backendrendertarget_t *rendertarget)
+@
+-}
 foreign import ccall "gr_backendrendertarget_delete" gr_backendrendertarget_delete ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @gr_backendrendertarget_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @_Bool gr_backendrendertarget_is_valid(const gr_backendrendertarget_t *rendertarget)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"gr_backendrendertarget_t * rendertarget"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool gr_backendrendertarget_is_valid(const gr_backendrendertarget_t *rendertarget)
+@
+-}
 foreign import ccall "gr_backendrendertarget_is_valid" gr_backendrendertarget_is_valid ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @const gr_backendrendertarget_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @int gr_backendrendertarget_get_width(const gr_backendrendertarget_t *rendertarget)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * rendertarget"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+int gr_backendrendertarget_get_width(const gr_backendrendertarget_t *rendertarget)
+@
+-}
 foreign import ccall "gr_backendrendertarget_get_width" gr_backendrendertarget_get_width ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @const gr_backendrendertarget_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int gr_backendrendertarget_get_height(const gr_backendrendertarget_t *rendertarget)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * rendertarget"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int gr_backendrendertarget_get_height(const gr_backendrendertarget_t *rendertarget)
+@
+-}
 foreign import ccall "gr_backendrendertarget_get_height" gr_backendrendertarget_get_height ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @const gr_backendrendertarget_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int gr_backendrendertarget_get_samples(const gr_backendrendertarget_t *rendertarget)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * rendertarget"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int gr_backendrendertarget_get_samples(const gr_backendrendertarget_t *rendertarget)
+@
+-}
 foreign import ccall "gr_backendrendertarget_get_samples" gr_backendrendertarget_get_samples ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @const gr_backendrendertarget_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @int gr_backendrendertarget_get_stencils(const gr_backendrendertarget_t *rendertarget)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * rendertarget"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+int gr_backendrendertarget_get_stencils(const gr_backendrendertarget_t *rendertarget)
+@
+-}
 foreign import ccall "gr_backendrendertarget_get_stencils" gr_backendrendertarget_get_stencils ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @const gr_backendrendertarget_t *@
-  -> IO (CInt) -- ^ C return type: @int@
--- | C function: @gr_backend_t gr_backendrendertarget_get_backend(const gr_backendrendertarget_t *rendertarget)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * rendertarget"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+gr_backend_t gr_backendrendertarget_get_backend(const gr_backendrendertarget_t *rendertarget)
+@
+-}
 foreign import ccall "gr_backendrendertarget_get_backend" gr_backendrendertarget_get_backend ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @const gr_backendrendertarget_t *@
-  -> IO (Gr_backend) -- ^ C return type: @gr_backend_t@
--- | C function: @_Bool gr_backendrendertarget_get_gl_framebufferinfo(const gr_backendrendertarget_t *rendertarget, gr_gl_framebufferinfo_t *glInfo)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * rendertarget"@
+  -> IO (Gr_backend) -- ^ C return type: @"gr_backend_t"@
+
+{- | C function signature:
+
+@
+_Bool gr_backendrendertarget_get_gl_framebufferinfo(const gr_backendrendertarget_t *rendertarget, gr_gl_framebufferinfo_t *glInfo)
+@
+-}
 foreign import ccall "gr_backendrendertarget_get_gl_framebufferinfo" gr_backendrendertarget_get_gl_framebufferinfo ::
-  Ptr (Gr_backendrendertarget) -- ^ C argument @"rendertarget"@ of type @const gr_backendrendertarget_t *@
-  -> Ptr (Gr_gl_framebufferinfo) -- ^ C argument @"glInfo"@ of type @gr_gl_framebufferinfo_t *@
-  -> IO (CBool) -- ^ C return type: @_Bool@
--- | C function: @void sk_drawable_unref(sk_drawable_t *)@
+  Ptr (Gr_backendrendertarget) -- ^ C argument @"const gr_backendrendertarget_t * rendertarget"@
+  -> Ptr (Gr_gl_framebufferinfo) -- ^ C argument @"gr_gl_framebufferinfo_t * glInfo"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_drawable_unref(sk_drawable_t *)
+@
+-}
 foreign import ccall "sk_drawable_unref" sk_drawable_unref ::
-  Ptr (Sk_drawable) -- ^ C argument type: @sk_drawable_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @uint32_t sk_drawable_get_generation_id(sk_drawable_t *)@
+  Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+uint32_t sk_drawable_get_generation_id(sk_drawable_t *)
+@
+-}
 foreign import ccall "sk_drawable_get_generation_id" sk_drawable_get_generation_id ::
-  Ptr (Sk_drawable) -- ^ C argument type: @sk_drawable_t *@
-  -> IO (Word32) -- ^ C return type: @uint32_t@
--- | C function: @void sk_drawable_get_bounds(sk_drawable_t *, sk_rect_t *)@
+  Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
+  -> IO (Word32) -- ^ C return type: @"uint32_t"@
+
+{- | C function signature:
+
+@
+void sk_drawable_get_bounds(sk_drawable_t *, sk_rect_t *)
+@
+-}
 foreign import ccall "sk_drawable_get_bounds" sk_drawable_get_bounds ::
-  Ptr (Sk_drawable) -- ^ C argument type: @sk_drawable_t *@
-  -> Ptr (Sk_rect) -- ^ C argument type: @sk_rect_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @void sk_drawable_draw(sk_drawable_t *, sk_canvas_t *, const sk_matrix_t *)@
+  Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
+  -> Ptr (Sk_rect) -- ^ C argument type: @"sk_rect_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+void sk_drawable_draw(sk_drawable_t *, sk_canvas_t *, const sk_matrix_t *)
+@
+-}
 foreign import ccall "sk_drawable_draw" sk_drawable_draw ::
-  Ptr (Sk_drawable) -- ^ C argument type: @sk_drawable_t *@
-  -> Ptr (Sk_canvas) -- ^ C argument type: @sk_canvas_t *@
-  -> Ptr (Sk_matrix) -- ^ C argument type: @const sk_matrix_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @sk_picture_t *sk_drawable_new_picture_snapshot(sk_drawable_t *)@
+  Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
+  -> Ptr (Sk_canvas) -- ^ C argument type: @"sk_canvas_t *"@
+  -> Ptr (Sk_matrix) -- ^ C argument type: @"const sk_matrix_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_picture_t *sk_drawable_new_picture_snapshot(sk_drawable_t *)
+@
+-}
 foreign import ccall "sk_drawable_new_picture_snapshot" sk_drawable_new_picture_snapshot ::
-  Ptr (Sk_drawable) -- ^ C argument type: @sk_drawable_t *@
-  -> IO (Ptr (Sk_picture)) -- ^ C return type: @sk_picture_t *@
--- | C function: @void sk_drawable_notify_drawing_changed(sk_drawable_t *)@
+  Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
+  -> IO (Ptr (Sk_picture)) -- ^ C return type: @"sk_picture_t *"@
+
+{- | C function signature:
+
+@
+void sk_drawable_notify_drawing_changed(sk_drawable_t *)
+@
+-}
 foreign import ccall "sk_drawable_notify_drawing_changed" sk_drawable_notify_drawing_changed ::
-  Ptr (Sk_drawable) -- ^ C argument type: @sk_drawable_t *@
-  -> IO (()) -- ^ C return type: @void@
--- | C function: @size_t sk_drawable_approximate_bytes_used(sk_drawable_t *)@
+  Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+size_t sk_drawable_approximate_bytes_used(sk_drawable_t *)
+@
+-}
 foreign import ccall "sk_drawable_approximate_bytes_used" sk_drawable_approximate_bytes_used ::
-  Ptr (Sk_drawable) -- ^ C argument type: @sk_drawable_t *@
-  -> IO (CSize) -- ^ C return type: @size_t@
+  Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
+  -> IO (CSize) -- ^ C return type: @"size_t"@
