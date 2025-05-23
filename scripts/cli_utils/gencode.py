@@ -255,7 +255,8 @@ class HsSourceWriter:
             # the one from the line above, if it exists.
             self.write_line("")
 
-            self.write_line(f"-- | {comment}")
+            self.write_line(f"{{- | {comment}")
+            self.write_line(f"-}}")
 
         if prefix is None:
             self.write_line(f"{name} ::")
@@ -304,7 +305,8 @@ class HsSourceWriter:
             # the one from the line above, if it exists.
             self.write_line("")
 
-            self.write_line(f"-- | {comment}")
+            self.write_line(f"{{- | {comment}")
+            self.write_line(f"-}}")
 
         self.write_line(f"data {name} = {name}")
 
@@ -388,7 +390,12 @@ class CSourceVisitor(c_ast.NodeVisitor):
 
         self.srcwriter.write_line(f"""\
 
--- | C type alias: @{render_ast(node)}@
+{{- | C type alias: @{c_def_name}@
+
+@
+{render_ast(node)}
+@
+-}}
 type {hs_def_name} = {hs_type}\
 """)
 
@@ -404,7 +411,13 @@ type {hs_def_name} = {hs_type}\
 
         self.srcwriter.write_source(f"""\
 
--- | C enum: @{c_def_name}@
+{{- | C enum: @"{c_def_name}"@
+
+@
+{render_ast(node)}
+@
+
+-}}
 newtype {hs_def_name} = {hs_def_name} (#type {c_def_name})
 {indent}deriving stock (Show, Eq, Ord)
 {indent}deriving newtype (Num, Bits, Storable)
@@ -417,7 +430,7 @@ newtype {hs_def_name} = {hs_def_name} (#type {c_def_name})
 
             self.srcwriter.write_source(f"""\
 
--- | C enum @{c_def_name}@ value ({i}/{len(enum_values)}): @{c_value_name}@
+-- | C enum @"{c_def_name}"@ value ({i}/{len(enum_values)}): @"{c_value_name}"@
 pattern {hs_value_name} :: {hs_def_name}
 pattern {hs_value_name} = (#const {c_value_name})
 """)
@@ -451,7 +464,7 @@ pattern {hs_value_name} = (#const {c_value_name})
 
         self.srcwriter.write_record_type(
             name=hs_def_name,
-            comment=f"Opaque C struct @{c_def_name}@",
+            comment=f"Opaque C struct: @\"{c_def_name}\"@",
             fields=[],
         )
 
@@ -477,13 +490,13 @@ pattern {hs_value_name} = (#const {c_value_name})
             field = HsField(
                 name=hs_field_name,
                 ty=hs_field_ty,
-                comment=f"C field: @{render_ast(decl)}@"
+                comment=f"C field: @\"{render_ast(decl)}\"@"
             )
             fields.append(field)
 
         self.srcwriter.write_record_type(
             name=hs_def_name,
-            comment=f"C struct name: @{c_def_name}@",  # TODO:
+            comment=f"C struct: @\"{c_def_name}\"@\n\n@\n{render_ast(node)}\n@",  # TODO:
             fields=fields,
         )
 
@@ -582,9 +595,9 @@ type {hs_def_name} = {hs_fn_type}
         for c_arg in f.parameter:
             comment: str
             if c_arg.name is None:
-                comment = f"C argument type: @{render_ast(c_arg.arg_type)}@"
+                comment = f"C argument type: @\"{render_ast(c_arg.arg_type)}\"@"
             else:
-                comment = f"C argument @\"{c_arg.name}\"@ of type @{render_ast(c_arg.arg_type)}@"
+                comment = f"C argument @\"{render_ast(c_arg.arg_type)} {c_arg.name}\"@"
 
             args.append(HsArgType(
                 ty=self.typectx.convert_c_type_to_hs_type(c_arg.arg_type),
@@ -593,13 +606,13 @@ type {hs_def_name} = {hs_fn_type}
 
         ret = HsArgType(
             ty=f"IO ({self.typectx.convert_c_type_to_hs_type(f.return_type)})",
-            comment=f"C return type: @{render_ast(f.return_type)}@",
+            comment=f"C return type: @\"{render_ast(f.return_type)}\"@",
         )
 
         self.srcwriter.write_function_type(
             name=hs_def_name,
             prefix=f"foreign import ccall \"{c_def_name}\"",
-            comment=f"C function: @{render_ast(decl)}@",
+            comment=f"C function signature:\n\n@\n{render_ast(decl)}\n@",
             args=args,
             ret=ret,
         )
