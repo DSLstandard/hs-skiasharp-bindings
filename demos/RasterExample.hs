@@ -5,6 +5,17 @@ import Foreign
 import Foreign.C
 import SkiaSharp.Bindings
 
+-- | Taken from include/encode/SkPngEncoder.h
+defaultSkPngEncoderOptions :: Sk_pngencoder_options
+defaultSkPngEncoderOptions =
+    Sk_pngencoder_options
+        { fFilterFlags = ALL_SK_PNGENCODER_FILTER_FLAGS
+        , fZLibLevel = 6
+        , fComments = nullPtr
+        , fICCProfile = nullPtr
+        , fICCProfileDescription = nullPtr
+        }
+
 main :: IO ()
 main = do
     let outputPngFilePath = "raster-example-output.png"
@@ -18,8 +29,8 @@ main = do
                 { colorspace = colorspace
                 , width = 800
                 , height = 800
-                , colorType = sk_colortype'ARGB_4444_SK_COLORTYPE
-                , alphaType = sk_alphatype'PREMUL_SK_ALPHATYPE
+                , colorType = ARGB_4444_SK_COLORTYPE
+                , alphaType = PREMUL_SK_ALPHATYPE
                 }
 
     surf <- with iminfo \iminfo -> do

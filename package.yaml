@@ -62,3 +62,14 @@ library:
     - inline-c
   pkg-config-dependencies:
     - skia
+  extra-libraries:
+    - SkiaSharp
+
+executables:
+  demo-raster-example:
+    sourec-dirs: demos/
+    main: demos/RasterExample.hs
+    exposed-modules: []
+    dependencies:
+      - base
+      - skiasharp-bindings

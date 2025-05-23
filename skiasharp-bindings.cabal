@@ -69,6 +69,8 @@ library
       UndecidableInstances
       ViewPatterns
   ghc-options: -Wall -Wno-name-shadowing -Wno-orphans
+  extra-libraries:
+      SkiaSharp
   pkgconfig-depends:
       skia
   build-tools:
@@ -77,4 +79,60 @@ library
       base
     , inline-c
     , storable-offset
+  default-language: Haskell2010
+
+executable demo-raster-example
+  main-is: demos/RasterExample.hs
+  other-modules:
+      Paths_skiasharp_bindings
+  default-extensions:
+      AllowAmbiguousTypes
+      Arrows
+      BlockArguments
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveAnyClass
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingStrategies
+      DerivingVia
+      DuplicateRecordFields
+      EmptyCase
+      ExplicitForAll
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      LambdaCase
+      LiberalTypeSynonyms
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedLabels
+      OverloadedRecordDot
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternSynonyms
+      QuasiQuotes
+      RankNTypes
+      RecordWildCards
+      RecursiveDo
+      ScopedTypeVariables
+      StandaloneDeriving
+      TemplateHaskell
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      UndecidableInstances
+      ViewPatterns
+  ghc-options: -Wall -Wno-name-shadowing -Wno-orphans
+  build-depends:
+      base
+    , skiasharp-bindings
   default-language: Haskell2010
