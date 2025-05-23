@@ -251,6 +251,10 @@ class HsSourceWriter:
             args = []
 
         if comment is not None:
+            # We need this newline; otherwise, the Haddock comment might be merged with
+            # the one from the line above, if it exists.
+            self.write_line("")
+
             self.write_line(f"-- | {comment}")
 
         if prefix is None:
@@ -296,6 +300,10 @@ class HsSourceWriter:
         indent = self.indent(1)
 
         if comment is not None:
+            # We need this newline; otherwise, the Haddock comment might be merged with
+            # the one from the line above, if it exists.
+            self.write_line("")
+
             self.write_line(f"-- | {comment}")
 
         self.write_line(f"data {name} = {name}")
@@ -316,7 +324,7 @@ class HsSourceWriter:
 
 # A set of functions to be excluded from having their 'foreign import ccall'
 # definitions auto-generated.
-# 
+#
 # Some SkiaSharp C API functions have struct-type arguments, and Haskell's FFI
 # is incapable of interacting with these functions directly. We must manually
 # define FFI bindings for them instead of relying on the auto-generator.
@@ -378,8 +386,11 @@ class CSourceVisitor(c_ast.NodeVisitor):
 
         self.typectx.register_type(c_def_name, hs_def_name)
 
-        self.srcwriter.write_line(f"-- | C type alias: @{render_ast(node)}@")
-        self.srcwriter.write_line(f"type {hs_def_name} = {hs_type}")
+        self.srcwriter.write_line(f"""\
+
+-- | C type alias: @{render_ast(node)}@
+type {hs_def_name} = {hs_type}\
+""")
 
     def handle_typedef_enum(self, node: c_ast.Node):
         enum_ty: c_ast.Enum = node.type.type
@@ -392,6 +403,7 @@ class CSourceVisitor(c_ast.NodeVisitor):
         indent = self.srcwriter.indent(1)
 
         self.srcwriter.write_source(f"""\
+
 -- | C enum: @{c_def_name}@
 newtype {hs_def_name} = {hs_def_name} (#type {c_def_name})
 {indent}deriving stock (Show, Eq, Ord)
@@ -404,6 +416,7 @@ newtype {hs_def_name} = {hs_def_name} (#type {c_def_name})
             hs_value_name = value.name
 
             self.srcwriter.write_source(f"""\
+
 -- | C enum @{c_def_name}@ value ({i}/{len(enum_values)}): @{c_value_name}@
 pattern {hs_value_name} :: {hs_def_name}
 pattern {hs_value_name} = (#const {c_value_name})
