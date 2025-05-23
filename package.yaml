@@ -68,7 +68,7 @@ library:
 executables:
   demo-raster-example:
     source-dirs: demos/
-    main: demos/RasterExample.hs
+    main: RasterExample.hs
     other-modules: []
     dependencies:
       - base
