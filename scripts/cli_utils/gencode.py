@@ -657,7 +657,6 @@ module {module_name} where
 
 import Foreign
 import Foreign.C
-import Foreign.C.Types
 import Foreign.Storable
 import Foreign.Storable.Offset
 
