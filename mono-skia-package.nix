@@ -32,7 +32,7 @@ stdenv.mkDerivation (finalAttrs:
   let
     # See https://github.com/mono/SkiaSharp/wiki/Building-on-Linux for how mono
     # skia is built.
-    skiasharp-src = fetchgit {
+    mono-skia-src = fetchgit {
       url = "https://github.com/mono/skia.git";
       rev = "30abf4a0dcd3006f3a555e46906151e486f87b6e";
       hash = "sha256-Jmw1+lMUn81aNkHuM0l0n1HBAMy6avaA1UM5Z2ftmsk=";
@@ -56,12 +56,12 @@ stdenv.mkDerivation (finalAttrs:
     };
   in
   {
-    pname = "skiasharp";
-    version = "skiasharp-30abf4a0dcd3006f3a555e46906151e486f87b6e";
+    pname = "mono-skia";
+    version = "mono-skia-30abf4a0dcd3006f3a555e46906151e486f87b6e";
 
-    srcs = [ skiasharp-src wuffs-src harfbuzz-src ];
+    srcs = [ mono-skia-src wuffs-src harfbuzz-src ];
 
-    sourceRoot = "${skiasharp-src.name}";
+    sourceRoot = "${mono-skia-src.name}";
 
     # We want SkGifDecoder, which requires wuffs, which requires manually
     # copy/pasting wuff stb files to /third_party/externals/. See skia's wuff's

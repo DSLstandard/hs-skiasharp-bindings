@@ -27,7 +27,7 @@ def render_ast(node: c_ast.Node) -> str:
 
 def find_skia_include_dir() -> Path:
     """
-    Finds the directory containing the header files of SkiaSharp's C API through
+    Finds the directory containing the header files of Mono Skia's C API through
     pkg-config.
     """
 
@@ -40,12 +40,12 @@ def find_skia_include_dir() -> Path:
 
 def get_skia_ast() -> pc_ast.Node:
     """
-    Returns a giant pycparser AST node containing all SkiaSharp C API types and
+    Returns a giant pycparser AST node containing all Mono Skia C API types and
     functions.
     """
 
     # This is the general procedure of this function:
-    # - 1. Generate a dummy header file that includes all SkiaSharp C header files.
+    # - 1. Generate a dummy header file that includes all Mono Skia C header files.
     # - 2. Run the C pre-processor on that dummy header file.
     # - 3. Have pycparser parse the output of step 2.
 

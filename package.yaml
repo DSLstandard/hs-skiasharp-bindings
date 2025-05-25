@@ -1,9 +1,9 @@
-name: skiasharp-bindings
+name: skia
 author: DSLstandard
 maintainer: qgeneral35@gmail.com
 version: 0.0.1
 license-file: LICENSE
-synopsis: Bindings for SkiaSharp (https://github.com/mono/SkiaSharp)
+synopsis: Bindings to Google's Skia library through the C API of https://github.com/mono/skia
 
 default-extensions:
   - AllowAmbiguousTypes
@@ -72,4 +72,4 @@ executables:
     other-modules: []
     dependencies:
       - base
-      - skiasharp-bindings
+      - skia

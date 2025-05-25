@@ -3,7 +3,7 @@ module Main where
 import Control.Monad
 import Foreign
 import Foreign.C
-import SkiaSharp.Bindings
+import Skia.Bindings
 
 -- | Taken from include/encode/SkPngEncoder.h
 defaultSkPngEncoderOptions :: Sk_pngencoder_options
