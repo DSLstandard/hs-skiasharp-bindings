@@ -27,13 +27,13 @@ def main():
 
     root_findskiainclude = root_.add_parser(
         "find-skia-include",
-        description="Prints the include directory of the Skia library"
+        description="Prints the include directory of Mono's Skia library"
     )
     root_findskiainclude.set_defaults(command="find-skia-include")
 
     root_gencode = root_.add_parser(
         "gen-code",
-        description="Generates Haskell FFI definitions from the SkiaSharp C API headers."
+        description="Generates Haskell FFI definitions from Mono's Skia C API headers."
     )
     root_gencode.set_defaults(command="gen-code")
 
