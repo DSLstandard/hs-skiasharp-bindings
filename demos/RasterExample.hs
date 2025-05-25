@@ -51,7 +51,8 @@ main = do
     fileStream <- withCString outputPngFilePath \path -> do
         sk_filewstream_new path
 
-    -- Logic is derived from SkiaSharp's binding/SkiaSharp/SKImage.cs's SKImage::Encode(format, quality).
+    -- Logic is derived from SkiaSharp's binding/SkiaSharp/SKImage.cs's SKImage::Encode(format, quality):
+    -- https://github.com/mono/SkiaSharp/blob/2b3f5bf292e1c95dd5a8647ff3a49ebb59d4d770/binding/SkiaSharp/SKImage.cs#L363
     rasterImage <- sk_image_make_raster_image image
     pixmap <- sk_pixmap_new
     ok <- sk_image_peek_pixels rasterImage pixmap
