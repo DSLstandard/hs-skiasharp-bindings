@@ -7,7 +7,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        monoSkiaPkg = pkgs.callPackage ./skiasharp-package.nix {};
+        monoSkiaPkg = pkgs.callPackage ./mono-skia-package.nix {};
         hPkgs = pkgs.haskell.packages."ghc966";
 
         devDeps = [
