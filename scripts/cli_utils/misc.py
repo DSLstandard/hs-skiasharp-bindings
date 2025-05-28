@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from pycparser import c_ast, c_generator
+from dataclasses import dataclass
 import pycparser
 import shlex
 import subprocess
@@ -25,7 +26,17 @@ def render_ast(node: c_ast.Node) -> str:
     return src
 
 
-def find_skia_include_dir() -> Path:
+@dataclass
+class SkiaIncludeInfo:
+    # The Skia include directory. It should be the parent of the subdirectories
+    # 'c/' and 'xamarin/'.
+    include_dir: Path
+
+    # Paths of all C API headers relative to 'include_dir'.
+    c_headers: list[Path]
+
+
+def get_skia_include_info() -> SkiaIncludeInfo:
     """
     Finds the directory containing the header files of Mono Skia's C API through
     pkg-config.
@@ -35,10 +46,19 @@ def find_skia_include_dir() -> Path:
     output = subprocess.check_output(args, shell=False, encoding="utf-8")
     # 'output' should look something like '-I/usr/include/skia'
 
-    return Path(output[2:].strip())
+    include_dir = Path(output[2:].strip())
+
+    c_headers = []
+
+    for path in (include_dir / "c").glob("*.h"):
+        c_headers.append(path.relative_to(include_dir))
+    for path in (include_dir / "xamarin").glob("sk_*.h"):
+        c_headers.append(path.relative_to(include_dir))
+
+    return SkiaIncludeInfo(include_dir=include_dir, c_headers=c_headers)
 
 
-def get_skia_ast() -> pc_ast.Node:
+def get_skia_ast(info: SkiaIncludeInfo) -> pc_ast.Node:
     """
     Returns a giant pycparser AST node containing all Mono Skia C API types and
     functions.
@@ -54,9 +74,8 @@ def get_skia_ast() -> pc_ast.Node:
     # https://github.com/eliben/pycparser/wiki/FAQ#what-do-i-do-about-__attribute__.
     dummy_header_src = "#define __attribute__(x)\n"
 
-    include_dir = find_skia_include_dir()
-    for header_path in (include_dir / "c").glob("*.h"):
-        dummy_header_src += f"#include <c/{header_path.name}>\n"
+    for path in info.c_headers:
+        dummy_header_src += f"#include <{path}>\n"
 
     with tempfile.NamedTemporaryFile(delete_on_close=False) as dummy_header_file:
         dummy_header_file.write(dummy_header_src.encode())
@@ -65,7 +84,7 @@ def get_skia_ast() -> pc_ast.Node:
         return pycparser.parse_file(
             dummy_header_file.name,
             use_cpp=True,
-            cpp_args=f"-I{shlex.quote(str(include_dir))}"
+            cpp_args=f"-I{shlex.quote(str(info.include_dir))}"
         )
 
 

@@ -8,6 +8,10 @@ module Skia.Bindings.Internal.Manual (
     gr_direct_context_make_vulkan_with_options,
     sk_canvas_clear_color4f,
     sk_canvas_draw_color4f,
+    sk_manageddrawable_set_procs,
+    sk_managedtracememorydump_set_procs,
+    sk_managedwstream_set_procs,
+    sk_managedstream_set_procs,
 )
 where
 
@@ -54,6 +58,11 @@ C.include "<c/sk_vertices.h>"
 C.include "<c/skottie_animation.h>"
 C.include "<c/skresources_resource_provider.h>"
 C.include "<c/sksg_invalidation_controller.h>"
+C.include "<xamarin/sk_manageddrawable.h>"
+C.include "<xamarin/sk_managedtracememorydump.h>"
+C.include "<xamarin/sk_managedstream.h>"
+C.include "<xamarin/sk_compatpaint.h>"
+C.include "<xamarin/sk_xamarin.h>"
 
 -- TODO: Learn how to use inline-c properly for passing C structure values.
 
@@ -217,4 +226,83 @@ sk_canvas_draw_color4f inCanvas Sk_color4f{fR, fG, fB, fA} (Sk_blendmode blendMo
     [C.block|void {
         sk_color4f_t color = {$(float fR), $(float fG), $(float fB), $(float fA)};
         sk_canvas_draw_color4f($(void* canvas), color, $(uint32_t blendMode));
+    }|]
+
+-- | `sk_manageddrawable_set_procs`
+sk_manageddrawable_set_procs :: Sk_manageddrawable_procs -> IO ()
+sk_manageddrawable_set_procs procs = do
+    let fDraw = castFunPtrToPtr procs.fDraw
+    let fGetBounds = castFunPtrToPtr procs.fGetBounds
+    let fApproximateBytesUsed = castFunPtrToPtr procs.fApproximateBytesUsed
+    let fMakePictureSnapshot = castFunPtrToPtr procs.fMakePictureSnapshot
+    let fDestroy = castFunPtrToPtr procs.fDestroy
+
+    [C.block|void {
+        sk_manageddrawable_procs_t procs;
+        procs.fDraw = $(void* fDraw);
+        procs.fGetBounds = $(void* fGetBounds);
+        procs.fApproximateBytesUsed = $(void* fApproximateBytesUsed);
+        procs.fMakePictureSnapshot = $(void* fMakePictureSnapshot);
+        procs.fDestroy = $(void* fDestroy);
+        sk_manageddrawable_set_procs(procs);
+    }|]
+
+sk_managedtracememorydump_set_procs :: Sk_managedtracememorydump_procs -> IO ()
+sk_managedtracememorydump_set_procs procs = do
+    let fDumpNumericValue = castFunPtrToPtr procs.fDumpNumericValue
+    let fDumpStringValue = castFunPtrToPtr procs.fDumpStringValue
+
+    [C.block|void {
+        sk_managedtracememorydump_procs_t procs;
+        procs.fDumpNumericValue = $(void* fDumpNumericValue);
+        procs.fDumpStringValue = $(void* fDumpStringValue);
+        sk_managedtracememorydump_set_procs(procs);
+    }|]
+
+sk_managedwstream_set_procs :: Sk_managedwstream_procs -> IO ()
+sk_managedwstream_set_procs procs = do
+    let fWrite = castFunPtrToPtr procs.fWrite
+    let fFlush = castFunPtrToPtr procs.fFlush
+    let fBytesWritten = castFunPtrToPtr procs.fBytesWritten
+    let fDestroy = castFunPtrToPtr procs.fDestroy
+    [C.block|void {
+        sk_managedwstream_procs_t procs;
+        procs.fWrite = $(void* fWrite);
+        procs.fFlush = $(void* fFlush);
+        procs.fBytesWritten = $(void* fBytesWritten);
+        procs.fDestroy = $(void* fDestroy);
+        sk_managedwstream_set_procs(procs);
+    }|]
+
+sk_managedstream_set_procs :: Sk_managedstream_procs -> IO ()
+sk_managedstream_set_procs procs = do
+    let fRead = castFunPtrToPtr procs.fRead
+    let fPeek = castFunPtrToPtr procs.fPeek
+    let fIsAtEnd = castFunPtrToPtr procs.fIsAtEnd
+    let fHasPosition = castFunPtrToPtr procs.fHasPosition
+    let fHasLength = castFunPtrToPtr procs.fHasLength
+    let fRewind = castFunPtrToPtr procs.fRewind
+    let fGetPosition = castFunPtrToPtr procs.fGetPosition
+    let fSeek = castFunPtrToPtr procs.fSeek
+    let fMove = castFunPtrToPtr procs.fMove
+    let fGetLength = castFunPtrToPtr procs.fGetLength
+    let fDuplicate = castFunPtrToPtr procs.fDuplicate
+    let fFork = castFunPtrToPtr procs.fFork
+    let fDestroy = castFunPtrToPtr procs.fDestroy
+    [C.block|void {
+        sk_managedstream_procs_t procs;
+        procs.fRead = $(void* fRead);
+        procs.fPeek = $(void* fPeek);
+        procs.fIsAtEnd = $(void* fIsAtEnd);
+        procs.fHasPosition = $(void* fHasPosition);
+        procs.fHasLength = $(void* fHasLength);
+        procs.fRewind = $(void* fRewind);
+        procs.fGetPosition = $(void* fGetPosition);
+        procs.fSeek = $(void* fSeek);
+        procs.fMove = $(void* fMove);
+        procs.fGetLength = $(void* fGetLength);
+        procs.fDuplicate = $(void* fDuplicate);
+        procs.fFork = $(void* fFork);
+        procs.fDestroy = $(void* fDestroy);
+        sk_managedstream_set_procs(procs);
     }|]

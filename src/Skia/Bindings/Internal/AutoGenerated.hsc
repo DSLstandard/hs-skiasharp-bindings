@@ -23,8 +23,49 @@ import Foreign.C
 import Foreign.Storable
 import Foreign.Storable.Offset
 
+#include "c/sk_colorfilter.h"
+#include "c/sk_typeface.h"
+#include "c/sk_picture.h"
+#include "c/sk_surface.h"
+#include "c/sk_pixmap.h"
+#include "c/sk_region.h"
+#include "c/sk_canvas.h"
+#include "c/sk_textblob.h"
+#include "c/sk_maskfilter.h"
+#include "c/sk_colorspace.h"
+#include "c/sk_imagefilter.h"
+#include "c/sk_bitmap.h"
+#include "c/sksg_invalidation_controller.h"
+#include "c/sk_path.h"
+#include "c/sk_runtimeeffect.h"
+#include "c/sk_general.h"
+#include "c/sk_document.h"
+#include "c/sk_image.h"
+#include "c/sk_codec.h"
+#include "c/sk_data.h"
+#include "c/sk_paint.h"
+#include "c/sk_stream.h"
+#include "c/sk_blender.h"
+#include "c/sk_graphics.h"
+#include "c/skottie_animation.h"
+#include "c/skresources_resource_provider.h"
+#include "c/sk_svg.h"
+#include "c/sk_string.h"
+#include "c/sk_linker.h"
+#include "c/sk_patheffect.h"
+#include "c/sk_vertices.h"
+#include "c/sk_font.h"
+#include "c/sk_rrect.h"
+#include "c/sk_matrix.h"
+#include "c/sk_shader.h"
 #include "c/sk_types.h"
-
+#include "c/gr_context.h"
+#include "c/sk_drawable.h"
+#include "xamarin/sk_manageddrawable.h"
+#include "xamarin/sk_managedtracememorydump.h"
+#include "xamarin/sk_managedstream.h"
+#include "xamarin/sk_compatpaint.h"
+#include "xamarin/sk_xamarin.h"
 
 {- | Opaque C struct: @"sk_refcnt_t"@
 -}
@@ -14803,3 +14844,529 @@ size_t sk_drawable_approximate_bytes_used(sk_drawable_t *)
 foreign import ccall "sk_drawable_approximate_bytes_used" sk_drawable_approximate_bytes_used ::
   Ptr (Sk_drawable) -- ^ C argument type: @"sk_drawable_t *"@
   -> IO (CSize) -- ^ C return type: @"size_t"@
+
+{- | Opaque C struct: @"sk_manageddrawable_t"@
+-}
+data Sk_manageddrawable = Sk_manageddrawable
+-- | C function pointer type: @typedef void (*sk_manageddrawable_draw_proc)(sk_manageddrawable_t *d, void *context, sk_canvas_t *ccanvas)@
+type Sk_manageddrawable_draw_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> Ptr (Sk_canvas) -> IO (())
+-- | C function pointer type: @typedef void (*sk_manageddrawable_getBounds_proc)(sk_manageddrawable_t *d, void *context, sk_rect_t *rect)@
+type Sk_manageddrawable_getBounds_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> Ptr (Sk_rect) -> IO (())
+-- | C function pointer type: @typedef size_t (*sk_manageddrawable_approximateBytesUsed_proc)(sk_manageddrawable_t *d, void *context)@
+type Sk_manageddrawable_approximateBytesUsed_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> IO (CSize)
+-- | C function pointer type: @typedef sk_picture_t *(*sk_manageddrawable_makePictureSnapshot_proc)(sk_manageddrawable_t *d, void *context)@
+type Sk_manageddrawable_makePictureSnapshot_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> IO (Ptr (Sk_picture))
+-- | C function pointer type: @typedef void (*sk_manageddrawable_destroy_proc)(sk_manageddrawable_t *d, void *context)@
+type Sk_manageddrawable_destroy_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> IO (())
+
+{- | C struct: @"sk_manageddrawable_procs_t"@
+
+@
+typedef struct 
+{
+  sk_manageddrawable_draw_proc fDraw;
+  sk_manageddrawable_getBounds_proc fGetBounds;
+  sk_manageddrawable_approximateBytesUsed_proc fApproximateBytesUsed;
+  sk_manageddrawable_makePictureSnapshot_proc fMakePictureSnapshot;
+  sk_manageddrawable_destroy_proc fDestroy;
+} sk_manageddrawable_procs_t
+@
+-}
+data Sk_manageddrawable_procs = Sk_manageddrawable_procs
+  { fDraw :: FunPtr Sk_manageddrawable_draw_proc -- ^ C field: @"sk_manageddrawable_draw_proc fDraw"@
+  , fGetBounds :: FunPtr Sk_manageddrawable_getBounds_proc -- ^ C field: @"sk_manageddrawable_getBounds_proc fGetBounds"@
+  , fApproximateBytesUsed :: FunPtr Sk_manageddrawable_approximateBytesUsed_proc -- ^ C field: @"sk_manageddrawable_approximateBytesUsed_proc fApproximateBytesUsed"@
+  , fMakePictureSnapshot :: FunPtr Sk_manageddrawable_makePictureSnapshot_proc -- ^ C field: @"sk_manageddrawable_makePictureSnapshot_proc fMakePictureSnapshot"@
+  , fDestroy :: FunPtr Sk_manageddrawable_destroy_proc -- ^ C field: @"sk_manageddrawable_destroy_proc fDestroy"@
+  }
+instance Foreign.Storable.Offset.Offset "fDraw" Sk_manageddrawable_procs where
+  rawOffset = (#offset sk_manageddrawable_procs_t, fDraw)
+instance Foreign.Storable.Offset.Offset "fGetBounds" Sk_manageddrawable_procs where
+  rawOffset = (#offset sk_manageddrawable_procs_t, fGetBounds)
+instance Foreign.Storable.Offset.Offset "fApproximateBytesUsed" Sk_manageddrawable_procs where
+  rawOffset = (#offset sk_manageddrawable_procs_t, fApproximateBytesUsed)
+instance Foreign.Storable.Offset.Offset "fMakePictureSnapshot" Sk_manageddrawable_procs where
+  rawOffset = (#offset sk_manageddrawable_procs_t, fMakePictureSnapshot)
+instance Foreign.Storable.Offset.Offset "fDestroy" Sk_manageddrawable_procs where
+  rawOffset = (#offset sk_manageddrawable_procs_t, fDestroy)
+instance Foreign.Storable.Storable Sk_manageddrawable_procs where
+  sizeOf _ = (#size sk_manageddrawable_procs_t)
+  alignment _ = (#alignment sk_manageddrawable_procs_t)
+  peek p' = do
+    fDraw <- (#peek sk_manageddrawable_procs_t, fDraw) p'
+    fGetBounds <- (#peek sk_manageddrawable_procs_t, fGetBounds) p'
+    fApproximateBytesUsed <- (#peek sk_manageddrawable_procs_t, fApproximateBytesUsed) p'
+    fMakePictureSnapshot <- (#peek sk_manageddrawable_procs_t, fMakePictureSnapshot) p'
+    fDestroy <- (#peek sk_manageddrawable_procs_t, fDestroy) p'
+    pure Sk_manageddrawable_procs{..}
+  poke p' Sk_manageddrawable_procs{..} = do
+    (#poke sk_manageddrawable_procs_t, fDraw) p' fDraw
+    (#poke sk_manageddrawable_procs_t, fGetBounds) p' fGetBounds
+    (#poke sk_manageddrawable_procs_t, fApproximateBytesUsed) p' fApproximateBytesUsed
+    (#poke sk_manageddrawable_procs_t, fMakePictureSnapshot) p' fMakePictureSnapshot
+    (#poke sk_manageddrawable_procs_t, fDestroy) p' fDestroy
+
+{- | C function signature:
+
+@
+sk_manageddrawable_t *sk_manageddrawable_new(void *context)
+@
+-}
+foreign import ccall "sk_manageddrawable_new" sk_manageddrawable_new ::
+  Ptr (()) -- ^ C argument @"void * context"@
+  -> IO (Ptr (Sk_manageddrawable)) -- ^ C return type: @"sk_manageddrawable_t *"@
+
+{- | C function signature:
+
+@
+void sk_manageddrawable_unref(sk_manageddrawable_t *)
+@
+-}
+foreign import ccall "sk_manageddrawable_unref" sk_manageddrawable_unref ::
+  Ptr (Sk_manageddrawable) -- ^ C argument type: @"sk_manageddrawable_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | Opaque C struct: @"sk_managedtracememorydump_t"@
+-}
+data Sk_managedtracememorydump = Sk_managedtracememorydump
+-- | C function pointer type: @typedef void (*sk_managedtraceMemoryDump_dumpNumericValue_proc)(sk_managedtracememorydump_t *d, void *context, const char *dumpName, const char *valueName, const char *units, uint64_t value)@
+type Sk_managedtraceMemoryDump_dumpNumericValue_proc = Ptr (Sk_managedtracememorydump) -> Ptr (()) -> Ptr (CChar) -> Ptr (CChar) -> Ptr (CChar) -> Word64 -> IO (())
+-- | C function pointer type: @typedef void (*sk_managedtraceMemoryDump_dumpStringValue_proc)(sk_managedtracememorydump_t *d, void *context, const char *dumpName, const char *valueName, const char *value)@
+type Sk_managedtraceMemoryDump_dumpStringValue_proc = Ptr (Sk_managedtracememorydump) -> Ptr (()) -> Ptr (CChar) -> Ptr (CChar) -> Ptr (CChar) -> IO (())
+
+{- | C struct: @"sk_managedtracememorydump_procs_t"@
+
+@
+typedef struct 
+{
+  sk_managedtraceMemoryDump_dumpNumericValue_proc fDumpNumericValue;
+  sk_managedtraceMemoryDump_dumpStringValue_proc fDumpStringValue;
+} sk_managedtracememorydump_procs_t
+@
+-}
+data Sk_managedtracememorydump_procs = Sk_managedtracememorydump_procs
+  { fDumpNumericValue :: FunPtr Sk_managedtraceMemoryDump_dumpNumericValue_proc -- ^ C field: @"sk_managedtraceMemoryDump_dumpNumericValue_proc fDumpNumericValue"@
+  , fDumpStringValue :: FunPtr Sk_managedtraceMemoryDump_dumpStringValue_proc -- ^ C field: @"sk_managedtraceMemoryDump_dumpStringValue_proc fDumpStringValue"@
+  }
+instance Foreign.Storable.Offset.Offset "fDumpNumericValue" Sk_managedtracememorydump_procs where
+  rawOffset = (#offset sk_managedtracememorydump_procs_t, fDumpNumericValue)
+instance Foreign.Storable.Offset.Offset "fDumpStringValue" Sk_managedtracememorydump_procs where
+  rawOffset = (#offset sk_managedtracememorydump_procs_t, fDumpStringValue)
+instance Foreign.Storable.Storable Sk_managedtracememorydump_procs where
+  sizeOf _ = (#size sk_managedtracememorydump_procs_t)
+  alignment _ = (#alignment sk_managedtracememorydump_procs_t)
+  peek p' = do
+    fDumpNumericValue <- (#peek sk_managedtracememorydump_procs_t, fDumpNumericValue) p'
+    fDumpStringValue <- (#peek sk_managedtracememorydump_procs_t, fDumpStringValue) p'
+    pure Sk_managedtracememorydump_procs{..}
+  poke p' Sk_managedtracememorydump_procs{..} = do
+    (#poke sk_managedtracememorydump_procs_t, fDumpNumericValue) p' fDumpNumericValue
+    (#poke sk_managedtracememorydump_procs_t, fDumpStringValue) p' fDumpStringValue
+
+{- | C function signature:
+
+@
+sk_managedtracememorydump_t *sk_managedtracememorydump_new(_Bool detailed, _Bool dumpWrapped, void *context)
+@
+-}
+foreign import ccall "sk_managedtracememorydump_new" sk_managedtracememorydump_new ::
+  CBool -- ^ C argument @"_Bool detailed"@
+  -> CBool -- ^ C argument @"_Bool dumpWrapped"@
+  -> Ptr (()) -- ^ C argument @"void * context"@
+  -> IO (Ptr (Sk_managedtracememorydump)) -- ^ C return type: @"sk_managedtracememorydump_t *"@
+
+{- | C function signature:
+
+@
+void sk_managedtracememorydump_delete(sk_managedtracememorydump_t *)
+@
+-}
+foreign import ccall "sk_managedtracememorydump_delete" sk_managedtracememorydump_delete ::
+  Ptr (Sk_managedtracememorydump) -- ^ C argument type: @"sk_managedtracememorydump_t *"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | Opaque C struct: @"sk_wstream_managedstream_t"@
+-}
+data Sk_wstream_managedstream = Sk_wstream_managedstream
+-- | C function pointer type: @typedef _Bool (*sk_managedwstream_write_proc)(sk_wstream_managedstream_t *s, void *context, const void *buffer, size_t size)@
+type Sk_managedwstream_write_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> Ptr (()) -> CSize -> IO (CBool)
+-- | C function pointer type: @typedef void (*sk_managedwstream_flush_proc)(sk_wstream_managedstream_t *s, void *context)@
+type Sk_managedwstream_flush_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> IO (())
+-- | C function pointer type: @typedef size_t (*sk_managedwstream_bytesWritten_proc)(const sk_wstream_managedstream_t *s, void *context)@
+type Sk_managedwstream_bytesWritten_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> IO (CSize)
+-- | C function pointer type: @typedef void (*sk_managedwstream_destroy_proc)(sk_wstream_managedstream_t *s, void *context)@
+type Sk_managedwstream_destroy_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> IO (())
+
+{- | C struct: @"sk_managedwstream_procs_t"@
+
+@
+typedef struct 
+{
+  sk_managedwstream_write_proc fWrite;
+  sk_managedwstream_flush_proc fFlush;
+  sk_managedwstream_bytesWritten_proc fBytesWritten;
+  sk_managedwstream_destroy_proc fDestroy;
+} sk_managedwstream_procs_t
+@
+-}
+data Sk_managedwstream_procs = Sk_managedwstream_procs
+  { fWrite :: FunPtr Sk_managedwstream_write_proc -- ^ C field: @"sk_managedwstream_write_proc fWrite"@
+  , fFlush :: FunPtr Sk_managedwstream_flush_proc -- ^ C field: @"sk_managedwstream_flush_proc fFlush"@
+  , fBytesWritten :: FunPtr Sk_managedwstream_bytesWritten_proc -- ^ C field: @"sk_managedwstream_bytesWritten_proc fBytesWritten"@
+  , fDestroy :: FunPtr Sk_managedwstream_destroy_proc -- ^ C field: @"sk_managedwstream_destroy_proc fDestroy"@
+  }
+instance Foreign.Storable.Offset.Offset "fWrite" Sk_managedwstream_procs where
+  rawOffset = (#offset sk_managedwstream_procs_t, fWrite)
+instance Foreign.Storable.Offset.Offset "fFlush" Sk_managedwstream_procs where
+  rawOffset = (#offset sk_managedwstream_procs_t, fFlush)
+instance Foreign.Storable.Offset.Offset "fBytesWritten" Sk_managedwstream_procs where
+  rawOffset = (#offset sk_managedwstream_procs_t, fBytesWritten)
+instance Foreign.Storable.Offset.Offset "fDestroy" Sk_managedwstream_procs where
+  rawOffset = (#offset sk_managedwstream_procs_t, fDestroy)
+instance Foreign.Storable.Storable Sk_managedwstream_procs where
+  sizeOf _ = (#size sk_managedwstream_procs_t)
+  alignment _ = (#alignment sk_managedwstream_procs_t)
+  peek p' = do
+    fWrite <- (#peek sk_managedwstream_procs_t, fWrite) p'
+    fFlush <- (#peek sk_managedwstream_procs_t, fFlush) p'
+    fBytesWritten <- (#peek sk_managedwstream_procs_t, fBytesWritten) p'
+    fDestroy <- (#peek sk_managedwstream_procs_t, fDestroy) p'
+    pure Sk_managedwstream_procs{..}
+  poke p' Sk_managedwstream_procs{..} = do
+    (#poke sk_managedwstream_procs_t, fWrite) p' fWrite
+    (#poke sk_managedwstream_procs_t, fFlush) p' fFlush
+    (#poke sk_managedwstream_procs_t, fBytesWritten) p' fBytesWritten
+    (#poke sk_managedwstream_procs_t, fDestroy) p' fDestroy
+
+{- | C function signature:
+
+@
+sk_wstream_managedstream_t *sk_managedwstream_new(void *context)
+@
+-}
+foreign import ccall "sk_managedwstream_new" sk_managedwstream_new ::
+  Ptr (()) -- ^ C argument @"void * context"@
+  -> IO (Ptr (Sk_wstream_managedstream)) -- ^ C return type: @"sk_wstream_managedstream_t *"@
+
+{- | C function signature:
+
+@
+void sk_managedwstream_destroy(sk_wstream_managedstream_t *s)
+@
+-}
+foreign import ccall "sk_managedwstream_destroy" sk_managedwstream_destroy ::
+  Ptr (Sk_wstream_managedstream) -- ^ C argument @"sk_wstream_managedstream_t * s"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | Opaque C struct: @"sk_stream_managedstream_t"@
+-}
+data Sk_stream_managedstream = Sk_stream_managedstream
+-- | C function pointer type: @typedef size_t (*sk_managedstream_read_proc)(sk_stream_managedstream_t *s, void *context, void *buffer, size_t size)@
+type Sk_managedstream_read_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> Ptr (()) -> CSize -> IO (CSize)
+-- | C function pointer type: @typedef size_t (*sk_managedstream_peek_proc)(const sk_stream_managedstream_t *s, void *context, void *buffer, size_t size)@
+type Sk_managedstream_peek_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> Ptr (()) -> CSize -> IO (CSize)
+-- | C function pointer type: @typedef _Bool (*sk_managedstream_isAtEnd_proc)(const sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_isAtEnd_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+-- | C function pointer type: @typedef _Bool (*sk_managedstream_hasPosition_proc)(const sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_hasPosition_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+-- | C function pointer type: @typedef _Bool (*sk_managedstream_hasLength_proc)(const sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_hasLength_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+-- | C function pointer type: @typedef _Bool (*sk_managedstream_rewind_proc)(sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_rewind_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+-- | C function pointer type: @typedef size_t (*sk_managedstream_getPosition_proc)(const sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_getPosition_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CSize)
+-- | C function pointer type: @typedef _Bool (*sk_managedstream_seek_proc)(sk_stream_managedstream_t *s, void *context, size_t position)@
+type Sk_managedstream_seek_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> CSize -> IO (CBool)
+-- | C function pointer type: @typedef _Bool (*sk_managedstream_move_proc)(sk_stream_managedstream_t *s, void *context, long offset)@
+type Sk_managedstream_move_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> CLong -> IO (CBool)
+-- | C function pointer type: @typedef size_t (*sk_managedstream_getLength_proc)(const sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_getLength_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CSize)
+-- | C function pointer type: @typedef sk_stream_managedstream_t *(*sk_managedstream_duplicate_proc)(const sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_duplicate_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (Ptr (Sk_stream_managedstream))
+-- | C function pointer type: @typedef sk_stream_managedstream_t *(*sk_managedstream_fork_proc)(const sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_fork_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (Ptr (Sk_stream_managedstream))
+-- | C function pointer type: @typedef void (*sk_managedstream_destroy_proc)(sk_stream_managedstream_t *s, void *context)@
+type Sk_managedstream_destroy_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (())
+
+{- | C struct: @"sk_managedstream_procs_t"@
+
+@
+typedef struct 
+{
+  sk_managedstream_read_proc fRead;
+  sk_managedstream_peek_proc fPeek;
+  sk_managedstream_isAtEnd_proc fIsAtEnd;
+  sk_managedstream_hasPosition_proc fHasPosition;
+  sk_managedstream_hasLength_proc fHasLength;
+  sk_managedstream_rewind_proc fRewind;
+  sk_managedstream_getPosition_proc fGetPosition;
+  sk_managedstream_seek_proc fSeek;
+  sk_managedstream_move_proc fMove;
+  sk_managedstream_getLength_proc fGetLength;
+  sk_managedstream_duplicate_proc fDuplicate;
+  sk_managedstream_fork_proc fFork;
+  sk_managedstream_destroy_proc fDestroy;
+} sk_managedstream_procs_t
+@
+-}
+data Sk_managedstream_procs = Sk_managedstream_procs
+  { fRead :: FunPtr Sk_managedstream_read_proc -- ^ C field: @"sk_managedstream_read_proc fRead"@
+  , fPeek :: FunPtr Sk_managedstream_peek_proc -- ^ C field: @"sk_managedstream_peek_proc fPeek"@
+  , fIsAtEnd :: FunPtr Sk_managedstream_isAtEnd_proc -- ^ C field: @"sk_managedstream_isAtEnd_proc fIsAtEnd"@
+  , fHasPosition :: FunPtr Sk_managedstream_hasPosition_proc -- ^ C field: @"sk_managedstream_hasPosition_proc fHasPosition"@
+  , fHasLength :: FunPtr Sk_managedstream_hasLength_proc -- ^ C field: @"sk_managedstream_hasLength_proc fHasLength"@
+  , fRewind :: FunPtr Sk_managedstream_rewind_proc -- ^ C field: @"sk_managedstream_rewind_proc fRewind"@
+  , fGetPosition :: FunPtr Sk_managedstream_getPosition_proc -- ^ C field: @"sk_managedstream_getPosition_proc fGetPosition"@
+  , fSeek :: FunPtr Sk_managedstream_seek_proc -- ^ C field: @"sk_managedstream_seek_proc fSeek"@
+  , fMove :: FunPtr Sk_managedstream_move_proc -- ^ C field: @"sk_managedstream_move_proc fMove"@
+  , fGetLength :: FunPtr Sk_managedstream_getLength_proc -- ^ C field: @"sk_managedstream_getLength_proc fGetLength"@
+  , fDuplicate :: FunPtr Sk_managedstream_duplicate_proc -- ^ C field: @"sk_managedstream_duplicate_proc fDuplicate"@
+  , fFork :: FunPtr Sk_managedstream_fork_proc -- ^ C field: @"sk_managedstream_fork_proc fFork"@
+  , fDestroy :: FunPtr Sk_managedstream_destroy_proc -- ^ C field: @"sk_managedstream_destroy_proc fDestroy"@
+  }
+instance Foreign.Storable.Offset.Offset "fRead" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fRead)
+instance Foreign.Storable.Offset.Offset "fPeek" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fPeek)
+instance Foreign.Storable.Offset.Offset "fIsAtEnd" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fIsAtEnd)
+instance Foreign.Storable.Offset.Offset "fHasPosition" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fHasPosition)
+instance Foreign.Storable.Offset.Offset "fHasLength" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fHasLength)
+instance Foreign.Storable.Offset.Offset "fRewind" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fRewind)
+instance Foreign.Storable.Offset.Offset "fGetPosition" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fGetPosition)
+instance Foreign.Storable.Offset.Offset "fSeek" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fSeek)
+instance Foreign.Storable.Offset.Offset "fMove" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fMove)
+instance Foreign.Storable.Offset.Offset "fGetLength" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fGetLength)
+instance Foreign.Storable.Offset.Offset "fDuplicate" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fDuplicate)
+instance Foreign.Storable.Offset.Offset "fFork" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fFork)
+instance Foreign.Storable.Offset.Offset "fDestroy" Sk_managedstream_procs where
+  rawOffset = (#offset sk_managedstream_procs_t, fDestroy)
+instance Foreign.Storable.Storable Sk_managedstream_procs where
+  sizeOf _ = (#size sk_managedstream_procs_t)
+  alignment _ = (#alignment sk_managedstream_procs_t)
+  peek p' = do
+    fRead <- (#peek sk_managedstream_procs_t, fRead) p'
+    fPeek <- (#peek sk_managedstream_procs_t, fPeek) p'
+    fIsAtEnd <- (#peek sk_managedstream_procs_t, fIsAtEnd) p'
+    fHasPosition <- (#peek sk_managedstream_procs_t, fHasPosition) p'
+    fHasLength <- (#peek sk_managedstream_procs_t, fHasLength) p'
+    fRewind <- (#peek sk_managedstream_procs_t, fRewind) p'
+    fGetPosition <- (#peek sk_managedstream_procs_t, fGetPosition) p'
+    fSeek <- (#peek sk_managedstream_procs_t, fSeek) p'
+    fMove <- (#peek sk_managedstream_procs_t, fMove) p'
+    fGetLength <- (#peek sk_managedstream_procs_t, fGetLength) p'
+    fDuplicate <- (#peek sk_managedstream_procs_t, fDuplicate) p'
+    fFork <- (#peek sk_managedstream_procs_t, fFork) p'
+    fDestroy <- (#peek sk_managedstream_procs_t, fDestroy) p'
+    pure Sk_managedstream_procs{..}
+  poke p' Sk_managedstream_procs{..} = do
+    (#poke sk_managedstream_procs_t, fRead) p' fRead
+    (#poke sk_managedstream_procs_t, fPeek) p' fPeek
+    (#poke sk_managedstream_procs_t, fIsAtEnd) p' fIsAtEnd
+    (#poke sk_managedstream_procs_t, fHasPosition) p' fHasPosition
+    (#poke sk_managedstream_procs_t, fHasLength) p' fHasLength
+    (#poke sk_managedstream_procs_t, fRewind) p' fRewind
+    (#poke sk_managedstream_procs_t, fGetPosition) p' fGetPosition
+    (#poke sk_managedstream_procs_t, fSeek) p' fSeek
+    (#poke sk_managedstream_procs_t, fMove) p' fMove
+    (#poke sk_managedstream_procs_t, fGetLength) p' fGetLength
+    (#poke sk_managedstream_procs_t, fDuplicate) p' fDuplicate
+    (#poke sk_managedstream_procs_t, fFork) p' fFork
+    (#poke sk_managedstream_procs_t, fDestroy) p' fDestroy
+
+{- | C function signature:
+
+@
+sk_stream_managedstream_t *sk_managedstream_new(void *context)
+@
+-}
+foreign import ccall "sk_managedstream_new" sk_managedstream_new ::
+  Ptr (()) -- ^ C argument @"void * context"@
+  -> IO (Ptr (Sk_stream_managedstream)) -- ^ C return type: @"sk_stream_managedstream_t *"@
+
+{- | C function signature:
+
+@
+void sk_managedstream_destroy(sk_stream_managedstream_t *s)
+@
+-}
+foreign import ccall "sk_managedstream_destroy" sk_managedstream_destroy ::
+  Ptr (Sk_stream_managedstream) -- ^ C argument @"sk_stream_managedstream_t * s"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | Opaque C struct: @"sk_compatpaint_t"@
+-}
+data Sk_compatpaint = Sk_compatpaint
+
+{- | C function signature:
+
+@
+sk_compatpaint_t *sk_compatpaint_new(void)
+@
+-}
+foreign import ccall "sk_compatpaint_new" sk_compatpaint_new ::
+  IO (Ptr (Sk_compatpaint)) -- ^ C return type: @"sk_compatpaint_t *"@
+
+{- | C function signature:
+
+@
+sk_compatpaint_t *sk_compatpaint_new_with_font(const sk_font_t *font)
+@
+-}
+foreign import ccall "sk_compatpaint_new_with_font" sk_compatpaint_new_with_font ::
+  Ptr (Sk_font) -- ^ C argument @"const sk_font_t * font"@
+  -> IO (Ptr (Sk_compatpaint)) -- ^ C return type: @"sk_compatpaint_t *"@
+
+{- | C function signature:
+
+@
+void sk_compatpaint_delete(sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_delete" sk_compatpaint_delete ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_compatpaint_t *sk_compatpaint_clone(const sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_clone" sk_compatpaint_clone ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"const sk_compatpaint_t * paint"@
+  -> IO (Ptr (Sk_compatpaint)) -- ^ C return type: @"sk_compatpaint_t *"@
+
+{- | C function signature:
+
+@
+void sk_compatpaint_reset(sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_reset" sk_compatpaint_reset ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_font_t *sk_compatpaint_make_font(sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_make_font" sk_compatpaint_make_font ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> IO (Ptr (Sk_font)) -- ^ C return type: @"sk_font_t *"@
+
+{- | C function signature:
+
+@
+sk_font_t *sk_compatpaint_get_font(sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_get_font" sk_compatpaint_get_font ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> IO (Ptr (Sk_font)) -- ^ C return type: @"sk_font_t *"@
+
+{- | C function signature:
+
+@
+void sk_compatpaint_set_text_align(sk_compatpaint_t *paint, sk_text_align_t align)
+@
+-}
+foreign import ccall "sk_compatpaint_set_text_align" sk_compatpaint_set_text_align ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> Sk_text_align -- ^ C argument @"sk_text_align_t align"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_text_align_t sk_compatpaint_get_text_align(const sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_get_text_align" sk_compatpaint_get_text_align ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"const sk_compatpaint_t * paint"@
+  -> IO (Sk_text_align) -- ^ C return type: @"sk_text_align_t"@
+
+{- | C function signature:
+
+@
+void sk_compatpaint_set_text_encoding(sk_compatpaint_t *paint, sk_text_encoding_t encoding)
+@
+-}
+foreign import ccall "sk_compatpaint_set_text_encoding" sk_compatpaint_set_text_encoding ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> Sk_text_encoding -- ^ C argument @"sk_text_encoding_t encoding"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+sk_text_encoding_t sk_compatpaint_get_text_encoding(const sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_get_text_encoding" sk_compatpaint_get_text_encoding ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"const sk_compatpaint_t * paint"@
+  -> IO (Sk_text_encoding) -- ^ C return type: @"sk_text_encoding_t"@
+
+{- | C function signature:
+
+@
+void sk_compatpaint_set_filter_quality(sk_compatpaint_t *paint, int quality)
+@
+-}
+foreign import ccall "sk_compatpaint_set_filter_quality" sk_compatpaint_set_filter_quality ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> CInt -- ^ C argument @"int quality"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+int sk_compatpaint_get_filter_quality(const sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_get_filter_quality" sk_compatpaint_get_filter_quality ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"const sk_compatpaint_t * paint"@
+  -> IO (CInt) -- ^ C return type: @"int"@
+
+{- | C function signature:
+
+@
+void sk_compatpaint_set_lcd_render_text(sk_compatpaint_t *paint, _Bool lcdRenderText)
+@
+-}
+foreign import ccall "sk_compatpaint_set_lcd_render_text" sk_compatpaint_set_lcd_render_text ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> CBool -- ^ C argument @"_Bool lcdRenderText"@
+  -> IO (()) -- ^ C return type: @"void"@
+
+{- | C function signature:
+
+@
+_Bool sk_compatpaint_get_lcd_render_text(const sk_compatpaint_t *paint)
+@
+-}
+foreign import ccall "sk_compatpaint_get_lcd_render_text" sk_compatpaint_get_lcd_render_text ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"const sk_compatpaint_t * paint"@
+  -> IO (CBool) -- ^ C return type: @"_Bool"@
+
+{- | C function signature:
+
+@
+void sk_compatpaint_set_is_antialias(sk_compatpaint_t *paint, _Bool antialias)
+@
+-}
+foreign import ccall "sk_compatpaint_set_is_antialias" sk_compatpaint_set_is_antialias ::
+  Ptr (Sk_compatpaint) -- ^ C argument @"sk_compatpaint_t * paint"@
+  -> CBool -- ^ C argument @"_Bool antialias"@
+  -> IO (()) -- ^ C return type: @"void"@

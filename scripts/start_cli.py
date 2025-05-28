@@ -47,7 +47,8 @@ def main():
         return
 
     if args.command == "find-skia-include":
-        print(str(cli_utils.misc.find_skia_include_dir()))
+        info = cli_utils.misc.get_skia_include_info()
+        print(str(info.include_dir))
     elif args.command == "gen-code":
         cli_utils.gencode.gen_code(project_root_dir=args.project_root_dir)
     else:
