@@ -619,6 +619,16 @@ type {hs_def_name} = {hs_fn_type}
             ret=ret,
         )
 
+        # Generate the FunPtr binding
+        indent = self.srcwriter.indent(1)
+        funptr_type = self.typectx.c_to_hs_io_function_type(f)
+
+        self.srcwriter.write_source(f"""
+-- | Function pointer to '{hs_def_name}'
+foreign import ccall \"&{c_def_name}\" p'{c_def_name} ::
+{indent}FunPtr ({funptr_type})
+""")
+
 
 def gen_code(*, project_root_dir: Path) -> None:
     """
