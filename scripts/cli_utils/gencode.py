@@ -188,25 +188,31 @@ class TypeContext:
         raise ValueError(
             f"Failed to convert C type '{render_ast(c_type)}' to a Haskell type")
 
-    def parse_c_function_type(self, ty: c_ast.FuncDecl) -> Tuple[list[HaskellType], HaskellType]:
-        hs_arg_tys: list[str] = []
-        for param in ty.args.params:
-            # NOTE: Special case: if the function resembles `my_func(void)`, the
-            # function in fact takes no argument.  It is really inconvenient to
-            # deal with...
-            #
-            # This tests if param is "void". If so, stop looking at the
-            # remaining args. This can handle functions that are typed like
-            # `my_func(void)`.
-            if self.unwrap_c_type(param.type) == (0, ["void"]):
-                break
+    def c_to_hs_io_function_type(self, f: UnwrappedCFuncDecl) -> HaskellType:
+        """
+        Given a C function declaration represented as a 'UnwrappedCFuncDecl',
+        this function translates the C function type to an Haskell IO function
+        type and returns it.
 
-            hs_ty = self.parse_c_type(param.type)
-            hs_arg_tys.append(hs_ty)
+        Example:
+            If the input C function type looks like:
+                `sk_picture_t *sk_picture_deserialize_from_memory(void *buffer,
+                size_t length)`
 
-        hs_ret_ty = self.parse_c_type(ty.type)
+            this function will return:
+                `Ptr () -> CSize -> IO (Ptr Sk_picture)`
+        """
 
-        return (hs_arg_tys, hs_ret_ty)
+        hs_arg_types: list[HaskellType] = []
+        for arg in f.parameter:
+            hs_arg_type = self.convert_c_type_to_hs_type(arg.arg_type)
+            hs_arg_types.append(hs_arg_type)
+
+        hs_ret_type = self.convert_c_type_to_hs_type(f.return_type)
+        hs_ret_type = f"IO ({hs_ret_type})"
+
+        hs_fn_type = " -> ".join(hs_arg_types + [hs_ret_type])
+        return hs_fn_type
 
 
 @dataclass
@@ -551,16 +557,7 @@ pattern {hs_value_name} = (#const {c_value_name})
         hs_def_name = capitalize_head(c_def_name)
 
         f = unwrap_c_func_decl(decl)
-
-        hs_arg_types: list[HaskellType] = []
-        for arg in f.parameter:
-            hs_arg_type = self.typectx.convert_c_type_to_hs_type(arg.arg_type)
-            hs_arg_types.append(hs_arg_type)
-
-        hs_ret_type = self.typectx.convert_c_type_to_hs_type(f.return_type)
-        hs_ret_type = f"IO ({hs_ret_type})"
-
-        hs_fn_type = " -> ".join(hs_arg_types + [hs_ret_type])
+        hs_fn_type = self.typectx.c_to_hs_io_function_type(f)
 
         self.srcwriter.write_source(f"""\
 -- | C function pointer type: @{render_ast(node)}@
