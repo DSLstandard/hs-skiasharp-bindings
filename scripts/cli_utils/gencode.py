@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 from .misc import (
-    BORING_CLIB_TYPEDEF_NAMES,
     get_skia_ast,
     render_ast,
+    SkiaCSourceVisitor,
     capitalize_head,
+    extract_name_from_func_decl,
     get_skia_include_info,
 )
 from dataclasses import dataclass
@@ -351,7 +352,7 @@ sk_managedstream_set_procs
 """.split())
 
 
-class CSourceVisitor(c_ast.NodeVisitor):
+class GenCodeVisitor(SkiaCSourceVisitor):
     def __init__(self, srcwriter: HsSourceWriter):
         self.srcwriter = srcwriter
         self.typectx = TypeContext()
@@ -360,35 +361,6 @@ class CSourceVisitor(c_ast.NodeVisitor):
         # because Mono Skia's C API erroneously defines duplicate definitions.
         # We need to skip them.
         self._visited_opaque_structs: Set[str] = set()
-
-    def visit_Typedef(self, node: c_ast.Typedef) -> None:
-        """
-        This function visits all 5 types of Skia C type definitions:
-        - 1. Type aliases, e.g., `typedef uint32_t sk_pmcolor_t;`
-        - 2. Enum types, e.g., `typedef enum { ... } gr_backend_t;`
-        - 3. Struct types, e.g., `typedef struct { ... } gr_gl_framebufferinfo_t;`
-        - 4. Opaque struct types, e.g., `typedef struct gr_d3d_memory_allocator_t gr_d3d_memory_allocator_t;`
-        - 5. Function types, e.g., `typedef VKAPI_ATTR void (VKAPI_CALL *gr_vk_func_ptr)(void);`
-        """
-
-        if node.name in BORING_CLIB_TYPEDEF_NAMES:
-            return
-
-        if isinstance(node.type.type, c_ast.IdentifierType):
-            self.handle_typedef_type_alias(node)
-        elif isinstance(node.type.type, c_ast.Enum):
-            self.handle_typedef_enum(node)
-        elif isinstance(node.type.type, c_ast.Struct):
-            struct_ty: c_ast.Struct = node.type.type
-            if struct_ty.decls is None:
-                self.handle_typedef_opaque_struct(node)
-            else:
-                self.handle_typedef_normal_struct(node)
-        elif isinstance(node.type.type, c_ast.FuncDecl):
-            self.handle_typedef_func_type_decl(node)
-        else:
-            raise ValueError(f"Unhandled node", node.name,
-                             type(node.type.type))
 
     def handle_typedef_type_alias(self, node: c_ast.Node):
         c_def_name = node.name
@@ -559,32 +531,18 @@ pattern {hs_value_name} = (#const {c_value_name})
         f = unwrap_c_func_decl(decl)
         hs_fn_type = self.typectx.c_to_hs_io_function_type(f)
 
-        self.srcwriter.write_source(f"""\
+        self.srcwriter.write_source(f"""
 -- | C function pointer type: @{render_ast(node)}@
 type {hs_def_name} = {hs_fn_type}
-""")
 
+-- | Creates a 'FunPtr' of @\"{c_def_name}\"@.
+foreign import ccall \"wrapper\" mkFunPtr'{hs_def_name} :: {hs_def_name} -> IO (FunPtr {hs_def_name})
+""")
         self.typectx.register_type(
             c_def_name=c_def_name, hs_type=f"FunPtr {hs_def_name}")
 
-    def visit_FuncDecl(self, decl: c_ast.FuncDecl) -> None:
-        def extract_fn_name() -> str:
-            # FIXME: c_parser's FuncDecl can bury the function's name under
-            # PtrDecl if the return type is a pointer.
-            #
-            # This is a workaround to extract the function's name.
-            node = decl.type
-            while True:
-                if isinstance(node, c_ast.TypeDecl):
-                    return node.declname
-                elif isinstance(node, c_ast.ArrayDecl):
-                    node = node.type
-                elif isinstance(node, c_ast.PtrDecl):
-                    node = node.type
-                else:
-                    raise ValueError(f"cannot unrecognize FuncDecl: {decl}")
-
-        c_def_name = extract_fn_name()
+    def handle_func_decl(self, decl: c_ast.FuncDecl) -> None:
+        c_def_name = extract_name_from_func_decl(decl)
         hs_def_name = c_def_name
 
         # See notes on FUNCTION_BLOCKLIST.
@@ -680,8 +638,7 @@ import Foreign.Storable.Offset
         for path in info.c_headers:
             srcwriter.write_line(f"#include \"{path}\"")
 
-
-        visitor = CSourceVisitor(srcwriter)
+        visitor = GenCodeVisitor(srcwriter)
         visitor.visit(ast)
 
     logger.info(f"Wrote generated bindings to '{module_path}'")

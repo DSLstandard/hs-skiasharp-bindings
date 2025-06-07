@@ -10,6 +10,75 @@ import subprocess
 import tempfile
 
 
+def extract_name_from_func_decl(decl: FuncDecl) -> str:
+    # FIXME: c_parser's FuncDecl can bury the function's name under
+    # PtrDecl if the return type is a pointer.
+    #
+    # This is a workaround to extract the function's name.
+    node = decl.type
+    while True:
+        if isinstance(node, c_ast.TypeDecl):
+            return node.declname
+        elif isinstance(node, c_ast.ArrayDecl):
+            node = node.type
+        elif isinstance(node, c_ast.PtrDecl):
+            node = node.type
+        else:
+            raise ValueError(f"cannot unrecognize FuncDecl: {decl}")
+
+
+class SkiaCSourceVisitor(c_ast.NodeVisitor):
+    def visit_Typedef(self, node: c_ast.Typedef) -> None:
+        """
+        This function visits all 5 types of Skia C type definitions:
+        - 1. Type aliases, e.g., `typedef uint32_t sk_pmcolor_t;`
+        - 2. Enum types, e.g., `typedef enum { ... } gr_backend_t;`
+        - 3. Struct types, e.g., `typedef struct { ... } gr_gl_framebufferinfo_t;`
+        - 4. Opaque struct types, e.g., `typedef struct gr_d3d_memory_allocator_t gr_d3d_memory_allocator_t;`
+        - 5. Function types, e.g., `typedef VKAPI_ATTR void (VKAPI_CALL *gr_vk_func_ptr)(void);`
+        """
+
+        if node.name in BORING_CLIB_TYPEDEF_NAMES:
+            return
+
+        if isinstance(node.type.type, c_ast.IdentifierType):
+            self.handle_typedef_type_alias(node)
+        elif isinstance(node.type.type, c_ast.Enum):
+            self.handle_typedef_enum(node)
+        elif isinstance(node.type.type, c_ast.Struct):
+            struct_ty: c_ast.Struct = node.type.type
+            if struct_ty.decls is None:
+                self.handle_typedef_opaque_struct(node)
+            else:
+                self.handle_typedef_normal_struct(node)
+        elif isinstance(node.type.type, c_ast.FuncDecl):
+            self.handle_typedef_func_type_decl(node)
+        else:
+            raise ValueError(f"Unhandled node", node.name,
+                             type(node.type.type))
+
+    def visit_FuncDecl(self, decl: c_ast.FuncDecl) -> None:
+        return self.handle_func_decl(decl)
+
+    def handle_typedef_type_alias(self, node: c_ast.Node) -> None:
+        pass
+
+    def handle_typedef_enum(self, node: c_ast.Node) -> None:
+        pass
+
+    def handle_typedef_opaque_struct(self, node: c_ast.Node) -> None:
+        pass
+
+    def handle_typedef_normal_struct(self, node: c_ast.Node) -> None:
+        pass
+
+    def handle_typedef_func_type_decl(self, node: c_ast.Node) -> None:
+        pass
+
+    def handle_func_decl(self, decl: c_ast.FuncDecl) -> None:
+        pass
+
+
 def capitalize_head(string: str) -> str:
     """
     Capitalizes the first character of the input string.

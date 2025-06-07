@@ -2361,10 +2361,18 @@ type Gr_backendcontext = CIntPtr
 {- | Opaque C struct: @"gr_glinterface_t"@
 -}
 data Gr_glinterface = Gr_glinterface
+
 -- | C function pointer type: @typedef void (*gr_gl_func_ptr)(void)@
 type Gr_gl_func_ptr = IO (())
+
+-- | Creates a 'FunPtr' of @"gr_gl_func_ptr"@.
+foreign import ccall "wrapper" mkFunPtr'Gr_gl_func_ptr :: Gr_gl_func_ptr -> IO (FunPtr Gr_gl_func_ptr)
+
 -- | C function pointer type: @typedef gr_gl_func_ptr (*gr_gl_get_proc)(void *ctx, const char *name)@
 type Gr_gl_get_proc = Ptr (()) -> Ptr (CChar) -> IO (FunPtr Gr_gl_func_ptr)
+
+-- | Creates a 'FunPtr' of @"gr_gl_get_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Gr_gl_get_proc :: Gr_gl_get_proc -> IO (FunPtr Gr_gl_get_proc)
 
 {- | C struct: @"gr_gl_textureinfo_t"@
 
@@ -2477,10 +2485,18 @@ data Gr_vk_extensions = Gr_vk_extensions
 {- | Opaque C struct: @"gr_vk_memory_allocator_t"@
 -}
 data Gr_vk_memory_allocator = Gr_vk_memory_allocator
+
 -- | C function pointer type: @typedef void (*gr_vk_func_ptr)(void)@
 type Gr_vk_func_ptr = IO (())
+
+-- | Creates a 'FunPtr' of @"gr_vk_func_ptr"@.
+foreign import ccall "wrapper" mkFunPtr'Gr_vk_func_ptr :: Gr_vk_func_ptr -> IO (FunPtr Gr_vk_func_ptr)
+
 -- | C function pointer type: @typedef gr_vk_func_ptr (*gr_vk_get_proc)(void *ctx, const char *name, vk_instance_t *instance, vk_device_t *device)@
 type Gr_vk_get_proc = Ptr (()) -> Ptr (CChar) -> Ptr (Vk_instance) -> Ptr (Vk_device) -> IO (FunPtr Gr_vk_func_ptr)
+
+-- | Creates a 'FunPtr' of @"gr_vk_get_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Gr_vk_get_proc :: Gr_vk_get_proc -> IO (FunPtr Gr_vk_get_proc)
 
 {- | C struct: @"gr_vk_backendcontext_t"@
 
@@ -3011,18 +3027,42 @@ pattern GET_TANGENT_SK_PATHMEASURE_MATRIXFLAGS = (#const GET_TANGENT_SK_PATHMEAS
 -- | C enum @"sk_pathmeasure_matrixflags_t"@ value (3/3): @"GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS"@
 pattern GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS :: Sk_pathmeasure_matrixflags
 pattern GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS = (#const GET_POS_AND_TAN_SK_PATHMEASURE_MATRIXFLAGS)
+
 -- | C function pointer type: @typedef void (*sk_bitmap_release_proc)(void *addr, void *context)@
 type Sk_bitmap_release_proc = Ptr (()) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_bitmap_release_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_bitmap_release_proc :: Sk_bitmap_release_proc -> IO (FunPtr Sk_bitmap_release_proc)
+
 -- | C function pointer type: @typedef void (*sk_data_release_proc)(const void *ptr, void *context)@
 type Sk_data_release_proc = Ptr (()) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_data_release_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_data_release_proc :: Sk_data_release_proc -> IO (FunPtr Sk_data_release_proc)
+
 -- | C function pointer type: @typedef void (*sk_image_raster_release_proc)(const void *addr, void *context)@
 type Sk_image_raster_release_proc = Ptr (()) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_image_raster_release_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_image_raster_release_proc :: Sk_image_raster_release_proc -> IO (FunPtr Sk_image_raster_release_proc)
+
 -- | C function pointer type: @typedef void (*sk_image_texture_release_proc)(void *context)@
 type Sk_image_texture_release_proc = Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_image_texture_release_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_image_texture_release_proc :: Sk_image_texture_release_proc -> IO (FunPtr Sk_image_texture_release_proc)
+
 -- | C function pointer type: @typedef void (*sk_surface_raster_release_proc)(void *addr, void *context)@
 type Sk_surface_raster_release_proc = Ptr (()) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_surface_raster_release_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_surface_raster_release_proc :: Sk_surface_raster_release_proc -> IO (FunPtr Sk_surface_raster_release_proc)
+
 -- | C function pointer type: @typedef void (*sk_glyph_path_proc)(const sk_path_t *pathOrNull, const sk_matrix_t *matrix, void *context)@
 type Sk_glyph_path_proc = Ptr (Sk_path) -> Ptr (Sk_matrix) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_glyph_path_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_glyph_path_proc :: Sk_glyph_path_proc -> IO (FunPtr Sk_glyph_path_proc)
 
 {- | C enum: @"sk_image_caching_hint_t"@
 
@@ -18396,16 +18436,36 @@ foreign import ccall "&sk_drawable_approximate_bytes_used" p'sk_drawable_approxi
 {- | Opaque C struct: @"sk_manageddrawable_t"@
 -}
 data Sk_manageddrawable = Sk_manageddrawable
+
 -- | C function pointer type: @typedef void (*sk_manageddrawable_draw_proc)(sk_manageddrawable_t *d, void *context, sk_canvas_t *ccanvas)@
 type Sk_manageddrawable_draw_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> Ptr (Sk_canvas) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_manageddrawable_draw_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_manageddrawable_draw_proc :: Sk_manageddrawable_draw_proc -> IO (FunPtr Sk_manageddrawable_draw_proc)
+
 -- | C function pointer type: @typedef void (*sk_manageddrawable_getBounds_proc)(sk_manageddrawable_t *d, void *context, sk_rect_t *rect)@
 type Sk_manageddrawable_getBounds_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> Ptr (Sk_rect) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_manageddrawable_getBounds_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_manageddrawable_getBounds_proc :: Sk_manageddrawable_getBounds_proc -> IO (FunPtr Sk_manageddrawable_getBounds_proc)
+
 -- | C function pointer type: @typedef size_t (*sk_manageddrawable_approximateBytesUsed_proc)(sk_manageddrawable_t *d, void *context)@
 type Sk_manageddrawable_approximateBytesUsed_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> IO (CSize)
+
+-- | Creates a 'FunPtr' of @"sk_manageddrawable_approximateBytesUsed_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_manageddrawable_approximateBytesUsed_proc :: Sk_manageddrawable_approximateBytesUsed_proc -> IO (FunPtr Sk_manageddrawable_approximateBytesUsed_proc)
+
 -- | C function pointer type: @typedef sk_picture_t *(*sk_manageddrawable_makePictureSnapshot_proc)(sk_manageddrawable_t *d, void *context)@
 type Sk_manageddrawable_makePictureSnapshot_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> IO (Ptr (Sk_picture))
+
+-- | Creates a 'FunPtr' of @"sk_manageddrawable_makePictureSnapshot_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_manageddrawable_makePictureSnapshot_proc :: Sk_manageddrawable_makePictureSnapshot_proc -> IO (FunPtr Sk_manageddrawable_makePictureSnapshot_proc)
+
 -- | C function pointer type: @typedef void (*sk_manageddrawable_destroy_proc)(sk_manageddrawable_t *d, void *context)@
 type Sk_manageddrawable_destroy_proc = Ptr (Sk_manageddrawable) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_manageddrawable_destroy_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_manageddrawable_destroy_proc :: Sk_manageddrawable_destroy_proc -> IO (FunPtr Sk_manageddrawable_destroy_proc)
 
 {- | C struct: @"sk_manageddrawable_procs_t"@
 
@@ -18485,10 +18545,18 @@ foreign import ccall "&sk_manageddrawable_unref" p'sk_manageddrawable_unref ::
 {- | Opaque C struct: @"sk_managedtracememorydump_t"@
 -}
 data Sk_managedtracememorydump = Sk_managedtracememorydump
+
 -- | C function pointer type: @typedef void (*sk_managedtraceMemoryDump_dumpNumericValue_proc)(sk_managedtracememorydump_t *d, void *context, const char *dumpName, const char *valueName, const char *units, uint64_t value)@
 type Sk_managedtraceMemoryDump_dumpNumericValue_proc = Ptr (Sk_managedtracememorydump) -> Ptr (()) -> Ptr (CChar) -> Ptr (CChar) -> Ptr (CChar) -> Word64 -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_managedtraceMemoryDump_dumpNumericValue_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedtraceMemoryDump_dumpNumericValue_proc :: Sk_managedtraceMemoryDump_dumpNumericValue_proc -> IO (FunPtr Sk_managedtraceMemoryDump_dumpNumericValue_proc)
+
 -- | C function pointer type: @typedef void (*sk_managedtraceMemoryDump_dumpStringValue_proc)(sk_managedtracememorydump_t *d, void *context, const char *dumpName, const char *valueName, const char *value)@
 type Sk_managedtraceMemoryDump_dumpStringValue_proc = Ptr (Sk_managedtracememorydump) -> Ptr (()) -> Ptr (CChar) -> Ptr (CChar) -> Ptr (CChar) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_managedtraceMemoryDump_dumpStringValue_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedtraceMemoryDump_dumpStringValue_proc :: Sk_managedtraceMemoryDump_dumpStringValue_proc -> IO (FunPtr Sk_managedtraceMemoryDump_dumpStringValue_proc)
 
 {- | C struct: @"sk_managedtracememorydump_procs_t"@
 
@@ -18552,14 +18620,30 @@ foreign import ccall "&sk_managedtracememorydump_delete" p'sk_managedtracememory
 {- | Opaque C struct: @"sk_wstream_managedstream_t"@
 -}
 data Sk_wstream_managedstream = Sk_wstream_managedstream
+
 -- | C function pointer type: @typedef _Bool (*sk_managedwstream_write_proc)(sk_wstream_managedstream_t *s, void *context, const void *buffer, size_t size)@
 type Sk_managedwstream_write_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> Ptr (()) -> CSize -> IO (CBool)
+
+-- | Creates a 'FunPtr' of @"sk_managedwstream_write_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedwstream_write_proc :: Sk_managedwstream_write_proc -> IO (FunPtr Sk_managedwstream_write_proc)
+
 -- | C function pointer type: @typedef void (*sk_managedwstream_flush_proc)(sk_wstream_managedstream_t *s, void *context)@
 type Sk_managedwstream_flush_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_managedwstream_flush_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedwstream_flush_proc :: Sk_managedwstream_flush_proc -> IO (FunPtr Sk_managedwstream_flush_proc)
+
 -- | C function pointer type: @typedef size_t (*sk_managedwstream_bytesWritten_proc)(const sk_wstream_managedstream_t *s, void *context)@
 type Sk_managedwstream_bytesWritten_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> IO (CSize)
+
+-- | Creates a 'FunPtr' of @"sk_managedwstream_bytesWritten_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedwstream_bytesWritten_proc :: Sk_managedwstream_bytesWritten_proc -> IO (FunPtr Sk_managedwstream_bytesWritten_proc)
+
 -- | C function pointer type: @typedef void (*sk_managedwstream_destroy_proc)(sk_wstream_managedstream_t *s, void *context)@
 type Sk_managedwstream_destroy_proc = Ptr (Sk_wstream_managedstream) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_managedwstream_destroy_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedwstream_destroy_proc :: Sk_managedwstream_destroy_proc -> IO (FunPtr Sk_managedwstream_destroy_proc)
 
 {- | C struct: @"sk_managedwstream_procs_t"@
 
@@ -18633,32 +18717,84 @@ foreign import ccall "&sk_managedwstream_destroy" p'sk_managedwstream_destroy ::
 {- | Opaque C struct: @"sk_stream_managedstream_t"@
 -}
 data Sk_stream_managedstream = Sk_stream_managedstream
+
 -- | C function pointer type: @typedef size_t (*sk_managedstream_read_proc)(sk_stream_managedstream_t *s, void *context, void *buffer, size_t size)@
 type Sk_managedstream_read_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> Ptr (()) -> CSize -> IO (CSize)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_read_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_read_proc :: Sk_managedstream_read_proc -> IO (FunPtr Sk_managedstream_read_proc)
+
 -- | C function pointer type: @typedef size_t (*sk_managedstream_peek_proc)(const sk_stream_managedstream_t *s, void *context, void *buffer, size_t size)@
 type Sk_managedstream_peek_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> Ptr (()) -> CSize -> IO (CSize)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_peek_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_peek_proc :: Sk_managedstream_peek_proc -> IO (FunPtr Sk_managedstream_peek_proc)
+
 -- | C function pointer type: @typedef _Bool (*sk_managedstream_isAtEnd_proc)(const sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_isAtEnd_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_isAtEnd_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_isAtEnd_proc :: Sk_managedstream_isAtEnd_proc -> IO (FunPtr Sk_managedstream_isAtEnd_proc)
+
 -- | C function pointer type: @typedef _Bool (*sk_managedstream_hasPosition_proc)(const sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_hasPosition_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_hasPosition_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_hasPosition_proc :: Sk_managedstream_hasPosition_proc -> IO (FunPtr Sk_managedstream_hasPosition_proc)
+
 -- | C function pointer type: @typedef _Bool (*sk_managedstream_hasLength_proc)(const sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_hasLength_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_hasLength_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_hasLength_proc :: Sk_managedstream_hasLength_proc -> IO (FunPtr Sk_managedstream_hasLength_proc)
+
 -- | C function pointer type: @typedef _Bool (*sk_managedstream_rewind_proc)(sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_rewind_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CBool)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_rewind_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_rewind_proc :: Sk_managedstream_rewind_proc -> IO (FunPtr Sk_managedstream_rewind_proc)
+
 -- | C function pointer type: @typedef size_t (*sk_managedstream_getPosition_proc)(const sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_getPosition_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CSize)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_getPosition_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_getPosition_proc :: Sk_managedstream_getPosition_proc -> IO (FunPtr Sk_managedstream_getPosition_proc)
+
 -- | C function pointer type: @typedef _Bool (*sk_managedstream_seek_proc)(sk_stream_managedstream_t *s, void *context, size_t position)@
 type Sk_managedstream_seek_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> CSize -> IO (CBool)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_seek_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_seek_proc :: Sk_managedstream_seek_proc -> IO (FunPtr Sk_managedstream_seek_proc)
+
 -- | C function pointer type: @typedef _Bool (*sk_managedstream_move_proc)(sk_stream_managedstream_t *s, void *context, long offset)@
 type Sk_managedstream_move_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> CLong -> IO (CBool)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_move_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_move_proc :: Sk_managedstream_move_proc -> IO (FunPtr Sk_managedstream_move_proc)
+
 -- | C function pointer type: @typedef size_t (*sk_managedstream_getLength_proc)(const sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_getLength_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (CSize)
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_getLength_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_getLength_proc :: Sk_managedstream_getLength_proc -> IO (FunPtr Sk_managedstream_getLength_proc)
+
 -- | C function pointer type: @typedef sk_stream_managedstream_t *(*sk_managedstream_duplicate_proc)(const sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_duplicate_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (Ptr (Sk_stream_managedstream))
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_duplicate_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_duplicate_proc :: Sk_managedstream_duplicate_proc -> IO (FunPtr Sk_managedstream_duplicate_proc)
+
 -- | C function pointer type: @typedef sk_stream_managedstream_t *(*sk_managedstream_fork_proc)(const sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_fork_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (Ptr (Sk_stream_managedstream))
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_fork_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_fork_proc :: Sk_managedstream_fork_proc -> IO (FunPtr Sk_managedstream_fork_proc)
+
 -- | C function pointer type: @typedef void (*sk_managedstream_destroy_proc)(sk_stream_managedstream_t *s, void *context)@
 type Sk_managedstream_destroy_proc = Ptr (Sk_stream_managedstream) -> Ptr (()) -> IO (())
+
+-- | Creates a 'FunPtr' of @"sk_managedstream_destroy_proc"@.
+foreign import ccall "wrapper" mkFunPtr'Sk_managedstream_destroy_proc :: Sk_managedstream_destroy_proc -> IO (FunPtr Sk_managedstream_destroy_proc)
 
 {- | C struct: @"sk_managedstream_procs_t"@
 

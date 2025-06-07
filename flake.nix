@@ -35,6 +35,18 @@
           gcc
           fontconfig
           expat # required by 'fontconfig'
+
+          # For programs under demos/ using GLFW.
+          #
+          # The 'xorg.*' libs are learned from error messages generated when demo
+          # programs failed to launch.
+          glfw
+          xorg.libX11
+          xorg.libXi
+          xorg.libXrandr
+          xorg.libXxf86vm
+          xorg.libXcursor
+          xorg.libXinerama
         ];
 
         pyDeps = [
