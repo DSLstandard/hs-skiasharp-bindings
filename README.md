@@ -62,3 +62,59 @@ require manual implementation, and they are handled in
 - Create a high-level API like
   https://learn.microsoft.com/en-us/dotnet/api/skiasharp?view=skiasharp-2.88 +
   documentation.
+
+## Miscellaneous notes
+
+- About module namespacing:
+    - All modules in this library are prefixed with `Skia.`. Some may prefer `Graphics.Skia`, but it is less lean.
+    - If there exists a different Haskell Skia binding library that also uses
+the prefix `Skia.`, and for some reason someone's application depends on that
+library and this one; a solution can be found here:
+https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/package_qualified_imports.html.
+
+- Here is a list of odd facts about SkiaSharp/Mono Skia's C API found when this
+library was being developed:
+
+    - The enum value names of `sk_webpencoder_compression_t` are misspelled:
+        ```
+        typedef enum 
+        {
+        LOSSY_SK_WEBPENCODER_COMPTRESSIoN,
+        LOSSLESS_SK_WEBPENCODER_COMPTRESSION
+        } sk_webpencoder_compression_t
+        ```
+
+        - `sk_pixmap_get_writable_addr` is spelled properly, but
+        `sk_pixmap_get_writeable_addr_with_xy` is not.
+
+        - `sk_codec_get_frame_count` is implemented as 
+
+        ```c
+        int sk_codec_get_frame_count(sk_codec_t* codec) {
+            return AsCodec(codec)->getFrameInfo().size();
+        }
+        ```
+
+        ...which is very inefficient because it is getting an entire
+        `std::vector` of FrameInfos to then only get `.size()` and discard.
+
+        A better implementation should be (I think):
+
+        ```c
+        int sk_codec_get_frame_count(sk_codec_t* codec) {
+            return AsCodec(codec)->getFrameCount();
+        }
+        ```
+
+    - `sk_get_surface` should be named `sk_canvas_get_surface`.
+
+    - `sk_get_recording_context` should be named `sk_canvas_get_recording_context`.
+
+    - `sk_picture_recorder_end_recording` is missing an argument for `const SkRect&
+    cullRect`.
+
+    - `sk_picture_get_recording_canvas` should be named `sk_picture_recorder_get_recording_canvas`.
+
+    - `sk_bitmap_get_pixels` probably should not be responsible for computing
+    `size_t* length`. `sk_bitmap_get_byte_count` already provides an interface for
+    this purpose.
