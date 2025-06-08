@@ -1,0 +1,56 @@
+entries:
+  - pattern: sk_color_get_bit_shift
+    why-ignore: >
+      sk_color_get_bit_shift could be implemented in Haskell.
+  - pattern: sk_compatpaint_.*
+    why-ignore: >
+      Redundant API. sk_compatpaint functions are there to help with Xamarin
+      backward compatibility.
+  - pattern: sksg_invalidation_controller_(begin|end)
+    why-ignore: >
+      sksg_invalidation_controller_(begin|end) have nonsensical implementations.
+  - pattern: sk_matrix_.*
+    why-ignore: >
+      sk_matrix_.* functions can be replaced by functions from the 'linear'
+      package.
+  - pattern: sk_colorspace_xyz_(invert|concat)
+    why-ignore: >
+      sk_colorspace_xyz_(invert|concat) have equivalent functions in the
+      'linear' package.
+  - pattern: skottie_animation_make_from_(string|data|stream|file)
+    why-ignore: >
+      Redundant API. It is sufficient to only use
+      `skottie_animation_builder_make_from_*`.
+  - pattern: sk_color4f_(to|from)_color
+    why-ignore: >
+      sk_color4f_(to|from)_color are replaced by pure-Haskell implementations.
+  - pattern: sk_colorspace_transfer_fn_named_.*
+    why-ignore: >
+      The 6 sk_colorspace_transfer_fn_named_.* functions are replaced by
+      pure-Haskell implementations.
+  - pattern: sk_colorspace_xyz_named_.*
+    why-ignore: >
+      The 6 sk_colorspace_xyz_named_.* functions are replaced by
+      pure-Haskell implementations.
+  - pattern: sk_data_get_data
+    why-ignore: >
+      sk_data_get_data can be replaced by sk_data_get_bytes.
+  - pattern: sk_linker_keep_alive
+    why-ignore: >
+      sk_linker_keep_alive is not meant to be a Skia API.
+  - pattern: sk_font_measure_text_no_return
+    why-ignore: >
+      sk_font_measure_text_no_return can be replaced by sk_font_measure_text.
+  - pattern: (sk_path_rawiter_.*|sk_path_create_rawiter)
+    why-ignore: >
+      (sk_path_rawiter_.*|sk_path_create_rawiter) uses the Skia C++ class
+      SkPath::RawIter, which Google Skia comments the class will be deprecated.
+      We will not implement them.
+  - pattern: sk_runtimeeffect_get_(uniform|child)_(from_name|name)
+    why-ignore: >
+      The interfaces are too fine, yet provide no safety checks. These functions
+      are replaced with pure-Haskell implementations instead.
+  - pattern: skottie_animation_make_from_string
+    why-ignore: >
+      skottie_animation_make_from_string can be replaced by
+      skottie_animation_make_from_data.

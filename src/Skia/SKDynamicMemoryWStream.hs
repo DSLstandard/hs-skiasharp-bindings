@@ -39,7 +39,7 @@ writeToStream stream (toA SKWStream -> dest) = evalContIO do
     dest' <- useObj dest
     liftIO $ toBool <$> sk_dynamicmemorywstream_write_to_stream stream' dest'
 
-detachAsStream :: (MonadIO m) => SKDynamicMemoryWStream -> m SKAssetStream
+detachAsStream :: (MonadIO m) => SKDynamicMemoryWStream -> m SKStreamAsset
 detachAsStream stream = evalContIO do
     stream' <- useObj stream
     asset' <- liftIO $ sk_dynamicmemorywstream_detach_as_stream stream'

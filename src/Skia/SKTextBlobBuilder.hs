@@ -30,6 +30,4 @@ make :: (MonadIO m) => SKTextBlobBuilder -> m (Maybe SKTextBlob)
 make builder = evalContIO do
     builder' <- useObj builder
     blob' <- liftIO $ sk_textblob_builder_make builder'
-    if blob' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_textblob_unref blob'
+    toObjectFinUnlessNull sk_textblob_unref blob'

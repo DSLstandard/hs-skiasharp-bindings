@@ -79,12 +79,10 @@ createFromFile ::
 createFromFile path index = evalContIO do
     path' <- ContT $ withCString path
     tf' <- liftIO $ sk_typeface_create_from_file path' (fromIntegral index)
-    if tf' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_typeface_unref tf'
+    toObjectFinUnlessNull sk_typeface_unref tf'
 
 createFromStream ::
-    (MonadIO m, IsSKAssetStream stream) =>
+    (MonadIO m, IsSKStreamAsset stream) =>
     -- | Input stream. The ownership of this stream is transferred, so the
     -- caller must not reference it again.
     stream ->
@@ -92,12 +90,10 @@ createFromStream ::
     Int ->
     -- | Returns 'Nothing', if the stream is not a valid font file.
     m (Maybe SKTypeface)
-createFromStream (toA SKAssetStream -> stream) index = evalContIO do
+createFromStream (toA SKStreamAsset -> stream) index = evalContIO do
     stream' <- useObj stream
     tf' <- liftIO $ sk_typeface_create_from_stream stream' (fromIntegral index)
-    if tf' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_typeface_unref tf'
+    toObjectFinUnlessNull sk_typeface_unref tf'
 
 createFromData ::
     (MonadIO m) =>
@@ -110,9 +106,7 @@ createFromData ::
 createFromData dat index = evalContIO do
     dat' <- useObj dat
     tf' <- liftIO $ sk_typeface_create_from_data dat' (fromIntegral index)
-    if tf' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_typeface_unref tf'
+    toObjectFinUnlessNull sk_typeface_unref tf'
 
 countGlyphs :: (MonadIO m) => SKTypeface -> m Int
 countGlyphs tf = evalContIO do
@@ -148,7 +142,7 @@ The caller is responsible for deleting the stream.
 openStream ::
     (MonadIO m) =>
     SKTypeface ->
-    m (Maybe (SKAssetStream, Int))
+    m (Maybe (SKStreamAsset, Int))
 openStream tf = evalContIO do
     tf' <- useObj tf
     ttcIndex' <- useAlloca

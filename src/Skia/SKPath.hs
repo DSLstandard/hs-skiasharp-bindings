@@ -7,26 +7,33 @@ import Skia.SKRoundRect qualified as SKRoundRect
 import Skia.SKString qualified as SKString
 import Skia.Types.Rect qualified as Rect
 
-delete :: (MonadIO m) => SKPath -> m ()
-delete path = evalContIO do
+-- | Free a 'SKPath'.
+destroy :: (MonadIO m) => SKPath -> m ()
+destroy path = evalContIO do
     path' <- useObj path
     liftIO $ sk_path_delete path'
 
 {- | Constructs an empty SkPath. By default, SkPath has no verbs, no SkPoint,
 and no weights. FillType is set to kWinding.
+
+You must free the returned 'SKPath' with 'destroy' when done with it.
 -}
 create :: (MonadIO m) => m SKPath
 create = evalContIO do
     path' <- liftIO $ sk_path_new
     toObject path'
 
+{- | Clone a 'SKPath'.
+
+You must free the returned 'SKPath' with 'destroy' when done with it.
+-}
 clone :: (MonadIO m) => SKPath -> m SKPath
 clone path = evalContIO do
     path' <- useObj path
     newPath' <- liftIO $ sk_path_clone path'
     toObject newPath'
 
--- | Adds beginning of contour at SkPoint (x, y).
+-- | Adds beginning of contour at a position.
 moveTo :: (MonadIO m) => SKPath -> V2 Float -> m ()
 moveTo path p = evalContIO do
     path' <- useObj path
@@ -215,17 +222,48 @@ close path = evalContIO do
     path' <- useObj path
     liftIO $ sk_path_close path'
 
+data RectPoint
+    = RectPoint'TopLeft
+    | RectPoint'RightTop
+    | RectPoint'BottomRight
+    | RectPoint'BottomLeft
+    deriving (Show, Eq, Ord, Enum, Bounded)
+
+{- | PRIVATE FUNCTION. Maps 'RectPoint' to their corresponding \"startIndex\".
+Used by functions like 'sk_path_add_rrect_start'.
+
+See src/core/SkPathMakers.h's SkPath_RectPointIterator.
+-}
+privRectPointToStartIndex :: RectPoint -> Word32
+privRectPointToStartIndex = \case
+    RectPoint'TopLeft -> 0
+    RectPoint'RightTop -> 1
+    RectPoint'BottomRight -> 2
+    RectPoint'BottomLeft -> 3
+
 addRect :: (MonadIO m) => (MonadIO m) => SKPath -> Rect Float -> SKPathDirection -> m ()
 addRect path rect dir = evalContIO do
     path' <- useObj path
     rect' <- useStorable $ toSKRect rect
     liftIO $ sk_path_add_rect path' rect' (marshalSKEnum dir)
 
+addRectWithStart :: (MonadIO m) => (MonadIO m) => SKPath -> Rect Float -> SKPathDirection -> RectPoint -> m ()
+addRectWithStart path rect dir startPoint = evalContIO do
+    path' <- useObj path
+    rect' <- useStorable $ toSKRect rect
+    liftIO $ sk_path_add_rect_start path' rect' (marshalSKEnum dir) (privRectPointToStartIndex startPoint)
+
 addRRect :: (MonadIO m) => (MonadIO m) => SKPath -> SKRoundRect -> SKPathDirection -> m ()
 addRRect path rrect dir = evalContIO do
     path' <- useObj path
     rrect' <- useObj rrect
     liftIO $ sk_path_add_rrect path' rrect' (marshalSKEnum dir)
+
+addRRectWithStart :: (MonadIO m) => (MonadIO m) => SKPath -> SKRoundRect -> SKPathDirection -> RectPoint -> m ()
+addRRectWithStart path rrect dir startPoint = evalContIO do
+    path' <- useObj path
+    rrect' <- useObj rrect
+    liftIO $ sk_path_add_rrect_start path' rrect' (marshalSKEnum dir) (privRectPointToStartIndex startPoint)
 
 addRoundedRect ::
     (MonadIO m) =>
@@ -266,6 +304,47 @@ addCircle path center radius dir = evalContIO do
             & applyV2 (coerce center)
             & apply (coerce radius)
             & apply (marshalSKEnum dir)
+
+addArc ::
+    (MonadIO m) =>
+    SKPath ->
+    Rect Float ->
+    -- | Start angle in degrees
+    Degrees ->
+    -- | Sweep angle in degrees
+    Degrees ->
+    m ()
+addArc path oval startAngle sweepAngle = evalContIO do
+    path' <- useObj path
+    oval' <- useStorable $ toSKRect oval
+    liftIO $ sk_path_add_arc path' oval' (coerce startAngle) (coerce sweepAngle)
+
+addPolyRaw ::
+    (MonadIO m) =>
+    SKPath ->
+    -- | Points array
+    Ptr Sk_point ->
+    -- | Number of elements in points array
+    Int ->
+    -- | If true, add line connecting contour end and start.
+    Bool ->
+    m ()
+addPolyRaw path pts count close = evalContIO do
+    path' <- useObj path
+    liftIO $ sk_path_add_poly path' pts (fromIntegral count) (fromBool close)
+
+-- | Like 'addPolyRaw' but takes in a list of (V2 Float) as points.
+addPolyByList ::
+    (MonadIO m) =>
+    SKPath ->
+    [V2 Float] ->
+    -- | If true, add line connecting contour end and start.
+    Bool ->
+    m ()
+addPolyByList path pts close = evalContIO do
+    -- FIXME: Optimize? fmapping is bad.
+    (pts', numPts) <- ContT $ withArrayLen' $ fmap toSKPoint $ pts
+    addPolyRaw path pts' numPts close
 
 {- | Returns minimum and maximum axes values of SkPoint array. Returns 'Nothing'
 if the path contains no points.
@@ -509,21 +588,36 @@ isConvex path = evalContIO do
     path' <- useObj path
     liftIO $ toBool <$> sk_path_is_convex path'
 
--- | Returns true if this path is recognized as an oval or circle.
-isOval :: (MonadIO m) => SKPath -> m Bool
-isOval path = evalContIO do
+asRect ::
+    (MonadIO m) =>
+    SKPath ->
+    -- | Returns (rect bounds, 'true' if the 'SKPath' is closed, rect path
+    -- direction). Returns 'Nothing' if 'SKPath' is not a rectangle.
+    m (Maybe (Rect Float, Bool, SKPathDirection))
+asRect path = evalContIO do
     path' <- useObj path
-    liftIO $ toBool <$> sk_path_is_oval path' nullPtr
 
-{- | Like 'isOval', but returns 'Nothing' if false; returns the bounds of the
-oval if true.
--}
-isOvalAndGetBounds :: (MonadIO m) => SKPath -> m (Maybe (Rect Float))
-isOvalAndGetBounds path = evalContIO do
+    bounds' <- useAlloca
+    isClosed' <- useAlloca
+    direction' <- useAlloca
+
+    isrect <- liftIO $ fmap toBool $ sk_path_is_rect path' bounds' isClosed' direction'
+
+    if isrect
+        then do
+            bounds <- peekWith fromSKRect bounds'
+            isClosed <- peekWith toBool isClosed'
+            direction <- unmarshalSKEnumOrDie =<< peekWith id direction'
+            pure $ Just (bounds, isClosed, direction)
+        else do
+            pure Nothing
+
+asOval :: (MonadIO m) => SKPath -> m (Maybe (Rect Float))
+asOval path = evalContIO do
     path' <- useObj path
     bounds' <- useAlloca
 
-    exists <- liftIO $ toBool <$> sk_path_is_oval path' bounds'
+    exists <- liftIO $ fmap toBool $ sk_path_is_oval path' bounds'
     if exists
         then do
             bounds <- liftIO $ fromSKRect <$> peek bounds'
@@ -531,20 +625,8 @@ isOvalAndGetBounds path = evalContIO do
         else do
             pure Nothing
 
-{- | Returns true if path is representable as SkRRect.
-
-Returns false if path is representable as oval, circle, or SkRect.
--}
-isRRect :: (MonadIO m) => SKPath -> m Bool
-isRRect path = evalContIO do
-    path' <- useObj path
-    liftIO $ toBool <$> sk_path_is_rrect path' nullPtr
-
-{- | Like 'isRRect', but returns 'Nothing' if false; returns the bounds of
-SKRoundRect if true.
--}
-isRRectAndGetRRect :: (MonadIO m) => SKPath -> m (Maybe SKRoundRect)
-isRRectAndGetRRect path = evalContIO do
+asRRect :: (MonadIO m) => SKPath -> m (Maybe SKRoundRect)
+asRRect path = evalContIO do
     rrect <- SKRoundRect.create
 
     path' <- useObj path
@@ -558,24 +640,11 @@ isRRectAndGetRRect path = evalContIO do
             disposeObject rrect
             pure Nothing
 
-{- | Returns true if SkPath contains only one line; SkPath::Verb array has two
-entries: kMove_Verb, kLine_Verb.
-
-If SkPath contains one line and line is not nullptr, line is set to line start
-point and line end point.
-
-Returns false if SkPath is not one line; line is unaltered.
--}
-isLine :: (MonadIO m) => SKPath -> m Bool
-isLine path = evalContIO do
-    path' <- useObj path
-    liftIO $ toBool <$> sk_path_is_line path' nullPtr
-
 {- | Like 'isLine', but returns 'Nothing' if false; returns the (start, end)
 points of the line if true.
 -}
-isLineAndGetPoints :: (MonadIO m) => SKPath -> m (Maybe (V2 Float, V2 Float))
-isLineAndGetPoints path = evalContIO do
+asLine :: (MonadIO m) => SKPath -> m (Maybe (V2 Float, V2 Float))
+asLine path = evalContIO do
     path' <- useObj path
 
     -- NOTE: 'sk_path_is_line' takes 'sk_point_t line[2]' instead of two

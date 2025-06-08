@@ -13,19 +13,10 @@ where
 
 import Skia.Internal.Prelude
 
-privToIfaceObject :: (MonadIO m) => Ptr Gr_glinterface -> m (Maybe GRGlInterface)
-privToIfaceObject iface' = do
-    if iface' == nullPtr
-        then do
-            pure Nothing
-        else do
-            iface <- toObjectFin gr_glinterface_unref iface'
-            pure (Just iface)
-
 createNativeInterface :: (MonadIO m) => m (Maybe GRGlInterface)
 createNativeInterface = evalContIO do
     iface' <- liftIO $ gr_glinterface_create_native_interface
-    privToIfaceObject iface'
+    toObjectFinUnlessNull gr_glinterface_unref iface'
 
 -- NOTE: The type should must match that of 'Gr_gl_get_proc'
 
@@ -52,7 +43,7 @@ privAssemble ::
     (FunPtr (GetProc a) -> GetProcUserData a -> m (Maybe GRGlInterface))
 privAssemble assembleFn getprocfunptr userData = liftIO do
     iface' <- assembleFn (castPtr userData) (castFunPtr getprocfunptr)
-    privToIfaceObject iface'
+    toObjectFinUnlessNull gr_glinterface_unref iface'
 
 assembleInterface :: forall a m. (MonadIO m) => FunPtr (GetProc a) -> GetProcUserData a -> m (Maybe GRGlInterface)
 assembleInterface = privAssemble gr_glinterface_assemble_interface

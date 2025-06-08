@@ -6,7 +6,6 @@ import Control.Monad.Cont
 import Control.Monad.IO.Class
 import Data.Coerce
 import Data.Functor
-import Data.List
 import Data.Maybe
 import Foreign
 import Foreign.C.Types
@@ -14,10 +13,15 @@ import Skia.Bindings
 import Skia.Internal.Utils
 import Skia.Types.Core
 import Skia.Types.Enums
-import Skia.Types.Errors
 import Skia.Types.Extra
 import Skia.Types.Internal.Utils.Core
 import Skia.Types.Rect qualified as Rect
+
+{- | Skottie_resource_provider and Skresources_resource_provider are actually
+the same thing if you look into Google Skia's source code.
+-}
+coerceToSkottieResourceProviderPtr :: Ptr Skresources_resource_provider -> Ptr Skottie_resource_provider
+coerceToSkottieResourceProviderPtr = castPtr
 
 unmarshalSKImageInfo :: (MonadIO m) => Sk_imageinfo -> m SKImageInfo
 unmarshalSKImageInfo iminfo = do
@@ -76,8 +80,8 @@ marshalSKPngEncoderFilterFlags flags =
             , (flags.paeth, PAETH_SK_PNGENCODER_FILTER_FLAGS)
             ]
 
-useSKPngEncoderOptions :: (MonadIO m) => SKPngEncoderOptions -> m (Ptr Sk_pngencoder_options)
-useSKPngEncoderOptions opts = evalContIO do
+useSKPngEncoderOptions :: SKPngEncoderOptions -> ContT r IO (Ptr Sk_pngencoder_options)
+useSKPngEncoderOptions opts = do
     iccProfile' <- useNullIfNothing useObj opts.iccProfile
     iccProfileDescription' <- useNullIfNothing useTextAsUtf8CString opts.iccProfileDescription
     useStorable
@@ -89,8 +93,8 @@ useSKPngEncoderOptions opts = evalContIO do
             , fICCProfileDescription = iccProfileDescription'
             }
 
-useSKJpegEncoderOptions :: (MonadIO m) => SKJpegEncoderOptions -> m (Ptr Sk_jpegencoder_options)
-useSKJpegEncoderOptions opts = evalContIO do
+useSKJpegEncoderOptions :: SKJpegEncoderOptions -> ContT r IO (Ptr Sk_jpegencoder_options)
+useSKJpegEncoderOptions opts = do
     iccProfile' <- useNullIfNothing useObj opts.iccProfile
     iccProfileDescription' <- useNullIfNothing useTextAsUtf8CString opts.iccProfileDescription
     xmpMetadata' <- useNullIfNothing useObj opts.xmpMetadata
@@ -113,7 +117,7 @@ defaultSKWebpEncoderOptions =
         , iccProfileDescription = Nothing
         }
 
-useSKWebpEncoderOptions :: (MonadIO m) => SKWebpEncoderOptions -> m (Ptr Sk_webpencoder_options)
+useSKWebpEncoderOptions :: SKWebpEncoderOptions -> ContT r IO (Ptr Sk_webpencoder_options)
 useSKWebpEncoderOptions opts = evalContIO do
     iccProfile' <- useNullIfNothing useObj opts.iccProfile
     iccProfileDescription' <- useNullIfNothing useTextAsUtf8CString opts.iccProfileDescription
@@ -136,6 +140,7 @@ useSKCodecOptions input = do
             , fPriorFrame = fromIntegral input.priorFrame
             }
 
+-- | NOTE: This is 'IO' solely because this function uses 'unmarshalSKEnumOrDie'.
 unmarshalSKCodecFrameInfo :: (MonadIO m) => Sk_codec_frameinfo -> m SKCodecFrameInfo
 unmarshalSKCodecFrameInfo input = liftIO do
     let requiredFrame = if input.fRequiredFrame == -1 then Nothing else Just (fromIntegral input.fRequiredFrame)
@@ -182,16 +187,13 @@ useAllocaSKFontStyle = do
 
 peekSKSurfaceProps :: (MonadIO m) => Ptr Sk_surfaceprops -> m SKSurfaceProps
 peekSKSurfaceProps props' = liftIO do
-    flags <- sk_surfaceprops_get_flags props'
+    flags <- Sk_surfaceprops_flags <$> sk_surfaceprops_get_flags props'
 
-    -- Refer to Google Skia's include/core/SkSurfaceProps.h for details on what
-    -- each bit means.
-    let usesDeviceIndependentFonts = testBit flags 0
-    let usesDynamicMSAA = testBit flags 1
-    let alwaysDither = testBit flags 2
+    let usesDeviceIndependentFonts = hasFlag USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS flags
+    let usesDynamicMSAA = hasFlag DYNAMIC_MSAA_SK_SURFACE_PROPS_FLAGS flags
+    let alwaysDither = hasFlag ALWAYS_DITHER_SK_SURFACE_PROPS_FLAGS flags
 
     pixelGeometry <- unmarshalSKEnumOrDie =<< sk_surfaceprops_get_pixel_geometry props'
-
     pure SKSurfaceProps{..}
 
 useSKSurfaceProps :: SKSurfaceProps -> ContT r IO (Ptr Sk_surfaceprops)
@@ -203,13 +205,11 @@ useSKSurfaceProps props =
   where
     pixelGeometry = marshalSKEnum props.pixelGeometry
 
-    -- Refer to Google Skia's include/core/SkSurfaceProps.h for details on what
-    -- each bit means.
-    flags =
+    Sk_surfaceprops_flags flags =
         makeBitFlags
-            [ (0, props.usesDeviceIndependentFonts)
-            , (1, props.usesDynamicMSAA)
-            , (2, props.alwaysDither)
+            [ (props.usesDeviceIndependentFonts, USE_DEVICE_INDEPENDENT_FONTS_SK_SURFACE_PROPS_FLAGS)
+            , (props.usesDynamicMSAA, DYNAMIC_MSAA_SK_SURFACE_PROPS_FLAGS)
+            , (props.alwaysDither, ALWAYS_DITHER_SK_SURFACE_PROPS_FLAGS)
             ]
 
 -- | Used to allocate an empty 'Sk_surfaceprops' as a destination buffer.

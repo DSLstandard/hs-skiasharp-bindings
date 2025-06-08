@@ -2,8 +2,9 @@ module Skia.SKManagedWStream where
 
 import Skia.Internal.Prelude
 import System.IO
+import Data.ByteString qualified as BS
 
-data WStreamParams = WStreamParams
+data StreamParams = StreamParams
     { write :: Ptr Word8 -> Int -> IO Bool
     , flush :: IO ()
     , getBytesWritten :: IO Int
@@ -31,7 +32,7 @@ initializeProcs = liftIO do
 
     sk_managedwstream_set_procs Sk_managedwstream_procs{..}
   where
-    interpretCtx :: Ptr () -> IO WStreamParams
+    interpretCtx :: Ptr () -> IO StreamParams
     interpretCtx ptr = deRefStablePtr (castPtrToStablePtr ptr)
 
 destroy :: (MonadIO m) => SKManagedWStream -> m ()
@@ -39,8 +40,8 @@ destroy stream = evalContIO do
     stream' <- useObj stream
     liftIO $ sk_managedwstream_destroy stream'
 
-createFromParams :: (MonadIO m) => WStreamParams -> m SKManagedWStream
-createFromParams params = liftIO do
+create :: (MonadIO m) => StreamParams -> m (Owned SKManagedWStream)
+create params = liftIO do
     rec -- We modify 'params' here to hook in a 'freeStablePtr' to delete
         -- `params'` when the managed stream is destroyed.
         let paramsUpdated =
@@ -54,14 +55,17 @@ createFromParams params = liftIO do
     stream' <- sk_managedwstream_new (castStablePtrToPtr params')
     toObject stream'
 
-createFromHandle :: (MonadIO m) => Handle -> m SKManagedWStream
-createFromHandle handle = liftIO do
-    createFromParams
-        WStreamParams
-            { write = \buffer size -> do
-                hPutBuf handle buffer size
-                pure True
-            , flush = hFlush handle
-            , getBytesWritten = fromIntegral <$> hTell handle
-            , close = hClose handle
-            }
+{- | Wraps a Haskell 'Handle' as a 'StreamParams' with basic implementations.
+
+All 'StreamParams' fields are set to reasonable implementations
+-}
+mkHandleStreamParams :: Handle -> StreamParams
+mkHandleStreamParams handle =
+    StreamParams
+        { write = \buffer size -> do
+            hPutBuf handle buffer size
+            pure True
+        , flush = hFlush handle
+        , getBytesWritten = fromIntegral <$> hTell handle
+        , close = hClose handle
+        }

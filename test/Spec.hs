@@ -1,5 +1,6 @@
 module Main where
 
+import Data.Foldable
 import Data.Maybe
 import Data.Proxy
 import Data.Vector qualified as Vector
@@ -7,7 +8,9 @@ import Foreign
 import GHC.TypeLits
 import Linear
 import Linear.V qualified
+import Skia.Bindings
 import Skia.Internal.Utils
+import Skia.SKColorType qualified as SKColorType
 import Skia.Types
 import Skia.Types.Color qualified as Color
 import Skia.Types.ColorMatrix qualified as ColorMatrix
@@ -39,10 +42,7 @@ test'InternalUtils :: TestTree
 test'InternalUtils =
     testGroup
         "Skia.Internal.Utils"
-        [ H.testCase "makeBitFlags examples" do
-            0b00000000 H.@=? makeBitFlags @Word8 []
-            0b00010010 H.@=? makeBitFlags @Word8 [(0, False), (1, True), (4, True)]
-        , H.testCase "convert4Word8ToWord32 examples" do
+        [ H.testCase "convert4Word8ToWord32 examples" do
             0xDEADBEEF H.@=? convert4Word8ToWord32 (0xDE, 0xAD, 0xBE, 0xEF)
         , QC.testProperty "convert4Word8ToWord32 . convertWord32To4Word8 == id" do
             value <- QC.arbitrary @Word32
@@ -85,6 +85,17 @@ test'Color =
             pure $ Color.fromSKColor4f (Color.toSKColor4f rgba) == rgba
         ]
 
+test'SKColorType :: TestTree
+test'SKColorType =
+    testGroup
+        "Skia.SKColorType"
+        [ H.testCase "bytesPerPixel correctness" do
+            for_ [minBound .. maxBound] \(colortype :: SKColorType) -> do
+                expected <- hsskia_SkColorTypeBytesPerPixel (marshalSKEnum colortype)
+                let got = SKColorType.bytesPerPixel colortype
+                H.assertEqual ("input = " <> show colortype) expected (fromIntegral got)
+        ]
+
 mainTestTree :: TestTree
 mainTestTree =
     testGroup
@@ -92,6 +103,7 @@ mainTestTree =
         [ test'InternalUtils
         , test'ColorMatrix
         , test'Color
+        , test'SKColorType
         ]
 
 main :: IO ()

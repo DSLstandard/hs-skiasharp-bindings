@@ -3,17 +3,15 @@ module Skia.Types.Internal.Utils.Core where
 import Control.Exception qualified
 import Control.Monad.Cont
 import Control.Monad.IO.Class
+import Data.Functor
 import Data.Text qualified as T
 import Data.Text.Foreign qualified
 import Data.Typeable
 import Data.Vector.Storable qualified as VS
 import Foreign
 import Foreign.C.String
-import Foreign.C.Types
-import Skia.Bindings
 import Skia.Types.Core
 import Skia.Types.Errors
-import Skia.Types.Extra
 
 toObjectMaybe :: (ManagedPtrNewType s a, SKObject s, MonadIO m) => Ptr a -> m (Maybe s)
 toObjectMaybe ptr = do
@@ -28,6 +26,9 @@ toObjectMaybe ptr = do
 evalContIO :: (MonadIO m) => ContT a IO a -> m a
 evalContIO m = liftIO $ evalContT m
 {-# INLINE evalContIO #-}
+
+touchObj :: (ManagedPtrNewType s a, SKObject s) => s -> ContT r IO ()
+touchObj object = useObj object $> ()
 
 useObj :: (ManagedPtrNewType s a, SKObject s) => s -> ContT r IO (Ptr a)
 useObj object = ContT $ withManagedPtr (toManagedPtr object)
@@ -55,8 +56,13 @@ useTextAsUtf8CString :: T.Text -> ContT r IO CString
 useTextAsUtf8CString = ContT . Data.Text.Foreign.withCString
 {-# INLINE useTextAsUtf8CString #-}
 
+useTextAsUtf8CStringLen :: T.Text -> ContT r IO CStringLen
+useTextAsUtf8CStringLen = ContT . Data.Text.Foreign.withCStringLen
+{-# INLINE useTextAsUtf8CStringLen #-}
+
 useStorableVector :: (Storable a) => VS.Vector a -> ContT r IO (Ptr a)
 useStorableVector vector = ContT $ VS.unsafeWith vector
+{-# INLINE useStorableVector #-}
 
 unmarshalSKEnumOrDie :: forall a s m. (Show a, Typeable s, MonadIO m, SKEnum s a) => a -> m s
 unmarshalSKEnumOrDie a = liftIO do

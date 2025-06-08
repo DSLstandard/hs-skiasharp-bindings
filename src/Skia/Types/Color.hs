@@ -44,10 +44,12 @@ newtype SKPMColor = SKPMColor
 premultiply :: SKColor -> SKPMColor
 premultiply (SKColor color) = SKPMColor $ unsafeDupablePerformIO do
     sk_color_premultiply color
+{-# NOINLINE premultiply #-}
 
 unpremultiply :: SKPMColor -> SKColor
 unpremultiply (SKPMColor color) = SKColor $ unsafeDupablePerformIO do
     sk_color_unpremultiply color
+{-# NOINLINE unpremultiply #-}
 
 toSKColor :: RGBA Word8 -> SKColor
 toSKColor RGBA{red, green, blue, alpha} =

@@ -6,22 +6,22 @@ import Control.Exception
 -- exceptions. They are for this Haskell library.
 
 newtype UnmarshalSKEnumError = UnmarshalSKEnumError String
-    deriving (Show, Eq, Ord)
+    deriving (Show)
 
 instance Exception UnmarshalSKEnumError
 
 -- | An internal error of *THIS* Haskell Skia binding library.
 newtype InternalError = InternalError String
-    deriving (Show, Eq, Ord)
+    deriving (Show)
 
 instance Exception InternalError
 
 newtype BadArgumentError = BadArgumentError String
-    deriving (Show, Eq, Ord)
+    deriving (Show)
 
 instance Exception BadArgumentError
 
 newtype SkiaAssertionError = SkiaAssertionError String
-    deriving (Show, Eq, Ord)
+    deriving (Show)
 
 instance Exception SkiaAssertionError

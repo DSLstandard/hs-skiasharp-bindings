@@ -11,12 +11,10 @@ createNull ::
     -- | Height
     Int ->
     -- | Returns 'Nothing' unless the input dimensions are positive.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createNull width height = liftIO do
     surface' <- liftIO $ sk_surface_new_null (fromIntegral width) (fromIntegral height)
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+    toObjectFinUnlessNull sk_surface_unref surface'
 
 createRaster ::
     (MonadIO m) =>
@@ -25,16 +23,13 @@ createRaster ::
     Int ->
     Maybe SKSurfaceProps ->
     -- | Returns 'Nothing' unless if parameters are valid and memory was allocated.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createRaster iminfo rowBytes surfaceProps = evalContIO do
     iminfo' <- useSKImageInfo iminfo
     surfaceProps' <- useNullIfNothing useSKSurfaceProps surfaceProps
     surface' <- liftIO $ sk_surface_new_raster iminfo' (fromIntegral rowBytes) surfaceProps'
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+    toObjectFinUnlessNull sk_surface_unref surface'
 
--- SK_C_API sk_surface_t* sk_surface_new_raster_direct(
 createByWrappingPixels ::
     (MonadIO m) =>
     SKImageInfo ->
@@ -46,7 +41,7 @@ createByWrappingPixels ::
     IO () ->
     Maybe SKSurfaceProps ->
     -- | Returns 'Nothing' unless if parameters are valid and memory was allocated.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createByWrappingPixels iminfo pixelBuffer rowBytes releaseCallback surfaceProps = evalContIO do
     iminfo' <- useSKImageInfo iminfo
     surfaceProps' <- useNullIfNothing useSKSurfaceProps surfaceProps
@@ -67,9 +62,8 @@ createByWrappingPixels iminfo pixelBuffer rowBytes releaseCallback surfaceProps 
                 onRelease'
                 nullPtr
                 surfaceProps'
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+
+    toObjectFinUnlessNull sk_surface_unref surface'
 
 createByWrappingBackendTexture ::
     (MonadIO m, IsSubclassOf GRRecordingContext context) =>
@@ -82,7 +76,7 @@ createByWrappingBackendTexture ::
     Maybe SKColorSpace ->
     Maybe SKSurfaceProps ->
     -- | Returns 'Nothing' unless all parameters are valid.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createByWrappingBackendTexture (toA GRRecordingContext -> ctx) tex origin sampleCount colorType colorspace props = evalContIO do
     ctx' <- useObj ctx
     tex' <- useObj tex
@@ -98,10 +92,18 @@ createByWrappingBackendTexture (toA GRRecordingContext -> ctx) tex origin sample
                 (marshalSKEnum colorType)
                 colorspace'
                 props'
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+    toObjectFinUnlessNull sk_surface_unref surface'
 
+{- | Wraps a GPU-backed buffer into 'SKSurface'. Caller must ensure
+backendRenderTarget is valid for the lifetime of returned SkSurface.
+
+SkSurface is returned if all parameters are valid. backendRenderTarget is valid
+if its pixel configuration agrees with colorSpace and context; for instance, if
+backendRenderTarget has an sRGB configuration, then context must support sRGB,
+and colorSpace must be present. Further, backendRenderTarget width and height
+must not exceed context capabilities, and the context must be able to support
+back-end render targets.
+-}
 createByWrappingBackendRenderTarget ::
     (MonadIO m, IsSubclassOf GRRecordingContext context) =>
     context ->
@@ -110,8 +112,7 @@ createByWrappingBackendRenderTarget ::
     SKColorType ->
     Maybe SKColorSpace ->
     Maybe SKSurfaceProps ->
-    -- | Returns 'Nothing' unless all parameters are valid.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createByWrappingBackendRenderTarget ctx target origin colorType colorspace props = evalContIO do
     ctx' <- useObj (ctx `asA` GRRecordingContext)
     target' <- useObj target
@@ -126,9 +127,7 @@ createByWrappingBackendRenderTarget ctx target origin colorType colorspace props
                 (marshalSKEnum colorType)
                 colorspace'
                 props'
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+    toObjectFinUnlessNull sk_surface_unref surface'
 
 createByRenderTarget ::
     (MonadIO m, IsSubclassOf GRRecordingContext context) =>
@@ -143,7 +142,7 @@ createByRenderTarget ::
     -- | Should create with mipmaps?
     Bool ->
     -- | Returns 'Nothing' unless all parameters are valid.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createByRenderTarget ctx budgeted iminfo sampleCount origin surfaceProps shouldCreateWithMipmaps = evalContIO do
     ctx' <- useObj (ctx `asA` GRRecordingContext)
     iminfo' <- useSKImageInfo iminfo
@@ -158,9 +157,7 @@ createByRenderTarget ctx budgeted iminfo sampleCount origin surfaceProps shouldC
                 (marshalSKEnum origin)
                 surfaceProps'
                 (fromBool shouldCreateWithMipmaps)
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+    toObjectFinUnlessNull sk_surface_unref surface'
 
 createFromMetalLayer ::
     (MonadIO m, IsSubclassOf GRRecordingContext context) =>
@@ -176,7 +173,7 @@ createFromMetalLayer ::
     -- | Pointer to drawable to be filled in when this surface is instantiated; may not be nullptr.
     Ptr (Ptr ()) ->
     -- | Returns 'Nothing' unless all parameters are valid.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createFromMetalLayer ctx layer origin sampleCount colorType colorspace surfaceProps dstDrawable = evalContIO do
     ctx' <- useObj (ctx `asA` GRRecordingContext)
     colorspace' <- useNullIfNothing useObj colorspace
@@ -192,9 +189,7 @@ createFromMetalLayer ctx layer origin sampleCount colorType colorspace surfacePr
                 colorspace'
                 surfaceProps'
                 dstDrawable
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+    toObjectFinUnlessNull sk_surface_unref surface'
 
 createFromMetalView ::
     (MonadIO m, IsSubclassOf GRRecordingContext context) =>
@@ -208,7 +203,7 @@ createFromMetalView ::
     SKColorSpace ->
     Maybe SKSurfaceProps ->
     -- | Returns 'Nothing' unless all parameters are valid.
-    m (Maybe SKSurface)
+    m (Maybe (Ref SKSurface))
 createFromMetalView ctx view origin sampleCount colorType colorspace surfaceProps = evalContIO do
     ctx' <- useObj (ctx `asA` GRRecordingContext)
     colorspace' <- useObj colorspace
@@ -223,9 +218,7 @@ createFromMetalView ctx view origin sampleCount colorType colorspace surfaceProp
                 (marshalSKEnum colorType)
                 colorspace'
                 surfaceProps'
-    if surface' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_surface_unref surface'
+    toObjectFinUnlessNull sk_surface_unref surface'
 
 makeImageSnapshot ::
     (MonadIO m) =>
@@ -302,15 +295,19 @@ getProps surface = evalContIO do
     props' <- liftIO $ sk_surface_get_props surface'
     peekSKSurfaceProps props'
 
-{- | Returns 'SKCanvas' that draws into 'SKSurface'. Subsequent calls return the
-same 'SKCanvas'. SkCanvas returned is managed and owned by 'SKSurface', and is
-deleted when 'SKSurface' is deleted.
+{- | Exposes 'SKCanvas' that draws into 'SKSurface'. Subsequent calls return the
+same 'SKCanvas'.
+
+NOTE FROM DEVELOPER: The 'SKCanvas' returned is managed and owned by
+'SKSurface', and is deleted when 'SKSurface' is deleted. This is the reason why
+the interface uses the continuation passing pattern.
 -}
-getCanvas :: (MonadIO m) => SKSurface -> m SKCanvas
-getCanvas surface = evalContIO do
+withCanvas :: (MonadIO m) => SKSurface -> (SKCanvas -> IO r) -> m r
+withCanvas surface f = evalContIO do
     surface' <- useObj surface
     canvas' <- liftIO $ sk_surface_get_canvas surface'
-    toObject canvas'
+    canvas <- toObject canvas'
+    liftIO $ f canvas
 
 -- | Returns the recording context being used by the SkSurface.
 getRecordingContext ::

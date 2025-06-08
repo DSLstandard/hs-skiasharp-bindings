@@ -70,6 +70,28 @@ flags:
       little runtime cost, thus it is recommended to leave this flag on.
     default: true
     manual: true
+  enable-check-nullptr:
+    description: >
+      Enable Haskell IO assertions in 'Skia.Types.Core.toObjectFin' (and its
+      variants) to ensure that no nullptr is passed. To elaborate, this Haskell
+      library may have incorrectly used some of the Skia object factory
+      functions and assumed they never return nullptrs. Enabling this flag can
+      help catch these errors. Note that enabling this flag incurs very little
+      runtime cost, as it only involves a nullptr check.
+    default: true
+    manual: true
+  enable-debug-trace-finalizers:
+    description: >
+      Enable the ability to set up IO action debug hooks to trace all SKObject
+      'ForeignPtr' finalizations. If you are encountering segmentation faults
+      randomly, it is likely due to a bug in this Haskell library (e.g., not
+      keeping an object's lifetime long enough and allowing the Haskell
+      runtime's garbage collector to prematurely finalize objects), or it may be
+      due to a use-after-free error in your program. Enabling this flag allows
+      you to print out all SKObject finalizations and helps you to debug. Note
+      that enabling this flag incurs a very little runtime cost.
+    default: false
+    manual: true
 
 library:
   source-dirs: src/
@@ -94,9 +116,17 @@ library:
     - skia
   extra-libraries:
     - SkiaSharp
+  cxx-sources:
+    - cbits/everything.cpp
+  include-dirs:
+    - cbits/
   when:
     - condition: flag(enable-skia-assertions)
       cpp-options: -DHS_SKIA_SKIA_ASSERTIONS_ENABLED
+    - condition: flag(enable-check-nullptr)
+      cpp-options: -DHS_SKIA_CHECK_NULLPTR_ENABLED
+    - condition: flag(enable-debug-trace-finalizers)
+      cpp-options: -DHS_SKIA_DEBUG_TRACE_FINALIZERS_ENABLED
 
 tests:
   skia-test:
@@ -112,19 +142,27 @@ tests:
       - vector
 
 executables:
-  demo-raster-example:
+  demo-raster-example-with-bindings:
     source-dirs: demos/
-    main: RasterExample.hs
+    main: DemoRasterExampleBindingsOnly.hs
     other-modules: []
-    dependencies:
-      - base
-      - skia
+    dependencies: [base, skia]
+
   demo-glfw-opengl:
     source-dirs: demos/
-    main: GLFWOpenGL.hs
+    main: DemoGLFWOpenGL.hs
     other-modules: []
+    dependencies: [base, GLFW-b, OpenGLRaw, skia]
+
+  demo-skottie-animation-viewer:
+    source-dirs: demos/
+    main: DemoSkottieAnimationViewer.hs
+    other-modules: [SharedUtils.MakeDemoApp]
     dependencies:
-      - base
-      - GLFW-b
-      - OpenGLRaw
-      - skia
+      [base, GLFW-b, OpenGLRaw, skia, time, optparse-applicative, linear, text]
+
+  demo-draw-text:
+    source-dirs: demos/
+    main: DemoDrawText.hs
+    other-modules: [SharedUtils.MakeDemoApp]
+    dependencies: [base, GLFW-b, OpenGLRaw, skia, time, linear, text]

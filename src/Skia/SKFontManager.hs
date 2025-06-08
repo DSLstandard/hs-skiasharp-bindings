@@ -7,13 +7,13 @@ import Data.Traversable
 import Skia.Internal.Prelude
 import Skia.SKString qualified as SKString
 
-createDefault :: (MonadIO m) => m SKFontManager
+createDefault :: (MonadIO m) => m (Ref SKFontManager)
 createDefault = evalContIO do
     fmgr <- liftIO $ sk_fontmgr_create_default
-    toObject fmgr
+    toObjectFin sk_fontmgr_unref fmgr
 
 -- | Returns Skia's global default font manager object.
-getGlobalDefault :: (MonadIO m) => m SKFontManager
+getGlobalDefault :: (MonadIO m) => m (Ref SKFontManager)
 getGlobalDefault = evalContIO do
     fmgr <- liftIO sk_fontmgr_ref_default
     toObjectFin sk_fontmgr_unref fmgr
@@ -47,7 +47,7 @@ createStyleSet ::
     SKFontManager ->
     -- | Index
     Int ->
-    m SKFontStyleSet
+    m (Ref SKFontStyleSet)
 createStyleSet fmgr index = evalContIO do
     fmgr' <- useObj fmgr
     liftIO $ toObjectFin sk_fontstyleset_unref =<< sk_fontmgr_create_styleset fmgr' (fromIntegral index)
@@ -66,7 +66,7 @@ matchFamily ::
     SKFontManager ->
     -- | Family name
     Maybe T.Text ->
-    m SKFontStyleSet
+    m (Ref SKFontStyleSet)
 matchFamily fmgr familyName = evalContIO do
     fmgr' <- useObj fmgr
     familyName' <- useNullIfNothing useTextAsUtf8CString familyName
@@ -96,11 +96,8 @@ matchFamilyStyle fmgr familyName fontStyle = evalContIO do
     fmgr' <- useObj fmgr
     familyName' <- useNullIfNothing useTextAsUtf8CString familyName
     fontStyle' <- useSKFontStyle fontStyle
-
     tf' <- liftIO $ sk_fontmgr_match_family_style fmgr' familyName' fontStyle'
-    if tf' == nullPtr
-        then pure Nothing
-        else liftIO $ Just <$> toObjectFin sk_typeface_unref tf'
+    toObjectFinUnlessNull sk_typeface_unref tf'
 
 {- | Use the system fallback to find a typeface for the given character.
 
@@ -140,9 +137,7 @@ matchFamilyStyleCharacter fmgr familyName fontStyle inputBcp47s char = evalContI
                 bcp47'
                 (fromIntegral bcp47Count)
                 (fromIntegral (Data.Char.ord char))
-    if tf' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_typeface_unref tf'
+    toObjectFinUnlessNull sk_typeface_unref tf'
 
 {- | Returns a typeface for the specified file name and TTC index (pass
 'Nothing' for none). Returns 'Nothing' if the file is not found, or its contents
@@ -154,41 +149,35 @@ createFromFile ::
     FilePath ->
     -- | TTC index
     Maybe Int ->
-    m (Maybe SKTypeface)
+    m (Maybe (Ref SKTypeface))
 createFromFile fmgr path ttcIndex = evalContIO do
     fmgr' <- useObj fmgr
     path' <- ContT $ withCString path
 
     tf' <- liftIO $ sk_fontmgr_create_from_file fmgr' path' (maybe 0 fromIntegral ttcIndex)
-    if tf' == nullPtr
-        then pure Nothing
-        else do
-            -- Google Skia's comment: The caller must call unref() on the
-            -- returned object if it is not null.
-            Just <$> toObjectFin sk_typeface_unref tf'
+    -- Google Skia's comment: The caller must call unref() on the
+    -- returned object if it is not null.
+    toObjectFinUnlessNull sk_typeface_unref tf'
 
 {- | Returns a typeface for the specified stream and TTC index (pass 'Nothing'
 for none). Returns 'Nothing' if the file is not found, or its contents are not
 recognized.
 -}
 createFromStream ::
-    (MonadIO m, IsSKAssetStream stream) =>
+    (MonadIO m, IsSKStreamAsset stream) =>
     SKFontManager ->
     stream ->
     -- | TTC index
     Maybe Int ->
-    m (Maybe SKTypeface)
-createFromStream fmgr (toA SKAssetStream -> stream) ttcIndex = evalContIO do
+    m (Maybe (Ref SKTypeface))
+createFromStream fmgr (toA SKStreamAsset -> stream) ttcIndex = evalContIO do
     fmgr' <- useObj fmgr
     stream' <- useObj stream
 
     tf' <- liftIO $ sk_fontmgr_create_from_stream fmgr' stream' (maybe 0 fromIntegral ttcIndex)
-    if tf' == nullPtr
-        then pure Nothing
-        else do
-            -- Google Skia's comment: The caller must call unref() on the
-            -- returned object if it is not null.
-            Just <$> toObjectFin sk_typeface_unref tf'
+    -- Google Skia's comment: The caller must call unref() on the
+    -- returned object if it is not null.
+    toObjectFinUnlessNull sk_typeface_unref tf'
 
 {- | Returns a typeface for the specified data and TTC index (pass 'Nothing' for
 none). Returns 'Nothing' if the file is not found, or its contents are not
@@ -200,15 +189,12 @@ createFromData ::
     SKData ->
     -- | TTC index
     Maybe Int ->
-    m (Maybe SKTypeface)
+    m (Maybe (Ref SKTypeface))
 createFromData fmgr dat ttcIndex = evalContIO do
     fmgr' <- useObj fmgr
     dat' <- useObj dat
 
     tf' <- liftIO $ sk_fontmgr_create_from_data fmgr' dat' (maybe 0 fromIntegral ttcIndex)
-    if tf' == nullPtr
-        then pure Nothing
-        else do
-            -- Google Skia's comment: The caller must call unref() on the
-            -- returned object if it is not null.
-            Just <$> toObjectFin sk_typeface_unref tf'
+    -- Google Skia's comment: The caller must call unref() on the
+    -- returned object if it is not null.
+    toObjectFinUnlessNull sk_typeface_unref tf'

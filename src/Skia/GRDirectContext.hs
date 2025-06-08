@@ -82,6 +82,7 @@ privCreateHelper createWithoutOptions createWithOptions options = evalContIO do
             liftIO $ createWithOptions options'
     toObjectFin (gr_recording_context_unref . pointerCast GRDirectContext GRRecordingContext) ctx'
 
+-- | Creates a 'GRDirectContext' for an OpenGL backend context.
 createGl :: (MonadIO m) => GRGlInterface -> Maybe ContextOptions -> m GRDirectContext
 createGl iface opts = evalContIO do
     iface' <- useObj iface

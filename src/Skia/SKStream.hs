@@ -22,7 +22,7 @@ module Skia.SKStream (
     skip,
     fork,
     duplicate,
-    getMemoryBase,
+    withMemoryBase,
 )
 where
 
@@ -35,7 +35,7 @@ destroy (toA SKStream -> stream) = evalContIO do
     stream' <- useObj stream
     liftIO $ sk_stream_destroy stream'
 
--- PRIVATE FUNCTION
+-- | PRIVATE FUNCTION
 privReadStorable ::
     (MonadIO m, Storable s, IsSKStream stream) =>
     (Ptr Sk_stream -> Ptr s -> IO CBool) ->
@@ -148,10 +148,11 @@ getLength (toA SKStream -> stream) = evalContIO do
     stream' <- useObj stream
     liftIO $ fromIntegral <$> sk_stream_get_length stream'
 
-getMemoryBase :: (IsSKStream stream, MonadIO m) => stream -> m (Ptr Word8)
-getMemoryBase (toA SKStream -> stream) = evalContIO do
+withMemoryBase :: (IsSKStream stream, MonadIO m) => stream -> (Ptr Word8 -> IO r) -> m r
+withMemoryBase (toA SKStream -> stream) f = evalContIO do
     stream' <- useObj stream
-    liftIO $ castPtr <$> sk_stream_get_memory_base stream'
+    addr <- liftIO $ castPtr <$> sk_stream_get_memory_base stream'
+    liftIO $ f addr
 
 fork :: (IsSKStream stream, MonadIO m) => stream -> m SKStream
 fork (toA SKStream -> stream) = evalContIO do

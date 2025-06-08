@@ -10,11 +10,7 @@ import Data.Text qualified as T
 import Data.Word
 import Foreign
 import Foreign.C
-import Foreign.Storable
-import Linear
 import Skia.Bindings
-import Skia.Internal.Utils
-import Skia.Types.Core
 import Skia.Types.Enums
 import Skia.Types.Objects
 import Skia.Types.Rect
@@ -416,3 +412,42 @@ data SKImageInfo = SKImageInfo
     , alphaType :: SKAlphaType
     }
     deriving (Show)
+
+{- | Annotation type for documentation.
+
+You should only encounter this type in the return type of a function (typically
+an object creation/factory function). The type @a@ is ALWAYS a subclass of
+either 'SKNVRefCnt' or 'SKRefCnt'; otherwise, it is a documentation error.
+
+When you see:
+
+@
+createFoo :: ... -> m (Ref a)
+@
+
+(or variants such as @createFoo :: ... -> m (Maybe (Ref a))@), you do not need
+to worry about the need to manually decrement the SKNVRefCnt/SKRefCnt reference
+counter of the object once you are done using it. This Haskell library automates
+the process - the decrementation is performed automatically by the Haskell
+runtime when the object goes out-of-scope and is finalized.
+-}
+type Ref a = a
+
+{- | Annotation type for documentation.
+
+You should only encounter this type in the return type of a function (typically
+an object creation/factory function).
+
+When you see:
+
+@
+createFoo :: ... -> m (Owned a)
+@
+
+(or variants such as @createFoo :: ... -> m (Maybe (Owned a))@), you, as the
+user of this library, **ARE** responsible for destroying the object once you are
+done using it using functions typically named @destroy@.
+
+If the object goes out-of-scope and it is not destroyed, it is a memory leak.
+-}
+type Owned a = a

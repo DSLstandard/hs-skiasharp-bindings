@@ -1,9 +1,9 @@
 module Skia.SKBitmap where
 
 import Data.Kind
+import Data.Maybe
 import Linear
 import Skia.Internal.Prelude
-import Skia.Types.Linear
 import Skia.Types.Rect qualified as Rect
 
 {- | Creates an empty 'SKBitmap' without pixels, with 'SKColorType'Unknown',
@@ -30,19 +30,20 @@ getInfo bitmap = evalContIO do
     liftIO $ sk_bitmap_get_info bitmap' iminfo'
     unmarshalSKImageInfo =<< peekWith id iminfo'
 
-{- | Returns pixel address, the base address corresponding to the pixel origin,
-and the number of bytes of pixel data.
+{- | Exposes the WRITABLE base address corresponding to the pixel origin, and
+the number of bytes of pixel data.
 -}
-getPixels ::
+withPixels ::
     (MonadIO m) =>
     SKBitmap ->
-    m (Ptr Word8, Int)
-getPixels bitmap = evalContIO do
+    (CStringLen -> IO r) ->
+    m r
+withPixels bitmap f = evalContIO do
     bitmap' <- useObj bitmap
     numBytes' <- useAlloca
     baseAddr <- liftIO $ sk_bitmap_get_pixels bitmap' numBytes'
     numBytes <- peekWith id numBytes'
-    pure (castPtr baseAddr, fromIntegral numBytes)
+    liftIO $ f (castPtr baseAddr, fromIntegral numBytes)
 
 {- | Returns row bytes, the interval from one pixel row to the next. Row bytes
 is at least as large as: @width * getInfo.bytesPerPixel@.
@@ -204,6 +205,8 @@ values or may crash if @SK_RELEASE@ is defined. Fails if 'SKColorType' is
 'SKColorSpace' in 'SKImageInfo' is ignored. Some color precision may be lost
 in the conversion to unpremultiplied color; original pixel data may have
 additional precision.
+
+Also see 'getPixelColors'.
 -}
 getPixelColor ::
     (MonadIO m) =>
@@ -214,6 +217,36 @@ getPixelColor ::
 getPixelColor bitmap (V2 x y) = evalContIO do
     bitmap' <- useObj bitmap
     liftIO $ fmap SKColor $ sk_bitmap_get_pixel_color bitmap' (fromIntegral x) (fromIntegral y)
+
+{- | Copies all pixel colors row-by-row to a destination 'SKColor' array of
+length (bitmap width x bitmap height).
+
+For reference, the actual C implementation of this function is as follows, note
+that @bmp->getColor@ is the same as 'getPixelColor' of this Haskell library:
+
+@
+void sk_bitmap_get_pixel_colors(sk_bitmap_t* cbitmap, sk_color_t* colors) {
+    SkBitmap* bmp = AsBitmap(cbitmap);
+    int w = bmp->width();
+    int h = bmp->height();
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w; x++) {
+            *colors = bmp->getColor(x, y);
+            colors++;
+        }
+    }
+}
+@
+-}
+getPixelColors ::
+    (MonadIO m) =>
+    SKBitmap ->
+    -- | Destination 'SKColor' array
+    Ptr SKColor ->
+    m ()
+getPixelColors bitmap dst = evalContIO do
+    bitmap' <- useObj bitmap
+    liftIO $ sk_bitmap_get_pixel_colors bitmap' (coercePtr dst)
 
 -- | Returns true if SkBitmap is can be drawn.
 isReadyToDraw ::
@@ -278,28 +311,29 @@ makeShader bitmap (V2 tx ty) sampling matrix = evalContIO do
     shader' <- liftIO $ sk_bitmap_make_shader bitmap' (marshalSKEnum tx) (marshalSKEnum ty) sampling' matrix'
     toObjectFin sk_shader_unref shader'
 
-{- | Sets SkImageInfo to \"info\", and creates 'SKPixelRef' containing pixels
+{- | Sets 'SKImageInfo' to \"info\", and creates 'SKPixelRef' containing pixels
 and \"rowBytes\".
 
 \"releaseProc\", if not 'Nothing', is called immediately on failure or when
 pixels are no longer referenced.
 
-If SkImageInfo could not be set, or \"rowBytes\" is less than info.minRowBytes():
-calls releaseProc if present, calls reset(), and returns false.
+If 'SKImageInfo' could not be set, or \"rowBytes\" is less than
+'Skia.SKImage.minRowBytes': calls \"releaseProc\" if present, calls 'reset', and
+returns false.
 
-Otherwise, if pixels equals nullptr: sets SkImageInfo, calls releaseProc if
-present, returns true.
+Otherwise, if \"pixels\" equals 'nullPtr': sets 'SKImageInfo', calls
+\"releaseProc\" if present, returns true.
 
-If SkImageInfo is set, pixels is not nullptr, and releaseProc is not nullptr:
-when pixels are no longer referenced, calls releaseProc with pixels and context
-as parameters.
+If 'SKImageInfo' is set, \"pixels\" is not 'nullPtr', and \"releaseProc\" is not
+'nullPtr': when \"pixels\" are no longer referenced, calls \"releaseProc\" with
+pixels and context as parameters.
 -}
 installPixels ::
     (MonadIO m) =>
     SKBitmap ->
     -- | \"info\"
     SKImageInfo ->
-    -- | \"pixels\". Address or pixel storage; may be nullptr
+    -- | \"pixels\". Address or pixel storage; may be 'nullPtr'.
     Ptr Word8 ->
     -- | \"rowBytes\". Size of pixel row or larger
     Int ->
@@ -329,3 +363,120 @@ installPixels bitmap iminfo pixels rowBytes releaseCallback = evalContIO do
                 (fromIntegral rowBytes)
                 releaseproc'
                 nullPtr
+
+{- | Sets 'SKImageInfo' to 'Skia.SKPixmap.getInfo', and creates 'SKPixelRef'
+containing pixels address and row bytes info of the input pixmap.
+
+If 'SKImageInfo' could not be set, or the row bytes of the input pixmap is less
+than 'Skia.SKImageInfo.minRowBytes'; calls 'reset', and returns false.
+
+Otherwise, if the pixels address of the input pixmap equals nullptr: sets
+'SKImageInfo', returns true.
+
+Caller must ensure that pixmap is valid for the lifetime of 'SKBitmap' and
+'SKPixelRef'.
+-}
+installPixelsWithPixmap :: (MonadIO m) => SKBitmap -> SKPixmap -> m Bool
+installPixelsWithPixmap bitmap pixmap = evalContIO do
+    bitmap' <- useObj bitmap
+    pixmap' <- useObj pixmap
+    liftIO $ fmap toBool $ sk_bitmap_install_pixels_with_pixmap bitmap' pixmap'
+
+{- | Sets SkImageInfo to info following the rules in setInfo() and allocates
+pixel memory. rowBytes must equal or exceed info.width() times
+info.bytesPerPixel(), or equal zero. Pass in 'Nothing' for rowBytes to compute the
+minimum valid value.
+
+Returns false and calls reset() if SkImageInfo could not be set, or memory could
+not be allocated.
+
+On most platforms, allocating pixel memory may succeed even though there is not
+sufficient memory to hold pixels; allocation does not take place until the
+pixels are written to. The actual behavior depends on the platform
+implementation of malloc().
+-}
+tryAllocPixels ::
+    (MonadIO m) =>
+    SKBitmap ->
+    -- | Contains width, height, SkAlphaType, SkColorType, SkColorSpace
+    SKImageInfo ->
+    -- | Size of pixel row or larger; Optional.
+    Maybe Int ->
+    -- | Returns true if pixel storage is allocated
+    m Bool
+tryAllocPixels bitmap iminfo rowBytes = evalContIO do
+    bitmap' <- useObj bitmap
+    iminfo' <- useSKImageInfo iminfo
+    liftIO $ fmap toBool $ sk_bitmap_try_alloc_pixels bitmap' iminfo' (fromIntegral $ fromMaybe 0 rowBytes)
+
+{- | Replaces SkPixelRef with pixels, preserving SkImageInfo and rowBytes().
+Sets SkPixelRef origin to (0, 0).
+
+If pixels is nullptr, or if info().colorType() equals kUnknown_SkColorType;
+release reference to SkPixelRef, and set SkPixelRef to nullptr.
+
+Caller is responsible for handling ownership pixel memory for the lifetime of
+SkBitmap and SkPixelRef.
+-}
+setPixels ::
+    (MonadIO m) =>
+    SKBitmap ->
+    -- | address of pixel storage, managed by caller
+    Ptr Word8 ->
+    m ()
+setPixels bitmap pixels = evalContIO do
+    bitmap' <- useObj bitmap
+    liftIO $ sk_bitmap_set_pixels bitmap' (castPtr pixels)
+
+{- | Shares SkPixelRef with dst. Pixels are not copied; SkBitmap and dst point
+to the same pixels; dst bounds() are set to the intersection of subset
+and the original bounds().
+
+subset may be larger than bounds(). Any area outside of bounds() is ignored.
+
+Any contents of dst are discarded.
+
+Return false if:
+
+    * SkPixelRef is nullptr
+
+    * subset does not intersect bounds()
+-}
+extractSubset ::
+    (MonadIO m) =>
+    SKBitmap ->
+    -- | \"dst\". SkBitmap set to subset
+    SKBitmap ->
+    -- | \"subset\". Rectangle of pixels to reference
+    Rect Int ->
+    m Bool
+extractSubset bitmap dst subset = evalContIO do
+    bitmap' <- useObj bitmap
+    dst' <- useObj dst
+    subset' <- useStorable $ toSKIRect subset
+    liftIO $ fmap toBool $ sk_bitmap_extract_subset bitmap' dst' subset'
+
+{- | Sets dst to alpha described by pixels. Returns false if dst cannot be written to
+or dst pixels cannot be allocated.
+
+If paint is not nullptr and contains SkMaskFilter, SkMaskFilter
+generates mask alpha from SkBitmap. Uses HeapAllocator to reserve memory for dst
+SkPixelRef. Sets offset to top-left position for dst for alignment with SkBitmap;
+(0, 0) unless SkMaskFilter generates mask.
+-}
+extractAlpha ::
+    (MonadIO m) =>
+    SKBitmap ->
+    -- | \"dst\"; holds SkPixelRef to fill with alpha layer
+    SKBitmap ->
+    -- | \"paint\"; Optional. holds optional SkMaskFilter
+    Maybe SKPaint ->
+    -- | \"offset\"; Optional, top-left position for dst
+    Maybe (V2 Int) ->
+    m Bool
+extractAlpha bitmap dst paint offset = evalContIO do
+    bitmap' <- useObj bitmap
+    dst' <- useObj dst
+    paint' <- useNullIfNothing useObj paint
+    offset' <- useNullIfNothing useStorable $ fmap toSKIPoint $ offset
+    liftIO $ fmap toBool $ sk_bitmap_extract_alpha bitmap' dst' paint' offset'

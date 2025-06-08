@@ -2,7 +2,6 @@ module Skia.Types.Internal.Utils.TH (
     qGenerateSKEnum,
     qGenerateSKObject,
     qGenerateFakeSKObject,
-    qClassExtends,
 )
 where
 
@@ -10,7 +9,6 @@ import Control.Monad
 import Data.Foldable
 import Data.Functor
 import Data.Text qualified as T
-import Data.Traversable
 import Language.Haskell.Exts.Extension qualified as Extension
 import Language.Haskell.Exts.Parser
 import Language.Haskell.Meta.Parse
@@ -202,79 +200,26 @@ createSKObjectInstance name project = do
                 toAnyManagedPtr = castManagedPtr . ${project}
         |]
 
-qGenerateSKObject ::
-    -- | Haskell object name string
-    String ->
-    -- | Bindings object name
-    Name ->
-    DecsQ
-qGenerateSKObject nameStr cObjName = do
-    let name = T.pack nameStr
-    let project = "un" <> name
-    sequenceA
-        [ createNewType name project (ConT cObjName)
-        , createManagedPtrNewTypeInstance name project (ConT cObjName)
-        , createSKObjectInstance name project
-        ]
-
-{- | Generates a "fake" SKObject. Specifically:
-
-@
-\$(qGenerateFakeSKObject \"SKStreamAsset\")
-@
-
-... generates the following:
-
-@
-newtype SKStreamAsset = SKStreamAsset
-    { unSKStreamAsset :: ManagedPtr ()
-        -- NOTE: The referenced type is unimportant. We put () here as a
-        -- placeholder.
-    }
-
--- NOTE: Compared to \'qGenerateSKObject\', \'qGenerateFakeSKObject\' does not
--- generate a \'ManagedPtrNewType\' instance.
---
--- This prevents use 'Skia.Types.Core.useObj' on fake SKObjects because
--- there is never a corresponding Mono Skia C type.
-
-instance SKObject SKStreamAsset where
-    ...
-@
--}
-qGenerateFakeSKObject ::
-    -- | Haskell object name string
-    String ->
-    DecsQ
-qGenerateFakeSKObject nameStr = do
-    let name = T.pack nameStr
-    let project = "un" <> name
-    sequenceA
-        [ createNewType name project (TupleT 0)
-        , createSKObjectInstance name project
-        ]
-
 {- | Example usage:
 
 @
-\$(qClassExtends 'SKStreamRewindable ['SKStream])
+createClassExtends 'SKStreamRewindable ['SKStream])
 @
 
 ... generates the following:
 
 @
-instance HasParentTypes SKStreamRewindable
 type instance ParentTypes SKStreamRewindable = '[SKStream]
 type IsSKStreamRewindable = IsSubclassOf SKStreamRewindable
 @
 -}
-qClassExtends ::
+createClassExtends ::
     -- | Class
     Name ->
     -- | Parents. Can be empty.
     [Name] ->
     DecsQ
-qClassExtends cls parents = do
+createClassExtends cls parents = do
     -- The following code does not work and I don't know how to fix it.
     --
     -- The parser fails with "Improper character constant or misplaced '"
@@ -285,19 +230,10 @@ qClassExtends cls parents = do
     -- parseSourceOrDie
     --     (parseDecsWithMode defParseMode)
     --     [text|
-    --         instance HasParentTypes ${cls}
     --         type instance ParentTypes ${cls} = ${parents}
     --         type Is${cls} = IsSubclassOf ${cls}
     --     |]
     -- ```
-
-    let
-        hasParentTypesDec =
-            InstanceD
-                Nothing
-                []
-                (appsT (ConT ''HasParentTypes) [ConT cls])
-                []
 
     let
         parentTypesDec =
@@ -320,7 +256,93 @@ qClassExtends cls parents = do
                 )
 
     pure
-        [ hasParentTypesDec
-        , parentTypesDec
+        [ parentTypesDec
         , isTypeAliasDec
         ]
+
+qGenerateSKObject ::
+    -- | Haskell object name string
+    String ->
+    -- | Bindings object name
+    Name ->
+    -- | Superclasses
+    [Name] ->
+    -- | Optional docstring of the enum datatype (use "" to indicate no
+    -- docstring))
+    T.Text ->
+    DecsQ
+qGenerateSKObject nameStr cObjName superClasses docstring = do
+    let name = T.pack nameStr
+    let project = "un" <> name
+
+    -- ### Add docstrings
+    --
+    -- The generated definitions must be in-scope first, so addModFinalizer is
+    -- necessary.
+    TH.addModFinalizer do
+        -- Docstrings for the newtype declaration
+        unless (T.null docstring) do
+            TH.putDoc (TH.DeclDoc (mkName nameStr)) (T.unpack docstring)
+
+    sequenceA
+        [ createNewType name project (ConT cObjName)
+        , createManagedPtrNewTypeInstance name project (ConT cObjName)
+        , createSKObjectInstance name project
+        ]
+        <> createClassExtends (mkName nameStr) superClasses
+
+{- | Generates a "fake" SKObject. Specifically:
+
+@
+\$(qGenerateFakeSKObject \"SKStreamAsset\" [''SKStreamAsset])
+@
+
+... generates the following:
+
+@
+newtype SKStreamMemory = SKStreamAsset
+    { unSKStreamMemory :: ManagedPtr ()
+        -- NOTE: The referenced type is unimportant. We put () here as a
+        -- placeholder.
+    }
+
+-- NOTE: Compared to \'qGenerateSKObject\', \'qGenerateFakeSKObject\' does not
+-- generate a \'ManagedPtrNewType\' instance.
+--
+-- This prevents use 'Skia.Types.Core.useObj' on fake SKObjects because
+-- there is never a corresponding Mono Skia C type.
+
+instance SKObject SKStreamMemory where
+    ...
+
+type instance ParentTypes SKStreamMemory = '[SKStreamAsset]
+type IsSKStreamMemory = IsSubclassOf SKStreamMemory
+@
+-}
+qGenerateFakeSKObject ::
+    -- | Haskell object name string
+    String ->
+    -- | Superclasses
+    [Name] ->
+    -- | Optional docstring of the enum datatype (use "" to indicate no
+    -- docstring))
+    T.Text ->
+    DecsQ
+qGenerateFakeSKObject nameStr superClasses docstring = do
+    let name = T.pack nameStr
+    let project = "un" <> name
+
+    -- ### Add docstrings
+    --
+    -- The generated definitions must be in-scope first, so addModFinalizer is
+    -- necessary.
+    TH.addModFinalizer do
+        -- Docstrings for the newtype declaration
+        unless (T.null docstring) do
+            TH.putDoc (TH.DeclDoc (mkName nameStr)) (T.unpack docstring)
+
+    sequenceA
+        [ createNewType name project (TupleT 0)
+        , createSKObjectInstance name project
+        ]
+        <> createClassExtends (mkName nameStr) superClasses

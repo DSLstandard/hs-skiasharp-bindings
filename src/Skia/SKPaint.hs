@@ -4,17 +4,17 @@ import Linear
 import Skia.Internal.Prelude
 import Skia.SKPath qualified as SKPath
 
-delete :: (MonadIO m) => SKPaint -> m ()
-delete paint = evalContIO do
+destroy :: (MonadIO m) => SKPaint -> m ()
+destroy paint = evalContIO do
     paint' <- useObj paint
     liftIO $ sk_paint_delete paint'
 
-create :: (MonadIO m) => m SKPaint
+create :: (MonadIO m) => m (Owned SKPaint)
 create = evalContIO do
     paint' <- liftIO $ sk_paint_new
     toObject paint'
 
-clone :: (MonadIO m) => SKPaint -> m SKPaint
+clone :: (MonadIO m) => SKPaint -> m (Owned SKPaint)
 clone paint = evalContIO do
     paint' <- useObj paint
     newPaint' <- liftIO $ sk_paint_clone paint'
@@ -68,15 +68,15 @@ setColor paint color = evalContIO do
     paint' <- useObj paint
     liftIO $ sk_paint_set_color paint' (coerce color)
 
-getColor4f :: (MonadIO m) => SKPaint -> m (RGBA Float)
-getColor4f paint = evalContIO do
+getColorRGBA :: (MonadIO m) => SKPaint -> m (RGBA Float)
+getColorRGBA paint = evalContIO do
     paint' <- useObj paint
     color' <- useAlloca
     liftIO $ sk_paint_get_color4f paint' color'
     liftIO $ fromSKColor4f <$> peek color'
 
-setColor4f :: (MonadIO m) => SKPaint -> RGBA Float -> Maybe SKColorSpace -> m ()
-setColor4f paint rgba colorspace = evalContIO do
+setColorRGBA :: (MonadIO m) => SKPaint -> RGBA Float -> Maybe SKColorSpace -> m ()
+setColorRGBA paint rgba colorspace = evalContIO do
     paint' <- useObj paint
     color' <- useStorable (toSKColor4f rgba)
     cs' <- useNullIfNothing useObj colorspace
@@ -126,11 +126,24 @@ setStrokeJoin paint join = evalContIO do
     paint' <- useObj paint
     liftIO $ sk_paint_set_stroke_join paint' (marshalSKEnum join)
 
-getShader :: (MonadIO m) => SKPaint -> m SKShader
+{- | NOTE: This function returns a 'SKShader' that increments the reference
+counter of the underlying object by 1. The reference counter will be
+decremented when the returned 'SKShader' is finalized in Haskell.
+-}
+getShader ::
+    (MonadIO m) =>
+    SKPaint ->
+    -- | returns SkShader if previously set, 'Nothing' otherwise
+    m (Maybe SKShader)
 getShader paint = evalContIO do
     paint' <- useObj paint
+
+    -- NOTE: sk_paint_get_shader itself already +1 to refcnt
     shader' <- liftIO $ sk_paint_get_shader paint'
-    toObject shader'
+
+    if shader' == nullPtr
+        then pure Nothing
+        else Just <$> toObjectFin sk_shader_unref shader'
 
 setShader :: (MonadIO m) => SKPaint -> SKShader -> m ()
 setShader paint shader = evalContIO do

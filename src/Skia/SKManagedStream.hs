@@ -140,8 +140,8 @@ destroy stream = evalContIO do
     stream' <- useObj stream
     liftIO $ sk_managedstream_destroy stream'
 
-createFromParams :: (MonadIO m) => StreamParams -> m SKManagedStream
-createFromParams params = liftIO do
+create :: (MonadIO m) => StreamParams -> m (Owned SKManagedStream)
+create params = liftIO do
     rec -- We modify 'params' here to hook in a 'freeStablePtr' to delete
         -- `params'` when the managed stream is destroyed.
         let paramsUpdated =
@@ -155,39 +155,42 @@ createFromParams params = liftIO do
     stream' <- sk_managedstream_new (castStablePtrToPtr params')
     toObject stream'
 
--- | NOTE: This function will take the ownership of the input 'Handle'.
-createFromHandle :: (MonadIO m) => Handle -> m SKManagedStream
-createFromHandle handle = liftIO do
-    let
-        trySeek :: SeekMode -> Int -> IO Bool
-        trySeek seekMode position = do
-            seekable <- hIsSeekable handle
-            if seekable
-                then do
-                    hSeek handle seekMode (fromIntegral position)
-                    pure True
-                else do
-                    pure False
+{- | Wraps a Haskell 'Handle' as a 'StreamParams' with basic implementations.
 
-    createFromParams
-        StreamParams
-            { read = hGetBufSome handle
-            , peek = \_buffer _peekSize -> do
-                -- TODO: Is there a way to implement this?
-                pure 0
-            , isAtEnd = hIsEOF handle
-            , hasPosition = hIsSeekable handle
-            , getPosition = fromIntegral <$> hTell handle
-            , hasLength = hIsSeekable handle
-            , getLength = fromIntegral <$> hFileSize handle
-            , rewind = trySeek AbsoluteSeek 0
-            , seek = trySeek AbsoluteSeek
-            , move = trySeek RelativeSeek
-            , duplicate = do
-                -- TODO:
-                undefined
-            , fork = do
-                -- TODO:
-                undefined
-            , close = hClose handle
-            }
+All 'StreamParams' fields are set to reasonable implementations, except there
+are no implementations for 'peek', 'duplicate', and 'fork'. You may use
+Haskell's record update syntax to replace 'peek', 'duplicate', and 'fork'.
+-}
+mkHandleStreamParams :: Handle -> StreamParams
+mkHandleStreamParams handle =
+    StreamParams
+        { read = hGetBufSome handle
+        , peek = \_buffer _peekSize -> do
+            -- TODO: Is there a way to implement this?
+            pure 0
+        , isAtEnd = hIsEOF handle
+        , hasPosition = hIsSeekable handle
+        , getPosition = fromIntegral <$> hTell handle
+        , hasLength = hIsSeekable handle
+        , getLength = fromIntegral <$> hFileSize handle
+        , rewind = trySeek AbsoluteSeek 0
+        , seek = trySeek AbsoluteSeek
+        , move = trySeek RelativeSeek
+        , duplicate = do
+            -- TODO: Use 'hDuplicate'?
+            pure Nothing
+        , fork = do
+            -- TODO: Use 'hDuplicate'?
+            pure Nothing
+        , close = hClose handle
+        }
+  where
+    trySeek :: SeekMode -> Int -> IO Bool
+    trySeek seekMode position = do
+        seekable <- hIsSeekable handle
+        if seekable
+            then do
+                hSeek handle seekMode (fromIntegral position)
+                pure True
+            else do
+                pure False

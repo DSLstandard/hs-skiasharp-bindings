@@ -72,6 +72,15 @@ def main():
         help="If enabled, C function signatures are printed, instead of C function names.",
         action="store_true",
     )
+    root_checkcoverage.add_argument(
+        "-f", "--ignorelist-file",
+        type=Path,
+        default=Path.cwd() / "checkcoverage-ignorelist.yaml",
+    )
+    root_checkcoverage.add_argument(
+        "-i", "--show-ignored",
+        action="store_true",
+    )
 
     # TODO: what
     args = root.parse_args()
@@ -97,6 +106,8 @@ def main():
             list_files=args.list_files,
             print_c_signature=args.print_c_signature,
             print_unused_only=args.print_unused_only,
+            show_ignored=args.show_ignored,
+            ignorelist_file=args.ignorelist_file,
         )
     else:
         raise NotImplementedError(

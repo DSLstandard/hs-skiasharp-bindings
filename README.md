@@ -118,3 +118,28 @@ library was being developed:
     - `sk_bitmap_get_pixels` probably should not be responsible for computing
     `size_t* length`. `sk_bitmap_get_byte_count` already provides an interface for
     this purpose.
+
+    - `sk_surfaceprops_flags_t` should define `DYNAMIC_MSAA` and
+      `ALWAYS_DITHER`.
+
+    - `skottie_animation_seek_frame` and `skottie_animation_seek_frame_time`
+      should take in `double` instead of `float` for parameter `t`.
+
+    - `void sksg_invalidation_controller_begin(...)` and `void
+      sksg_invalidation_controller_end(...)` are completely useless.
+      `InvalidationController::begin()` and `InvalidationController::end()`
+      return `std::vector::{cbegin,cend}` respectively, and Mono Skia's C binding
+      simply voids them.
+
+    - `sk_colorspace_to_xyzd50` always returns true, but this is due to how
+      Google Skia designed the underlying C++ function.
+
+    - `typedef struct sk_pixelref_factory_t sk_pixelref_factory_t;` is never used.
+
+    - `typedef struct skottie_resource_provider_t skottie_resource_provider_t;`
+      is actually `using ResourceProvider = skresources::ResourceProvider;`,
+      which is defined by `typedef struct skresources_resource_provider_t
+      skresources_resource_provider_t;`.
+
+    - `skottie_animation_make_from_string` is the same as
+      `skottie_animation_make_from_data`.

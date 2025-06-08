@@ -2,8 +2,8 @@ module Skia.GRBackendRenderTarget where
 
 import Skia.Internal.Prelude
 
-delete :: (MonadIO m) => GRBackendRenderTarget -> m ()
-delete tgt = evalContIO do
+destroy :: (MonadIO m) => GRBackendRenderTarget -> m ()
+destroy tgt = evalContIO do
     tgt' <- useObj tgt
     liftIO $ gr_backendrendertarget_delete tgt'
 
@@ -12,7 +12,6 @@ isValid tgt = evalContIO do
     tgt' <- useObj tgt
     liftIO $ fmap toBool $ gr_backendrendertarget_is_valid tgt'
 
--- | Returns 'Nothing' if failed.
 createGl ::
     (MonadIO m) =>
     -- | Width
@@ -24,7 +23,7 @@ createGl ::
     -- | Stencil bits
     Int ->
     Gr_gl_framebufferinfo ->
-    m GRBackendRenderTarget
+    m (Owned GRBackendRenderTarget)
 createGl width height sampleCount stencilBits glInfo = evalContIO do
     glInfo' <- useStorable glInfo
     liftIO $

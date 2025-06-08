@@ -12,6 +12,8 @@ module Skia.Bindings.Internal.Manual (
     sk_managedtracememorydump_set_procs,
     sk_managedwstream_set_procs,
     sk_managedstream_set_procs,
+    pattern DYNAMIC_MSAA_SK_SURFACE_PROPS_FLAGS,
+    pattern ALWAYS_DITHER_SK_SURFACE_PROPS_FLAGS,
 )
 where
 
@@ -306,3 +308,13 @@ sk_managedstream_set_procs procs = do
         procs.fDestroy = $(void* fDestroy);
         sk_managedstream_set_procs(procs);
     }|]
+
+-- NOTE: Unfortunately, Mono Skia does not export all enum values of
+-- SkSurfaceProps::Flags. We need to figure out all flag values by inspecting
+-- include/core/SkSurfaceProps.h.
+
+pattern DYNAMIC_MSAA_SK_SURFACE_PROPS_FLAGS :: Sk_surfaceprops_flags
+pattern DYNAMIC_MSAA_SK_SURFACE_PROPS_FLAGS = 2
+
+pattern ALWAYS_DITHER_SK_SURFACE_PROPS_FLAGS :: Sk_surfaceprops_flags
+pattern ALWAYS_DITHER_SK_SURFACE_PROPS_FLAGS = 4

@@ -1,4 +1,11 @@
+{-# LANGUAGE CPP #-}
+
 module Skia.Types.Core where
+
+#ifdef HS_SKIA_CHECK_NULLPTR_ENABLED
+import qualified Control.Exception
+import Skia.Types.Errors
+#endif
 
 import Control.Monad
 import Control.Monad.IO.Class
@@ -7,6 +14,51 @@ import Foreign
 import GHC.Base
 import GHC.ForeignPtr
 import GHC.TypeError
+import Skia.Internal.Bool qualified as TB
+import Data.Typeable
+import System.IO.Unsafe qualified
+
+newtype FinalizationDebugTracer = FinalizationDebugTracer
+    { runFinalizationDebugTracer :: forall a. Typeable a => Ptr a -> IO ()
+    }
+
+-- | This is 'True' if the package flag @enable-debug-trace-finalizers@ is
+-- enabled, 'False' otherwise.
+isFinalizationDebugTracerFlagEnabled :: Bool
+isFinalizationDebugTracerFlagEnabled =
+#ifdef HS_SKIA_DEBUG_TRACE_FINALIZERS_ENABLED
+    True
+#else
+    False
+#endif
+{-# INLINE isFinalizationDebugTracerFlagEnabled #-}
+
+globalFinalizationDebugTracerRef :: Data.IORef.IORef (Maybe FinalizationDebugTracer)
+globalFinalizationDebugTracerRef =
+    if isFinalizationDebugTracerFlagEnabled
+        then System.IO.Unsafe.unsafePerformIO $ newIORef Nothing
+        else error "FinalizationDebugTracer is not supported"
+{-# NOINLINE globalFinalizationDebugTracerRef #-}
+
+-- | Set the global finalization debug tracer.
+--
+-- NOTE: The package flag @enable-debug-trace-finalizers@ must be enabled.
+setFinalizationDebugTracer :: MonadIO m => Maybe FinalizationDebugTracer -> m ()
+setFinalizationDebugTracer tracer = liftIO do
+    if isFinalizationDebugTracerFlagEnabled
+        then Data.IORef.writeIORef globalFinalizationDebugTracerRef tracer
+        else error "FinalizationDebugTracer is not supported"
+
+-- | Returns the current global finalization debug tracer.
+--
+-- The global finalization debug tracer is 'Nothing' initially.
+--
+-- NOTE: Package flag @enable-debug-trace-finalizers@ must be enabled.
+getFinalizationDebugTracer :: MonadIO m => m (Maybe FinalizationDebugTracer)
+getFinalizationDebugTracer = liftIO do
+    if isFinalizationDebugTracerFlagEnabled
+        then Data.IORef.readIORef globalFinalizationDebugTracerRef
+        else error "FinalizationDebugTracer is not supported"
 
 --
 -- ### ManagedPtrs
@@ -77,7 +129,8 @@ class SKEnum s a | s -> a where
     marshalSKEnum :: s -> a
     unmarshalSKEnum :: a -> Maybe s
 
-class SKObject s where
+-- | NOTE: The 'Typeable' is here to help with certain debugging capabilities.
+class Typeable s => SKObject s where
     fromAnyManagedPtr :: ManagedPtr xxx -> s
     toAnyManagedPtr :: s -> ManagedPtr xxx
 
@@ -86,13 +139,42 @@ unsafeCastObject = fromAnyManagedPtr . toAnyManagedPtr @_ @()
 
 toObject :: (ManagedPtrNewType s a, SKObject s, MonadIO m) => Ptr a -> m s
 toObject ptr = liftIO do
+#ifdef HS_SKIA_CHECK_NULLPTR_ENABLED
+    when (ptr == nullPtr) do
+        Control.Exception.throwIO $ InternalError "toObject encountered nullptr"
+#endif
     fptr <- newManagedPtr_ ptr
     pure $ fromManagedPtr fptr
 
-toObjectFin :: (ManagedPtrNewType s a, SKObject s, MonadIO m) => (Ptr a -> IO ()) -> Ptr a -> m s
+toObjectFin :: forall s a m.
+    ( ManagedPtrNewType s a
+    , SKObject s
+    , MonadIO m
+    , Typeable a
+    ) =>
+    (Ptr a -> IO ()) -> Ptr a -> m s
 toObjectFin finalizer ptr = liftIO do
-    fptr <- newManagedPtr ptr (finalizer ptr)
+#ifdef HS_SKIA_CHECK_NULLPTR_ENABLED
+    when (ptr == nullPtr) do
+        Control.Exception.throwIO $ InternalError "toObjectFin encountered nullptr"
+#endif
+    fptr <- newManagedPtr ptr do
+#ifdef HS_SKIA_DEBUG_TRACE_FINALIZERS_ENABLED
+        tracer <- getFinalizationDebugTracer
+        case tracer of
+            Nothing -> do
+                pure () -- Do nothing
+            Just tracer -> do
+                runFinalizationDebugTracer tracer ptr
+#endif
+        finalizer ptr
     pure $ fromManagedPtr fptr
+           
+toObjectFinUnlessNull :: (ManagedPtrNewType s a, SKObject s, MonadIO m, Typeable a) => (Ptr a -> IO ()) -> Ptr a -> m (Maybe s)
+toObjectFinUnlessNull finalizer ptr = liftIO do
+    if ptr == nullPtr
+        then pure Nothing
+        else Just <$> toObjectFin finalizer ptr
 
 disposeObject :: (SKObject s, MonadIO m) => s -> m ()
 disposeObject object = liftIO do
@@ -109,74 +191,59 @@ disownObject s = liftIO do
 -- Implementation is adapted from
 --  https://hackage.haskell.org/package/haskell-gi-base-0.26.8/docs/Data-GI-Base-Overloading.html.
 --
-
-{- | Look in the given list of (symbol, tag) tuples for the tag
-corresponding to the given symbol. If not found raise the given
-type error.
--}
-type family
-    FindElement
-        (m :: Symbol)
-        (ms :: [(Symbol, Type)])
-        (typeError :: ErrorMessage) ::
-        Type
-    where
-    FindElement m '[] typeError = TypeError typeError
-    FindElement m ('(m, o) ': ms) typeError = o
-    FindElement m ('(m', o) ': ms) typeError = FindElement m ms typeError
+-- Modifications are made to 1) allow transitivity in ancestor checks and 2)
+-- improve error messages.
+--
 
 {- | All the types that are ascendants of this type, including
 interfaces that the type implements.
 -}
 type family ParentTypes a :: [Type]
 
-{- | A constraint on a type, to be fulfilled whenever it has a type
-instance for `ParentTypes`. This leads to nicer errors, thanks to
-the overlappable instance below.
--}
-class HasParentTypes (o :: Type)
+{- | Helper type for 'IsDescendantOf'.
 
-{- | Default instance, which will give rise to an error for types
-without an associated `ParentTypes` instance.
+Recursively (in the sense that the ParentTypes of parents are also checked)
+check if 'parent' is contained in 'parents'.
 -}
-instance
-    {-# OVERLAPPABLE #-}
-    ( TypeError
-        ( 'Text "Type ‘"
-            ':<>: 'ShowType a
-            ':<>: 'Text "’ does not have any known parent types."
-        )
-    ) =>
-    HasParentTypes a
-
-{- | Check whether a type appears in a list. We specialize the
-names/types a bit so the error messages are more informative.
--}
-type family CheckForAncestorType t (a :: Type) (as :: [Type]) :: Constraint where
-    CheckForAncestorType t a '[] =
-        TypeError
-            ( 'Text "Required ancestor ‘"
-                ':<>: 'ShowType a
-                ':<>: 'Text "’ not found for type ‘"
-                ':<>: 'ShowType t
-                ':<>: 'Text "’."
-            )
-    CheckForAncestorType t a (a ': as) = ()
-    CheckForAncestorType t a (b ': as) = CheckForAncestorType t a as
+type family ExistsParent (parent :: Type) (parents :: [Type]) :: Type where
+    ExistsParent parent '[] =
+        TB.False
+    ExistsParent parent (parent ': parents) =
+        TB.True
+    ExistsParent parent (parent__ ': parents) =
+        TB.Or
+            (ExistsParent parent (ParentTypes parent__))
+            (ExistsParent parent parents)
 
 {- | Check that a type is in the list of `ParentTypes` of another
 type.
 -}
-type family IsDescendantOf (parent :: Type) (descendant :: Type) :: Constraint where
+type family IsDescendantOf (parent :: Type) (t :: Type) :: Type where
     -- Every object is defined to be a descendant of itself.
-    IsDescendantOf d d = ()
-    IsDescendantOf p d = CheckForAncestorType d p (ParentTypes d)
+    IsDescendantOf t t = TB.True
+    IsDescendantOf parent t = ExistsParent parent (ParentTypes t)
+
+-- | Used by 'IsSubclassOf' to signal an error.
+type TypeError'NotSubclassOf super sub =
+    TypeError
+        ( 'Text "‘"
+            ':<>: 'ShowType sub
+            ':<>: 'Text "’ is not a subclass of ‘"
+            ':<>: 'ShowType super
+            ':<>: 'Text "’"
+        )
 
 type IsSubclassOf super sub =
     ( SKObject super
     , SKObject sub
-    , HasParentTypes sub
-    , IsDescendantOf super sub
+    , {-
+          Explanation:
+
+          when (IsDescendantOf super sub) is True, this becomes () ~ () and the typechecker is satisfied;
+
+          when (IsDescendantOf super sub) is False, this becomes (TypeError'NotSubclassOf super sub) and the typechecker reports an error.
+      -}
+      TB.If (IsDescendantOf super sub) () (TypeError'NotSubclassOf super sub) ~ ()
     )
 
 asA ::

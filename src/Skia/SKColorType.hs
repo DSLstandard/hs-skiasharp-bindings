@@ -1,6 +1,7 @@
 module Skia.SKColorType where
 
 import Skia.Internal.Prelude
+import System.IO.Unsafe
 
 {- | Selects the native 32-bit ARGB format for the current configuration. This
 can lead to inconsistent results across platforms, so use with caution.
@@ -10,123 +11,53 @@ getNativeArgb32Format = liftIO do
     ty <- liftIO $ sk_colortype_get_default_8888
     unmarshalSKEnumOrDie ty
 
-{- DEVELOPER NOTE:
-
-All the mappings came from Google Skia's src/core/SkImageInfo.cpp and
-binding/SkiaSharp/Definitions.cs
--}
-
-{- | Returns the number of bytes per pixel.
-
-Note that 'SKColorType\'Unknown' returns 0.
+{- | Returns the number of bytes required to store a pixel, including unused
+padding. Returns zero if the input is 'SKColorType'Unknown'.
 -}
 bytesPerPixel :: SKColorType -> Int
-bytesPerPixel = \case {}
+bytesPerPixel ct =
+    fromIntegral $ unsafeDupablePerformIO $ hsskia_SkColorTypeBytesPerPixel (marshalSKEnum ct)
+{-# NOINLINE bytesPerPixel #-}
 
-{-
-    -- Unknown
-    SKColorType'Unknown -> 0
-    -- 1
-    SKColorType'Alpha8 -> 1
-    SKColorType'Gray8 -> 1
-    SKColorType'R8Unorm -> 1
-    -- 2
-    SKColorType'Rgb565 -> 2
-    SKColorType'Argb4444 -> 2
-    SKColorType'Rg88 -> 2
-    SKColorType'Alpha16Unorm -> 2
-    SKColorType'Alpha16Float -> 2
-    -- TODO: FIXME: 2
-    -- 4
-    SKColorType'Bgra8888 -> 4
-    SKColorType'Bgra1010102 -> 4
-    SKColorType'Bgr101010x -> 4
-    SKColorType'Bgr101010xXR -> 4
-    SKColorType'Rgba8888 -> 4
-    SKColorType'Rgb888x -> 4
-    SKColorType'Rgba1010102 -> 4
-    SKColorType'Rgb101010x -> 4
-    SKColorType'Rg1616 -> 4
-    SKColorType'RgF16 -> 4
-    SKColorType'Srgba8888 -> 4
-    -- 8
-    SKColorType'RgbaF16Clamped -> 8
-    SKColorType'RgbaF16 -> 8
-    SKColorType'Rgba16161616 -> 8
-    SKColorType'Rgba10x6 -> 8
-    -- 16
-    SKColorType'RgbaF32 -> 16
-
-{- | Returns the bit shift per pixel.
-
-Note that 'SKColorType\'Unknown' returns 0.
+{- | Returns true if 'SKColorType' always decodes alpha to 1.0, making the pixel
+fully opaque. If true, 'SKColorType' does not reserve bits to encode alpha.
 -}
-bitShiftPerPixel :: SKColorType -> Int
-bitShiftPerPixel = \case
-    -- Unknown
-    SKColorType'Unknown -> 0
-    -- 0
-    SKColorType'Alpha8 -> 0
-    SKColorType'Gray8 -> 0
-    SKColorType'R8Unorm -> 0
-    -- 1
-    SKColorType'Rgb565 -> 1
-    SKColorType'Argb4444 -> 1
-    SKColorType'Rg88 -> 1
-    SKColorType'Alpha16 -> 1
-    SKColorType'A16Float -> 1
-    -- 2
-    SKColorType'Bgra8888 -> 2
-    SKColorType'Bgra1010102 -> 2
-    SKColorType'Bgr101010x -> 2
-    SKColorType'Bgr101010xXR -> 2
-    SKColorType'Rgba8888 -> 2
-    SKColorType'Rgb888x -> 2
-    SKColorType'Rgba1010102 -> 2
-    SKColorType'Rgb101010x -> 2
-    SKColorType'Rg1616 -> 2
-    SKColorType'RgF16 -> 2
-    SKColorType'Srgba8888 -> 2
-    -- 3
-    SKColorType'RgbaF16Clamped -> 3
-    SKColorType'RgbaF16 -> 3
-    SKColorType'Rgba16161616 -> 3
-    SKColorType'Rgba10x6 -> 3
-    -- 4
-    SKColorType'RgbaF32 -> 4
+isAlwaysOpaque :: SKColorType -> Bool
+isAlwaysOpaque ct =
+    toBool $ unsafeDupablePerformIO $ hsskia_SkColorTypeIsAlwaysOpaque (marshalSKEnum ct)
+{-# NOINLINE isAlwaysOpaque #-}
 
-validateAlphaType :: SKColorType -> SKAlphaType -> SKAlphaType
-validateAlphaType colorType alphaType =
-    -- FIXME: 1 clause, multiple constructors like Rust?
+alphaType :: SKColorType -> SKAlphaType -> SKAlphaType
+alphaType colorType alphaType =
+    -- See SkiaSharp's binding/SkiaSharp/Definitions.cs
     case colorType of
         SKColorType'Unknown -> SKAlphaType'Unknown
         -- SkiaSharp: "Opaque or premul"
-        SKColorType'Alpha8 -> onOpaqueOrPremul
-        SKColorType'Alpha16 -> onOpaqueOrPremul
-        SKColorType'AlphaF16 -> onOpaqueOrPremul
+        SKColorType'Alpha'8 -> onOpaqueOrPremul
+        SKColorType'Read'A16'Unorm -> onOpaqueOrPremul
+        SKColorType'Read'A16'Float -> onOpaqueOrPremul
         -- SkiaSharp: "Any"
-        SKColorType'ARGB4444 -> onAny
-        SKColorType'RGBA8888 -> onAny
-        SKColorType'BGRA8888 -> onAny
-        SKColorType'SRGBA8888 -> onAny
-        SKColorType'RGBA1010102 -> onAny
-        SKColorType'BGRA1010102 -> onAny
-        SKColorType'RGBAF16Clamped -> onAny
-        SKColorType'RGBAF16 -> onAny
-        SKColorType'RGBAF32 -> onAny
-        SKColorType'RGBA16161616 -> onAny
-        SKColorType'RGBA10x6 -> onAny
+        SKColorType'ARGB'4444 -> onAny
+        SKColorType'RGBA'8888 -> onAny
+        SKColorType'BGRA'8888 -> onAny
+        SKColorType'SRGBA'8888 -> onAny
+        SKColorType'RGBA'1010102 -> onAny
+        SKColorType'BGRA'1010102 -> onAny
+        SKColorType'RGBA'F16'Norm -> onAny
+        SKColorType'RGBA'F16 -> onAny
+        SKColorType'RGBA'F32 -> onAny
+        SKColorType'Read'R16G16B16A16'Unorm -> onAny
         -- SkiaSharp: "Opaque"
-		SKColorType'Gray8 -> onOpaque
-		SKColorType'R88 -> onOpaque
-		SKColorType'RG1616 -> onOpaque
-		SKColorType'RGF16 -> onOpaque
-		SKColorType'RGB565 -> onOpaque
-		SKColorType'RGB888x -> onOpaque
-		SKColorType'RGB101010x -> onOpaque
-		SKColorType'BGR101010x -> onOpaque
-		SKColorType'BGR101010xXr -> onOpaque
-		SKColorType'R8Unorm -> onOpaque
+        SKColorType'Gray'8 -> onOpaque
+        SKColorType'Read'R8G8'Unorm -> onOpaque
+        SKColorType'Read'R16G16'Unorm -> onOpaque
+        SKColorType'Read'R16G16'Float -> onOpaque
+        SKColorType'RGB'565 -> onOpaque
+        SKColorType'RGB'888x -> onOpaque
+        SKColorType'RGB'101010x -> onOpaque
+        SKColorType'BGR'101010x -> onOpaque
+        SKColorType'BGR'101010x'XR -> onOpaque
+        SKColorType'R8'Unorm -> onOpaque
   where
     onOpaqueOrPremul = case alphaType of
         SKAlphaType'Unpremul -> SKAlphaType'Premul
@@ -135,4 +66,3 @@ validateAlphaType colorType alphaType =
     onAny = alphaType
 
     onOpaque = SKAlphaType'Opaque
--}

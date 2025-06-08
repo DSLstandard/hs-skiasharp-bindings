@@ -9,8 +9,9 @@ from .misc import (
     SkiaCSourceVisitor,
     extract_name_from_func_decl,
 )
-
+import re
 import math
+import yaml
 
 
 class SourceStringFinder:
@@ -28,6 +29,57 @@ class SourceStringFinder:
             if needle in src:
                 return True
         return False
+
+
+@dataclass
+class IgnoreListEntry:
+    pattern: re.Pattern
+    why_ignore: str
+
+
+class IgnoreListManager:
+    """
+    A manager class to provide convenience API to query things from
+    "checkcoverage-ignorelist.yaml".
+    """
+
+    def __init__(self):
+        self._entries: List[IgnoreListEntry] = []
+
+    def add_entry(self, entry: IgnoreListEntry) -> None:
+        self._entries.append(entry)
+
+    def find_entry(self, fn_name: str) -> IgnoreListEntry | None:
+        """
+        Given a C function name, lookup an matching 'IgnoreListEntry'. Returns
+        'None' if there are no matches.
+        """
+        # This is O(n), where n = len(self._entries), but n is expected to be <=
+        # 10, so no need to hyperoptimize.
+        for entry in self._entries:
+            if re.fullmatch(entry.pattern, fn_name):
+                return entry
+        return None
+
+    @staticmethod
+    def parse_file(path: Path) -> IgnoreListManager:
+        """
+        Parses "checkcoverage-ignorelist.yaml".
+        """
+
+        with path.open("r") as f:
+            data0 = yaml.load(f, Loader=yaml.Loader)
+
+        ignorelist = IgnoreListManager()
+
+        for entry0 in data0["entries"]:
+            entry = IgnoreListEntry(
+                pattern=re.compile(entry0["pattern"]),
+                why_ignore=entry0["why-ignore"],
+            )
+            ignorelist.add_entry(entry)
+
+        return ignorelist
 
 
 @dataclass
@@ -64,8 +116,10 @@ def check_coverage(
     *,
     project_root_dir: Path,
     list_files: bool,
-    print_c_signature: bool = True,
-    print_unused_only: bool = False,
+    print_c_signature: bool,
+    print_unused_only: bool,
+    show_ignored: bool,
+    ignorelist_file: Path,
 ) -> None:
     hs_paths = get_haskell_source_file_paths(project_root_dir)
 
@@ -77,34 +131,72 @@ def check_coverage(
         for hs_path in hs_paths:
             hssrcfinder.add_source_from_path(hs_path)
 
+        ignorelist = IgnoreListManager.parse_file(ignorelist_file)
+
         info = get_skia_include_info()
         entries = FunctionCollectorVisitor().visit(get_skia_ast(info))
 
         entry_i_width = math.ceil(math.log(len(entries), 10))
 
         num_used = 0
+        num_ignored = 0
         for entry_i, entry in enumerate(entries, 1):
+            ignore_entry = ignorelist.find_entry(entry.name)
+            is_ignored = ignore_entry is not None
+
             is_used = hssrcfinder.has_string(entry.name)
             if is_used:
                 num_used += 1
 
-            ### Filter
+            if is_ignored:
+                num_ignored += 1
+
+            # *** Filter
 
             if print_unused_only and is_used:
                 continue
 
-            ### Print
+            if not show_ignored and is_ignored:
+                continue
 
-            entry_i_str = f"{entry_i}".rjust(entry_i_width)
-            marker = "[x]" if is_used else "[ ]"
-            function = f"{render_ast(entry.decl)}" if print_c_signature else entry.name
+            # *** Print
+            output = ""
 
-            print(f"{entry_i_str} {marker} {function}")
+            # Entry index
+            output += f"{entry_i}".rjust(entry_i_width)
 
-        # Print annotations and statistics
-        percent = num_used / len(entries) * 100
-        print(f"========================")
-        print(f"  [x] covered   [ ] unused")
-        print()
-        print(f"  {num_used} out of {len(entries)} functions are used. {len(entries) - num_used} unused.")
-        print(f"  ... {percent:.3f}% coverage")
+            # Marker annotation
+            marker: str = {
+                (False, False): "[ ]",
+                (True, False):  "[x]",
+                (False, True):  "[i]",
+                (True, True):   "[*]"
+            }[is_used, is_ignored]
+            output += " "
+            output += marker
+
+            # Function name/signature
+            output += " "
+            if print_c_signature:
+                output += f"{render_ast(entry.decl)}"
+            else:
+                output += entry.name
+
+            # PSA
+            if is_ignored and show_ignored:
+                output += f" // Ignored: {ignore_entry.why_ignore}"
+
+            print(output)
+
+        # Print marker annotations and statistics
+        print(f"""\
+========================
+  [ ] = unused, to be implemented
+  [x] = covered
+  [i] = ignored, need no to be implemented
+  [*] = covered yet ignored
+
+  There are {len(entries)} functions in total
+  {num_used} are used ({num_used / len(entries) * 100:.3f}%)
+  {num_ignored} are ignored ({num_ignored / len(entries) * 100:.3f}%)\
+""")

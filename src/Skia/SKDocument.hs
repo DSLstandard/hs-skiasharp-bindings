@@ -160,10 +160,7 @@ createPdfFromStream (toA SKWStream -> stream) metadata = evalContIO do
         Just metadata -> do
             metadata' <- usePdfDocumentMetadata metadata
             liftIO $ sk_document_create_pdf_from_stream_with_metadata stream' metadata'
-
-    if document' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_document_unref document'
+    toObjectFinUnlessNull sk_document_unref document'
 
 createXpsFromStream ::
     (MonadIO m, IsSKWStream stream) =>
@@ -175,10 +172,7 @@ createXpsFromStream ::
 createXpsFromStream (toA SKWStream -> stream) dpi = evalContIO do
     stream' <- useObj stream
     document' <- liftIO $ sk_document_create_xps_from_stream stream' (coerce dpi)
-
-    if document' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_document_unref document'
+    toObjectFinUnlessNull sk_document_unref document'
 
 {- | Begin a new page for the document, returning the canvas that will draw into
 the page. The document owns this canvas, and it will go out of scope when

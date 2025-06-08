@@ -54,6 +54,7 @@
         ] ++ (with pkgs.python311Packages; [
             pycparser
             pytest
+            pyyaml
         ]);
       in {
         devShells.default = pkgs.mkShell {

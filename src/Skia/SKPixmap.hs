@@ -61,8 +61,8 @@ extractSubsetToPixmap pixmap dstPixmap subset = evalContIO do
     subset' <- useStorable $ toSKIRect subset
     liftIO $ toBool <$> sk_pixmap_extract_subset pixmap' dstPixmap' subset'
 
-getImageInfo :: (MonadIO m) => SKPixmap -> m SKImageInfo
-getImageInfo pixmap = evalContIO do
+getInfo :: (MonadIO m) => SKPixmap -> m SKImageInfo
+getInfo pixmap = evalContIO do
     pixmap' <- useObj pixmap
     iminfo' <- useAlloca
     liftIO $ sk_pixmap_get_info pixmap' iminfo'
@@ -118,20 +118,24 @@ getPixelAlpha pixmap (V2 x y) = evalContIO do
     pixmap' <- useObj pixmap
     liftIO $ coerce <$> sk_pixmap_get_pixel_alphaf pixmap' (fromIntegral x) (fromIntegral y)
 
-getWritableAddress :: (MonadIO m) => SKPixmap -> m (Ptr Word8)
-getWritableAddress pixmap = evalContIO do
+-- | Uses the writable address of a 'SKPixmap'.
+withWritableAddress :: (MonadIO m) => SKPixmap -> (Ptr Word8 -> IO r) -> m r
+withWritableAddress pixmap f = evalContIO do
     pixmap' <- useObj pixmap
-    liftIO $ castPtr <$> sk_pixmap_get_writable_addr pixmap'
+    addr <- liftIO $ castPtr <$> sk_pixmap_get_writable_addr pixmap'
+    liftIO $ f addr
 
-getWritableAddressWithXY ::
+withWritableAddressOfXY ::
     (MonadIO m) =>
     SKPixmap ->
     -- | XY position
     V2 Int ->
-    m (Ptr Word8)
-getWritableAddressWithXY pixmap (V2 x y) = evalContIO do
+    (Ptr Word8 -> IO r) ->
+    m r
+withWritableAddressOfXY pixmap (V2 x y) f = evalContIO do
     pixmap' <- useObj pixmap
-    liftIO $ castPtr <$> sk_pixmap_get_writeable_addr_with_xy pixmap' (fromIntegral x) (fromIntegral y)
+    addr <- liftIO $ castPtr <$> sk_pixmap_get_writeable_addr_with_xy pixmap' (fromIntegral x) (fromIntegral y)
+    liftIO $ f addr
 
 {- | Returns 'Nothing' if the operation fails.
 

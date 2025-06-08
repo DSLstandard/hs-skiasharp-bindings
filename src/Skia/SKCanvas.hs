@@ -1,5 +1,9 @@
 module Skia.SKCanvas where
 
+import Data.ByteString qualified as BS
+import Data.ByteString.Unsafe qualified as BS
+import Data.Text qualified as T
+import Data.Text.Encoding qualified as T
 import Linear
 import Skia.Internal.Prelude
 import Skia.Types.Rect qualified as Rect
@@ -13,13 +17,13 @@ destroy (toA SKCanvas -> canvas) = evalContIO do
     canvas' <- useObj canvas
     liftIO $ sk_canvas_destroy canvas'
 
-clearHex :: (MonadIO m, IsSKCanvas canvas) => canvas -> SKColor -> m ()
-clearHex (toA SKCanvas -> canvas) hex = evalContIO do
+clear :: (MonadIO m, IsSKCanvas canvas) => canvas -> SKColor -> m ()
+clear (toA SKCanvas -> canvas) hex = evalContIO do
     canvas' <- useObj canvas
     liftIO $ sk_canvas_clear canvas' (coerce hex)
 
-clear :: (MonadIO m, IsSKCanvas canvas) => canvas -> RGBA Float -> m ()
-clear (toA SKCanvas -> canvas) color = evalContIO do
+clearRGBA :: (MonadIO m, IsSKCanvas canvas) => canvas -> RGBA Float -> m ()
+clearRGBA (toA SKCanvas -> canvas) color = evalContIO do
     canvas' <- useObj canvas
     liftIO $ sk_canvas_clear_color4f canvas' (toSKColor4f color)
 
@@ -93,33 +97,73 @@ drawLine (toA SKCanvas -> canvas) (V2 x0 y0) (V2 x1 y1) paint = evalContIO do
             (coerce y1)
             paint'
 
-drawSimpleTextRaw ::
+{- | Draws text, with origin at (x, y), using clip, SkMatrix, SkFont font,
+and SkPaint paint.
+
+When encoding is SkTextEncoding::kUTF8, SkTextEncoding::kUTF16, or
+SkTextEncoding::kUTF32, this function uses the default
+character-to-glyph mapping from the SkTypeface in font.  It does not
+perform typeface fallback for characters not found in the SkTypeface.
+It does not perform kerning or other complex shaping; glyphs are
+positioned based on their default advances.
+
+Text meaning depends on SkTextEncoding.
+
+Text size is affected by SkMatrix and SkFont text size. Default text
+size is 12 point.
+
+All elements of paint: SkPathEffect, SkMaskFilter, SkShader,
+SkColorFilter, and SkImageFilter; apply to text. By
+default, draws filled black glyphs.
+-}
+drawTextSimpleByByteString ::
     (MonadIO m, IsSKCanvas canvas) =>
     canvas ->
     -- | Text data
-    Ptr Word8 ->
-    -- | Byte length of text data
-    Int ->
+    BS.ByteString ->
+    -- | Text encoding used in text data
     SKTextEncoding ->
     -- | Position
     V2 Float ->
+    -- | Typeface, text size and so, used to describe the text
     SKFont ->
+    -- | Blend, color, and so on, used to draw
     SKPaint ->
     m ()
-drawSimpleTextRaw (toA SKCanvas -> canvas) textData textDataLen textEncoding (V2 x y) font paint = evalContIO do
+drawTextSimpleByByteString (toA SKCanvas -> canvas) textData textEncoding (V2 x y) font paint = evalContIO do
     canvas' <- useObj canvas
     font' <- useObj font
     paint' <- useObj paint
+
+    (text', len) <- ContT $ BS.unsafeUseAsCStringLen textData
+
     liftIO $
         sk_canvas_draw_simple_text
             canvas'
-            (castPtr textData)
-            (fromIntegral textDataLen)
+            (castPtr text')
+            (fromIntegral len)
             (marshalSKEnum textEncoding)
             (coerce x)
             (coerce y)
             font'
             paint'
+
+{- | Convenience function. Like 'drawTextSimpleByByteString' but accepts
+'T.Text'.
+-}
+drawTextSimpleByText ::
+    (MonadIO m, IsSKCanvas canvas) =>
+    canvas ->
+    T.Text ->
+    -- | Position
+    V2 Float ->
+    SKFont ->
+    SKPaint ->
+    m ()
+drawTextSimpleByText canvas text =
+    -- FIXME: T.encodeUtf8 is O(n)...
+    -- https://hackage-content.haskell.org/package/text-2.1.2/docs/src/Data.Text.Encoding.html#encodeUtf8
+    drawTextSimpleByByteString canvas (T.encodeUtf8 text) SKTextEncoding'UTF8
 
 drawTextBlob :: (MonadIO m, IsSKCanvas canvas) => canvas -> SKTextBlob -> V2 Float -> SKPaint -> m ()
 drawTextBlob (toA SKCanvas -> canvas) textBlob (V2 x y) paint = evalContIO do

@@ -1,5 +1,7 @@
 module Skia.SKPicture where
 
+import Data.ByteString qualified as BS
+import Data.ByteString.Unsafe qualified as BS
 import Linear
 import Skia.Internal.Prelude
 
@@ -62,22 +64,30 @@ createFromStream ::
 createFromStream (toA SKStream -> stream) = evalContIO do
     stream' <- useObj stream
     picture' <- liftIO $ sk_picture_deserialize_from_stream stream'
-    if picture' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_picture_unref picture'
+    toObjectFinUnlessNull sk_picture_unref picture'
 
-createFromData ::
+deserializeFromData ::
     (MonadIO m, IsSKStream stream) =>
     SKData ->
     -- | Returns 'Nothing' when the operation fails. Operation fails if data
     -- does not permit constructing valid 'SKPicture'.
     m (Maybe SKPicture)
-createFromData dat = evalContIO do
+deserializeFromData dat = evalContIO do
     dat' <- useObj dat
     picture' <- liftIO $ sk_picture_deserialize_from_data dat'
-    if picture' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_picture_unref picture'
+    toObjectFinUnlessNull sk_picture_unref picture'
+
+deserializeFromByteString ::
+    (MonadIO m, IsSKStream stream) =>
+    -- | Data
+    BS.ByteString ->
+    -- | Returns 'Nothing' when the operation fails. Operation fails if data
+    -- does not permit constructing valid 'SKPicture'.
+    m (Maybe SKPicture)
+deserializeFromByteString dat = evalContIO do
+    (buffer, len) <- ContT $ BS.unsafeUseAsCStringLen dat
+    picture' <- liftIO $ sk_picture_deserialize_from_memory (castPtr buffer) (fromIntegral len)
+    toObjectFinUnlessNull sk_picture_unref picture'
 
 {- | Replays the drawing commands on the specified canvas. In the case that the
 commands are recorded, each command in the SkPicture is sent separately to

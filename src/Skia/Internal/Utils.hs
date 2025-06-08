@@ -21,6 +21,14 @@ peekWith mapping ptr = do
     pure $ mapping r
 {-# INLINE peekWith #-}
 
+{- | Like 'withArrayLen' but the inner function is uncurried.
+
+The purpose of this function is to allow one to write:
+
+@
+(ptr, len) <- ContT $ withArrayLen' myHaskellArray
+@
+-}
 withArrayLen' :: (Storable s) => [s] -> ((Ptr s, Int) -> IO r) -> IO r
 withArrayLen' array f = withArrayLen array (flip $ curry f)
 {-# INLINE withArrayLen' #-}
@@ -29,25 +37,30 @@ bitOrs :: (Bits a) => [a] -> a
 bitOrs = foldl' (.|.) zeroBits
 {-# INLINE bitOrs #-}
 
-{- | Composes a bit flag.
-
-Example: @0b00010010 == makeBitFlags @Word8 [(0, False), (1, True), (4, True)]@
--}
 makeBitFlags ::
     forall a.
     (Bits a) =>
-    -- | A list of (0-indexed bit position, is bit set?)
-    [(Int, Bool)] ->
+    -- | A list of (Flag values, True if flag is set)
+    [(Bool, a)] ->
     a
-makeBitFlags fields = do
+makeBitFlags flags = do
     foldl'
-        ( \wholeFlag (bitPos, bitIsSet) ->
-            if bitIsSet
-                then setBit wholeFlag bitPos
-                else wholeFlag
+        ( \flag (flagIsSet, flagValue) ->
+            if flagIsSet
+                then flag .|. flagValue
+                else flag
         )
         zeroBits
-        fields
+        flags
+
+hasFlag ::
+    (Bits a) =>
+    -- | Query flag value - the flag value with only one bit set
+    a ->
+    -- | Flag value input to be tested
+    a ->
+    Bool
+hasFlag query flag = (flag .&. query) /= zeroBits
 
 convert4Word8ToWord32 :: (Word8, Word8, Word8, Word8) -> Word32
 convert4Word8ToWord32 (c1, c2, c3, c4) = do
