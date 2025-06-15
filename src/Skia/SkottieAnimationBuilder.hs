@@ -1,5 +1,7 @@
 module Skia.SkottieAnimationBuilder where
 
+import Control.Monad.Trans.Resource
+import Data.Acquire
 import Data.ByteString qualified as BS
 import Data.ByteString.Unsafe qualified as BS
 import Foreign.C.String qualified
@@ -30,19 +32,14 @@ marshalCreateFlags i =
         , (i.preferEmbeddedFonts, PREFER_EMBEDDED_FONTS_SKOTTIE_ANIMATION_BUILDER_FLAGS)
         ]
 
-destroy :: (MonadIO m) => SkottieAnimationBuilder -> m ()
-destroy builder = evalContIO do
-    builder' <- useObj builder
-    liftIO $ skottie_animation_builder_delete builder'
-
 create ::
-    (MonadIO m) =>
     -- | Additional options. Consider using 'defaultCreateFlags'.
     CreateFlags ->
-    m (Owned SkottieAnimationBuilder)
-create flags = liftIO do
-    builder' <- skottie_animation_builder_new (marshalCreateFlags flags)
-    toObject builder'
+    Acquire SkottieAnimationBuilder
+create flags =
+    mkSKObjectAcquire
+        (skottie_animation_builder_new (marshalCreateFlags flags))
+        skottie_animation_builder_delete
 
 data Stats = Stats
     { totalLoadTimeMS :: Float
@@ -83,34 +80,37 @@ setFontManager builder fmgr = evalContIO do
     liftIO $ skottie_animation_builder_set_font_manager builder' fmgr'
 
 buildFromStream ::
-    (MonadIO m, IsSKStream stream) =>
+    (MonadResource m, IsSKStream stream) =>
     SkottieAnimationBuilder ->
     stream ->
-    m (Maybe (Ref SkottieAnimation))
-buildFromStream builder (toA SKStream -> stream) = evalContIO do
-    builder' <- useObj builder
-    stream' <- useObj stream
-    anim' <- liftIO $ skottie_animation_builder_make_from_stream builder' stream'
-    toObjectFinUnlessNull skottie_animation_unref anim'
+    m (Maybe (ReleaseKey, SkottieAnimation))
+buildFromStream builder (toA SKStream -> stream) =
+    allocateSKObjectUnlessNull
+        (skottie_animation_builder_make_from_stream (ptr builder) (ptr stream))
+        skottie_animation_unref
 
 buildFromByteString ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SkottieAnimationBuilder ->
     BS.ByteString ->
-    m (Maybe (Ref SkottieAnimation))
-buildFromByteString builder bytestring = evalContIO do
-    builder' <- useObj builder
-    (cstr, len) <- ContT $ BS.unsafeUseAsCStringLen bytestring
-    anim' <- liftIO $ skottie_animation_builder_make_from_data builder' cstr (fromIntegral len)
-    toObjectFinUnlessNull skottie_animation_unref anim'
+    m (Maybe (ReleaseKey, SkottieAnimation))
+buildFromByteString builder bytestring =
+    allocateSKObjectUnlessNull
+        ( evalContIO do
+            (cstr, len) <- ContT $ BS.unsafeUseAsCStringLen bytestring
+            liftIO $ skottie_animation_builder_make_from_data (ptr builder) cstr (fromIntegral len)
+        )
+        skottie_animation_unref
 
 buildFromFile ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SkottieAnimationBuilder ->
     FilePath ->
-    m (Maybe (Ref SkottieAnimation))
-buildFromFile builder path = evalContIO do
-    builder' <- useObj builder
-    path' <- ContT $ Foreign.C.String.withCString path
-    anim' <- liftIO $ skottie_animation_builder_make_from_file builder' path'
-    toObjectFinUnlessNull skottie_animation_unref anim'
+    m (Maybe (ReleaseKey, SkottieAnimation))
+buildFromFile builder path =
+    allocateSKObjectUnlessNull
+        ( evalContIO do
+            path' <- ContT $ Foreign.C.String.withCString path
+            liftIO $ skottie_animation_builder_make_from_file (ptr builder) path'
+        )
+        skottie_animation_unref

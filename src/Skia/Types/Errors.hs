@@ -25,3 +25,9 @@ newtype SkiaAssertionError = SkiaAssertionError String
     deriving (Show)
 
 instance Exception SkiaAssertionError
+
+-- | General errors intended for Haskell library users to look at.
+data SkiaError = SkiaError String
+    deriving (Show)
+
+instance Exception SkiaError

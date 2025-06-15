@@ -3,6 +3,8 @@ module Skia.Types.Internal.Utils.Core where
 import Control.Exception qualified
 import Control.Monad.Cont
 import Control.Monad.IO.Class
+import Data.Acquire (Acquire)
+import Data.Acquire qualified as Acquire
 import Data.Functor
 import Data.Text qualified as T
 import Data.Text.Foreign qualified
@@ -12,6 +14,7 @@ import Foreign
 import Foreign.C.String
 import Skia.Types.Core
 import Skia.Types.Errors
+import Control.Monad.Trans.Resource (MonadUnliftIO)
 
 toObjectMaybe :: (ManagedPtrNewType s a, SKObject s, MonadIO m) => Ptr a -> m (Maybe s)
 toObjectMaybe ptr = do
@@ -73,3 +76,6 @@ unmarshalSKEnumOrDie a = liftIO do
             let enumName = tyConName $ typeRepTyCon $ typeRep (Proxy @s)
             Control.Exception.throwIO $ UnmarshalSKEnumError $ "Unrecognized '" <> enumName <> "' enum value: " <> show a
 {-# INLINE unmarshalSKEnumOrDie #-}
+
+useAcquire :: MonadUnliftIO m => Acquire a -> ContT r m a
+useAcquire = ContT . Acquire.with

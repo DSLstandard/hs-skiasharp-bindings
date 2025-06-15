@@ -1,22 +1,28 @@
 module Skia.SKFontStyleSet where
 
+import Control.Monad.Trans.Resource
 import Data.Text qualified as T
 import Skia.Internal.Prelude
 import Skia.SKString qualified as SKString
 
-createEmpty :: (MonadIO m) => m SKFontStyleSet
-createEmpty = liftIO do
-    toObjectFin sk_fontstyleset_unref =<< sk_fontstyleset_create_empty
+-- | Creates a new, empty 'SKFontStyleSet'.
+createEmpty :: Acquire SKFontStyleSet
+createEmpty =
+    mkSKObjectAcquire
+        sk_fontstyleset_create_empty
+        sk_fontstyleset_unref
 
+-- | Gets the number of font styles in the set.
 getCount :: (MonadIO m) => SKFontStyleSet -> m Int
 getCount sset = evalContIO do
     sset' <- useObj sset
     liftIO $ fmap fromIntegral $ sk_fontstyleset_get_count sset'
 
+-- | Gets the font style at the specified index.
 getStyle ::
     (MonadIO m) =>
     SKFontStyleSet ->
-    -- | Index. Should be in [0..getCount)
+    -- | Index. Should be in [0..'getCount')
     Int ->
     -- | Returns (SKFontStyle, family name). Returns 'Nothing' if the input
     -- index is invalid.
@@ -27,52 +33,52 @@ getStyle sset index = evalContIO do
     count <- getCount sset
     if index < 0 || index >= count
         then do
-            pure $ Nothing
+            pure Nothing
         else do
-            dstNameStr <- SKString.createEmpty
-
-            sset' <- useObj sset
-            dstNameStr' <- useObj dstNameStr
+            dstNameStr <- useAcquire SKString.createEmpty
             dstFontStyle' <- useAllocaSKFontStyle
 
-            liftIO $ sk_fontstyleset_get_style sset' (fromIntegral index) dstFontStyle' dstNameStr'
-
-            -- Read out name
+            liftIO $ sk_fontstyleset_get_style (ptr sset) (fromIntegral index) dstFontStyle' (ptr dstNameStr)
             name <- SKString.getAsText dstNameStr
-            disposeObject dstNameStr
-
-            -- Read out font style
             fontStyle <- peekSKFontStyle dstFontStyle'
-
             pure $ Just (fontStyle, name)
 
+{- | Creates a new 'SKTypeface' with the style that is the closest match to the
+style at the specified index.
+-}
 createTypeface ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKFontStyleSet ->
-    -- | Index. Should be in [0..getCount)
+    -- | Index. Should be in [0..'getCount')
     Int ->
     -- | Returns 'Nothing' if the input index is invalid.
-    m (Maybe SKTypeface)
-createTypeface sset index = evalContIO do
+    m (Maybe (ReleaseKey, SKTypeface))
+createTypeface sset index = do
     -- NOTE: The getCount check is also done by SkiaSharp. This implementation
     -- follows that.
     count <- getCount sset
     if index < 0 || index >= count
         then do
-            pure $ Nothing
+            pure Nothing
         else do
-            sset' <- useObj sset
-            tf' <- liftIO $ sk_fontstyleset_create_typeface sset' (fromIntegral index)
-            Just <$> toObjectFin sk_typeface_unref tf'
+            tf <-
+                allocateSKObject
+                    (sk_fontstyleset_create_typeface (ptr sset) (fromIntegral index))
+                    sk_typeface_unref
+            pure $ Just tf
 
+{- | Creates a new SKTypeface with a style that is the closest match to the
+specified font style.
+-}
 matchStyle ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKFontStyleSet ->
-    -- | Pattern
     SKFontStyle ->
-    m SKTypeface
-matchStyle sset pat = evalContIO do
-    sset' <- useObj sset
-    pat' <- useSKFontStyle pat
-    tf' <- liftIO $ sk_fontstyleset_match_style sset' pat'
-    toObjectFin sk_typeface_unref tf'
+    m (ReleaseKey, SKTypeface)
+matchStyle sset pat = do
+    allocateSKObject
+        ( evalContIO do
+            pat' <- useSKFontStyle pat
+            liftIO $ sk_fontstyleset_match_style (ptr sset) pat'
+        )
+        sk_typeface_unref

@@ -1,280 +1,505 @@
 module Skia.SKImage where
 
+import Control.Monad.Trans.Resource
 import Linear
 import Skia.Internal.Prelude
 
-createRasterCopyFromPixmap ::
-    (MonadIO m) =>
+{- | Creates a CPU-backed SkImage from pixmap, copying the pixel data. As a
+result, pixmap pixels may be modified or deleted without affecting SkImage.
+
+SkImage is returned if SkPixmap is valid. Valid SkPixmap parameters include:
+dimensions are greater than zero; each dimension fits in 29 bits; SkColorType
+and SkAlphaType are valid, and SkColorType is not kUnknown_SkColorType; row
+bytes are large enough to hold one row of pixels; pixel address is not nullptr.
+-}
+createRasterFromPixmapCopy ::
+    (MonadResource m) =>
     SKPixmap ->
-    m SKImage
-createRasterCopyFromPixmap pixmap = evalContIO do
-    pixmap' <- useObj pixmap
-    image' <- liftIO $ sk_image_new_raster_copy_with_pixmap pixmap'
-    toObjectFin sk_image_unref image'
+    m (Maybe (ReleaseKey, SKImage))
+createRasterFromPixmapCopy pixmap =
+    allocateSKObjectUnlessNull
+        (sk_image_new_raster_copy_with_pixmap (ptr pixmap))
+        sk_image_unref
 
-createRasterCopyFromData ::
-    (MonadIO m) =>
+{- | Creates CPU-backed SkImage from pixel data described by info. The pixels
+data will *not* be copied.
+
+SkImage is returned if SkImageInfo is valid. Valid SkImageInfo parameters
+include: dimensions are greater than zero; each dimension fits in 29 bits;
+SkColorType and SkAlphaType are valid, and SkColorType is not
+kUnknown_SkColorType; rowBytes are large enough to hold one row of pixels;
+pixels is not nullptr, and contains enough data for SkImage.
+-}
+createRasterFromData ::
+    (MonadResource m) =>
+    -- | info. Contains width, height, SkAlphaType, SkColorType, SkColorSpace
     SKImageInfo ->
-    -- | Pixel data
+    -- | pixels. Address or pixel storage
     Ptr Word8 ->
-    -- | Row bytes
+    -- | rowBytes. Size of pixel row or larger
     Int ->
-    m SKImage
-createRasterCopyFromData iminfo pixels rowBytes = evalContIO do
-    iminfo' <- useSKImageInfo iminfo
-    image' <- liftIO $ sk_image_new_raster_copy iminfo' (castPtr pixels) (fromIntegral rowBytes)
-    toObjectFin sk_image_unref image'
+    m (Maybe (ReleaseKey, SKImage))
+createRasterFromData iminfo pixels rowBytes =
+    allocateSKObjectUnlessNull
+        ( evalContIO do
+            iminfo' <- useSKImageInfo iminfo
+            liftIO $ sk_image_new_raster_data iminfo' (castPtr pixels) (fromIntegral rowBytes)
+        )
+        sk_image_unref
 
-createRasterOnData ::
-    (MonadIO m) =>
-    SKImageInfo ->
-    -- | Pixel data
-    Ptr Word8 ->
-    -- | Row bytes
-    Int ->
-    m SKImage
-createRasterOnData iminfo pixels rowBytes = evalContIO do
-    iminfo' <- useSKImageInfo iminfo
-    image' <- liftIO $ sk_image_new_raster_data iminfo' (castPtr pixels) (fromIntegral rowBytes)
-    toObjectFin sk_image_unref image'
+{- | Creates CPU-backed SkImage from pixmap, sharing SkPixmap pixels. Pixels
+must remain valid and unchanged until rasterReleaseProc is called.
+rasterReleaseProc is passed releaseContext when SkImage is deleted or no longer
+refers to pixmap pixels.
 
-createRaster ::
-    (MonadIO m) =>
+Pass 'Nothing' for rasterReleaseProc to share SkPixmap without requiring a
+callback when SkImage is released.
+
+SkImage is returned if pixmap is valid. Valid SkPixmap parameters include:
+dimensions are greater than zero; each dimension fits in 29 bits; SkColorType
+and SkAlphaType are valid, and SkColorType is not kUnknown_SkColorType; row
+bytes are large enough to hold one row of pixels; pixel address is not nullptr.
+-}
+createRasterFromPixmap ::
+    (MonadResource m) =>
     SKPixmap ->
-    -- | Release callback
-    IO () ->
-    m SKImage
-createRaster pixmap onRelease = evalContIO do
-    funptr' <- liftIO mdo
-        funptr' <- liftIO $ mkFunPtr'Sk_image_raster_release_proc \_address _ctx -> do
-            onRelease
-            freeHaskellFunPtr funptr'
-        pure funptr'
+    -- | rasterReleaseProc. Optional. Release callback
+    Maybe (IO ()) ->
+    m (Maybe (ReleaseKey, SKImage))
+createRasterFromPixmap pixmap onRelease = do
+    onRelease' <- case onRelease of
+        Nothing -> do
+            pure nullFunPtr
+        Just onRelease -> do
+            (_key, onRelease') <-
+                allocateAcquire $
+                    mkAutoReleasingFunPtr
+                        mkFunPtr'Sk_image_raster_release_proc
+                        (\_address _ctx -> onRelease)
+            pure onRelease'
 
-    pixmap' <- useObj pixmap
-    image' <- liftIO $ sk_image_new_raster pixmap' funptr' nullPtr
-    toObjectFin sk_image_unref image'
+    allocateSKObjectUnlessNull
+        (sk_image_new_raster (ptr pixmap) onRelease' nullPtr)
+        sk_image_unref
 
-createFromBitmap :: (MonadIO m) => SKBitmap -> m SKImage
-createFromBitmap bitmap = evalContIO do
-    bitmap' <- useObj bitmap
-    image' <- liftIO $ sk_image_new_from_bitmap bitmap'
-    toObjectFin sk_image_unref image'
+{- | Creates a CPU-backed SkImage from bitmap, sharing or copying bitmap pixels.
+If the bitmap is marked immutable, and its pixel memory is shareable, it may be
+shared instead of copied.
 
-createFromEncoded :: (MonadIO m) => SKData -> m SKImage
-createFromEncoded dat = evalContIO do
-    dat' <- useObj dat
-    image' <- liftIO $ sk_image_new_from_encoded dat'
-    toObjectFin sk_image_unref image'
+SkImage is returned if bitmap is valid. Valid SkBitmap parameters include:
+dimensions are greater than zero; each dimension fits in 29 bits;
 
-createFromTexture ::
-    (MonadIO m) =>
-    GRRecordingContext ->
+SkColorType and SkAlphaType are valid, and SkColorType is not
+kUnknown_SkColorType; row bytes are large enough to hold one row of pixels;
+pixel address is not nullptr.
+-}
+createRasterFromBitmap ::
+    (MonadResource m) =>
+    -- | bitmap. SkImageInfo, row bytes, and pixels
+    SKBitmap ->
+    m (Maybe (ReleaseKey, SKImage))
+createRasterFromBitmap bitmap =
+    allocateSKObjectUnlessNull
+        (sk_image_new_from_bitmap (ptr bitmap))
+        sk_image_unref
+
+{- | Return a SkImage using the encoded data, but attempts to defer decoding
+until the image is actually used/drawn. This deferral allows the system to
+cache the result, either on the CPU or on the GPU, depending on where the
+image is drawn. If memory is low, the cache may be purged, causing the next
+draw of the image to have to re-decode.
+
+If alphaType is nullopt, the image's alpha type will be chosen automatically
+based on the image format. Transparent images will default to
+kPremul_SkAlphaType. If alphaType contains kPremul_SkAlphaType or
+kUnpremul_SkAlphaType, that alpha type will be used. Forcing opaque (passing
+kOpaque_SkAlphaType) is not allowed, and will return nullptr.
+
+If the encoded format is not supported, 'Nothing' is returned.
+-}
+createDeferredFromEncodedData ::
+    (MonadResource m) =>
+    SKData ->
+    m (Maybe (ReleaseKey, SKImage))
+createDeferredFromEncodedData dat =
+    allocateSKObjectUnlessNull
+        (sk_image_new_from_encoded (ptr dat))
+        sk_image_unref
+
+{- | Creates GPU-backed SkImage from the provided GPU texture associated with
+context. GPU texture must stay valid and unchanged until textureReleaseProc
+is called by Skia. Skia will call textureReleaseProc with the passed-in
+releaseContext when SkImage is deleted or no longer refers to the texture. A
+non-null SkImage is returned if format of backendTexture is recognized and
+supported. Recognized formats vary by GPU backend.
+
+NOTE from Google Skia: When using a DDL recording context, textureReleaseProc
+will be called on the GPU thread after the DDL is played back on the direct
+context.
+-}
+borrowTextureFrom ::
+    (MonadResource m, IsGRRecordingContext context) =>
+    -- | GPU context
+    context ->
+    -- | backendTexture. texture residing on GPU
     GRBackendTexture ->
     GRSurfaceOrigin ->
     SKColorType ->
     SKAlphaType ->
+    -- | colorSpace. This describes the color space of this image's
+    -- contents, as seen after sampling. In general, if the format of the
+    -- backend texture is SRGB, some linear colorSpace should be supplied
+    -- (e.g., SkColorSpace::MakeSRGBLinear()). If the format of the backend
+    -- texture is linear, then the colorSpace should include a description
+    -- of the transfer function as well (e.g., SkColorSpace::MakeSRGB()).
     SKColorSpace ->
-    -- | Release callback
+    -- | textureReleaseProc. function called when texture can be released
     IO () ->
-    m SKImage
-createFromTexture ctx tex origin colorType alphaType colorspace onRelease = evalContIO do
-    funptr' <- liftIO mdo
-        funptr' <- mkFunPtr'Sk_image_texture_release_proc \_ctx -> do
-            onRelease
-            freeHaskellFunPtr funptr'
-        pure funptr'
+    m (Maybe (ReleaseKey, SKImage))
+borrowTextureFrom (toA GRRecordingContext -> ctx) tex origin colorType alphaType colorspace onRelease = do
+    (_key, onRelease') <-
+        allocateAcquire $
+            mkAutoReleasingFunPtr
+                mkFunPtr'Sk_image_texture_release_proc
+                (\_ctx -> onRelease)
 
-    ctx' <- useObj ctx
-    tex' <- useObj tex
-    colorspace' <- useObj colorspace
-    image' <-
-        liftIO $
-            sk_image_new_from_texture
-                ctx'
-                tex'
-                (marshalSKEnum origin)
-                (marshalSKEnum colorType)
-                (marshalSKEnum alphaType)
-                colorspace'
-                funptr'
-                nullPtr
-    toObjectFin sk_image_unref image'
+    allocateSKObjectUnlessNull
+        ( sk_image_new_from_texture
+            (ptr ctx)
+            (ptr tex)
+            (marshalSKEnum origin)
+            (marshalSKEnum colorType)
+            (marshalSKEnum alphaType)
+            (ptr colorspace)
+            onRelease'
+            nullPtr
+        )
+        sk_image_unref
 
-createFromAdoptedTexture :: (MonadIO m) => GRRecordingContext -> GRBackendTexture -> GRSurfaceOrigin -> SKColorType -> SKAlphaType -> SKColorSpace -> m SKImage
-createFromAdoptedTexture ctx tex origin colorType alphaType colorspace = evalContIO do
-    ctx' <- useObj ctx
-    tex' <- useObj tex
-    colorspace' <- useObj colorspace
-    image' <-
-        liftIO $
-            sk_image_new_from_adopted_texture
-                ctx'
-                tex'
-                (marshalSKEnum origin)
-                (marshalSKEnum colorType)
-                (marshalSKEnum alphaType)
-                colorspace'
-    toObjectFin sk_image_unref image'
+{- | Creates GPU-backed SkImage from backendTexture associated with context.
+Skia will assume ownership of the resource and will release it when no longer
+needed. A 'Just' SkImage is returned if format of backendTexture is
+recognized and supported. Recognized formats vary by GPU backend.
+-}
+adoptTextureFrom ::
+    (MonadResource m, IsGRRecordingContext context) =>
+    -- | GPU context
+    context ->
+    -- | backendTexture. texture residing on GPU
+    GRBackendTexture ->
+    -- | Origin of backendTexture
+    GRSurfaceOrigin ->
+    -- | Color type of the resulting image
+    SKColorType ->
+    -- | Alpha type of the resulting image
+    SKAlphaType ->
+    -- | Optional. Range of colors.
+    Maybe SKColorSpace ->
+    m (Maybe (ReleaseKey, SKImage))
+adoptTextureFrom (toA GRRecordingContext -> ctx) tex origin colorType alphaType colorspace =
+    allocateSKObjectUnlessNull
+        ( sk_image_new_from_adopted_texture
+            (ptr ctx)
+            (ptr tex)
+            (marshalSKEnum origin)
+            (marshalSKEnum colorType)
+            (marshalSKEnum alphaType)
+            (ptrOrNull colorspace)
+        )
+        sk_image_unref
 
-createFromPicture ::
-    (MonadIO m) =>
+data BitDepth = BitDepth'F16 | BitDepth'U8
+    deriving (Show, Ord, Eq, Enum, Bounded)
+
+{- | Creates SkImage from picture. Returned SkImage width and height are set by
+dimensions. SkImage draws picture with matrix and paint, set to bitDepth and
+colorSpace.
+
+The Picture data is not turned into an image (CPU or GPU) until it is drawn.
+
+If matrix is 'Nothing', draws with identity SkMatrix. If paint is 'Nothing',
+draws with default SkPaint. colorSpace may be 'Nothing'.
+-}
+createDeferredFromPicture ::
+    (MonadResource m) =>
     SKPicture ->
     -- | Dimensions
     V2 Int ->
-    M33 Float ->
-    SKPaint ->
-    -- | Use floating point bit depth?
-    Bool ->
-    SKColorSpace ->
+    -- | matrix. Optional. SkMatrix to rotate, scale, translate, and so on
+    Maybe (M33 Float) ->
+    -- | paint. Optional. SkPaint to apply transparency, filtering, and so on.
+    Maybe SKPaint ->
+    -- | 8-bit integer or 16-bit float: per component
+    BitDepth ->
+    -- | colorSpace. Optional. Range of colors
+    Maybe SKColorSpace ->
     SKSurfaceProps ->
-    m SKImage
-createFromPicture picture dimensions matrix paint useFloatingPointBitDepth colorspace surfaceProps = evalContIO do
-    picture' <- useObj picture
-    dimensions' <- useStorable $ toSKISize $ fmap fromIntegral dimensions
-    matrix' <- useStorable $ toSKMatrix matrix
-    paint' <- useObj paint
-    colorspace' <- useObj colorspace
-    surfaceProps' <- useSKSurfaceProps surfaceProps
-    image' <- liftIO $ sk_image_new_from_picture picture' dimensions' matrix' paint' (fromBool useFloatingPointBitDepth) colorspace' surfaceProps'
-    toObjectFin sk_image_unref image'
+    m (Maybe (ReleaseKey, SKImage))
+createDeferredFromPicture picture dimensions matrix paint bitDepth colorspace surfaceProps =
+    allocateSKObjectUnlessNull
+        ( evalContIO do
+            dimensions' <- useStorable $ toSKISize $ fmap fromIntegral dimensions
+            matrix' <- useNullIfNothing useStorable $ fmap toSKMatrix $ matrix
+            surfaceProps' <- useSKSurfaceProps surfaceProps
+            liftIO $
+                sk_image_new_from_picture
+                    (ptr picture)
+                    dimensions'
+                    matrix'
+                    (ptrOrNull paint)
+                    ( fromBool case bitDepth of
+                        BitDepth'F16 -> True
+                        BitDepth'U8 -> False
+                    )
+                    (ptrOrNull colorspace)
+                    surfaceProps'
+        )
+        sk_image_unref
 
+-- | Gets the image width.
 getWidth :: (MonadIO m) => SKImage -> m Int
 getWidth image = evalContIO do
     image' <- useObj image
     liftIO $ fromIntegral <$> sk_image_get_width image'
 
+-- | Gets the image height.
 getHeight :: (MonadIO m) => SKImage -> m Int
 getHeight image = evalContIO do
     image' <- useObj image
     liftIO $ fromIntegral <$> sk_image_get_height image'
 
-getUniqueId :: (MonadIO m) => SKImage -> m Word32
+{- | Returns value unique to image. SkImage contents cannot change after SkImage
+is created. Any operation to create a new SkImage will receive generate a new
+unique number.
+-}
+getUniqueId ::
+    (MonadIO m) =>
+    -- | image
+    SKImage ->
+    m Word32
 getUniqueId image = evalContIO do
     image' <- useObj image
     liftIO $ sk_image_get_unique_id image'
 
+-- | Gets the configured SKAlphaType for the bitmap.
 getAlphaType :: (MonadIO m) => SKImage -> m SKAlphaType
 getAlphaType image = evalContIO do
     image' <- useObj image
     r <- liftIO $ sk_image_get_alpha_type image'
     unmarshalSKEnumOrDie r
 
+-- | Gets the image color type.
 getColorType :: (MonadIO m) => SKImage -> m SKColorType
 getColorType image = evalContIO do
     image' <- useObj image
     r <- liftIO $ sk_image_get_color_type image'
     unmarshalSKEnumOrDie r
 
-getColorSpace :: (MonadIO m) => SKImage -> m SKColorSpace
-getColorSpace image = evalContIO do
-    image' <- useObj image
-    colorspace' <- liftIO $ sk_image_get_colorspace image'
+{- | Returns SkColorSpace, the range of colors, associated with SkImage. The
+returned SKColorSpace is immutable.
 
-    liftIO $ sk_colorspace_ref colorspace'
-    toObjectFin sk_colorspace_unref colorspace'
+SkColorSpace returned was passed to an SkImage constructor, or was parsed from
+encoded data. SkColorSpace returned may be ignored when SkImage is drawn,
+depending on the capabilities of the SkSurface receiving the drawing.
+-}
+getColorSpace :: (MonadResource m) => SKImage -> m (Maybe (ReleaseKey, SKColorSpace))
+getColorSpace image =
+    allocateSKObjectUnlessNull
+        ( do
+            colorspace' <- sk_image_get_colorspace (ptr image)
 
+            -- Google Skia's comment: Returns SkColorSpace, the range of colors,
+            -- associated with SkImage. The reference count of SkColorSpace is
+            -- unchanged. The returned SkColorSpace is immutable.
+            unless (colorspace' == nullPtr) do
+                sk_colorspace_ref colorspace'
+
+            pure colorspace'
+        )
+        sk_colorspace_unref
+
+{- | Gets a value indicating whether the image will be drawn as a mask, with no
+intrinsic color of its own
+-}
 isAlphaOnly :: (MonadIO m) => SKImage -> m Bool
-isAlphaOnly image = evalContIO do
-    image' <- useObj image
-    liftIO $ toBool <$> sk_image_is_alpha_only image'
+isAlphaOnly image = liftIO do
+    toBool <$> sk_image_is_alpha_only (ptr image)
 
+-- | Make a shader with the specified tiling and mipmap sampling.
 makeShader ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKImage ->
     -- | X tile mode.
     SKShaderTileMode ->
     -- | Y tile mode.
     SKShaderTileMode ->
     SKSamplingOptions ->
-    M33 Float ->
-    m SKShader
-makeShader image tileX tileY sampling matrix = evalContIO do
-    image' <- useObj image
-    sampling' <- useStorable $ marshalSKSamplingOptions sampling
-    matrix' <- useStorable $ toSKMatrix matrix
+    -- | Optional transform.
+    Maybe (M33 Float) ->
+    m (ReleaseKey, SKShader)
+makeShader image tileX tileY sampling matrix =
+    allocateSKObject
+        ( evalContIO do
+            sampling' <- useStorable $ marshalSKSamplingOptions sampling
+            matrix' <- useNullIfNothing useStorable $ fmap toSKMatrix $ matrix
+            liftIO $ sk_image_make_shader (ptr image) (marshalSKEnum tileX) (marshalSKEnum tileY) sampling' matrix'
+        )
+        sk_shader_unref
 
-    shader' <- liftIO $ sk_image_make_shader image' (marshalSKEnum tileX) (marshalSKEnum tileY) sampling' matrix'
-    toObjectFin sk_shader_unref shader'
+{- | 'makeRawShader' functions like 'makeShader', but for images that contain
+non-color data. This includes images encoding things like normals, material
+properties (eg, roughness), heightmaps, or any other purely mathematical data
+that happens to be stored in an image. These types of images are useful with
+some programmable shaders (see: 'SKRuntimeEffect').
 
+Raw image shaders work like regular image shaders (including filtering and
+tiling), with a few major differences:
+
+  * No color space transformation is ever applied (the color space of the image
+    is ignored).
+
+  * Images with an alpha type of kUnpremul are *not* automatically
+    premultiplied.
+
+  * Bicubic filtering is not supported. If SkSamplingOptions::useCubic is true,
+    these factories will return nullptr.
+-}
 makeRawShader ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKImage ->
     -- | X tile mode.
     SKShaderTileMode ->
     -- | Y tile mode.
     SKShaderTileMode ->
     SKSamplingOptions ->
-    M33 Float ->
-    m SKShader
-makeRawShader image tileX tileY sampling matrix = evalContIO do
-    image' <- useObj image
-    sampling' <- useStorable $ marshalSKSamplingOptions sampling
-    matrix' <- useStorable $ toSKMatrix matrix
+    -- | Optional transform.
+    Maybe (M33 Float) ->
+    m (ReleaseKey, SKShader)
+makeRawShader image tileX tileY sampling matrix =
+    allocateSKObject
+        ( evalContIO do
+            sampling' <- useStorable $ marshalSKSamplingOptions sampling
+            matrix' <- useNullIfNothing useStorable $ fmap toSKMatrix $ matrix
+            liftIO $ sk_image_make_raw_shader (ptr image) (marshalSKEnum tileX) (marshalSKEnum tileY) sampling' matrix'
+        )
+        sk_shader_unref
 
-    shader' <- liftIO $ sk_image_make_raw_shader image' (marshalSKEnum tileX) (marshalSKEnum tileY) sampling' matrix'
-    toObjectFin sk_shader_unref shader'
-
+{- | Returns true if the contents of SkImage was created on or uploaded to GPU
+memory, and is available as a GPU texture.
+-}
 isTextureBacked :: (MonadIO m) => SKImage -> m Bool
 isTextureBacked image = evalContIO do
     image' <- useObj image
     liftIO $ toBool <$> sk_image_is_texture_backed image'
 
+{- | Returns true if SkImage is backed by an image-generator or other service
+that creates and caches its pixels or texture on-demand.
+-}
 isLazyGenerated :: (MonadIO m) => SKImage -> m Bool
 isLazyGenerated image = evalContIO do
     image' <- useObj image
     liftIO $ toBool <$> sk_image_is_lazy_generated image'
 
-isValid :: (MonadIO m, IsGRRecordingContext context) => SKImage -> context -> m Bool
-isValid image (toA GRRecordingContext -> ctx) = evalContIO do
-    image' <- useObj image
-    ctx' <- useObj ctx
-    liftIO $ toBool <$> sk_image_is_valid image' ctx'
+{- | Returns true if SkImage draws on GPU surface associated with context.
 
--- | Returns False if unsuccessful.
-peekPixelsToPixmap ::
+Also see 'isValidOnRaster'.
+
+NOTE: SkImage backed by GPU texture may become invalid if associated context is
+invalid. lazy image may be invalid and may not draw to raster surface or GPU
+surface or both.
+-}
+isValidOnGPUContext ::
+    (MonadIO m, IsGRRecordingContext context) =>
+    SKImage ->
+    -- | context. GPU context to test.
+    context ->
+    m Bool
+isValidOnGPUContext image (toA GRRecordingContext -> ctx) = liftIO do
+    toBool <$> sk_image_is_valid (ptr image) (ptr ctx)
+
+{- | Analogous to 'isValidOnGPUContext', but tests if the 'SKImage' is drawn on
+a raster surface.
+
+NOTE: SkImage backed by GPU texture may become invalid if associated context is
+invalid. lazy image may be invalid and may not draw to raster surface or GPU
+surface or both.
+-}
+isValidOnRaster :: (MonadIO m) => SKImage -> m Bool
+isValidOnRaster image = liftIO do
+    toBool <$> sk_image_is_valid (ptr image) nullPtr
+
+{- | Copies SkImage pixel address, row bytes, and SkImageInfo to pixmap, if
+address is available, and returns true. If pixel address is not available,
+return false and leave pixmap unchanged.
+-}
+peekPixels ::
     (MonadIO m) =>
     SKImage ->
-    -- | Destination pixmap
+    -- | pixmap. Storage for pixel state if pixels are readable; otherwise,
+    -- ignored.
     SKPixmap ->
     m Bool
-peekPixelsToPixmap image pixmap = evalContIO do
-    image' <- useObj image
-    pixmap' <- useObj pixmap
-    liftIO $ toBool <$> sk_image_peek_pixels image' pixmap'
+peekPixels image pixmap = liftIO do
+    toBool <$> sk_image_peek_pixels (ptr image) (ptr pixmap)
 
 {- | Returns 'Nothing' if the read operation fails.
 
 Returns 'Just' along with the output 'SKImageInfo' if the read operation
 succeeds.
+
+Copies SkRect of pixels from SkImage to dstPixels. Copy starts at offset (srcX,
+srcY), and does not exceed SkImage (width(), height()).
+
+dstInfo specifies width, height, SkColorType, SkAlphaType, and SkColorSpace of
+destination. dstRowBytes specifies the gap from one destination row to the next.
+Returns true if pixels are copied. Returns 'Nothing' if:
+
+* dstInfo.addr() equals nullptr
+
+* dstRowBytes is less than dstInfo.minRowBytes()
+
+* SkPixelRef is nullptr
+
+Pixels are copied only if pixel conversion is possible. If SkImage SkColorType
+is kGray_8_SkColorType, or kAlpha_8_SkColorType; dstInfo.colorType() must match.
+If SkImage SkColorType is kGray_8_SkColorType, dstInfo.colorSpace() must match.
+If SkImage SkAlphaType is kOpaque_SkAlphaType, dstInfo.alphaType() must match.
+If SkImage SkColorSpace is nullptr, dstInfo.colorSpace() must match. Returns
+false if pixel conversion is not possible.
+
+srcX and srcY may be negative to copy only top or left of source. Returns false
+if width() or height() is zero or negative. Returns false if abs(srcX) >= Image
+width(), or if abs(srcY) >= Image height().
+
+If cachingHint is kAllow_CachingHint, pixels may be retained locally.
+
+If cachingHint is kDisallow_CachingHint, pixels are not added to the local
+cache.
 -}
 readPixelsToBuffer ::
     (MonadIO m) =>
     SKImage ->
-    -- | Destination pixel buffer
+    -- | dstPixels. Destination pixel storage.
     Ptr Word8 ->
-    -- | Destination pixel buffer row bytes
+    -- | rowBytes. Destination row length
     Int ->
-    -- | Source (X, Y) position
+    -- | (srcX, srcY). Source position.
     V2 Int ->
     SKImageCachingHint ->
     m (Maybe SKImageInfo)
 readPixelsToBuffer image dstPixels dstRowBytes (V2 srcX srcY) cachingHint = evalContIO do
-    image' <- useObj image
     iminfo' <- useAlloca
     success <-
         liftIO $
-            toBool
-                <$> sk_image_read_pixels
-                    image'
-                    iminfo'
-                    (castPtr dstPixels)
-                    (fromIntegral dstRowBytes)
-                    (fromIntegral srcX)
-                    (fromIntegral srcY)
-                    (marshalSKEnum cachingHint)
-
-    if success
+            sk_image_read_pixels
+                (ptr image)
+                iminfo'
+                (castPtr dstPixels)
+                (fromIntegral dstRowBytes)
+                (fromIntegral srcX)
+                (fromIntegral srcY)
+                (marshalSKEnum cachingHint)
+    if toBool success
         then do
             iminfo <- liftIO $ peek iminfo'
             iminfo <- liftIO $ unmarshalSKImageInfo iminfo

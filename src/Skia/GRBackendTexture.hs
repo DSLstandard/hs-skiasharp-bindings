@@ -1,10 +1,12 @@
 module Skia.GRBackendTexture (
-    delete,
-    isValid,
+    -- * Creating 'GRBackendTexture'
     createGl,
     createVulkan,
     createMetal,
     createDirect3D,
+
+    -- * Getters
+    isValid,
     getWidth,
     getHeight,
     hasMipmaps,
@@ -15,56 +17,63 @@ where
 
 import Skia.Internal.Prelude
 
-delete :: (MonadIO m) => GRBackendTexture -> m ()
-delete tex = evalContIO do
-    tex' <- useObj tex
-    liftIO $ gr_backendtexture_delete tex'
+{- | Creates a new OpenGL 'GRBackendTexture' with the specified properties and
+texture.
 
-isValid :: (MonadIO m) => GRBackendTexture -> m Bool
-isValid tex = evalContIO do
-    tex' <- useObj tex
-    liftIO $ fmap toBool $ gr_backendtexture_is_valid tex'
-
--- | Returns 'Nothing' if failed.
+The 'GRBackendTexture' is destroyed when 'Acquire' releases.
+-}
 createGl ::
-    (MonadIO m) =>
     -- | Width
     Int ->
     -- | Height
     Int ->
-    -- | Mipmapped?
+    -- | Is the texture mipmapped?
     Bool ->
     Gr_gl_textureinfo ->
-    m GRBackendTexture
-createGl width height mipmapped glInfo = evalContIO do
-    glInfo' <- useStorable glInfo
-    liftIO $
-        toObject
-            =<< gr_backendtexture_new_gl
-                (fromIntegral width)
-                (fromIntegral height)
-                (fromBool mipmapped)
-                glInfo'
+    Acquire GRBackendTexture
+createGl width height mipmapped glInfo =
+    mkSKObjectAcquire
+        ( evalContIO do
+            glInfo' <- useStorable glInfo
+            liftIO $
+                gr_backendtexture_new_gl
+                    (fromIntegral width)
+                    (fromIntegral height)
+                    (fromBool mipmapped)
+                    glInfo'
+        )
+        gr_backendtexture_delete
 
+{- | Creates a new Vulkan 'GRBackendTexture' with the specified properties and
+texture.
+
+The 'GRBackendTexture' is destroyed when 'Acquire' releases.
+-}
 createVulkan ::
-    (MonadIO m) =>
     -- | Width
     Int ->
     -- | Height
     Int ->
     Gr_vk_imageinfo ->
-    m GRBackendTexture
-createVulkan width height vkImageInfo = evalContIO do
-    vkImageInfo' <- useStorable vkImageInfo
-    liftIO $
-        toObject
-            =<< gr_backendtexture_new_vulkan
-                (fromIntegral width)
-                (fromIntegral height)
-                vkImageInfo'
+    Acquire GRBackendTexture
+createVulkan width height vkImageInfo =
+    mkSKObjectAcquire
+        ( evalContIO do
+            vkImageInfo' <- useStorable vkImageInfo
+            liftIO $
+                gr_backendtexture_new_vulkan
+                    (fromIntegral width)
+                    (fromIntegral height)
+                    vkImageInfo'
+        )
+        gr_backendtexture_delete
 
+{- | Creates a new Metal 'GRBackendTexture' with the specified properties and
+texture.
+
+The 'GRBackendTexture' is destroyed when 'Acquire' releases.
+-}
 createMetal ::
-    (MonadIO m) =>
     -- | Width
     Int ->
     -- | Height
@@ -72,53 +81,63 @@ createMetal ::
     -- | Mipmapped?
     Bool ->
     Gr_mtl_textureinfo ->
-    m GRBackendTexture
-createMetal width height mipmapped textureInfo = evalContIO do
-    textureInfo' <- useStorable textureInfo
-    liftIO $
-        toObject
-            =<< gr_backendtexture_new_metal
-                (fromIntegral width)
-                (fromIntegral height)
-                (fromBool mipmapped)
-                textureInfo'
+    Acquire GRBackendTexture
+createMetal width height mipmapped textureInfo =
+    mkSKObjectAcquire
+        ( evalContIO do
+            textureInfo' <- useStorable textureInfo
+            liftIO $
+                gr_backendtexture_new_metal
+                    (fromIntegral width)
+                    (fromIntegral height)
+                    (fromBool mipmapped)
+                    textureInfo'
+        )
+        gr_backendtexture_delete
 
+{- | Creates a new Direct3D 'GRBackendTexture' with the specified properties and
+texture.
+
+The 'GRBackendTexture' is destroyed when 'Acquire' releases.
+-}
 createDirect3D ::
-    (MonadIO m) =>
     -- | Width
     Int ->
     -- | Height
     Int ->
     Gr_d3d_textureresourceinfo ->
-    m GRBackendTexture
-createDirect3D width height textureInfo = evalContIO do
-    textureInfo' <- useStorable textureInfo
-    liftIO $
-        toObject
-            =<< gr_backendtexture_new_direct3d
-                (fromIntegral width)
-                (fromIntegral height)
-                textureInfo'
+    Acquire GRBackendTexture
+createDirect3D width height textureInfo =
+    mkSKObjectAcquire
+        ( evalContIO do
+            textureInfo' <- useStorable textureInfo
+            liftIO $
+                gr_backendtexture_new_direct3d
+                    (fromIntegral width)
+                    (fromIntegral height)
+                    textureInfo'
+        )
+        gr_backendtexture_delete
 
+-- | Gets the width in pixels.
 getWidth :: (MonadIO m) => GRBackendTexture -> m Int
 getWidth tex = evalContIO do
-    tex' <- useObj tex
-    liftIO $ fmap fromIntegral $ gr_backendtexture_get_width tex'
+    liftIO $ fmap fromIntegral $ gr_backendtexture_get_width (ptr tex)
 
+-- | Gets the height in pixels.
 getHeight :: (MonadIO m) => GRBackendTexture -> m Int
 getHeight tex = evalContIO do
-    tex' <- useObj tex
-    liftIO $ fmap fromIntegral $ gr_backendtexture_get_height tex'
+    liftIO $ fmap fromIntegral $ gr_backendtexture_get_height (ptr tex)
 
+-- | Returns true if this texture is mipmapped.
 hasMipmaps :: (MonadIO m) => GRBackendTexture -> m Bool
 hasMipmaps tex = evalContIO do
-    tex' <- useObj tex
-    liftIO $ fmap toBool $ gr_backendtexture_has_mipmaps tex'
+    liftIO $ fmap toBool $ gr_backendtexture_has_mipmaps (ptr tex)
 
+-- | Gets the backend type for this render target.
 getBackend :: (MonadIO m) => GRBackendTexture -> m GRBackend
 getBackend tex = evalContIO do
-    tex' <- useObj tex
-    liftIO $ unmarshalSKEnumOrDie =<< gr_backendtexture_get_backend tex'
+    liftIO $ unmarshalSKEnumOrDie =<< gr_backendtexture_get_backend (ptr tex)
 
 {- | If the backend API is GL, copies a snapshot of the 'Gr_gl_textureinfo'
 struct into the passed in pointer and returns true. Otherwise returns 'Nothing'
@@ -127,9 +146,8 @@ if the backend API is not GL.
 getGlTextureInfo :: (MonadIO m) => GRBackendTexture -> m (Maybe Gr_gl_textureinfo)
 getGlTextureInfo tex = evalContIO do
     glInfo' <- useAlloca
-    tex' <- useObj tex
 
-    success <- liftIO $ fmap toBool $ gr_backendtexture_get_gl_textureinfo tex' glInfo'
+    success <- liftIO $ fmap toBool $ gr_backendtexture_get_gl_textureinfo (ptr tex) glInfo'
 
     if success
         then do
@@ -137,3 +155,8 @@ getGlTextureInfo tex = evalContIO do
             pure $ Just glInfo
         else do
             pure Nothing
+
+-- | Returns true if the backend texture has been initialized.
+isValid :: (MonadIO m) => GRBackendTexture -> m Bool
+isValid tex = evalContIO do
+    liftIO $ fmap toBool $ gr_backendtexture_is_valid (ptr tex)

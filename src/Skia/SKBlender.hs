@@ -2,6 +2,8 @@ module Skia.SKBlender where
 
 import Skia.Internal.Prelude
 
+-- * Creating 'SKBlender'
+
 -- | Creates a blender that implements the specified BlendMode.
 createMode :: (MonadIO m) => SKBlendMode -> m SKBlender
 createMode mode = liftIO do

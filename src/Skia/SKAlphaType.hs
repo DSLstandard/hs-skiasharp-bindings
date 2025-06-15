@@ -1,3 +1,4 @@
+-- | Random utilities related to 'SKAlphaType'.
 module Skia.SKAlphaType where
 
 import Skia.Internal.Prelude

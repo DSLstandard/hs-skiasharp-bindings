@@ -2,6 +2,9 @@ module Main where
 
 import Control.Monad
 import Control.Monad.Fix
+import Control.Monad.IO.Class
+import Control.Monad.Trans.Resource
+import Data.Acquire
 import Data.Fixed (mod')
 import Data.Text qualified as T
 import Data.Time.Clock.POSIX qualified as Time
@@ -37,42 +40,37 @@ main :: IO ()
 main = do
     filepath <- parseArgs
 
-    builder <- SkottieAnimationBuilder.create SkottieAnimationBuilder.defaultCreateFlags
-    anim <-
-        SkottieAnimationBuilder.buildFromFile builder filepath >>= \case
-            Nothing -> do
-                putStrLn $ "[!] Error: Cannot build SkottieAnimation from file " <> filepath
-                putStrLn $ "[!] Quitting..."
-                exitFailure
-            Just anim -> do
-                pure anim
-    SkottieAnimationBuilder.destroy builder
+    runResourceT do
+        (builderKey, builder) <- allocateAcquire $ SkottieAnimationBuilder.create SkottieAnimationBuilder.defaultCreateFlags
+        (_animKey, anim) <-
+            SkottieAnimationBuilder.buildFromFile builder filepath >>= \case
+                Nothing -> do
+                    liftIO $ putStrLn $ "[!] Error: Cannot build SkottieAnimation from file " <> filepath
+                    liftIO $ putStrLn $ "[!] Quitting..."
+                    liftIO $ exitFailure
+                Just anim -> do
+                    pure anim
+        release builderKey
 
-    -- Print stats
-    putStrLn "Info about the loaded animation:"
+        -- Print stats
+        duration <- SkottieAnimation.getDuration anim
+        V2 width height <- SkottieAnimation.getSize anim
+        fps <- SkottieAnimation.getFPS anim
+        inPoint <- SkottieAnimation.getInPoint anim
+        outPoint <- SkottieAnimation.getInPoint anim
+        version <- SkottieAnimation.getVersion anim
 
-    duration <- SkottieAnimation.getDuration anim
-    putStrLn $ "- Duration (seconds): " <> show duration
+        liftIO $ putStrLn "Info about the loaded animation:"
+        liftIO $ putStrLn $ "- Duration (seconds): " <> show duration
+        liftIO $ putStrLn $ "- Dimensions: " <> show width <> "x" <> show height
+        liftIO $ putStrLn $ "- Frames per second: " <> show fps
+        liftIO $ putStrLn $ "- Animation in point (frame index units): " <> show inPoint
+        liftIO $ putStrLn $ "- Animation out point (frame index units): " <> show outPoint
+        liftIO $ putStrLn $ "- Version: " <> T.unpack version
 
-    V2 width height <- SkottieAnimation.getSize anim
-    putStrLn $ "- Dimensions: " <> show width <> "x" <> show height
-
-    fps <- SkottieAnimation.getFPS anim
-    putStrLn $ "- Frames per second: " <> show fps
-
-    inPoint <- SkottieAnimation.getInPoint anim
-    putStrLn $ "- Animation in point (frame index units): " <> show inPoint
-
-    outPoint <- SkottieAnimation.getInPoint anim
-    putStrLn $ "- Animation out point (frame index units): " <> show outPoint
-
-    version <- SkottieAnimation.getVersion anim
-    putStrLn $ "- Version: " <> T.unpack version
-
-    runDemoCanvasWindowApp
-        ("Demo Skottie animation viewer: " <> filepath)
-        (V2 (ceiling width) (ceiling height))
-        \window canvas flushCanvas -> do
+        let winTitle = "Demo Skottie animation viewer: " <> filepath
+        let winSize = V2 (ceiling width) (ceiling height)
+        liftIO $ runDemoCanvasWindowApp winTitle winSize \window canvas flushCanvas -> do
             startTime <- Time.getPOSIXTime
 
             fix \loop -> do

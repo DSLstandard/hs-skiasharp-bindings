@@ -35,10 +35,11 @@ invalidate ic rect transform = evalContIO do
     transform' <- useStorable $ toSKMatrix transform
     liftIO $ sksg_invalidation_controller_inval ic' rect' transform'
 
--- | Returns the current maximum bounding box. O(1) operation.
---
--- Returns 'Nothing' if the maximum bounding box is empty, which is the case
--- when 'invalidate' is never called.
+{- | Returns the current maximum bounding box. O(1) operation.
+
+Returns 'Nothing' if the maximum bounding box is empty, which is the case
+when 'invalidate' is never called.
+-}
 getBounds :: (MonadIO m) => SKSGInvalidationController -> m (Maybe (Rect Float))
 getBounds ic = evalContIO do
     ic' <- useObj ic
@@ -47,9 +48,10 @@ getBounds ic = evalContIO do
     bounds <- peekWith fromSKRect bounds'
     pure $ if Rect.isEmpty bounds then Nothing else Just bounds
 
--- | Resets the invalidation controller.
---
--- This operation simply clears out the list of rectangles stored in 'SKSGInvalidationController'.
+{- | Resets the invalidation controller.
+
+This operation simply clears out the list of rectangles stored in 'SKSGInvalidationController'.
+-}
 reset :: (MonadIO m) => SKSGInvalidationController -> m ()
 reset ic = evalContIO do
     ic' <- useObj ic

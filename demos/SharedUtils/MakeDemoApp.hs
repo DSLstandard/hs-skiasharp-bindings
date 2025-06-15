@@ -4,6 +4,9 @@ module SharedUtils.MakeDemoApp (
 where
 
 import Control.Monad
+import Control.Monad.IO.Class
+import Control.Monad.Trans.Resource
+import Data.Acquire
 import Foreign.C
 import Graphics.GL qualified as GL
 import Graphics.UI.GLFW qualified as GLFW
@@ -23,7 +26,8 @@ type DemoCanvasWindowApp =
     GLFW.Window ->
     -- | App canvas
     SKCanvas ->
-    -- | Callback to flush draw commands. This function should be called before a window update.
+    -- | Callback to flush draw commands. This function should be called before
+    -- swapping the draw buffers of the window (e.g., using `GLFW.swapBuffers window`).
     IO () ->
     IO ()
 
@@ -39,9 +43,10 @@ runDemoCanvasWindowApp ::
     String ->
     -- | Window size
     V2 Int ->
+    -- | Application entrypoint
     DemoCanvasWindowApp ->
     IO ()
-runDemoCanvasWindowApp winTitle (V2 kWidth kHeight) loop = do
+runDemoCanvasWindowApp winTitle (V2 kWidth kHeight) application = do
     -- NOTE: This is almost a direct copy of demos/DemoGLFWOpenGL.hs
     GLFW.setErrorCallback $ Just \error description -> do
         hPutStrLn stderr $ "[GLFW ERROR " <> show error <> "] " <> description
@@ -63,24 +68,21 @@ runDemoCanvasWindowApp winTitle (V2 kWidth kHeight) loop = do
             Just window -> pure window
 
     GLFW.makeContextCurrent (Just window)
-    (context, surface) <- initSkia kWidth kHeight
-
     GLFW.swapInterval 0
 
-    SKSurface.withCanvas surface \canvas -> do
+    runResourceT do
+        (context, surface) <- initSkia kWidth kHeight
+        (_, canvas) <- allocateAcquire $ SKSurface.getCanvas surface
         let flush = GRDirectContext.flush context
-        loop window canvas flush
+        liftIO $ application window canvas flush
 
     GLFW.terminate
     putStrLn "GLFW terminated"
   where
-    initSkia :: Int -> Int -> IO (GRDirectContext, SKSurface)
+    initSkia :: (MonadResource m) => Int -> Int -> m (GRDirectContext, SKSurface)
     initSkia w h = do
-        interface <-
-            GRGlInterface.createNativeInterface >>= \case
-                Nothing -> error "cannot make native GL interface"
-                Just interface -> pure interface
-        context <- GRDirectContext.createGl interface Nothing
+        (_, interface) <- allocateAcquire $ GRGlInterface.createNativeInterface
+        (_, context) <- allocateAcquire $ GRDirectContext.createGl interface Nothing
 
         let fbinfo =
                 Gr_gl_framebufferinfo
@@ -88,16 +90,17 @@ runDemoCanvasWindowApp winTitle (V2 kWidth kHeight) loop = do
                     , fFormat = CUInt GL.GL_RGBA8
                     , fProtected = 0
                     }
-        target <- GRBackendRenderTarget.createGl w h 0 0 fbinfo
+        (_, target) <- allocateAcquire $ GRBackendRenderTarget.createGl w h 0 0 fbinfo
         isvalid <- GRBackendRenderTarget.isValid target
         unless isvalid $ error "GL backend render target is not valid"
 
-        Just surface <-
-            SKSurface.createByWrappingBackendRenderTarget
-                context
-                target
-                GRSurfaceOrigin'BottomLeft
-                SKColorType'RGBA'8888
-                Nothing
-                Nothing
+        (_, surface) <-
+            allocateAcquire $
+                SKSurface.wrapBackendRenderTarget
+                    context
+                    target
+                    GRSurfaceOrigin'BottomLeft
+                    SKColorType'RGBA'8888
+                    Nothing
+                    Nothing
         pure (context, surface)

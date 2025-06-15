@@ -1,6 +1,7 @@
 module Skia.SKCodec where
 
 import Control.Exception
+import Control.Monad.Trans.Resource
 import Data.Vector qualified as V
 import Linear
 import Skia.Internal.Prelude
@@ -10,38 +11,47 @@ minBufferedBytesNeeded :: Int
 minBufferedBytesNeeded = fromIntegral $ unsafeDupablePerformIO sk_codec_min_buffered_bytes_needed
 {-# NOINLINE minBufferedBytesNeeded #-}
 
-destroy :: (MonadIO m) => SKCodec -> m ()
-destroy codec = evalContIO do
-    codec' <- useObj codec
-    liftIO $ sk_codec_destroy codec'
-
 {- | NOTE: If an 'CodecError' is returned, the input stream is deleted
-immediately. Otherwise, the returned 'SKCodec' takes ownership of it, and
-will delete it when done with it.
+immediately. Otherwise, the returned 'SKCodec' takes ownership of it, and will
+delete it when done with it.
 -}
-createFromStream :: (MonadIO m) => SKStream -> m (Either SKCodecResult SKCodec)
-createFromStream stream = evalContIO do
-    stream' <- useObj stream
-    result' <- useAlloca
+createFromStream ::
+    (MonadResource m, IsSKStream stream) =>
+    stream ->
+    m (Either SKCodecResult (ReleaseKey, SKCodec))
+createFromStream (toA SKStream -> stream) = do
+    (resultKey, result') <- allocate Foreign.malloc Foreign.free
+    (codecKey, codec') <-
+        allocate
+            (sk_codec_new_from_stream (ptr stream) result')
+            sk_codec_destroy
 
-    codec' <- liftIO $ sk_codec_new_from_stream stream' result'
     result <- unmarshalSKEnumOrDie =<< peekWith id result'
+    release resultKey
 
     case result of
         SKCodecResult'Success -> do
             -- Success
-            Right <$> toObject codec'
+            codec <- toObject codec'
+            pure $ Right (codecKey, codec)
         _ -> do
-            -- If it is not success, then result should indicate an error.
+            -- If it is not success, then 'result' should indicate an error.
+            void $ unprotect codecKey
             pure $ Left result
 
 {- | If the input data represents an encoded image that we know how to decode,
-return an 'SKCodec' that can decode it. Otherwise return 'Nothing'.
+return an 'SKCodec' that can decode it. Otherwise throws a 'SkiaError'.
 -}
-createFromData :: (MonadIO m) => SKData -> m (Maybe SKCodec)
-createFromData dat = evalContIO do
-    dat' <- useObj dat
-    liftIO $ toObjectMaybe =<< sk_codec_new_from_data dat'
+createFromData :: SKData -> Acquire SKCodec
+createFromData dat =
+    mkSKObjectAcquire
+        ( do
+            codec' <- sk_codec_new_from_data (ptr dat)
+            when (codec' == nullPtr) do
+                throwIO $ SkiaError "Cannot create SKCodec from given SKData"
+            pure codec'
+        )
+        sk_codec_destroy
 
 {- | Returns a reasonable 'SKImageInfo' to decode into.
 
@@ -50,9 +60,8 @@ returned 'SKImageInfo' will use SRGB.
 -}
 getInfo :: (MonadIO m) => SKCodec -> m SKImageInfo
 getInfo codec = evalContIO do
-    codec' <- useObj codec
     iminfo' <- useAlloca
-    liftIO $ sk_codec_get_info codec' iminfo'
+    liftIO $ sk_codec_get_info (ptr codec) iminfo'
     iminfo <- peekWith id iminfo'
     unmarshalSKImageInfo iminfo
 

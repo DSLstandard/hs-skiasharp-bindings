@@ -3,6 +3,10 @@ Skia's shading language (SKSL) and what uniforms and \"children\" are.
 -}
 module Skia.SKRuntimeEffect where
 
+import Control.Exception
+import Control.Monad.Trans
+import Control.Monad.Trans.Resource
+import Data.Acquire qualified as Acquire
 import Data.Bits
 import Data.ByteString qualified as BS
 import Data.Text qualified as T
@@ -18,34 +22,40 @@ type ErrorLog = T.Text
 
 -- | PRIVATE FUNCTION
 privCreateForXXX ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     -- | (SKSL source) -> (Error string destination) -> IO (Runtime effect)
     (Ptr Sk_string -> Ptr Sk_string -> IO (Ptr Sk_runtimeeffect)) ->
     -- | SKSL source
     T.Text ->
-    m (Either ErrorLog SKRuntimeEffect)
-privCreateForXXX createF sksl = evalContIO do
-    sksl <- SKString.createFromText sksl
-    sksl' <- useObj sksl
+    m (Either ErrorLog (ReleaseKey, SKRuntimeEffect))
+privCreateForXXX createF skslText = do
+    -- TODO: The code here looks awkward. Fix?
+    (skslstrKey, skslstr) <- allocateAcquire $ SKString.createFromText skslText
+    (errstrKey, errstr) <- allocateAcquire $ SKString.createEmpty
 
-    errstr <- SKString.createEmpty
-    errstr' <- useObj errstr
+    (effectKey, effect') <- liftResourceT $ allocate (createF (ptr skslstr) (ptr errstr)) sk_runtimeeffect_unref
 
-    effect' <- liftIO $ createF sksl' errstr'
-    if effect' == nullPtr
+    result <- if effect' == nullPtr
         then do
+            void $ unprotect effectKey
             errtext <- SKString.getAsText errstr
             pure (Left errtext)
         else do
-            Right <$> toObjectFin sk_runtimeeffect_unref effect'
+            effect <- toObject effect'
+            pure (Right (effectKey, effect))
 
-createForColorFilter :: (MonadIO m) => T.Text -> m (Either ErrorLog SKRuntimeEffect)
+    release skslstrKey
+    release errstrKey
+
+    pure result
+
+createForColorFilter :: (MonadResource m) => T.Text -> m (Either ErrorLog (ReleaseKey, SKRuntimeEffect))
 createForColorFilter = privCreateForXXX sk_runtimeeffect_make_for_color_filter
 
-createForShader :: (MonadIO m) => T.Text -> m (Either ErrorLog SKRuntimeEffect)
+createForShader :: (MonadResource m) => T.Text -> m (Either ErrorLog (ReleaseKey, SKRuntimeEffect))
 createForShader = privCreateForXXX sk_runtimeeffect_make_for_shader
 
-createForBlender :: (MonadIO m) => T.Text -> m (Either ErrorLog SKRuntimeEffect)
+createForBlender :: (MonadResource m) => T.Text -> m (Either ErrorLog (ReleaseKey, SKRuntimeEffect))
 createForBlender = privCreateForXXX sk_runtimeeffect_make_for_blender
 
 -- | Flags of a 'Uniform'.
@@ -220,9 +230,12 @@ castEffectChildToFlattenable = \case
 inputs. Returns 'Nothing' if the operation fails (e.g., due to incorrect input
 uniform data byte size, the 'SKRuntimeEffect' prohibiting the creation of
 'SKShader's, etc).
+
+Raises an 'SkiaError' if operation fails.
+
+The returned 'SKShader' is unreferenced when 'Acquire' releases.
 -}
 makeShader ::
-    (MonadIO m) =>
     SKRuntimeEffect ->
     -- | Uniform data input.
     --
@@ -238,29 +251,36 @@ makeShader ::
     [EffectChild] ->
     -- | Optional local matrix
     Maybe (M33 Float) ->
-    m (Maybe (Ref SKShader))
-makeShader effect inUniformData inChildren localMatrix = evalContIO do
-    -- TODO: Provide utils to build uniformData
+    Acquire SKShader
+makeShader effect inUniformData inChildren localMatrix =
+    mkSKObjectAcquire
+        ( evalContIO do
+            -- TODO: Provide utils to build uniformData
 
-    -- TODO: Must inChildren's length have to equal 'getChildCount'?
+            -- TODO: Must inChildren's length have to equal 'getChildCount'?
 
-    effect' <- useObj effect
+            effect' <- useObj effect
 
-    children :: [Ptr Sk_flattenable] <- for inChildren \inChild -> do
-        useObj (castEffectChildToFlattenable inChild)
-    (children', childrenCount) <- ContT $ withArrayLen' children
+            children :: [Ptr Sk_flattenable] <- for inChildren \inChild -> do
+                useObj (castEffectChildToFlattenable inChild)
+            (children', childrenCount) <- ContT $ withArrayLen' children
 
-    uniforms <- SKData.createFromByteString inUniformData
-    uniforms' <- useObj uniforms
+            -- FIXME: SKData.createCopy is O(n). Find a better option.
+            uniforms <- ContT $ Acquire.with $ SKData.createCopy inUniformData
+            uniforms' <- useObj uniforms
 
-    localMatrix' <- useNullIfNothing useStorable $ fmap toSKMatrix localMatrix
+            localMatrix' <- useNullIfNothing useStorable $ fmap toSKMatrix localMatrix
 
-    shader' <-
-        liftIO $
-            sk_runtimeeffect_make_shader
-                effect'
-                uniforms'
-                children'
-                (fromIntegral childrenCount)
-                localMatrix'
-    toObjectFinUnlessNull sk_shader_unref shader'
+            shader' <-
+                liftIO $
+                    sk_runtimeeffect_make_shader
+                        effect'
+                        uniforms'
+                        children'
+                        (fromIntegral childrenCount)
+                        localMatrix'
+            when (shader' == nullPtr) do
+                liftIO $ throwIO $ SkiaError "SKRuntimeEffect.makeShader failed to create shader"
+            pure shader'
+        )
+        sk_shader_unref

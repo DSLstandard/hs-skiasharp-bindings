@@ -92,3 +92,7 @@ used to catch type errors.
 -}
 coerceForeignPtr :: (Coercible a b) => ForeignPtr a -> ForeignPtr b
 coerceForeignPtr = castForeignPtr
+
+whenJust :: (Monad m) => Maybe a -> (a -> m ()) -> m ()
+whenJust Nothing _ = pure ()
+whenJust (Just a) f = f a

@@ -9,12 +9,14 @@ import Skia.Types.Errors
 
 import Control.Monad
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Resource
 import Data.IORef
 import Foreign
 import GHC.Base
 import GHC.ForeignPtr
 import GHC.TypeError
 import Skia.Internal.Bool qualified as TB
+import Data.Acquire
 import Data.Typeable
 import System.IO.Unsafe qualified
 
@@ -125,6 +127,107 @@ class ManagedPtrNewType s a | s -> a where
 
     toManagedPtr :: s -> ManagedPtr a
 
+-- FIXME: Remove all ForeignPtr and ManagedPtr implementations
+mkSKObjectAcquire ::
+    (SKObject s, ManagedPtrNewType s a) =>
+    -- | Acquire resource
+    IO (Ptr a) ->
+    -- | Release resource
+    (Ptr a -> IO ()) ->
+    Acquire s
+mkSKObjectAcquire acquire free =
+    mkAcquire
+        ( toObject =<< acquire )
+        ( \obj -> do
+            ptr <- disownManagedPtr (toAnyManagedPtr obj)
+            free ptr
+        )
+
+-- FIXME: Remove all ForeignPtr and ManagedPtr implementations
+mkSKObjectAcquire' ::
+    (SKObject s, ManagedPtrNewType s a) =>
+    -- | Acquire resource
+    IO (Ptr a) ->
+    -- | Release resource
+    (s -> IO ()) ->
+    Acquire s
+mkSKObjectAcquire' acquire free =
+    mkAcquire (toObject =<< acquire) free
+
+-- TODO: Make this actually auto-releasing
+mkAutoReleasingFunPtr ::
+    (fn -> IO (FunPtr fn)) ->
+    fn ->
+    Acquire (FunPtr fn)
+mkAutoReleasingFunPtr mkFunPtr fn = do
+    -- FIXME: Is this implementation correct?
+    mkAcquire
+        (mkFunPtr fn)
+        freeHaskellFunPtr
+
+allocateMaybe ::
+    (MonadResource m) =>
+    -- | Allocate
+    (IO (Maybe a)) ->
+    -- | Release
+    (a -> IO ()) ->
+    m (Maybe (ReleaseKey, a))
+allocateMaybe alloc free = resourceMask \_restore -> do
+    result <- liftIO alloc
+    case result of
+        Nothing -> do
+            pure Nothing
+        Just result -> do
+            releaseKey <- register (free result)
+            pure (Just (releaseKey, result))
+
+allocateSKObject ::
+    (MonadResource m, SKObject s, ManagedPtrNewType s a) =>
+    -- | Allocate
+    (IO (Ptr a)) ->
+    -- | Release
+    (Ptr a -> IO ()) ->
+    m (ReleaseKey, s)
+allocateSKObject alloc free =
+    allocate
+        ( do
+            p <- alloc
+            toObject p
+        )
+        ( \obj -> do
+            free (ptr obj)
+        )
+
+allocateSKObjectUnlessNull ::
+    (MonadResource m, SKObject s, ManagedPtrNewType s a) =>
+    -- | Allocate
+    (IO (Ptr a)) ->
+    -- | Release
+    (Ptr a -> IO ()) ->
+    m (Maybe (ReleaseKey, s))
+allocateSKObjectUnlessNull alloc free =
+    allocateMaybe
+        ( do
+            p <- alloc
+            if p == nullPtr
+                then do
+                    pure Nothing
+                else do
+                    obj <- toObject p
+                    pure $ Just obj
+        )
+        ( \obj -> do
+            free (ptr obj)
+        )
+
+-- FIXME: Remove all ForeignPtr and ManagedPtr implementations
+ptr :: (SKObject s, ManagedPtrNewType s a) => s -> Ptr a
+ptr object = unsafeForeignPtrToPtr $ foreignPtr $ toAnyManagedPtr object
+
+ptrOrNull :: (SKObject s, ManagedPtrNewType s a) => Maybe s -> Ptr a
+ptrOrNull Nothing = nullPtr
+ptrOrNull (Just object) = ptr object
+
 class SKEnum s a | s -> a where
     marshalSKEnum :: s -> a
     unmarshalSKEnum :: a -> Maybe s
@@ -137,6 +240,11 @@ class Typeable s => SKObject s where
 unsafeCastObject :: (SKObject a, SKObject b) => a -> b
 unsafeCastObject = fromAnyManagedPtr . toAnyManagedPtr @_ @()
 
+-- | DEVNOTE: If HS_SKIA_CHECK_NULLPTR_ENABLED is enabled and the input is an
+-- nullPtr, we want an IO error instead of simply Haskell's 'error' to guarantee
+-- that the exception is thrown *in sync*.
+--
+-- Therefore, this function cannot be pure.
 toObject :: (ManagedPtrNewType s a, SKObject s, MonadIO m) => Ptr a -> m s
 toObject ptr = liftIO do
 #ifdef HS_SKIA_CHECK_NULLPTR_ENABLED

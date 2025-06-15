@@ -1,111 +1,137 @@
 module Skia.SKData where
 
+import Control.Exception
 import Data.ByteString qualified as BS
-import Data.ByteString.Internal qualified as BS
-import Foreign.ForeignPtr.Unsafe
-import Foreign.StablePtr
 import Skia.Internal.Prelude
+import Skia.SKRefCnt qualified as SKRefCnt
 
-createEmpty :: (MonadIO m) => m SKData
-createEmpty = liftIO do
-    dat' <- sk_data_new_empty
-    toObjectFin sk_data_unref dat'
+-- * Creating 'SKData'
 
-createCopy ::
-    (MonadIO m) =>
-    -- | Buffer
-    Ptr Word8 ->
-    -- | Buffer size
+{- | Returns a new empty dataref (or a reference to a shared empty dataref).
+
+The returned 'SKData' is unreferenced when 'Acquire' releases.
+-}
+createEmpty :: Acquire SKData
+createEmpty = mkSKObjectAcquire sk_data_new_empty sk_data_unref
+
+{- | O(n). Create a new dataref by copying the input 'BS.ByteString'.
+
+The returned 'SKData' is unreferenced when 'Acquire' releases.
+-}
+createCopy :: BS.ByteString -> Acquire SKData
+createCopy bytestring =
+    mkSKObjectAcquire
+        {-
+            TODO: Possible O(1) implementation?
+
+            -- The StablePtr keeps the ByteString's alive, which in turn keeps the
+            -- 'ForeignPtr' data pointer alive, until 'createWithRelease' is done.
+            bsStablePtr :: StablePtr BS.ByteString <- newStablePtr bs
+            let onRelease = freeStablePtr bsStablePtr
+            let (dataptr, len) = BS.toForeignPtr0 bs
+            createWithRelease (unsafeForeignPtrToPtr dataptr) (fromIntegral len) onRelease
+        -}
+        ( evalContIO do
+            (ptr, count) <- ContT $ BS.useAsCStringLen bytestring
+            liftIO $ sk_data_new_with_copy (castPtr ptr) (fromIntegral count)
+        )
+        sk_data_unref
+
+{- | Create a new data with uninitialized contents.
+
+The returned 'SKData' is unreferenced when 'Acquire' releases.
+-}
+createUninitialized ::
+    -- | Number of bytes to allocate. The content will be uninitialized.
     Int ->
-    m (Ref SKData)
-createCopy ptr count = liftIO do
-    dat' <- sk_data_new_with_copy (castPtr ptr) (fromIntegral count)
-    toObjectFin sk_data_unref dat'
+    Acquire SKData
+createUninitialized size =
+    mkSKObjectAcquire
+        (sk_data_new_uninitialized (fromIntegral size))
+        sk_data_unref
 
-createWithSize ::
-    (MonadIO m) =>
-    -- | Number of bytes
-    Int ->
-    m (Ref SKData)
-createWithSize size = liftIO do
-    dat' <- sk_data_new_uninitialized (fromIntegral size)
-    toObjectFin sk_data_unref dat'
+{- | Create a new dataref using a subset of the data in the specified src
+dataref.
 
+The returned 'SKData' is unreferenced when 'Acquire' releases.
+-}
 createSubset ::
-    (MonadIO m) =>
     SKData ->
-    -- | Offset
+    -- | Byte offset
     Int ->
-    -- | Length
+    -- | Byte length
     Int ->
-    m (Ref SKData)
-createSubset dat offset len = evalContIO do
-    dat' <- useObj dat
-    subset' <- liftIO $ sk_data_new_subset dat' (fromIntegral offset) (fromIntegral len)
-    toObjectFin sk_data_unref subset'
+    Acquire SKData
+createSubset dat offset len =
+    mkSKObjectAcquire
+        (sk_data_new_subset (ptr dat) (fromIntegral offset) (fromIntegral len))
+        sk_data_unref
 
-createFromFile :: (MonadIO m) => FilePath -> m (Ref SKData)
-createFromFile path = liftIO do
-    withCString path \path' -> do
-        dat' <- sk_data_new_from_file path'
-        toObjectFin sk_data_unref dat'
+{- | Create a new dataref by reading from a file given its 'FilePath'.
 
+Raises 'SkiaError' on failure.
+
+The returned 'SKData' is unreferenced when 'Acquire' releases.
+-}
+createFromFile :: FilePath -> Acquire SKData
+createFromFile path =
+    mkSKObjectAcquire
+        ( evalContIO do
+            path' <- ContT $ withCString path
+            dat' <- liftIO $ sk_data_new_from_file path'
+            when (dat' == nullPtr) do
+                liftIO $ throwIO $ SkiaError $ "Cannot create SKData from file path: " <> show path
+            pure dat'
+        )
+        sk_data_unref
+
+{- | Attempt to read size bytes into a 'SkData'.
+
+If the read succeeds, return the data, else an 'SkiaError' is raised. Either way
+the stream's cursor may have been changed as a result of calling read().
+
+The returned 'SKData' is unreferenced when 'Acquire' releases.
+-}
 createFromStream ::
-    (IsSKStream stream, MonadIO m) =>
+    (IsSKStream stream) =>
     stream ->
-    -- | Length
+    -- | Number of bytes to read from stream
     Int ->
-    m (Ref SKData)
-createFromStream (toA SKStream -> stream) len = evalContIO do
-    stream' <- useObj stream
-    dat' <- liftIO $ sk_data_new_from_stream stream' (fromIntegral len)
-    toObjectFin sk_data_unref dat'
+    Acquire SKData
+createFromStream (toA SKStream -> stream) len =
+    mkSKObjectAcquire
+        (sk_data_new_from_stream (ptr stream) (fromIntegral len))
+        sk_data_unref
 
+{- | Create a new dataref, taking the ptr as is, and using the release callback
+to free it.
+
+The returned 'SKData' is unreferenced when 'Acquire' releases.
+-}
 createWithRelease ::
-    (MonadIO m) =>
-    -- | Buffer
+    -- | ptr. Pointer to buffer
     Ptr Word8 ->
-    -- | Buffer size
+    -- | Buffer byte size
     Int ->
     -- | Release callback
     IO () ->
-    m SKData
-createWithRelease buffer size releaseCallback = liftIO do
-    -- We use ctx to pass the FunPtr handle to the release callback so it can
-    -- free itself with freeHaskellFunPtr.
+    Acquire SKData
+createWithRelease buffer size releaseCallback = do
+    releaseFun' <-
+        mkAutoReleasingFunPtr
+            mkFunPtr'Sk_data_release_proc
+            (\_buffer _ctx -> releaseCallback)
 
-    let
-        dataReleaseProc :: Sk_data_release_proc
-        dataReleaseProc _buffer ctx = do
-            releaseCallback
-            freeHaskellFunPtr (castPtrToFunPtr ctx)
-
-    releaseCallback' <- mkFunPtr'Sk_data_release_proc dataReleaseProc
-    dat' <-
-        sk_data_new_with_proc
+    mkSKObjectAcquire
+        ( sk_data_new_with_proc
             (castPtr buffer)
             (fromIntegral size)
-            releaseCallback'
-            (castFunPtrToPtr releaseCallback') -- 'ctx' param
-    toObjectFin sk_data_unref dat'
+            releaseFun'
+            nullPtr -- 'ctx' param. Set to nullptr as dummy
+        )
+        sk_data_unref
 
-{- | O(1). Creates an 'SKData' that points to the same data as the input
-'BS.ByteString'. Note that this operation is *fairly* cheap, so feel free to
-convert 'ByteString's to 'SKData's whenever you have to.
-
-Low-level details: This function uses 'createWithRelease' to build a 'StablePtr'
-that points to the input 'BS.ByteString', which is freed with 'freeStablePtr'
-when the release function is called. There is no concern about use-after-free on
-the input 'BS.ByteString'.
--}
-createFromByteString :: (MonadIO m) => BS.ByteString -> m (Ref SKData)
-createFromByteString bs = liftIO do
-    -- The StablePtr keeps the ByteString's alive, which in turn keeps the
-    -- 'ForeignPtr' data pointer alive, until 'createWithRelease' is done.
-    bsStablePtr :: StablePtr BS.ByteString <- newStablePtr bs
-    let onRelease = freeStablePtr bsStablePtr
-    let (dataptr, len) = BS.toForeignPtr0 bs
-    createWithRelease (unsafeForeignPtrToPtr dataptr) (fromIntegral len) onRelease
+-- * Misc utilities
 
 -- | Returns the number of bytes stored.
 getSize :: (MonadIO m) => SKData -> m Int
@@ -113,19 +139,23 @@ getSize dat = evalContIO do
     dat' <- useObj dat
     liftIO $ fromIntegral <$> sk_data_get_size dat'
 
-{- | Exposes the read-only pointer to the data.
+{- | Exposes the **read-only** pointer to the data.
 
-You can not modify the content in the pointer.
+You must not modify the content under the pointer.
+
+NOTE: Because the underlying 'SKData' should outlive the returned pointer, this
+'Acquire' does 'holdReferenceCount' on the input 'SKData' to keep it alive.
 -}
-withData :: (MonadIO m) => SKData -> (Ptr Word8 -> IO r) -> m r
-withData dat f = evalContIO do
-    dat' <- useObj dat
-    bytes' <- liftIO $ sk_data_get_bytes dat'
-    liftIO $ f bytes'
+acquireData :: SKData -> Acquire (Ptr Word8)
+acquireData dat = do
+    SKRefCnt.holdReferenceCountNV dat
+    liftIO $ sk_data_get_bytes (ptr dat)
 
--- | O(n). Builds a 'ByteString' by copying from a 'SKData'.
-getAsByteString :: (MonadIO m) => SKData -> m BS.ByteString
-getAsByteString dat = evalContIO do
-    withData dat \ptr -> do
+{- | O(n). Convenience function. Builds a 'BS.ByteString' by copying from the
+input 'SKData'.
+-}
+getByteString :: (MonadIO m) => SKData -> m BS.ByteString
+getByteString dat = liftIO do
+    Data.Acquire.with (acquireData dat) \ptr -> do
         sz <- getSize dat
         BS.packCStringLen (castPtr ptr, fromIntegral sz)

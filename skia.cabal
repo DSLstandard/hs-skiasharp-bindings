@@ -88,17 +88,17 @@ library
       Skia.SKPicture
       Skia.SKPictureRecorder
       Skia.SKPixmap
+      Skia.SKRefCnt
       Skia.SKRegion
       Skia.SKRegionCliperator
       Skia.SKRegionIterator
       Skia.SKRegionSpanerator
       Skia.SKResources
-      Skia.SKRoundRect
+      Skia.SKRRect
       Skia.SKRuntimeEffect
       Skia.SKSGInvalidationController
       Skia.SKShader
       Skia.SKStream
-      Skia.SKStreamAsset
       Skia.SKString
       Skia.SKSurface
       Skia.SKSvg
@@ -115,8 +115,10 @@ library
       Skia.Types.Enums
       Skia.Types.Errors
       Skia.Types.Extra
+      Skia.Types.Internal.Utils.Color
       Skia.Types.Internal.Utils.Core
       Skia.Types.Internal.Utils.Extra
+      Skia.Types.Internal.Utils.Rect
       Skia.Types.Internal.Utils.TH
       Skia.Types.Linear
       Skia.Types.Objects
@@ -174,7 +176,7 @@ library
       TypeOperators
       UndecidableInstances
       ViewPatterns
-  ghc-options: -Wall -Wno-name-shadowing -Wno-orphans
+  ghc-options: -Wall -Wno-name-shadowing -Wno-orphans -fplugin=Imp -fplugin-opt=Imp:--alias=_:ThisModule
   include-dirs:
       cbits/
   cxx-sources:
@@ -191,10 +193,12 @@ library
     , bytestring
     , haskell-src-exts
     , haskell-src-meta
+    , imp >=1.0.0.0 && <1.1
     , inline-c
     , linear
     , mtl
     , neat-interpolation
+    , resourcet
     , storable-offset
     , template-haskell
     , text
@@ -208,70 +212,6 @@ library
     cpp-options: -DHS_SKIA_CHECK_NULLPTR_ENABLED
   if flag(enable-debug-trace-finalizers)
     cpp-options: -DHS_SKIA_DEBUG_TRACE_FINALIZERS_ENABLED
-
-executable demo-draw-text
-  main-is: DemoDrawText.hs
-  other-modules:
-      SharedUtils.MakeDemoApp
-  hs-source-dirs:
-      demos/
-  default-extensions:
-      AllowAmbiguousTypes
-      Arrows
-      BinaryLiterals
-      BlockArguments
-      ConstraintKinds
-      DataKinds
-      DefaultSignatures
-      DeriveAnyClass
-      DeriveFoldable
-      DeriveFunctor
-      DeriveGeneric
-      DeriveTraversable
-      DerivingStrategies
-      DerivingVia
-      DuplicateRecordFields
-      EmptyCase
-      ExplicitForAll
-      FlexibleContexts
-      FlexibleInstances
-      FunctionalDependencies
-      GADTs
-      GeneralizedNewtypeDeriving
-      ImportQualifiedPost
-      LambdaCase
-      LiberalTypeSynonyms
-      MultiParamTypeClasses
-      MultiWayIf
-      NamedFieldPuns
-      OverloadedLabels
-      OverloadedRecordDot
-      OverloadedStrings
-      PartialTypeSignatures
-      PatternSynonyms
-      QuasiQuotes
-      RankNTypes
-      RecordWildCards
-      RecursiveDo
-      ScopedTypeVariables
-      StandaloneDeriving
-      TemplateHaskell
-      TupleSections
-      TypeApplications
-      TypeFamilies
-      TypeOperators
-      UndecidableInstances
-      ViewPatterns
-  ghc-options: -Wall -Wno-name-shadowing -Wno-orphans
-  build-depends:
-      GLFW-b
-    , OpenGLRaw
-    , base
-    , linear
-    , skia
-    , text
-    , time
-  default-language: Haskell2010
 
 executable demo-glfw-opengl
   main-is: DemoGLFWOpenGL.hs
@@ -329,7 +269,10 @@ executable demo-glfw-opengl
       GLFW-b
     , OpenGLRaw
     , base
+    , linear
+    , resourcet
     , skia
+    , text
   default-language: Haskell2010
 
 executable demo-raster-example-with-bindings
@@ -387,6 +330,68 @@ executable demo-raster-example-with-bindings
   build-depends:
       base
     , skia
+  default-language: Haskell2010
+
+executable demo-sdl2-opengl
+  main-is: DemoSDL2OpenGL.hs
+  hs-source-dirs:
+      demos/
+  default-extensions:
+      AllowAmbiguousTypes
+      Arrows
+      BinaryLiterals
+      BlockArguments
+      ConstraintKinds
+      DataKinds
+      DefaultSignatures
+      DeriveAnyClass
+      DeriveFoldable
+      DeriveFunctor
+      DeriveGeneric
+      DeriveTraversable
+      DerivingStrategies
+      DerivingVia
+      DuplicateRecordFields
+      EmptyCase
+      ExplicitForAll
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      GeneralizedNewtypeDeriving
+      ImportQualifiedPost
+      LambdaCase
+      LiberalTypeSynonyms
+      MultiParamTypeClasses
+      MultiWayIf
+      NamedFieldPuns
+      OverloadedLabels
+      OverloadedRecordDot
+      OverloadedStrings
+      PartialTypeSignatures
+      PatternSynonyms
+      QuasiQuotes
+      RankNTypes
+      RecordWildCards
+      RecursiveDo
+      ScopedTypeVariables
+      StandaloneDeriving
+      TemplateHaskell
+      TupleSections
+      TypeApplications
+      TypeFamilies
+      TypeOperators
+      UndecidableInstances
+      ViewPatterns
+  ghc-options: -Wall -Wno-name-shadowing -Wno-orphans
+  build-depends:
+      OpenGLRaw
+    , base
+    , linear
+    , resourcet
+    , sdl2
+    , skia
+    , text
   default-language: Haskell2010
 
 executable demo-skottie-animation-viewer
@@ -449,6 +454,7 @@ executable demo-skottie-animation-viewer
     , base
     , linear
     , optparse-applicative
+    , resourcet
     , skia
     , text
     , time

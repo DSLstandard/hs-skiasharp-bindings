@@ -1,8 +1,8 @@
 module Skia.SKManagedWStream where
 
+import Data.ByteString qualified as BS
 import Skia.Internal.Prelude
 import System.IO
-import Data.ByteString qualified as BS
 
 data StreamParams = StreamParams
     { write :: Ptr Word8 -> Int -> IO Bool

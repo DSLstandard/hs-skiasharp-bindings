@@ -47,6 +47,9 @@
           xorg.libXxf86vm
           xorg.libXcursor
           xorg.libXinerama
+
+          # For programs under demos/ using SDL2.
+          SDL2
         ];
 
         pyDeps = [

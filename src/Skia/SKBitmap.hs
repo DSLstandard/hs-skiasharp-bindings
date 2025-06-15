@@ -1,34 +1,23 @@
 module Skia.SKBitmap where
 
+import Data.Acquire
 import Data.Kind
 import Data.Maybe
 import Linear
 import Skia.Internal.Prelude
-import Skia.Types.Rect qualified as Rect
 
 {- | Creates an empty 'SKBitmap' without pixels, with 'SKColorType'Unknown',
 'SKAlphaType'Unknown', and with a width and height of zero. 'SKPixelRef' origin
 is set to (0, 0).
 
-MEMORY MANAGEMENT: The returned 'SKBitmap' does not need manual memory
-management. When this 'SKBitmap' goes out of scope, the reference count of
-Skia's internal 'SKPixelRef' is decremented.
+When the 'SKBitmap' is released, the reference count of the underlying
+'SKPixelRef' of the 'SKBitmap' is decremented, if 'SKPixelRef' is not a nullptr.
 -}
-create :: (MonadIO m) => m SKBitmap
-create = evalContIO do
-    bitmap' <- liftIO sk_bitmap_new
-
-    -- sk_bitmap_destructor: Decrements SkPixelRef reference count, if
-    -- SkPixelRef is not nullptr.
-    toObjectFin sk_bitmap_destructor bitmap'
-
--- | Returns width, height, 'SKAlphaType', 'SKColorType', and 'SKColorSpace'.
-getInfo :: (MonadIO m) => SKBitmap -> m SKImageInfo
-getInfo bitmap = evalContIO do
-    bitmap' <- useObj bitmap
-    iminfo' <- useAlloca
-    liftIO $ sk_bitmap_get_info bitmap' iminfo'
-    unmarshalSKImageInfo =<< peekWith id iminfo'
+create :: Acquire SKBitmap
+create =
+    -- Google Skia's comment: "sk_bitmap_destructor: Decrements SkPixelRef
+    -- reference count, if SkPixelRef is not nullptr."
+    mkSKObjectAcquire sk_bitmap_new sk_bitmap_destructor
 
 {- | Exposes the WRITABLE base address corresponding to the pixel origin, and
 the number of bytes of pixel data.
@@ -44,22 +33,6 @@ withPixels bitmap f = evalContIO do
     baseAddr <- liftIO $ sk_bitmap_get_pixels bitmap' numBytes'
     numBytes <- peekWith id numBytes'
     liftIO $ f (castPtr baseAddr, fromIntegral numBytes)
-
-{- | Returns row bytes, the interval from one pixel row to the next. Row bytes
-is at least as large as: @width * getInfo.bytesPerPixel@.
-
-Returns zero if the bitmap's color type is 'SKColorType\'Unknown'.
--}
-getRowBytes :: (MonadIO m) => SKBitmap -> m Int
-getRowBytes bitmap = evalContIO do
-    bitmap' <- useObj bitmap
-    liftIO $ fmap fromIntegral $ sk_bitmap_get_row_bytes bitmap'
-
--- | Returns minimum memory required for pixel storage.
-getByteCount :: (MonadIO m) => SKBitmap -> m Int
-getByteCount bitmap = evalContIO do
-    bitmap' <- useObj bitmap
-    liftIO $ fmap fromIntegral $ sk_bitmap_get_byte_count bitmap'
 
 {- | Resets to its initial state; all fields are set to zero, as if 'SKBitmap'
 had been initialized by 'create'.
@@ -130,7 +103,7 @@ eraseRect ::
     m ()
 eraseRect bitmap color rect = evalContIO do
     bitmap' <- useObj bitmap
-    rect' <- useStorable $ Rect.toSKIRect rect
+    rect' <- useStorable $ toSKIRect rect
     liftIO $ sk_bitmap_erase_rect bitmap' (coerce color) rect'
 
 -- | Used by 'getAddr'. See comment on 'getAddr'.
@@ -480,3 +453,28 @@ extractAlpha bitmap dst paint offset = evalContIO do
     paint' <- useNullIfNothing useObj paint
     offset' <- useNullIfNothing useStorable $ fmap toSKIPoint $ offset
     liftIO $ fmap toBool $ sk_bitmap_extract_alpha bitmap' dst' paint' offset'
+
+-- | Returns width, height, 'SKAlphaType', 'SKColorType', and 'SKColorSpace'.
+getInfo :: (MonadIO m) => SKBitmap -> m SKImageInfo
+getInfo bitmap = evalContIO do
+    bitmap' <- useObj bitmap
+    iminfo' <- useAlloca
+    liftIO $ sk_bitmap_get_info bitmap' iminfo'
+    unmarshalSKImageInfo =<< peekWith id iminfo'
+
+{- | Returns row bytes, the interval from one pixel row to the next. Row bytes
+is at least as large as: @width * getInfo.bytesPerPixel@.
+
+Returns zero if the bitmap's color type is 'SKColorType\'Unknown'.
+-}
+getRowBytes :: (MonadIO m) => SKBitmap -> m Int
+getRowBytes bitmap = evalContIO do
+    bitmap' <- useObj bitmap
+    liftIO $ fmap fromIntegral $ sk_bitmap_get_row_bytes bitmap'
+
+-- | Returns minimum memory required for pixel storage.
+getByteCount :: (MonadIO m) => SKBitmap -> m Int
+getByteCount bitmap = evalContIO do
+    bitmap' <- useObj bitmap
+    liftIO $ fmap fromIntegral $ sk_bitmap_get_byte_count bitmap'
+

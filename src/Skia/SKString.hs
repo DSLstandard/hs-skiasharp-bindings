@@ -6,54 +6,54 @@ encoding.
 -}
 module Skia.SKString where
 
+import Data.Acquire qualified as Acquire
+import Data.ByteString qualified as BS
+import Data.ByteString.Unsafe qualified as BS
 import Data.Text qualified as T
+import Data.Text.Encoding qualified as T
 import Data.Text.Foreign qualified as T
 import Foreign.C.String qualified
 import Skia.Internal.Prelude
 
 {- | Creates an empty SKString
 
-The 'SKString' will be destroyed automatically upon being finalized by Haskell,
-but you may use 'disposeObject' to free up the resources used by 'SKString'
-immediately.
+When 'Acquire' releases, the returned 'SKString' is destroyed.
 -}
-createEmpty :: (MonadIO m) => m SKString
-createEmpty = liftIO do
-    str <- sk_string_new_empty
-    toObjectFin sk_string_destructor str
+createEmpty :: Acquire SKString
+createEmpty =
+    mkSKObjectAcquire
+        sk_string_new_empty
+        sk_string_destructor
 
-{- | Creates an SKString by copying from a 'CStringLen'. Assumes UTF-8 encoding.
+{- | O(n). Creates an SKString by copying from a 'BS.ByteString'. Assumes UTF-8
+encoding.
 
-The 'SKString' will be destroyed automatically upon being finalized by Haskell,
-but you may use 'disposeObject' to free up the resources used by 'SKString'
-immediately.
+When 'Acquire' releases, the returned 'SKString' is destroyed.
 -}
-createFromCStringLen :: (MonadIO m) => CStringLen -> m SKString
-createFromCStringLen (ptr, len) = liftIO do
-    str <- sk_string_new_with_copy ptr (fromIntegral len)
-    toObjectFin sk_string_destructor str
+createFromByteString :: BS.ByteString -> Acquire SKString
+createFromByteString bs =
+    mkSKObjectAcquire
+        ( evalContIO do
+            (ptr, len) <- ContT $ BS.unsafeUseAsCStringLen bs
+            liftIO $ sk_string_new_with_copy ptr (fromIntegral len)
+        )
+        sk_string_destructor
 
-{- | Creates an SKString by copying from a 'T.Text'.
+{- | O(n). Creates an SKString by copying from a 'T.Text'.
 
-The 'SKString' will be destroyed automatically upon being finalized by Haskell,
-but you may use 'disposeObject' to free up the resources used by 'SKString'
-immediately.
+When 'Acquire' releases, the returned 'SKString' is destroyed.
 -}
-createFromText :: (MonadIO m) => T.Text -> m SKString
-createFromText txt = liftIO do
-    -- TODO: Make it more efficient if possible. T.withCString seems to take
-    -- O(n) time to marshal.
-    T.withCStringLen txt createFromCStringLen
+createFromText :: T.Text -> Acquire SKString
+createFromText txt =
+    -- TODO: Make it more efficient if possible. T.encodeUtf8 is awful.
+    createFromByteString (T.encodeUtf8 txt)
 
-{- | Creates an SKString by copying from a 'String'.
+{- | O(n). Creates an SKString by copying from a 'String'.
 
-The 'SKString' will be destroyed automatically upon being finalized by Haskell,
-but you may use 'disposeObject' to free up the resources used by 'SKString'
-immediately.
+When 'Acquire' releases, the returned 'SKString' is destroyed.
 -}
-createFromString :: (MonadIO m) => String -> m SKString
-createFromString string = liftIO do
-    Foreign.C.String.withCStringLen string createFromCStringLen
+createFromString :: String -> Acquire SKString
+createFromString string = createFromText (T.pack string)
 
 -- | Returns the number of bytes of the SKString.
 getSize :: (MonadIO m) => SKString -> m Int
@@ -61,21 +61,23 @@ getSize str = evalContIO do
     str' <- useObj str
     liftIO $ fromIntegral <$> sk_string_get_size str'
 
--- | Uses the data pointer of the SKString. The encoding is UTF-8.
-withData :: (MonadIO m) => SKString -> (Ptr CChar -> IO r) -> m r
-withData str f = evalContIO do
-    str' <- useObj str
-    cstr <- liftIO $ sk_string_get_c_str str'
-    liftIO $ f cstr
+{- | Exposes the **read-only** data pointer of the SKString. The encoding is
+UTF-8.
 
+NOTE: When the 'SKString' if destructed, the returned @Ptr CChar@ is literally
+dead.
+-}
+acquireData :: MonadIO m => SKString -> m (Ptr CChar)
+acquireData str = liftIO do
+    sk_string_get_c_str (ptr str)
+
+-- | O(n). Builds a 'T.Text' by copying from the input 'SKString'.
 getAsText :: (MonadIO m) => SKString -> m T.Text
-getAsText str =
-    withData str \ptr -> do
+getAsText str = liftIO do
+    Acquire.with (acquireData str) \ptr -> do
         len <- getSize str
-        liftIO $ T.peekCStringLen (ptr, len)
+        T.peekCStringLen (ptr, len)
 
+-- | Like 'getAsText' but returns 'String'.
 getAsString :: (MonadIO m) => SKString -> m String
-getAsString str =
-    withData str \ptr -> do
-        len <- getSize str
-        liftIO $ Foreign.C.String.peekCStringLen (ptr, len)
+getAsString str = T.unpack <$> getAsText str

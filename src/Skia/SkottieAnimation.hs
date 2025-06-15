@@ -7,6 +7,7 @@ animations:
 -}
 module Skia.SkottieAnimation where
 
+import Data.Acquire qualified as Acquire
 import Data.ByteString qualified as BS
 import Data.ByteString.Unsafe qualified as BS
 import Data.Text qualified as T
@@ -49,17 +50,9 @@ getOutPoint anim = evalContIO do
 
 getVersion :: (MonadIO m) => SkottieAnimation -> m T.Text
 getVersion anim = evalContIO do
-    anim' <- useObj anim
-
-    version <- SKString.createEmpty
-    version' <- useObj version
-
-    liftIO $ skottie_animation_get_version anim' version'
-
-    versionTxt <- SKString.getAsText version
-    disposeObject version
-
-    pure versionTxt
+    version <- useAcquire SKString.createEmpty
+    liftIO $ skottie_animation_get_version (ptr anim) (ptr version)
+    SKString.getAsText version
 
 data RenderFlags = RenderFlags
     { skipTopLevelIsolation :: Bool

@@ -90,17 +90,6 @@ $( qGenerateSKObject
  )
 
 $( qGenerateSKObject
-    "SKCanvasSaveLayerRec"
-    ''Sk_canvas_savelayerrec
-    [] -- struct SaveLayerRec {
-    [trimming|
-        This is an internal class of 'SKCanvas'.
-        
-        'SKCanvasSaveLayerRec' contains the state used to create a layer in 'SKCanvas'.
-    |]
- )
-
-$( qGenerateSKObject
     "SKNoDrawCanvas"
     ''Sk_nodraw_canvas
     [''SKCanvas] -- class SK_API SkNoDrawCanvas : public SkCanvasVirtualEnforcer<SkCanvas> {
@@ -305,7 +294,7 @@ $( qGenerateSKObject
 $( qGenerateSKObject
     "SKSurface"
     ''Sk_surface
-    []
+    [''SKRefCnt] -- class SK_API SkSurface : public SkRefCnt {
     [trimming|
         SkSurface is responsible for managing the pixels that a canvas draws into. The pixels can be
         allocated either in CPU memory (a raster surface) or on the GPU (a GrRenderTarget surface).
@@ -778,7 +767,7 @@ $( qGenerateSKObject
  )
 
 $( qGenerateSKObject
-    "SKRoundRect"
+    "SKRRect"
     ''Sk_rrect
     [] -- class SK_API SkRRect {
     [trimming|

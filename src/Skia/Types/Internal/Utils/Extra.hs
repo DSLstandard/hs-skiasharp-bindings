@@ -15,6 +15,7 @@ import Skia.Types.Core
 import Skia.Types.Enums
 import Skia.Types.Extra
 import Skia.Types.Internal.Utils.Core
+import Skia.Types.Internal.Utils.Rect qualified as Rect
 import Skia.Types.Rect qualified as Rect
 
 {- | Skottie_resource_provider and Skresources_resource_provider are actually

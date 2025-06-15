@@ -4,6 +4,7 @@ import Control.Exception qualified
 import Data.Vector.Storable qualified as VS
 import Linear
 import Skia.Internal.Prelude
+import Control.Monad.Trans.Resource
 
 {- | Create a filter that implements a custom blend mode. Each output pixel is the result of
 combining the corresponding background and foreground pixels using the 4 coefficients:
@@ -13,7 +14,7 @@ combining the corresponding background and foreground pixels using the 4 coeffic
 @
 -}
 createArithmetic ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     -- | (k1, k2, k3, k4). The four coefficients used to combine the foreground
     -- and background.
     (Float, Float, Float, Float) ->
@@ -26,24 +27,23 @@ createArithmetic ::
     Maybe SKImageFilter ->
     -- | Optional rectangle that crops the inputs and output.
     Maybe (Rect Float) ->
-    m SKImageFilter
-createArithmetic (k1, k2, k3, k4) enforcePMColor background foreground cropRect = evalContIO do
-    background' <- useNullIfNothing useObj background
-    foreground' <- useNullIfNothing useObj foreground
-    cropRect' <- useNullIfNothing useStorable $ fmap toSKRect $ cropRect
-
-    result' <-
-        liftIO $
-            sk_imagefilter_new_arithmetic
-                (coerce k1)
-                (coerce k2)
-                (coerce k3)
-                (coerce k4)
-                (fromBool enforcePMColor)
-                background'
-                foreground'
-                cropRect'
-    toObjectFin sk_imagefilter_unref result'
+    m (ReleaseKey, SKImageFilter)
+createArithmetic (k1, k2, k3, k4) enforcePMColor background foreground cropRect =
+    allocateSKObject
+        ( evalContIO do
+            cropRect' <- useNullIfNothing useStorable $ fmap toSKRect $ cropRect
+            liftIO $
+                sk_imagefilter_new_arithmetic
+                    (coerce k1)
+                    (coerce k2)
+                    (coerce k3)
+                    (coerce k4)
+                    (fromBool enforcePMColor)
+                    (ptrOrNull background)
+                    (ptrOrNull foreground)
+                    cropRect'
+        )
+        sk_imagefilter_unref
 
 {- | This filter takes an 'SKBlendMode' and uses it to composite the two filters
 together.

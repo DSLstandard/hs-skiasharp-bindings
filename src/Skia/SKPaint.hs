@@ -1,24 +1,17 @@
 module Skia.SKPaint where
 
+import Control.Monad.Trans.Resource
 import Linear
 import Skia.Internal.Prelude
-import Skia.SKPath qualified as SKPath
 
-destroy :: (MonadIO m) => SKPaint -> m ()
-destroy paint = evalContIO do
-    paint' <- useObj paint
-    liftIO $ sk_paint_delete paint'
+create :: Acquire SKPaint
+create = mkSKObjectAcquire sk_paint_new sk_paint_delete
 
-create :: (MonadIO m) => m (Owned SKPaint)
-create = evalContIO do
-    paint' <- liftIO $ sk_paint_new
-    toObject paint'
-
-clone :: (MonadIO m) => SKPaint -> m (Owned SKPaint)
-clone paint = evalContIO do
-    paint' <- useObj paint
-    newPaint' <- liftIO $ sk_paint_clone paint'
-    toObject newPaint'
+clone :: SKPaint -> Acquire SKPaint
+clone paint =
+    mkSKObjectAcquire
+        (sk_paint_clone (ptr paint))
+        sk_paint_delete
 
 reset :: (MonadIO m) => SKPaint -> m ()
 reset paint = evalContIO do
@@ -59,28 +52,28 @@ setStyle paint style = evalContIO do
     liftIO $ sk_paint_set_style paint' (marshalSKEnum style)
 
 getColor :: (MonadIO m) => SKPaint -> m SKColor
-getColor paint = evalContIO do
-    paint' <- useObj paint
-    liftIO $ fmap coerce $ sk_paint_get_color paint'
+getColor paint = liftIO do
+    fmap coerce $ sk_paint_get_color (ptr paint)
 
 setColor :: (MonadIO m) => SKPaint -> SKColor -> m ()
-setColor paint color = evalContIO do
-    paint' <- useObj paint
-    liftIO $ sk_paint_set_color paint' (coerce color)
+setColor paint color = liftIO do
+    sk_paint_set_color (ptr paint) (coerce color)
 
 getColorRGBA :: (MonadIO m) => SKPaint -> m (RGBA Float)
 getColorRGBA paint = evalContIO do
-    paint' <- useObj paint
     color' <- useAlloca
-    liftIO $ sk_paint_get_color4f paint' color'
+    liftIO $ sk_paint_get_color4f (ptr paint) color'
     liftIO $ fromSKColor4f <$> peek color'
 
-setColorRGBA :: (MonadIO m) => SKPaint -> RGBA Float -> Maybe SKColorSpace -> m ()
+setColorRGBA ::
+    (MonadIO m) =>
+    SKPaint ->
+    RGBA Float ->
+    Maybe SKColorSpace ->
+    m ()
 setColorRGBA paint rgba colorspace = evalContIO do
-    paint' <- useObj paint
-    color' <- useStorable (toSKColor4f rgba)
-    cs' <- useNullIfNothing useObj colorspace
-    liftIO $ sk_paint_set_color4f paint' color' cs'
+    rgba' <- useStorable (toSKColor4f rgba)
+    liftIO $ sk_paint_set_color4f (ptr paint) rgba' (ptrOrNull colorspace)
 
 getStrokeWidth :: (MonadIO m) => SKPaint -> m Float
 getStrokeWidth paint = evalContIO do
@@ -126,48 +119,38 @@ setStrokeJoin paint join = evalContIO do
     paint' <- useObj paint
     liftIO $ sk_paint_set_stroke_join paint' (marshalSKEnum join)
 
-{- | NOTE: This function returns a 'SKShader' that increments the reference
-counter of the underlying object by 1. The reference counter will be
-decremented when the returned 'SKShader' is finalized in Haskell.
--}
 getShader ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKPaint ->
     -- | returns SkShader if previously set, 'Nothing' otherwise
-    m (Maybe SKShader)
-getShader paint = evalContIO do
-    paint' <- useObj paint
+    m (Maybe (ReleaseKey, SKShader))
+getShader paint = do
+    -- NOTE: sk_paint_get_shader does ref()
+    allocateSKObjectUnlessNull
+        (sk_paint_get_shader (ptr paint))
+        sk_shader_unref
 
-    -- NOTE: sk_paint_get_shader itself already +1 to refcnt
-    shader' <- liftIO $ sk_paint_get_shader paint'
+setShader :: (MonadIO m) => SKPaint -> Maybe SKShader -> m ()
+setShader paint shader = liftIO do
+    sk_paint_set_shader (ptr paint) (ptrOrNull shader)
 
-    if shader' == nullPtr
-        then pure Nothing
-        else Just <$> toObjectFin sk_shader_unref shader'
-
-setShader :: (MonadIO m) => SKPaint -> SKShader -> m ()
-setShader paint shader = evalContIO do
-    paint' <- useObj paint
-    shader' <- useObj shader
-    liftIO $ sk_paint_set_shader paint' shader'
-
-getMaskFilter :: (MonadIO m) => SKPaint -> m (Maybe SKMaskFilter)
-getMaskFilter paint = evalContIO do
-    paint' <- useObj paint
-    maskFilter' <- liftIO $ sk_paint_get_maskfilter paint'
-    toObjectMaybe maskFilter'
+getMaskFilter :: (MonadResource m) => SKPaint -> m (Maybe (ReleaseKey, SKMaskFilter))
+getMaskFilter paint =
+    -- NOTE: sk_paint_get_maskfilter does ref()
+    allocateSKObjectUnlessNull
+        (sk_paint_get_maskfilter (ptr paint))
+        sk_maskfilter_unref
 
 setMaskFilter :: (MonadIO m) => SKPaint -> Maybe SKMaskFilter -> m ()
-setMaskFilter paint maskFilter = evalContIO do
-    paint' <- useObj paint
-    maskFilter' <- useNullIfNothing useObj maskFilter
-    liftIO $ sk_paint_set_maskfilter paint' maskFilter'
+setMaskFilter paint maskFilter = liftIO do
+    sk_paint_set_maskfilter (ptr paint) (ptrOrNull maskFilter)
 
-getColorFilter :: (MonadIO m) => SKPaint -> m (Maybe SKColorFilter)
-getColorFilter paint = evalContIO do
-    paint' <- useObj paint
-    colorFilter' <- liftIO $ sk_paint_get_colorfilter paint'
-    toObjectMaybe colorFilter'
+getColorFilter :: (MonadResource m) => SKPaint -> m (Maybe (ReleaseKey, SKColorFilter))
+getColorFilter paint =
+    -- NOTE: sk_paint_get_colorfilter does ref()
+    allocateSKObjectUnlessNull
+        (sk_paint_get_colorfilter (ptr paint))
+        sk_colorfilter_unref
 
 setColorFilter :: (MonadIO m) => SKPaint -> Maybe SKColorFilter -> m ()
 setColorFilter paint colorFilter = evalContIO do
@@ -175,52 +158,47 @@ setColorFilter paint colorFilter = evalContIO do
     colorFilter' <- useNullIfNothing useObj colorFilter
     liftIO $ sk_paint_set_colorfilter paint' colorFilter'
 
-getImageFilter :: (MonadIO m) => SKPaint -> m (Maybe SKImageFilter)
-getImageFilter paint = evalContIO do
-    paint' <- useObj paint
-    imageFilter' <- liftIO $ sk_paint_get_imagefilter paint'
-    toObjectMaybe imageFilter'
+getImageFilter :: (MonadResource m) => SKPaint -> m (Maybe (ReleaseKey, SKImageFilter))
+getImageFilter paint =
+    -- NOTE: sk_paint_get_colorfilter does ref()
+    allocateSKObjectUnlessNull
+        (sk_paint_get_imagefilter (ptr paint))
+        sk_imagefilter_unref
 
 setImageFilter :: (MonadIO m) => SKPaint -> Maybe SKImageFilter -> m ()
-setImageFilter paint imageFilter = evalContIO do
-    paint' <- useObj paint
-    imageFilter' <- useNullIfNothing useObj imageFilter
-    liftIO $ sk_paint_set_imagefilter paint' imageFilter'
+setImageFilter paint imageFilter = liftIO do
+    liftIO $ sk_paint_set_imagefilter (ptr paint) (ptrOrNull imageFilter)
 
 getBlendMode :: (MonadIO m) => SKPaint -> m SKBlendMode
-getBlendMode paint = evalContIO do
-    paint' <- useObj paint
-    r <- liftIO $ sk_paint_get_blendmode paint'
+getBlendMode paint = liftIO do
+    r <- sk_paint_get_blendmode (ptr paint)
     unmarshalSKEnumOrDie r
 
 setBlendMode :: (MonadIO m) => SKPaint -> SKBlendMode -> m ()
-setBlendMode paint blendMode = evalContIO do
-    paint' <- useObj paint
-    liftIO $ sk_paint_set_blendmode paint' (marshalSKEnum blendMode)
+setBlendMode paint blendMode = liftIO do
+    liftIO $ sk_paint_set_blendmode (ptr paint) (marshalSKEnum blendMode)
 
-getBlender :: (MonadIO m) => SKPaint -> m (Maybe SKBlender)
-getBlender paint = evalContIO do
-    paint' <- useObj paint
-    blender' <- liftIO $ sk_paint_get_blender paint'
-    toObjectMaybe blender'
+getBlender :: (MonadResource m) => SKPaint -> m (Maybe (ReleaseKey, SKBlender))
+getBlender paint =
+    -- sk_paint_get_blender uses refBlender(), which +1 to refcnt
+    allocateSKObjectUnlessNull
+        (sk_paint_get_blender (ptr paint))
+        sk_blender_unref
 
 setBlender :: (MonadIO m) => SKPaint -> Maybe SKBlender -> m ()
-setBlender paint blender = evalContIO do
-    paint' <- useObj paint
-    blender' <- useNullIfNothing useObj blender
-    liftIO $ sk_paint_set_blender paint' blender'
+setBlender paint blender = liftIO do
+    sk_paint_set_blender (ptr paint) (ptrOrNull blender)
 
-getPathEffect :: (MonadIO m) => SKPaint -> m (Maybe SKPathEffect)
-getPathEffect paint = evalContIO do
-    paint' <- useObj paint
-    pathEffect' <- liftIO $ sk_paint_get_path_effect paint'
-    toObjectMaybe pathEffect'
+getPathEffect :: (MonadResource m) => SKPaint -> m (Maybe (ReleaseKey, SKPathEffect))
+getPathEffect paint =
+    -- sk_paint_get_path_effect uses refPathEffect(), which +1 to refcnt
+    allocateSKObjectUnlessNull
+        (sk_paint_get_path_effect (ptr paint))
+        sk_path_effect_unref
 
 setPathEffect :: (MonadIO m) => SKPaint -> Maybe SKPathEffect -> m ()
-setPathEffect paint pathEffect = evalContIO do
-    paint' <- useObj paint
-    pathEffect' <- useNullIfNothing useObj pathEffect
-    liftIO $ sk_paint_set_path_effect paint' pathEffect'
+setPathEffect paint pathEffect = liftIO do
+    sk_paint_set_path_effect (ptr paint) (ptrOrNull pathEffect)
 
 {- | Applies any and all effects to a source path, returning the result in the
 destination.
@@ -228,7 +206,7 @@ destination.
 Returns true if the path should be filled, or false if it should be drawn with a
 hairline.
 -}
-getFillPathToDest ::
+getFillPath ::
     (MonadIO m) =>
     SKPaint ->
     -- | Source path
@@ -240,42 +218,8 @@ getFillPathToDest ::
     -- | Transformation matrix
     M33 Float ->
     m Bool
-getFillPathToDest paint src dst cullRect transform = evalContIO do
-    paint' <- useObj paint
-    src' <- useObj src
-    dst' <- useObj dst
+getFillPath paint src dst cullRect transform = evalContIO do
     cullRect' <- useNullIfNothing useStorable $ toSKRect <$> cullRect
     transform' <- useStorable $ toSKMatrix transform
-
-    r <- liftIO $ sk_paint_get_fill_path paint' src' dst' cullRect' transform'
-
+    r <- liftIO $ sk_paint_get_fill_path (ptr paint) (ptr src) (ptr dst) cullRect' transform'
     pure $ toBool r
-
-{- | Creates a new path from the result of applying any and all effects to a
-source path.
-
-Returns the resulting fill path, or 'Nothing' if the source path should be
-drawn with a hairline.
-
-Also see 'getFillPathToDest'.
--}
-getFillPath ::
-    (MonadIO m) =>
-    SKPaint ->
-    -- | Source path
-    SKPath ->
-    -- | The destination path may be culled to this rectangle.
-    Maybe (Rect Float) ->
-    -- | Transformation matrix
-    M33 Float ->
-    m (Maybe SKPath)
-getFillPath paint src cullRect transform = do
-    dst <- SKPath.create
-    shouldFill <- getFillPathToDest paint src dst cullRect transform
-    if shouldFill
-        then do
-            pure (Just dst)
-        else do
-            -- Should be drawn with a hairline... return Nothing
-            disposeObject dst
-            pure Nothing

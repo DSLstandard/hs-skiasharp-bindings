@@ -21,10 +21,9 @@ createFileResourceProvider ::
     Bool ->
     m (Ref ResourceProvider)
 createFileResourceProvider baseDir predecode = evalContIO do
-    baseDir <- SKString.createFromString baseDir
-    baseDir' <- useObj baseDir
+    baseDirStr <- useAcquire $ SKString.createFromString baseDir
 
-    rp' <- liftIO $ skresources_file_resource_provider_make baseDir' (fromBool predecode)
+    rp' <- liftIO $ skresources_file_resource_provider_make (ptr baseDirStr) (fromBool predecode)
     toObjectFin skresources_resource_provider_unref rp'
 
 createCachingResourceProviderProxy ::

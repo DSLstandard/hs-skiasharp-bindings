@@ -2,6 +2,11 @@ module Skia.SKGraphics where
 
 import Skia.Internal.Prelude
 
+{- | Call this at process initialization time if your environment does not
+permit static global initializers that execute code.
+
+'initialize' is thread-safe and idempotent.
+-}
 initialize :: (MonadIO m) => m ()
 initialize = liftIO do
     sk_graphics_init

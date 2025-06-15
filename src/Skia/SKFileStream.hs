@@ -1,19 +1,24 @@
 module Skia.SKFileStream where
 
+import Control.Exception
 import Foreign
 import Skia.Internal.Prelude
 
-destroy :: (MonadIO m) => SKFileStream -> m ()
-destroy stream = evalContIO do
-    stream' <- useObj stream
-    liftIO $ sk_filestream_destroy stream'
+{- | Creates a new 'SKFileStream' that wraps the file with the specified path.
 
-create :: (MonadIO m) => FilePath -> m (Maybe SKFileStream)
-create path = liftIO do
-    withCString path \path' -> do
-        stream' <- sk_filestream_new path'
-        toObjectMaybe stream'
+You need to use 'isValid' to check validity of the returned 'SKFileStream'.
+-}
+createFromFile :: FilePath -> Acquire SKFileStream
+createFromFile path =
+    mkSKObjectAcquire
+        ( do
+            stream' <- withCString path \path' -> do
+                sk_filestream_new path'
+            pure stream'
+        )
+        sk_filestream_destroy
 
+-- | Returns true if the current path could be opened.
 isValid :: (MonadIO m) => SKFileStream -> m Bool
 isValid stream = evalContIO do
     stream' <- useObj stream

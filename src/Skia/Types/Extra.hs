@@ -430,6 +430,13 @@ to worry about the need to manually decrement the SKNVRefCnt/SKRefCnt reference
 counter of the object once you are done using it. This Haskell library automates
 the process - the decrementation is performed automatically by the Haskell
 runtime when the object goes out-of-scope and is finalized.
+
+If you want to immediately unreference the object (say, you want to quickly free
+up memory), You may use 'Skia.Types.Core.disposeObject'. Future usages on the
+object after 'Skia.Types.Core.disposeObject' are considered use-after-free and
+*might* cause crashes, it is \"might cause crashes\" because other objects could
+be keeping the reference counter above 0, and thus keeping the object alive and
+valid.
 -}
 type Ref a = a
 
@@ -449,5 +456,15 @@ user of this library, **ARE** responsible for destroying the object once you are
 done using it using functions typically named @destroy@.
 
 If the object goes out-of-scope and it is not destroyed, it is a memory leak.
+
+About 'Skia.Types.Core.disposeObject' on created objects annotated with 'Owned',
+in contrast to objects marked with 'Ref', performing
+'Skia.Types.Core.disposeObject' on 'Owned' objects do nothing at all -- it would
+not call the appropriate @destroy@ function automatically. This Haskell library
+deliberately forces library users to explicitly destroy objects.
+
+Consider using 'Control.Exception.bracket' + 'Control.Monad.Cont.ContT', or
+@ResourceT@ from <https://hackage.haskell.org/package/resourcet>, or @Managed a@
+from <https://hackage.haskell.org/package/managed>.
 -}
 type Owned a = a

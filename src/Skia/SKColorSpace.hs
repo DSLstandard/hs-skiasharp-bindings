@@ -4,6 +4,7 @@
 module Skia.SKColorSpace where
 
 import Control.Monad.IO.Class
+import Control.Monad.Trans.Resource
 import Data.ByteString qualified as BS
 import Data.ByteString.Unsafe qualified as BS
 import Linear
@@ -146,51 +147,53 @@ primariesToXYZD50 primaries = unsafeDupablePerformIO $ evalContIO do
             pure Nothing
 {-# NOINLINE primariesToXYZD50 #-}
 
-createSRGB :: (MonadIO m) => m (Ref SKColorSpace)
-createSRGB = liftIO do
-    space' <- sk_colorspace_new_srgb
-    toObjectFin sk_colorspace_unref space'
+createSRGB :: Acquire SKColorSpace
+createSRGB =
+    mkSKObjectAcquire
+        sk_colorspace_new_srgb
+        sk_colorspace_unref
 
-createSRGBLinear :: (MonadIO m) => m (Ref SKColorSpace)
-createSRGBLinear = liftIO do
-    space' <- sk_colorspace_new_srgb_linear
-    toObjectFin sk_colorspace_unref space'
+createSRGBLinear :: Acquire SKColorSpace
+createSRGBLinear =
+    mkSKObjectAcquire
+        sk_colorspace_new_srgb_linear
+        sk_colorspace_unref
 
 createRGB ::
-    (MonadIO m) =>
     TransferFn Float ->
     -- | Linear transform to XYZ D50.
     M33 Float ->
-    m (Ref SKColorSpace)
-createRGB transferFn toXYZD50 = evalContIO do
-    transferFn' <- useStorable $ marshalTransferFn transferFn
-    toXYZD50' <- useStorable $ toSKColorSpaceXYZ toXYZD50
-    colorspace' <- liftIO $ sk_colorspace_new_rgb transferFn' toXYZD50'
-    toObjectFin sk_colorspace_unref colorspace'
+    Acquire SKColorSpace
+createRGB transferFn toXYZD50 =
+    mkSKObjectAcquire
+        ( evalContIO do
+            transferFn' <- useStorable $ marshalTransferFn transferFn
+            toXYZD50' <- useStorable $ toSKColorSpaceXYZ toXYZD50
+            liftIO $ sk_colorspace_new_rgb transferFn' toXYZD50'
+        )
+        sk_colorspace_unref
 
--- | Create an SkColorSpace from a parsed ICC profile.
+-- | Creates an SkColorSpace from a parsed ICC profile.
 createFromICCProfile ::
     (MonadIO m) =>
     SKColorSpaceICCProfile ->
-    m (Ref SKColorSpace)
-createFromICCProfile iccprof = evalContIO do
-    iccprof' <- useObj iccprof
-    colorspace' <- liftIO $ sk_colorspace_new_icc iccprof'
-    toObjectFin sk_colorspace_unref colorspace'
+    Acquire SKColorSpace
+createFromICCProfile iccprof =
+    mkSKObjectAcquire
+        (sk_colorspace_new_icc (ptr iccprof))
+        sk_colorspace_unref
 
 {- | Returns true if the color space gamma is near enough to be approximated as
 sRGB.
 -}
 isGammaCloseToSRGB :: (MonadIO m) => SKColorSpace -> m Bool
-isGammaCloseToSRGB space = evalContIO do
-    space' <- useObj space
-    liftIO $ fmap toBool $ sk_colorspace_gamma_close_to_srgb space'
+isGammaCloseToSRGB space = liftIO do
+    fmap toBool $ sk_colorspace_gamma_close_to_srgb (ptr space)
 
 -- | Returns true if the color space gamma is linear.
 isGammaLinear :: (MonadIO m) => SKColorSpace -> m Bool
-isGammaLinear space = evalContIO do
-    space' <- useObj space
-    liftIO $ fmap toBool $ sk_colorspace_gamma_is_linear space'
+isGammaLinear space = liftIO do
+    fmap toBool $ sk_colorspace_gamma_is_linear (ptr space)
 
 {- | Returns true if the color space is sRGB. Returns false otherwise.
 
@@ -203,16 +206,13 @@ these functions are similar (and it is sometimes useful to consider them
 together), this function checks for logical equality.
 -}
 isSRGB :: (MonadIO m) => SKColorSpace -> m Bool
-isSRGB space = evalContIO do
-    space' <- useObj space
-    liftIO $ fmap toBool $ sk_colorspace_is_srgb space'
+isSRGB space = liftIO do
+    fmap toBool $ sk_colorspace_is_srgb (ptr space)
 
 -- | Returns true if two colorspaces are equivalent.
 checkAreEqual :: (MonadIO m) => SKColorSpace -> SKColorSpace -> m Bool
-checkAreEqual cs1 cs2 = evalContIO do
-    cs1' <- useObj cs1
-    cs2' <- useObj cs2
-    liftIO $ fmap toBool $ sk_colorspace_equals cs1' cs2'
+checkAreEqual cs1 cs2 = liftIO do
+    fmap toBool $ sk_colorspace_equals (ptr cs1) (ptr cs2)
 
 {- | Returns the 'TransferFn' of the 'SKColorSpace' if the transfer function can
 be represented as coefficients to the standard ICC 7-parameter equation. Returns
@@ -220,9 +220,8 @@ be represented as coefficients to the standard ICC 7-parameter equation. Returns
 -}
 asNumericalTransferFn :: (MonadIO m) => SKColorSpace -> m (Maybe (TransferFn Float))
 asNumericalTransferFn cs = evalContIO do
-    cs' <- useObj cs
     fn' <- useAlloca
-    ok <- liftIO $ fmap toBool $ sk_colorspace_is_numerical_transfer_fn cs' fn'
+    ok <- liftIO $ fmap toBool $ sk_colorspace_is_numerical_transfer_fn (ptr cs) fn'
     if ok
         then do
             Just <$> peekWith unmarshalTransferFn fn'
@@ -242,44 +241,29 @@ getToXYZD50 cs = evalContIO do
     peekWith fromSKColorSpaceXYZ xyz'
 
 -- | Converts this color space to an skcms ICC profile struct.
-getICCProfile :: (MonadIO m) => SKColorSpace -> m (Owned SKColorSpaceICCProfile)
-getICCProfile cs = evalContIO do
-    cs' <- useObj cs
-
-    profile <- createICCProfile
-    profile' <- useObj profile
-
-    liftIO $ sk_colorspace_to_profile cs' profile'
-
+getICCProfile :: SKColorSpace -> Acquire SKColorSpaceICCProfile
+getICCProfile cs = do
+    profile <- mkSKObjectAcquire sk_colorspace_icc_profile_new sk_colorspace_icc_profile_delete
+    liftIO $ sk_colorspace_to_profile (ptr cs) (ptr profile)
     pure profile
 
 {- | Returns a color space with the same gamut as this one, but with a linear
 gamma.
 -}
-createLinearGamma :: (MonadIO m) => SKColorSpace -> m (Ref SKColorSpace)
-createLinearGamma colorspace = evalContIO do
-    colorspace' <- useObj colorspace
-    new' <- liftIO $ sk_colorspace_make_linear_gamma colorspace'
-    toObjectFin sk_colorspace_unref new'
+createLinearGamma :: (MonadIO m) => SKColorSpace -> Acquire SKColorSpace
+createLinearGamma colorspace =
+    mkSKObjectAcquire
+        (sk_colorspace_make_linear_gamma (ptr colorspace))
+        sk_colorspace_unref
 
 {- | Returns a color space with the same gamut as this one, but with the sRGB
 transfer function.
 -}
-createSRGBGamma :: (MonadIO m) => SKColorSpace -> m (Ref SKColorSpace)
-createSRGBGamma colorspace = evalContIO do
-    colorspace' <- useObj colorspace
-    new' <- liftIO $ sk_colorspace_make_srgb_gamma colorspace'
-    toObjectFin sk_colorspace_unref new'
-
-destroyICCProfile :: (MonadIO m) => SKColorSpaceICCProfile -> m ()
-destroyICCProfile icc = evalContIO do
-    icc' <- useObj icc
-    liftIO $ sk_colorspace_icc_profile_delete icc'
-
-createICCProfile :: (MonadIO m) => m (Owned SKColorSpaceICCProfile)
-createICCProfile = liftIO do
-    icc' <- sk_colorspace_icc_profile_new
-    toObject icc'
+createSRGBGamma :: SKColorSpace -> Acquire SKColorSpace
+createSRGBGamma colorspace =
+    mkSKObjectAcquire
+        (sk_colorspace_make_srgb_gamma (ptr colorspace))
+        sk_colorspace_unref
 
 {- | Creates an 'SKColorSpaceICCProfile' by parsing an ICC profile.
 
@@ -294,28 +278,21 @@ expectations, prefer A2B0 (perceptual) over A2B1 (relative colormetric), and
 ignore A2B2 (saturation).\"
 -}
 parseICCProfile ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     -- | Input buffer containing an ICC profile.
     BS.ByteString ->
-    m (Maybe (Owned SKColorSpaceICCProfile))
-parseICCProfile source = evalContIO do
-    (cstr, len) <- ContT $ BS.unsafeUseAsCStringLen source
-
-    profile <- createICCProfile
-    profile' <- useObj profile
-
-    ok <-
-        liftIO $
-            fmap toBool $
-                sk_colorspace_icc_profile_parse
-                    (castPtr cstr)
-                    (fromIntegral len)
-                    profile'
-    if ok
+    m (Maybe (ReleaseKey, SKColorSpaceICCProfile))
+parseICCProfile source = do
+    (profileKey, profile') <- allocate sk_colorspace_icc_profile_new sk_colorspace_icc_profile_delete
+    ok <- liftIO $
+        BS.unsafeUseAsCStringLen source \(cstr, len) -> do
+            sk_colorspace_icc_profile_parse (castPtr cstr) (fromIntegral len) profile'
+    if toBool ok
         then do
-            pure (Just profile)
+            profile <- toObject profile'
+            pure $ Just (profileKey, profile)
         else do
-            destroyICCProfile profile
+            release profileKey
             pure Nothing
 
 {- | Exposes the internal buffer of a 'SKColorSpaceICCProfile'.

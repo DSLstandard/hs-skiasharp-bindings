@@ -94,24 +94,31 @@ flags:
     manual: true
 
 library:
-  source-dirs: src/
-  build-tools: hsc2hs
+  build-tools:
+    - hsc2hs
+  ghc-options:
+    # See https://github.com/tfausak/imp?tab=readme-ov-file#recommended-usage
+    -fplugin=Imp
+    -fplugin-opt=Imp:--alias=_:ThisModule
   dependencies:
     - base
+    - bcp47
     - bytestring
     - haskell-src-exts
     - haskell-src-meta
+    - imp ^>= 1.0.0.0 # About 'imp', see https://taylor.fausak.me/2024/03/31/alias-current-module/
     - inline-c
     - linear
     - mtl
     - neat-interpolation
+    - resourcet
     - storable-offset
     - template-haskell
     - text
     - time
     - transformers
     - vector
-    - bcp47
+  source-dirs: src/
   pkg-config-dependencies:
     - skia
   extra-libraries:
@@ -152,17 +159,25 @@ executables:
     source-dirs: demos/
     main: DemoGLFWOpenGL.hs
     other-modules: []
-    dependencies: [base, GLFW-b, OpenGLRaw, skia]
+    dependencies: [base, GLFW-b, OpenGLRaw, skia, linear, text, resourcet]
+
+  demo-sdl2-opengl:
+    source-dirs: demos/
+    main: DemoSDL2OpenGL.hs
+    other-modules: []
+    dependencies: [base, sdl2, OpenGLRaw, skia, linear, text, resourcet]
 
   demo-skottie-animation-viewer:
     source-dirs: demos/
     main: DemoSkottieAnimationViewer.hs
     other-modules: [SharedUtils.MakeDemoApp]
     dependencies:
-      [base, GLFW-b, OpenGLRaw, skia, time, optparse-applicative, linear, text]
-
-  demo-draw-text:
-    source-dirs: demos/
-    main: DemoDrawText.hs
-    other-modules: [SharedUtils.MakeDemoApp]
-    dependencies: [base, GLFW-b, OpenGLRaw, skia, time, linear, text]
+      - base
+      - GLFW-b
+      - OpenGLRaw
+      - skia
+      - time
+      - optparse-applicative
+      - linear
+      - text
+      - resourcet

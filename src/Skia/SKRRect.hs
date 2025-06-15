@@ -1,10 +1,10 @@
-module Skia.SKRoundRect where
+module Skia.SKRRect where
 
 import Data.Traversable
 import Linear
 import Skia.Internal.Prelude
 
-delete :: (MonadIO m) => SKRoundRect -> m ()
+delete :: (MonadIO m) => SKRRect -> m ()
 delete rrect = evalContIO do
     rrect' <- useObj rrect
     liftIO $ sk_rrect_delete rrect'
@@ -31,65 +31,65 @@ radiiCorners =
         , lowerLeft = SKRoundRectCorner'LowerLeft
         }
 
--- | Creates an empty SKRoundRect.
-create :: (MonadIO m) => m SKRoundRect
+-- | Creates an empty SKRRect.
+create :: (MonadIO m) => m SKRRect
 create = liftIO do
     rrect' <- sk_rrect_new
     toObject rrect'
 
-clone :: (MonadIO m) => SKRoundRect -> m SKRoundRect
+clone :: (MonadIO m) => SKRRect -> m SKRRect
 clone rrect = evalContIO do
     rrect' <- useObj rrect
     newRRect' <- liftIO $ sk_rrect_new_copy rrect'
     toObject newRRect'
 
-getType :: (MonadIO m) => SKRoundRect -> m SKRoundRectType
+getType :: (MonadIO m) => SKRRect -> m SKRoundRectType
 getType rrect = evalContIO do
     rrect' <- useObj rrect
     t <- liftIO $ sk_rrect_get_type rrect'
     unmarshalSKEnumOrDie t
 
-getRect :: (MonadIO m) => SKRoundRect -> m (Rect Float)
+getRect :: (MonadIO m) => SKRRect -> m (Rect Float)
 getRect rrect = evalContIO do
     rrect' <- useObj rrect
     rect' <- useAlloca
     liftIO $ sk_rrect_get_rect rrect' rect'
     liftIO $ fromSKRect <$> peek rect'
 
-getRadii :: (MonadIO m) => SKRoundRect -> SKRoundRectCorner -> m (V2 Float)
+getRadii :: (MonadIO m) => SKRRect -> SKRoundRectCorner -> m (V2 Float)
 getRadii rrect corner = evalContIO do
     rrect' <- useObj rrect
     radii' <- useAlloca
     liftIO $ sk_rrect_get_radii rrect' (marshalSKEnum corner) radii'
     liftIO $ fromSKPoint <$> peek radii'
 
-getAllRadii :: (MonadIO m) => SKRoundRect -> m (Radii (V2 Float))
+getAllRadii :: (MonadIO m) => SKRRect -> m (Radii (V2 Float))
 getAllRadii rrect = evalContIO do
     for radiiCorners \corner -> do
         getRadii rrect corner
 
-getWidth :: (MonadIO m) => SKRoundRect -> m Float
+getWidth :: (MonadIO m) => SKRRect -> m Float
 getWidth rrect = evalContIO do
     rrect' <- useObj rrect
     liftIO $ coerce <$> sk_rrect_get_width rrect'
 
-getHeight :: (MonadIO m) => SKRoundRect -> m Float
+getHeight :: (MonadIO m) => SKRRect -> m Float
 getHeight rrect = evalContIO do
     rrect' <- useObj rrect
     liftIO $ coerce <$> sk_rrect_get_height rrect'
 
-setEmpty :: (MonadIO m) => SKRoundRect -> m ()
+setEmpty :: (MonadIO m) => SKRRect -> m ()
 setEmpty rrect = evalContIO do
     rrect' <- useObj rrect
     liftIO $ sk_rrect_set_empty rrect'
 
-setRect :: (MonadIO m) => SKRoundRect -> Rect Float -> m ()
+setRect :: (MonadIO m) => SKRRect -> Rect Float -> m ()
 setRect rrect rect = evalContIO do
     rrect' <- useObj rrect
     rect' <- useStorable $ toSKRect rect
     liftIO $ sk_rrect_set_rect rrect' rect'
 
-setOval :: (MonadIO m) => SKRoundRect -> Rect Float -> m ()
+setOval :: (MonadIO m) => SKRRect -> Rect Float -> m ()
 setOval rrect oval = evalContIO do
     rrect' <- useObj rrect
     oval' <- useStorable $ toSKRect oval
@@ -97,7 +97,7 @@ setOval rrect oval = evalContIO do
 
 setRectXY ::
     (MonadIO m) =>
-    SKRoundRect ->
+    SKRRect ->
     Rect Float ->
     -- | X and Y radius
     V2 Float ->
@@ -109,7 +109,7 @@ setRectXY rrect rect (V2 rx ry) = evalContIO do
 
 setRectRadii ::
     (MonadIO m) =>
-    SKRoundRect ->
+    SKRRect ->
     Rect Float ->
     Radii (V2 Float) ->
     m ()
@@ -123,7 +123,7 @@ setRectRadii rrect rect radii = evalContIO do
 
 setNinePatch ::
     (MonadIO m) =>
-    SKRoundRect ->
+    SKRRect ->
     -- | bounds of rounded rectangle
     Rect Float ->
     -- | left-top and left-bottom x-axis radius
@@ -140,28 +140,28 @@ setNinePatch rrect rect leftRad topRad rightRad bottomRad = evalContIO do
     rect' <- useStorable $ toSKRect rect
     liftIO $ sk_rrect_set_nine_patch rrect' rect' (coerce leftRad) (coerce topRad) (coerce rightRad) (coerce bottomRad)
 
-inset :: (MonadIO m) => SKRoundRect -> V2 Float -> m ()
+inset :: (MonadIO m) => SKRRect -> V2 Float -> m ()
 inset rrect (V2 dx dy) = evalContIO do
     rrect' <- useObj rrect
     liftIO $ sk_rrect_inset rrect' (coerce dx) (coerce dy)
 
-outset :: (MonadIO m) => SKRoundRect -> V2 Float -> m ()
+outset :: (MonadIO m) => SKRRect -> V2 Float -> m ()
 outset rrect (V2 dx dy) = evalContIO do
     rrect' <- useObj rrect
     liftIO $ sk_rrect_outset rrect' (coerce dx) (coerce dy)
 
-offset :: (MonadIO m) => SKRoundRect -> V2 Float -> m ()
+offset :: (MonadIO m) => SKRRect -> V2 Float -> m ()
 offset rrect (V2 dx dy) = evalContIO do
     rrect' <- useObj rrect
     liftIO $ sk_rrect_offset rrect' (coerce dx) (coerce dy)
 
-containsRect :: (MonadIO m) => SKRoundRect -> Rect Float -> m Bool
+containsRect :: (MonadIO m) => SKRRect -> Rect Float -> m Bool
 containsRect rrect rect = evalContIO do
     rrect' <- useObj rrect
     rect' <- useStorable $ toSKRect rect
     liftIO $ toBool <$> sk_rrect_contains rrect' rect'
 
-isValid :: (MonadIO m) => SKRoundRect -> m Bool
+isValid :: (MonadIO m) => SKRRect -> m Bool
 isValid rrect = evalContIO do
     rrect' <- useObj rrect
     liftIO $ toBool <$> sk_rrect_is_valid rrect'
@@ -169,10 +169,10 @@ isValid rrect = evalContIO do
 -- | Returns true when successful. Returns false when failed.
 transformToDest ::
     (MonadIO m) =>
-    SKRoundRect ->
+    SKRRect ->
     M33 Float ->
     -- | Destination round rect
-    SKRoundRect ->
+    SKRRect ->
     m Bool
 transformToDest rrect matrix dstRRect = evalContIO do
     rrect' <- useObj rrect
@@ -180,14 +180,14 @@ transformToDest rrect matrix dstRRect = evalContIO do
     dstRRect' <- useObj dstRRect
     liftIO $ toBool <$> sk_rrect_transform rrect' matrix' dstRRect'
 
-{- | Like 'transformToDest' but creates the SKRoundRect for you and returns it.
+{- | Like 'transformToDest' but creates the SKRRect for you and returns it.
 Returns 'Nothing' if failed.
 -}
 transform ::
     (MonadIO m) =>
-    SKRoundRect ->
+    SKRRect ->
     M33 Float ->
-    m (Maybe SKRoundRect)
+    m (Maybe SKRRect)
 transform rrect matrix = evalContIO do
     dstRRect <- create
     success <- transformToDest rrect matrix dstRRect

@@ -5,10 +5,12 @@ import Control.Monad.Fix
 import Control.Monad.IO.Class
 import Control.Monad.Trans.Resource
 import Data.Acquire
+import Foreign hiding (void)
 import Data.Text qualified as T
 import Foreign.C
 import Graphics.GL qualified as GL
-import Graphics.UI.GLFW qualified as GLFW
+import qualified SDL
+import qualified SDL.Raw
 import Linear
 import Skia.Bindings
 import Skia.GRBackendRenderTarget qualified as GRBackendRenderTarget
@@ -19,13 +21,12 @@ import Skia.SKFont qualified as SKFont
 import Skia.SKPaint qualified as SKPaint
 import Skia.SKSurface qualified as SKSurface
 import Skia.Types
-import System.Exit
-import System.IO
+
 
 {-
-Demo of setting up Skia on GLFW with an OpenGL backend.
+Demo of setting up Skia on SDL2 with an OpenGL backend.
 
-This demo's implementation is translated from Kevin Yin
+This demo's implementation is translated and adapted from Kevin Yin
 (<https://github.com/ad8e>)'s Github GIST here:
 https://gist.github.com/ad8e/dd150b775ae6aa4d5cf1a092e4713add
 - "instructions to use skia and glfw together. (download, installation, first
@@ -63,30 +64,37 @@ initSkia w h = do
                 Nothing
     pure (context, surface)
 
+getSdlMousePos :: MonadIO m => m (V2 Int)
+getSdlMousePos = liftIO do
+    alloca \x' -> alloca \y' -> do
+        _ <- SDL.Raw.getMouseState x' y'
+        x <- peek x'
+        y <- peek y'
+        pure $ fmap fromIntegral $ V2 x y
+
 main :: IO ()
 main = do
-    -- Setup GLFW things...
-    GLFW.setErrorCallback $ Just \error description -> do
-        hPutStrLn stderr $ "[GLFW ERROR " <> show error <> "] " <> description
+    -- Setup SDL2 things...
+    SDL.initializeAll
+    let
+        winGraphicsConf =
+            SDL.OpenGLContext
+                SDL.defaultOpenGL
+                    { SDL.glProfile = SDL.Compatibility SDL.Normal 3 2
+                    , SDL.glStencilPrecision = 0
+                    , SDL.glMultisampleSamples = 0
+                    }
+        winConf =
+            SDL.defaultWindow
+                { SDL.windowGraphicsContext = winGraphicsConf
+                , SDL.windowResizable = True
+                , SDL.windowInitialSize = V2 (fromIntegral kWidth) (fromIntegral kHeight)
+                }
+    window <- SDL.createWindow "Demo SDL2 OpenGL Skia" winConf
 
-    initOk <- GLFW.init
-    unless initOk exitFailure
-    putStrLn "GLFW initialized"
-
-    GLFW.windowHint $ GLFW.WindowHint'ContextVersionMajor 3
-    GLFW.windowHint $ GLFW.WindowHint'ContextVersionMinor 2
-    GLFW.windowHint $ GLFW.WindowHint'OpenGLForwardCompat True
-    GLFW.windowHint $ GLFW.WindowHint'OpenGLProfile GLFW.OpenGLProfile'Core
-    GLFW.windowHint $ GLFW.WindowHint'StencilBits (Just 0)
-    GLFW.windowHint $ GLFW.WindowHint'DepthBits (Just 0)
-
-    window <-
-        GLFW.createWindow kWidth kHeight "Demo GLFW OpenGL Skia" Nothing Nothing >>= \case
-            Nothing -> GLFW.terminate *> exitFailure
-            Just window -> pure window
-
-    GLFW.makeContextCurrent (Just window)
-    GLFW.swapInterval 0 -- This makes the canvas refresh faster and more responsive.
+    glctx <- SDL.glCreateContext window
+    SDL.glMakeCurrent window glctx
+    void $ SDL.Raw.glSetSwapInterval 0 -- This makes the canvas refresh faster and more responsive.
 
     runResourceT do
         (context, surface) <- initSkia kWidth kHeight
@@ -97,17 +105,25 @@ main = do
         SKFont.setSize font 48
         SKFont.setSkewX font (-0.5)
 
+        let
+            isEventQuit :: SDL.Event -> Bool
+            isEventQuit event =
+                case SDL.eventPayload event of
+                    SDL.WindowClosedEvent _ -> True
+                    _ -> False
+
         fix \continue -> do
-            shouldClose <- liftIO $ GLFW.windowShouldClose window
-            unless shouldClose do
-                liftIO $ GLFW.waitEvents
-                (x, y) <- liftIO $ GLFW.getCursorPos window
+            events <- SDL.pollEvents
 
-                -- Nest another ResourceT to isolate SKObjects related to drawing
+            let shouldQuit = any isEventQuit events
+
+            unless shouldQuit do
+                V2 x y <- getSdlMousePos
+
+                -- Nest another ResourceT to isolate SKObjects related to
+                -- drawing
                 runResourceT do
-                    (_, paint) <- allocateAcquire $ SKPaint.create
-
-                    -- Clear background to white
+                    (_, paint) <- allocateAcquire SKPaint.create
                     SKPaint.setColorRGBA paint (RGBA 1 1 1 1) Nothing
                     SKCanvas.drawPaint canvas paint
 
@@ -131,12 +147,13 @@ main = do
                         font
                         paint
 
+
                 -- The previous draw operations/commands must be flushed before
-                -- GLFW.swapBuffers, otherwise you see nothing.
+                -- SDL.glSwapWindow, otherwise you see nothing.
                 GRDirectContext.flush context
-                liftIO $ GLFW.swapBuffers window
+                SDL.glSwapWindow window
 
                 continue
 
-    GLFW.terminate
-    putStrLn "GLFW terminated"
+    SDL.quit
+    putStrLn "SDL2 terminated"

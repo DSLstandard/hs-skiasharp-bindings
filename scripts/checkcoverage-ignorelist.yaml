@@ -54,3 +54,8 @@ entries:
     why-ignore: >
       skottie_animation_make_from_string can be replaced by
       skottie_animation_make_from_data.
+  - pattern: sk_image_new_raster_copy
+    why-ignore: >
+      `sk_image_new_raster_copy` is redundant: Its function can be replaced by
+      combining `sk_image_new_raster_copy_with_pixmap` and
+      `sk_pixmap_new_with_params`

@@ -8,16 +8,12 @@ import Data.Text.Foreign qualified as T
 import Data.Vector.Storable qualified as VS
 import Skia.Internal.Prelude
 
-destroy :: (MonadIO m) => SKFont -> m ()
-destroy font = evalContIO do
-    font' <- useObj font
-    liftIO $ sk_font_delete font'
-
 -- | Creates an 'SKFont' with default internal settings.
-create :: (MonadIO m) => m (Owned SKFont)
-create = liftIO do
-    font' <- sk_font_new
-    toObject font'
+create :: Acquire SKFont
+create =
+    mkSKObjectAcquire
+        sk_font_new
+        sk_font_delete
 
 {- | Creates an 'SKFont' with default internal settings + input SkTypeface and size in points, horizontal scale, and horizontal skew. Horizontal scale emulates condensed
 and expanded fonts. Horizontal skew emulates oblique fonts.
@@ -35,12 +31,11 @@ createWithValues ::
     --
     -- You may set this to 0.0 as a default.
     Float ->
-    m (Owned SKFont)
-createWithValues tf size scaleX skewX = evalContIO do
-    tf' <- useObj tf
-    liftIO $
-        toObject
-            =<< sk_font_new_with_values tf' (coerce size) (coerce scaleX) (coerce skewX)
+    Acquire SKFont
+createWithValues tf size scaleX skewX =
+    mkSKObjectAcquire
+        (sk_font_new_with_values (ptr tf) (coerce size) (coerce scaleX) (coerce skewX))
+        sk_font_delete
 
 isForceAutoHinting :: (MonadIO m) => SKFont -> m Bool
 isForceAutoHinting font = evalContIO do

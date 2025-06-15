@@ -3,9 +3,10 @@ module Skia.SKPath where
 import Data.ByteString qualified as BS
 import Linear
 import Skia.Internal.Prelude
-import Skia.SKRoundRect qualified as SKRoundRect
+import Skia.SKRRect qualified as SKRRect
 import Skia.SKString qualified as SKString
 import Skia.Types.Rect qualified as Rect
+import Data.Acquire qualified as Acquire
 
 -- | Free a 'SKPath'.
 destroy :: (MonadIO m) => SKPath -> m ()
@@ -253,13 +254,13 @@ addRectWithStart path rect dir startPoint = evalContIO do
     rect' <- useStorable $ toSKRect rect
     liftIO $ sk_path_add_rect_start path' rect' (marshalSKEnum dir) (privRectPointToStartIndex startPoint)
 
-addRRect :: (MonadIO m) => (MonadIO m) => SKPath -> SKRoundRect -> SKPathDirection -> m ()
+addRRect :: (MonadIO m) => (MonadIO m) => SKPath -> SKRRect -> SKPathDirection -> m ()
 addRRect path rrect dir = evalContIO do
     path' <- useObj path
     rrect' <- useObj rrect
     liftIO $ sk_path_add_rrect path' rrect' (marshalSKEnum dir)
 
-addRRectWithStart :: (MonadIO m) => (MonadIO m) => SKPath -> SKRoundRect -> SKPathDirection -> RectPoint -> m ()
+addRRectWithStart :: (MonadIO m) => (MonadIO m) => SKPath -> SKRRect -> SKPathDirection -> RectPoint -> m ()
 addRRectWithStart path rrect dir startPoint = evalContIO do
     path' <- useObj path
     rrect' <- useObj rrect
@@ -559,8 +560,8 @@ parseSVGToDest dstPath str = liftIO do
         parseSVGToDestRaw dstPath str'
 
 renderSvgString :: (MonadIO m) => SKPath -> m SKString
-renderSvgString path = do
-    str <- SKString.createEmpty
+renderSvgString path = evalContIO do
+    str <- ContT $ Acquire.with $ SKString.createEmpty
 
     evalContIO do
         path' <- useObj path
@@ -625,9 +626,9 @@ asOval path = evalContIO do
         else do
             pure Nothing
 
-asRRect :: (MonadIO m) => SKPath -> m (Maybe SKRoundRect)
+asRRect :: (MonadIO m) => SKPath -> m (Maybe SKRRect)
 asRRect path = evalContIO do
-    rrect <- SKRoundRect.create
+    rrect <- SKRRect.create
 
     path' <- useObj path
     rrect' <- useObj rrect

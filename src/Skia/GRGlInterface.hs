@@ -1,4 +1,5 @@
 module Skia.GRGlInterface (
+    -- * Creating 'GRGlInterface'
     createNativeInterface,
     GetProcUserData,
     GetProc,
@@ -6,19 +7,30 @@ module Skia.GRGlInterface (
     assembleGlInterface,
     assembleGlesInterface,
     assembleWebGlInterface,
+
+    -- * Miscellaneous utilities.
     validate,
     hasExtension,
 )
 where
 
+import Control.Exception
 import Skia.Internal.Prelude
 
-createNativeInterface :: (MonadIO m) => m (Maybe GRGlInterface)
-createNativeInterface = evalContIO do
-    iface' <- liftIO $ gr_glinterface_create_native_interface
-    toObjectFinUnlessNull gr_glinterface_unref iface'
-
--- NOTE: The type should must match that of 'Gr_gl_get_proc'
+{- | Creates a native 'GRGlInterface'. Depending the execution platform, a GL
+interface (e.g., GLX, WGL, EGL, etc) will be picked. If no 'GRGlInterface' is
+constructed, an 'SkiaError' is thrown.
+-}
+createNativeInterface :: Acquire GRGlInterface
+createNativeInterface =
+    mkSKObjectAcquire
+        ( do
+            iface' <- gr_glinterface_create_native_interface
+            when (iface' == nullPtr) do
+                throwIO $ SkiaError "Cannot create native GL interface"
+            pure iface'
+        )
+        gr_glinterface_unref
 
 -- | See documentation of 'GetProc'
 type GetProcUserData a = Ptr a
@@ -45,15 +57,29 @@ privAssemble assembleFn getprocfunptr userData = liftIO do
     iface' <- assembleFn (castPtr userData) (castFunPtr getprocfunptr)
     toObjectFinUnlessNull gr_glinterface_unref iface'
 
+{- | Generic function for creating a GrGLInterface for an either OpenGL or GLES.
+It calls the get proc function to get each function address.
+-}
 assembleInterface :: forall a m. (MonadIO m) => FunPtr (GetProc a) -> GetProcUserData a -> m (Maybe GRGlInterface)
 assembleInterface = privAssemble gr_glinterface_assemble_interface
 
+{- | Generic function for creating a GrGLInterface for an OpenGL (but not GLES)
+context. It calls the input get proc function to get each function address.
+-}
 assembleGlInterface :: forall a m. (MonadIO m) => FunPtr (GetProc a) -> GetProcUserData a -> m (Maybe GRGlInterface)
 assembleGlInterface = privAssemble gr_glinterface_assemble_gl_interface
 
+{- | Generic function for creating a GrGLInterface for an OpenGL ES (but not
+Open GL) context. It calls the input get proc function to get each function
+address.
+-}
 assembleGlesInterface :: forall a m. (MonadIO m) => FunPtr (GetProc a) -> GetProcUserData a -> m (Maybe GRGlInterface)
 assembleGlesInterface = privAssemble gr_glinterface_assemble_gles_interface
 
+{- | Generic function for creating a GrGLInterface for a WebGL (similar to
+OpenGL ES) context. It calls the input get proc function to get each function
+address.
+-}
 assembleWebGlInterface :: forall a m. (MonadIO m) => FunPtr (GetProc a) -> GetProcUserData a -> m (Maybe GRGlInterface)
 assembleWebGlInterface = privAssemble gr_glinterface_assemble_webgl_interface
 
@@ -66,10 +92,16 @@ validate iface = evalContIO do
     iface' <- useObj iface
     liftIO $ fmap toBool $ gr_glinterface_validate iface'
 
+{- | This helper function queries the current GL context for its extensions and
+remembers them (internally done by Google Skia). It supports both @glGetString-@
+and @glGetStringi-@style extension string APIs and will use the latter if it is
+available. It also will query for EGL extensions if a @eglQueryString@
+implementation is provided.
+-}
 hasExtension ::
     (MonadIO m) =>
     GRGlInterface ->
-    -- | Extension name
+    -- | OpenGL extension name
     CString ->
     m Bool
 hasExtension iface extName = evalContIO do

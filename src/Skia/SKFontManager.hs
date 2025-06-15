@@ -1,5 +1,6 @@
 module Skia.SKFontManager where
 
+import Control.Monad.Trans.Resource
 import Data.BCP47 qualified as BCP47
 import Data.Char qualified
 import Data.Text qualified as T
@@ -7,21 +8,22 @@ import Data.Traversable
 import Skia.Internal.Prelude
 import Skia.SKString qualified as SKString
 
-createDefault :: (MonadIO m) => m (Ref SKFontManager)
-createDefault = evalContIO do
-    fmgr <- liftIO $ sk_fontmgr_create_default
-    toObjectFin sk_fontmgr_unref fmgr
+createDefault :: Acquire SKFontManager
+createDefault =
+    mkSKObjectAcquire
+        sk_fontmgr_create_default
+        sk_fontmgr_unref
 
 -- | Returns Skia's global default font manager object.
-getGlobalDefault :: (MonadIO m) => m (Ref SKFontManager)
-getGlobalDefault = evalContIO do
-    fmgr <- liftIO sk_fontmgr_ref_default
-    toObjectFin sk_fontmgr_unref fmgr
+getGlobalDefault :: Acquire SKFontManager
+getGlobalDefault =
+    mkSKObjectAcquire
+        sk_fontmgr_ref_default
+        sk_fontmgr_unref
 
 countFamilies :: (MonadIO m) => SKFontManager -> m Int
-countFamilies fmgr = evalContIO do
-    fmgr' <- useObj fmgr
-    liftIO $ fmap fromIntegral $ sk_fontmgr_count_families fmgr'
+countFamilies fmgr = liftIO do
+    fromIntegral <$> sk_fontmgr_count_families (ptr fmgr)
 
 getFamilyName ::
     (MonadIO m) =>
@@ -30,27 +32,19 @@ getFamilyName ::
     Int ->
     m T.Text
 getFamilyName fmgr index = evalContIO do
-    familyNameStr <- SKString.createEmpty
-
-    fmgr' <- useObj fmgr
-    familyNameStr' <- useObj familyNameStr
-
-    liftIO $ sk_fontmgr_get_family_name fmgr' (fromIntegral index) familyNameStr'
-
-    familyName <- SKString.getAsText familyNameStr
-    disposeObject familyNameStr
-
-    pure familyName
+    familyNameStr <- useAcquire SKString.createEmpty
+    liftIO $ sk_fontmgr_get_family_name (ptr fmgr) (fromIntegral index) (ptr familyNameStr)
+    SKString.getAsText familyNameStr
 
 createStyleSet ::
-    (MonadIO m) =>
     SKFontManager ->
     -- | Index
     Int ->
-    m (Ref SKFontStyleSet)
-createStyleSet fmgr index = evalContIO do
-    fmgr' <- useObj fmgr
-    liftIO $ toObjectFin sk_fontstyleset_unref =<< sk_fontmgr_create_styleset fmgr' (fromIntegral index)
+    Acquire SKFontStyleSet
+createStyleSet fmgr index =
+    mkSKObjectAcquire
+        (sk_fontmgr_create_styleset (ptr fmgr) (fromIntegral index))
+        sk_fontstyleset_unref
 
 {- | Returns an empty set if the name is not found.
 
@@ -62,22 +56,21 @@ It is possible that this will return a style set not accessible from
 'createStyleSet' due to hidden or auto-activated fonts.
 -}
 matchFamily ::
-    (MonadIO m) =>
     SKFontManager ->
     -- | Family name
     Maybe T.Text ->
-    m (Ref SKFontStyleSet)
-matchFamily fmgr familyName = evalContIO do
-    fmgr' <- useObj fmgr
-    familyName' <- useNullIfNothing useTextAsUtf8CString familyName
+    Acquire SKFontStyleSet
+matchFamily fmgr familyName =
+    -- Google Skia on matchFamily(): Never returns NULL; will return an empty
+    -- set if the name is not found.
+    mkSKObjectAcquire
+        ( evalContIO do
+            familyName' <- useNullIfNothing useTextAsUtf8CString familyName
+            liftIO $ sk_fontmgr_match_family (ptr fmgr) familyName'
+        )
+        sk_fontstyleset_unref
 
-    tf' <- liftIO $ sk_fontmgr_match_family fmgr' familyName'
-
-    -- Google Skia's comment: The caller must call unref() on the returned
-    -- object if it is not null.
-    liftIO $ toObjectFin sk_fontstyleset_unref tf'
-
-{- | Find the closest matching typeface to the specified family anme and style
+{- | Finds the closest matching typeface to the specified family anme and style
 and returns it. Will return 'Nothing' if no \'good\' match is found.
 
 Passing 'Nothing' as the family name will return the default system font.
@@ -86,23 +79,25 @@ It is possible that this will return a style set not accessible from
 "createStyleSet' or 'matchFamily' due to hidden or auto-activated fonts.
 -}
 matchFamilyStyle ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKFontManager ->
     -- | Family name
     Maybe T.Text ->
     SKFontStyle ->
-    m (Maybe SKTypeface)
-matchFamilyStyle fmgr familyName fontStyle = evalContIO do
-    fmgr' <- useObj fmgr
-    familyName' <- useNullIfNothing useTextAsUtf8CString familyName
-    fontStyle' <- useSKFontStyle fontStyle
-    tf' <- liftIO $ sk_fontmgr_match_family_style fmgr' familyName' fontStyle'
-    toObjectFinUnlessNull sk_typeface_unref tf'
+    m (Maybe (ReleaseKey, SKTypeface))
+matchFamilyStyle fmgr familyName fontStyle =
+    allocateSKObjectUnlessNull
+        ( evalContIO do
+            fontStyle' <- useSKFontStyle fontStyle
+            familyName' <- useNullIfNothing useTextAsUtf8CString familyName
+            liftIO $ sk_fontmgr_match_family_style (ptr fmgr) familyName' fontStyle'
+        )
+        sk_typeface_unref
 
 {- | Use the system fallback to find a typeface for the given character.
 
-Will return 'Nothing' if no family can be found for the character in the
-system fallback.
+Will return 'Nothing' if no family can be found for the character in the system
+fallback.
 
 Passing 'Nothing' as the family name will return the default system font.
 
@@ -111,90 +106,81 @@ significant. If no specified bcp47 codes match, any font with the requested
 character will be matched.
 -}
 matchFamilyStyleCharacter ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKFontManager ->
     -- | Family name
     Maybe T.Text ->
     SKFontStyle ->
     [BCP47.BCP47] ->
     Char ->
-    m (Maybe SKTypeface)
-matchFamilyStyleCharacter fmgr familyName fontStyle inputBcp47s char = evalContIO do
-    fmgr' <- useObj fmgr
-    familyName' <- useNullIfNothing useTextAsUtf8CString familyName
-    fontStyle' <- useSKFontStyle fontStyle
+    m (Maybe (ReleaseKey, SKTypeface))
+matchFamilyStyleCharacter fmgr familyName fontStyle inputBcp47s char =
+    allocateSKObjectUnlessNull
+        ( evalContIO do
+            familyName' <- useNullIfNothing useTextAsUtf8CString familyName
+            fontStyle' <- useSKFontStyle fontStyle
 
-    bcp47Strings <- for inputBcp47s \bcp47 -> do
-        useTextAsUtf8CString (BCP47.toText bcp47)
-    (bcp47', bcp47Count) <- ContT $ withArrayLen' bcp47Strings
+            bcp47Strings <- for inputBcp47s \bcp47 -> useTextAsUtf8CString (BCP47.toText bcp47)
+            (bcp47', bcp47Count) <- ContT $ withArrayLen' bcp47Strings
 
-    tf' <-
-        liftIO $
-            sk_fontmgr_match_family_style_character
-                fmgr'
-                familyName'
-                fontStyle'
-                bcp47'
-                (fromIntegral bcp47Count)
-                (fromIntegral (Data.Char.ord char))
-    toObjectFinUnlessNull sk_typeface_unref tf'
+            liftIO $
+                sk_fontmgr_match_family_style_character
+                    (ptr fmgr)
+                    familyName'
+                    fontStyle'
+                    bcp47'
+                    (fromIntegral bcp47Count)
+                    (fromIntegral (Data.Char.ord char))
+        )
+        sk_typeface_unref
 
 {- | Returns a typeface for the specified file name and TTC index (pass
 'Nothing' for none). Returns 'Nothing' if the file is not found, or its contents
 are not recognized.
 -}
 createFromFile ::
-    (MonadIO m) =>
+    (MonadResource m) =>
     SKFontManager ->
     FilePath ->
     -- | TTC index
     Maybe Int ->
-    m (Maybe (Ref SKTypeface))
-createFromFile fmgr path ttcIndex = evalContIO do
-    fmgr' <- useObj fmgr
-    path' <- ContT $ withCString path
-
-    tf' <- liftIO $ sk_fontmgr_create_from_file fmgr' path' (maybe 0 fromIntegral ttcIndex)
-    -- Google Skia's comment: The caller must call unref() on the
-    -- returned object if it is not null.
-    toObjectFinUnlessNull sk_typeface_unref tf'
+    m (Maybe (ReleaseKey, SKTypeface))
+createFromFile fmgr path ttcIndex =
+    allocateSKObjectUnlessNull
+        ( evalContIO do
+            path' <- ContT $ withCString path
+            liftIO $ sk_fontmgr_create_from_file (ptr fmgr) path' (maybe 0 fromIntegral ttcIndex)
+        )
+        sk_typeface_unref
 
 {- | Returns a typeface for the specified stream and TTC index (pass 'Nothing'
 for none). Returns 'Nothing' if the file is not found, or its contents are not
 recognized.
 -}
 createFromStream ::
-    (MonadIO m, IsSKStreamAsset stream) =>
+    (MonadResource m, IsSKStreamAsset stream) =>
     SKFontManager ->
     stream ->
     -- | TTC index
     Maybe Int ->
-    m (Maybe (Ref SKTypeface))
-createFromStream fmgr (toA SKStreamAsset -> stream) ttcIndex = evalContIO do
-    fmgr' <- useObj fmgr
-    stream' <- useObj stream
-
-    tf' <- liftIO $ sk_fontmgr_create_from_stream fmgr' stream' (maybe 0 fromIntegral ttcIndex)
-    -- Google Skia's comment: The caller must call unref() on the
-    -- returned object if it is not null.
-    toObjectFinUnlessNull sk_typeface_unref tf'
+    m (Maybe (ReleaseKey, SKTypeface))
+createFromStream fmgr (toA SKStreamAsset -> stream) ttcIndex =
+    allocateSKObjectUnlessNull
+        (sk_fontmgr_create_from_stream (ptr fmgr) (ptr stream) (maybe 0 fromIntegral ttcIndex))
+        sk_typeface_unref
 
 {- | Returns a typeface for the specified data and TTC index (pass 'Nothing' for
 none). Returns 'Nothing' if the file is not found, or its contents are not
 recognized.
 -}
 createFromData ::
-    (MonadIO m, IsSKStream stream) =>
+    (MonadResource m, IsSKStream stream) =>
     SKFontManager ->
     SKData ->
     -- | TTC index
     Maybe Int ->
-    m (Maybe (Ref SKTypeface))
-createFromData fmgr dat ttcIndex = evalContIO do
-    fmgr' <- useObj fmgr
-    dat' <- useObj dat
-
-    tf' <- liftIO $ sk_fontmgr_create_from_data fmgr' dat' (maybe 0 fromIntegral ttcIndex)
-    -- Google Skia's comment: The caller must call unref() on the
-    -- returned object if it is not null.
-    toObjectFinUnlessNull sk_typeface_unref tf'
+    m (Maybe (ReleaseKey, SKTypeface))
+createFromData fmgr dat ttcIndex =
+    allocateSKObjectUnlessNull
+        (sk_fontmgr_create_from_data (ptr fmgr) (ptr dat) (maybe 0 fromIntegral ttcIndex))
+        sk_typeface_unref

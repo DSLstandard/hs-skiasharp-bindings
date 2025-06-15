@@ -1,5 +1,6 @@
 module Skia.SKDocument where
 
+import Data.Acquire qualified as Acquire
 import Data.Text qualified as T
 import Data.Time qualified as Time
 import Skia.Internal.Prelude
@@ -74,12 +75,12 @@ data SKPdfDocumentMetadata = SKPdfDocumentMetadata
 
 usePdfDocumentMetadata :: SKPdfDocumentMetadata -> ContT r IO (Ptr Sk_document_pdf_metadata)
 usePdfDocumentMetadata input = evalContIO do
-    fTitle <- useObj =<< SKString.createFromText input.title
-    fAuthor <- useObj =<< SKString.createFromText input.author
-    fSubject <- useObj =<< SKString.createFromText input.subject
-    fKeywords <- useObj =<< SKString.createFromText input.keywords
-    fCreator <- useObj =<< SKString.createFromText input.creator
-    fProducer <- useObj =<< SKString.createFromText input.producer
+    (ptr -> fTitle) <- useAcquire $ SKString.createFromText input.title
+    (ptr -> fAuthor) <- useAcquire $ SKString.createFromText input.author
+    (ptr -> fSubject) <- useAcquire $ SKString.createFromText input.subject
+    (ptr -> fKeywords) <- useAcquire $ SKString.createFromText input.keywords
+    (ptr -> fCreator) <- useAcquire $ SKString.createFromText input.creator
+    (ptr -> fProducer) <- useAcquire $ SKString.createFromText input.producer
     fCreation <- useStorable $ maybe emptyPdfDateTime marshalZonedTime input.creation
     fModified <- useStorable $ maybe emptyPdfDateTime marshalZonedTime input.modified
     let fRasterDPI = coerce input.rasterDpi
@@ -146,37 +147,44 @@ usePdfDocumentMetadata input = evalContIO do
                 floor todSec
             }
 
+-- | Raises a 'SkiaError' if operation fails.
 createPdfFromStream ::
-    (MonadIO m, IsSKWStream stream) =>
+    (IsSKWStream stream) =>
     stream ->
     Maybe SKPdfDocumentMetadata ->
-    -- | Returns 'Nothing' if there is an error.
-    m (Maybe SKDocument)
-createPdfFromStream (toA SKWStream -> stream) metadata = evalContIO do
-    stream' <- useObj stream
-    document' <- case metadata of
-        Nothing -> do
-            liftIO $ sk_document_create_pdf_from_stream stream'
-        Just metadata -> do
-            metadata' <- usePdfDocumentMetadata metadata
-            liftIO $ sk_document_create_pdf_from_stream_with_metadata stream' metadata'
-    toObjectFinUnlessNull sk_document_unref document'
+    Acquire SKDocument
+createPdfFromStream (toA SKWStream -> stream) metadata =
+    mkSKObjectAcquire
+        ( evalContIO do
+            case metadata of
+                Nothing -> do
+                    liftIO $ sk_document_create_pdf_from_stream (ptr stream)
+                Just metadata -> do
+                    metadata' <- usePdfDocumentMetadata metadata
+                    liftIO $ sk_document_create_pdf_from_stream_with_metadata (ptr stream) metadata'
+        )
+        sk_document_unref
 
+-- | Raises a 'SkiaError' if operation fails.
 createXpsFromStream ::
-    (MonadIO m, IsSKWStream stream) =>
+    (IsSKWStream stream) =>
     stream ->
     -- | DPI. Consider picking 'defaultRasterDpi'.
     Float ->
     -- | Returns 'Nothing' if there is an error.
-    m (Maybe SKDocument)
-createXpsFromStream (toA SKWStream -> stream) dpi = evalContIO do
-    stream' <- useObj stream
-    document' <- liftIO $ sk_document_create_xps_from_stream stream' (coerce dpi)
-    toObjectFinUnlessNull sk_document_unref document'
+    Acquire SKDocument
+createXpsFromStream (toA SKWStream -> stream) dpi =
+    mkSKObjectAcquire
+        (sk_document_create_xps_from_stream (ptr stream) (coerce dpi))
+        sk_document_unref
 
 {- | Begin a new page for the document, returning the canvas that will draw into
 the page. The document owns this canvas, and it will go out of scope when
 'endPage' or 'close' is called, or the document is deleted.
+
+NOTE: Because the 'SKDocument' should outlive the returned 'SKCanvas', this
+'Acquire' performs 'holdReferenceCount' on the input 'SKDocument' to extend its
+lifetime.
 -}
 beginPage ::
     (MonadIO m) =>
@@ -187,11 +195,16 @@ beginPage ::
     Float ->
     -- | Content rect
     Rect Float ->
-    m SKCanvas
+    Acquire SKCanvas
 beginPage document width height content = evalContIO do
-    document' <- useObj document
     content' <- useStorable $ toSKRect content
-    canvas' <- liftIO $ sk_document_begin_page document' (coerce width) (coerce height) content'
+    canvas' <-
+        liftIO $
+            sk_document_begin_page
+                (ptr document)
+                (coerce width)
+                (coerce height)
+                content'
     toObject canvas'
 
 {- | Call 'endPage' when the content for the current page has been drawn (into

@@ -143,3 +143,13 @@ library was being developed:
 
     - `skottie_animation_make_from_string` is the same as
       `skottie_animation_make_from_data`.
+
+    - `sk_surface_draw` does not provide an interface to pass in an `SkSamplingOptions`.
+
+    - `gr_direct_context_perform_deferred_cleanup` does not expose the parameter `opts`.
+
+    - `sk_image_new_raster_copy` is redundant: Its function can be replaced by combining `sk_image_new_raster_copy_with_pixmap` and `sk_pixmap_new_with_params`
+
+- Development process
+    - The general process involves inspecting the C API and Skia C++ implementation in https://github.com/mono/skia. `clangd` can be set up (by manually applying the changes made in https://github.com/google/skia/commit/f5ea6a15bf936baae0248cb088b1b2b042706305#diff-7fc57714ef13c3325ce2a1130202edced92fcccc0c6db34a72f7b57f60d552a3 + running `bazel run //:gen_compile_flags_txt_linux_amd64 --config=ganesh_gl > compile_flags.txt` as recommended by the commit message) to help navigate around the C++ source.
+    - https://github.com/mono/SkiaSharp is used as a reference of how a non-C++ library exposes the Skia API.

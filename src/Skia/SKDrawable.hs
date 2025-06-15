@@ -33,12 +33,11 @@ draw (toA SKDrawable -> drawable) (toA SKCanvas -> canvas) matrix = evalContIO d
     matrix' <- useNullIfNothing useStorable (toSKMatrix <$> matrix)
     liftIO $ sk_drawable_draw drawable' canvas' matrix'
 
-makePictureSnapshot :: (MonadIO m, IsSKDrawable drawable) => drawable -> m SKPicture
-makePictureSnapshot (toA SKDrawable -> drawable) = evalContIO do
-    drawable' <- useObj drawable
-    liftIO $
-        toObjectFin sk_picture_unref
-            =<< sk_drawable_new_picture_snapshot drawable'
+makePictureSnapshot :: (IsSKDrawable drawable) => drawable -> Acquire SKPicture
+makePictureSnapshot (toA SKDrawable -> drawable) =
+    mkSKObjectAcquire
+        (sk_drawable_new_picture_snapshot (ptr drawable))
+        sk_picture_unref
 
 notifyDrawingChanged :: (MonadIO m, IsSKDrawable drawable) => drawable -> m ()
 notifyDrawingChanged (toA SKDrawable -> drawable) = evalContIO do
